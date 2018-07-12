@@ -21,6 +21,7 @@ import FCM, {
 
 export function registerKilledListener() {
     FCM.on(FCMEvent.Notification, notif => {
+        console.log('demo');
         AsyncStorage.setItem('lastNotification', JSON.stringify(notif));
     });
 }
