@@ -1,3 +1,5 @@
 node_modules/*
 android/*
 demo.txt
+/android/*
+resource/common/SystemConstant.js
