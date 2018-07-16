@@ -16,6 +16,9 @@ import { Footer } from 'native-base';
 //style
 import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
+//util
+import { appNavigate } from '../../common/Utilities';
+
 export default class Confirm extends Component {
     constructor(props) {
         super(props);
@@ -62,10 +65,10 @@ export default class Confirm extends Component {
             });
 
 
-        //xóa dữ liệu storage of người dùng trên thiết bị
-        AsyncStorage.removeItem('userInfo').then(() => {
-            this.props.navigation.navigate('LoadingScreen');
-        });
+        //xóa các dữ liệu trong storage
+        AsyncStorage.clear().then(() => {
+            appNavigate(this.props.navigation, 'LoadingScreen');
+        })
     }
 
     render() {
@@ -77,7 +80,7 @@ export default class Confirm extends Component {
                 onRequestClose={() => this.onModalClose()}>
                 <View style={styles.container}>
                     <View style={styles.body}>
-                        <Header 
+                        <Header
                             outerContainerStyles={styles.headerOuter}
                             centerComponent={
                                 <Text style={styles.headerCenterTitle}>
@@ -136,8 +139,8 @@ const styles = StyleSheet.create({
         borderBottomColor: '#2455A6',
         borderBottomWidth: 3,
         backgroundColor: '#fff',
-        paddingHorizontal:scale(10),
-        paddingVertical:verticalScale(10)
+        paddingHorizontal: scale(10),
+        paddingVertical: verticalScale(10)
     }, content: {
         height: verticalScale(100),
         justifyContent: 'center',

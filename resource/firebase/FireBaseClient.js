@@ -23,6 +23,7 @@ async function pushFirebaseNotify(content, targetToken, type) {
         to: targetToken,
         data: {
             custom_notification: {
+                id: new Date().valueOf().toString(),
                 title: content.title,
                 body: content.message,
                 sound: 'default',

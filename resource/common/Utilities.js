@@ -154,3 +154,15 @@ export function getColorCodeByProgressValue(progressValue) {
     }
     return result;
 }
+
+
+//điều hướng
+export function appNavigate(navigation, screenName, screenParam){
+    if(navigation){
+        navigation.navigate(screenName, screenParam);
+    }
+}
+
+export function isObjectHasValue(obj){
+    return util.isUndefined(obj) == false && util.isNull(obj) == false;
+}

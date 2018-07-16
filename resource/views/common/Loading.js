@@ -10,6 +10,9 @@ import {
     ImageBackground
 } from 'react-native'
 
+//util
+import { appNavigate, isObjectHasValue } from '../../common/Utilities';
+
 //progress bar
 import ProgressBar from './ProgressBar';
 
@@ -28,11 +31,14 @@ import { registerAppListener, registerKilledListener } from '../../firebase/Fire
 
 //style
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
+import { EMPTY_STRING } from '../../common/SystemConstant';
 
+registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 1000
+        timing: 1000,
+        notif: ''
     }
 
     progressing() {
@@ -66,23 +72,47 @@ class Loading extends Component {
         if (this.state.progress >= 1) {
             clearInterval(this.state.intervalId);
 
-            const userInfoStorage = await AsyncStorage.getItem('userInfo').then((result) => {
-                return JSON.parse(result);
+            const storage = await AsyncStorage.multiGet(['userInfo', 'firebaseNotification']).then((rs) => {
+                return {
+                    user: JSON.parse(rs[0][1]),
+                    notification: JSON.parse(rs[1][1])
+                }
             });
 
-            if (userInfoStorage) {
-                this.props.setUserInfo(userInfoStorage);
+            if (storage.user) {
+                this.props.setUserInfo(storage.user);
+                // appNavigate(this.props.navigation, 'TestScreen');
                 setTimeout(() => {
-                    if (userInfoStorage.hasRoleAssignUnit) {
-                        this.props.navigation.navigate('ListPersonalTaskScreen');
+                    let screenName = EMPTY_STRING;
+                    let screenParam = null;
+
+                    if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
+                        const notificationData = JSON.parse(storage.notification.custom_notification);
+                        screenName = notificationData.targetScreen;
+                        if (notificationData.isTaskNotification) {
+                            screenParam = {
+                                taskId: notificationData.targetTaskId,
+                                taskType: notificationData.targetTaskType
+                            }
+                        } else {
+                            screenParam = {
+                                docId: notificationData.targetDocId,
+                                docType: notificationData.targetDocType
+                            }
+                        }
                     } else {
-                        this.props.navigation.navigate('ListAssignedTaskScreen');
+                        screenName = storage.user.hasRoleAssignUnit ? 'ListPersonalTaskScreen' : 'ListAssignedTaskScreen';
                     }
-                }, 1000)
+                    appNavigate(this.props.navigation, screenName, screenParam);
+                }, this.state.timing)
             } else {
-                this.props.navigation.navigate('Auth');
+                appNavigate(this.props.navigation, 'Auth');
             }
         }
+    }
+
+    componentWillUnmount = () => {
+        AsyncStorage.removeItem('firebaseNotification');
     }
 
     render() {
