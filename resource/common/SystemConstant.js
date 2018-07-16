@@ -1,5 +1,4 @@
 import { Dimensions } from'react-native'
-
 export const WEB_URL = 'http://103.1.210.108';
 export const API_URL = 'http://103.1.210.108:81';
 
@@ -62,6 +61,11 @@ export const CONGVIEC_CONSTANT = {
 	DAGIAO_XULY: 4
 }
 
+//thông báo
+export const THONGBAO_CONSTANT = {
+	CONGVIEC: 1,
+	VANBAN: 2
+}
 
 //colors
 export const Colors = {
