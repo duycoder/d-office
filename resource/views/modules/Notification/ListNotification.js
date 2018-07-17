@@ -34,12 +34,11 @@ class ListNotification extends Component {
             refreshing: false,
             data: [],
             pageIndex: DEFAULT_PAGE_INDEX,
-            pageSize: DEFAULT_PAGE_SIZE,
-
+            pageSize: DEFAULT_PAGE_SIZE
         }
     }
 
-    onPressNotificationItem = (item) => {
+    onPressNotificationItem = async (item) => {
         let screenName = EMPTY_STRING;
         let screenParam = {};
         if (item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC) {
@@ -55,7 +54,7 @@ class ListNotification extends Component {
                 docType: item.targetDocType || 'GetListProcessing',
             }
         }
-
+ 
         appNavigate(this.props.navigation, screenName, screenParam);
     }
 
@@ -100,7 +99,7 @@ class ListNotification extends Component {
                     leftIcon={
                         <View style={styles.leftTitleCircle}>
                             <RNText style={styles.leftTitleText}>
-                                {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV": "VB"}
+                                {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"}
                             </RNText>
                         </View>
                     }

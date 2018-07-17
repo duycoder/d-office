@@ -125,25 +125,6 @@ export default class SideBar extends Component {
 
                 <View style={SideBarStyle.body}>
                     <ScrollView>
-                        {/* <TouchableOpacity
-                            onPress={() => this.setCurrentFocus('ListChatterScreen', '0')}
-                            style={this.state.onFocusNow === '0' && SideBarStyle.listItemFocus}
-                        >
-                            <ListItem
-                                leftIcon={
-                                    this.state.onFocusNow !== '0' ?
-                                        <Image source={SBIcons.chat_Neutral} style={[SideBarStyle.listItemLeftIcon, {marginLeft: 0}]} /> :
-                                        <Image source={SBIcons.chat_Active} style={[SideBarStyle.listItemLeftIcon, {marginLeft: 0}]} />
-                                }
-                                rightIcon={
-                                    notificationIcon
-                                }
-                                containerStyle={SideBarStyle.subItemContainer}
-                                title={'HỘI THOẠI'}
-                                titleStyle={[SideBarStyle.listItemTitle, {marginLeft: 5}]} 
-                                />
-                        </TouchableOpacity> */}
-
                         <TouchableOpacity
                             onPress={() => this.setCurrentFocus('ListNotificationScreen', '0')}
                             style={this.state.onFocusNow === '0' && SideBarStyle.listItemFocus}>
@@ -165,8 +146,7 @@ export default class SideBar extends Component {
                         <Panel title='VĂN BẢN TRÌNH KÝ'>
                             <TouchableOpacity
                                 onPress={() => this.setCurrentFocus('ListIsNotProcessedScreen', '1')}
-                                style={this.state.onFocusNow === '1' && SideBarStyle.listItemFocus}
-                            >
+                                style={this.state.onFocusNow === '1' && SideBarStyle.listItemFocus}>
                                 <ListItem
                                     leftIcon={
                                         this.state.onFocusNow !== '1' ?
@@ -228,26 +208,7 @@ export default class SideBar extends Component {
                             </TouchableOpacity>
                         </Panel>
 
-                        {/* <Panel title='VĂN BẢN ĐÃ PHÁT HÀNH'>
-                            <TouchableOpacity onPress={() => this.setCurrentFocus('ListIsPublishedScreen', '5')} style={this.state.onFocusNow === '5' && SideBarStyle.listItemFocus}>
-                                <ListItem
-                                    leftIcon={
-                                        this.state.onFocusNow !== '5' ?
-                                            <Image source={SBIcons.doc_Published_Neutral} style={SideBarStyle.listItemLeftIcon} /> :
-                                            <Image source={SBIcons.doc_Published_Active} style={SideBarStyle.listItemLeftIcon} />
-                                    }
-                                    rightIcon={
-                                        this.state.onFocusNow !== '5' ? mainItemIcon : subItemIcon
-                                    }
-                                    containerStyle={SideBarStyle.subItemContainer}
-                                    title={'Danh sách'}
-                                    titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === '5' && SideBarStyle.listItemSubTitleContainerFocus]}
-                                    contentContainerStyle={SideBarStyle.subItemContainer} />
-                            </TouchableOpacity>
-                        </Panel> */}
-
                         <Panel title='CÔNG VIỆC'>
-
                             <TouchableOpacity onPress={() => this.setCurrentFocus('ListPersonalTaskScreen', '6')} style={this.state.onFocusNow === '6' && SideBarStyle.listItemFocus}>
                                 <ListItem
                                     leftIcon={
