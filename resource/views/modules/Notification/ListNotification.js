@@ -56,6 +56,8 @@ class ListNotification extends Component {
             }
         }
 
+        //checkout
+
         appNavigate(this.props.navigation, screenName, screenParam);
     }
 
