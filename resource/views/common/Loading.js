@@ -81,25 +81,12 @@ class Loading extends Component {
 
             if (storage.user) {
                 this.props.setUserInfo(storage.user);
-                // appNavigate(this.props.navigation, 'TestScreen');
                 setTimeout(() => {
                     let screenName = EMPTY_STRING;
                     let screenParam = null;
 
                     if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
-                        const notificationData = JSON.parse(storage.notification.custom_notification);
-                        screenName = notificationData.targetScreen;
-                        if (notificationData.isTaskNotification) {
-                            screenParam = {
-                                taskId: notificationData.targetTaskId,
-                                taskType: notificationData.targetTaskType
-                            }
-                        } else {
-                            screenParam = {
-                                docId: notificationData.targetDocId,
-                                docType: notificationData.targetDocType
-                            }
-                        }
+                        screenName = 'ListNotificationScreen'
                     } else {
                         screenName = storage.user.hasRoleAssignUnit ? 'ListPersonalTaskScreen' : 'ListAssignedTaskScreen';
                     }

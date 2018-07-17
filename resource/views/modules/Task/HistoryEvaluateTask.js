@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 
 import {
     ActivityIndicator, FlatList, StyleSheet, View as RnView, Text as RnText,
-    RefreshControl, Dimensions
+    RefreshControl, Dimensions, Platform
 } from 'react-native';
 //redux
 import { connect } from 'react-redux';

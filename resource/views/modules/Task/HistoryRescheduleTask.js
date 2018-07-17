@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { View as RnView, Text as RnText } from 'react-native';
 import {
 	ActivityIndicator, Alert, FlatList,
-	RefreshControl, StyleSheet, Dimensions
+	RefreshControl, StyleSheet, Dimensions, Platform
 } from 'react-native';
 //lib
 import {

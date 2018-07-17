@@ -213,7 +213,6 @@ class ApproveProgressTask extends Component {
     }
 }
 
-
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo

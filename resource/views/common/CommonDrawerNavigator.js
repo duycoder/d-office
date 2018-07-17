@@ -70,8 +70,13 @@ import ListChatter from '../modules/Chat/ListChatter';
 import Chatter from '../modules/Chat/Chatter';
 import DetailChatter from '../modules/Chat/DetailChatter';
 
+//màn hình thông báo
+import ListNotification from '../modules/Notification/ListNotification';
+
 //test
 import Test from '../../common/Test';
+
+
 
 const appRoutes = {
     TestScreen: {
@@ -195,6 +200,9 @@ const appRoutes = {
     },
     DetailChatterScreen: {
         screen: DetailChatter
+    },
+    ListNotificationScreen: {
+        screen: ListNotification
     }
 }
 const appConfig = {

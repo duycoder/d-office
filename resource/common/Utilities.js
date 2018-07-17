@@ -62,6 +62,20 @@ export function convertDateTimeToString(date) {
     return 'N/A';
 }
 
+export function convertDateTimeToTitle(date){
+    if(isObjectHasValue(date) && date !== ''){
+        let jsDate = new Date(date);
+        let result = '';
+        
+        let datePart = _readableFormat(jsDate.getDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
+        let timePart = _readableFormat(jsDate.getHours()) + ':' + _readableFormat(jsDate.getMinutes());
+
+        result = `${datePart} lúc ${timePart}`;
+        return result;
+    }
+    return 'N/A'
+}
+
 //Thêm '0' vào trước ngày tháng nếu chỉ có một chữ số
 function _readableFormat(value) {
     return (value < 10) ? '0' + value : value;

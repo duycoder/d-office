@@ -40,6 +40,7 @@ export default class SideBar extends Component {
 
             },
             onFocusNow: '6',
+            notifyCount: 0
         }
     }
 
@@ -48,48 +49,55 @@ export default class SideBar extends Component {
         const userInfo = JSON.parse(storageUserInfo);
         this.setState({
             userInfo,
-            onFocusNow: userInfo.hasRoleAssignUnit ? '6' : '7'
+            onFocusNow: userInfo.hasRoleAssignUnit ? '6' : '7',
+            notifyCount: userInfo.numberUnReadMessage
         });
     }
 
     navigate(screenName) {
-        this.props.navigation.navigate(screenName);
+        this.props.navigation.push(screenName);
     }
 
     onLogOut() {
         this.refs.confirm.showModal();
     }
 
-    setCurrentFocus(screenName, ref) {
+    async setCurrentFocus(screenName, ref) {
+        const userInfo = this.state.userInfo;
+        userInfo.numberUnReadMessage = 0;
+        
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+
         this.setState({
             onFocusNow: ref,
+            notifyCount: 0
         });
-        this.navigate(screenName);
+        this.props.navigation.navigate(screenName);
     }
 
     render() {
-        const {hasNoti} = this.state;
+        const { notifyCount } = this.state;
         const subItemIcon = <Image source={subItemIconLink} />;
         const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
-        
+
         let notificationIcon = <View></View>;
-        if(hasNoti > 0 && hasNoti < 100) {
+        if (notifyCount > 0 && notifyCount < 100) {
             notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
                 <View style={SideBarStyle.chatNotificationCircle}>
                     <Text style={SideBarStyle.chatNotificationText}>
-                        {hasNoti}
+                        {notifyCount}
                     </Text>
                 </View>
             </View>
         }
-        if (hasNoti >= 100) {
+        if (notifyCount >= 100) {
             notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
-            <View style={[SideBarStyle.chatNotificationCircle, {width: moderateScale(25), height: moderateScale(25), borderRadius: moderateScale(25/2)}]}>
-                <Text style={SideBarStyle.chatNotificationText}>
-                    99+
+                <View style={[SideBarStyle.chatNotificationCircle, { width: moderateScale(25), height: moderateScale(25), borderRadius: moderateScale(25 / 2) }]}>
+                    <Text style={SideBarStyle.chatNotificationText}>
+                        99+
                 </Text>
+                </View>
             </View>
-        </View>
         }
 
         return (
@@ -135,6 +143,24 @@ export default class SideBar extends Component {
                                 titleStyle={[SideBarStyle.listItemTitle, {marginLeft: 5}]} 
                                 />
                         </TouchableOpacity> */}
+
+                        <TouchableOpacity
+                            onPress={() => this.setCurrentFocus('ListNotificationScreen', '0')}
+                            style={this.state.onFocusNow === '0' && SideBarStyle.listItemFocus}>
+                            <ListItem
+                                leftIcon={
+                                    this.state.onFocusNow !== '0' ?
+                                        <Image source={SBIcons.chat_Neutral} style={[SideBarStyle.listItemLeftIcon, { marginLeft: 0 }]} /> :
+                                        <Image source={SBIcons.chat_Active} style={[SideBarStyle.listItemLeftIcon, { marginLeft: 0 }]} />
+                                }
+                                rightIcon={
+                                    notificationIcon
+                                }
+                                containerStyle={SideBarStyle.subItemContainer}
+                                title={'THÔNG BÁO'}
+                                titleStyle={[SideBarStyle.listItemTitle, { marginLeft: 5 }]}
+                            />
+                        </TouchableOpacity>
 
                         <Panel title='VĂN BẢN TRÌNH KÝ'>
                             <TouchableOpacity
