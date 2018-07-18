@@ -85,14 +85,14 @@ class BaseSignDocList extends Component {
   }
 
   navigateToDocDetail = (docId) => {
-    let currentScreenName = "ListPersonalTaskScreen";
+    let currentScreenName = "ListIsNotProcessedScreen";
 
-    if (this.state.taskType == VANBAN_CONSTANT.DUOC_GIAO) {
-      currentScreenName = "ListAssignedTaskScreen"
-    } else if (this.state.taskType == VANBAN_CONSTANT.PHOIHOP_XULY) {
-      currentScreenName = "ListCombinationTaskScreen"
-    } else if (this.state.taskType == VANBAN_CONSTANT.DAGIAO_XULY) {
-      currentScreenName = "ListProcessedTaskScreen"
+    if (this.state.docType == VANBAN_CONSTANT.DA_XULY) {
+      currentScreenName = "ListIsProcessedScreen"
+    } else if (this.state.docType == VANBAN_CONSTANT.CAN_REVIEW) {
+      currentScreenName = "ListIsNotReviewedScreen"
+    } else if (this.state.docType == VANBAN_CONSTANT.DA_REVIEW) {
+      currentScreenName = "ListIsReviewedScreen"
     }
 
     let targetScreenParam = {

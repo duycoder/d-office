@@ -108,6 +108,7 @@ class WorkflowStreamProcess extends Component {
 
     navigateBackToDetail = () => {
         appGetDataAndNavigate(this.props.navigation, "WorkflowStreamProcessScreen");
+        return true;
     }
 
     saveFlow = async () => {

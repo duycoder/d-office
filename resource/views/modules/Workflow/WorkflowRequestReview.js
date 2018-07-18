@@ -95,6 +95,7 @@ class WorkflowRequestReview extends Component {
 
 	navigateBackToDetail = () => {
 		appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
+		return true;
 	}
 
 	renderItem = ({ item }) => {
