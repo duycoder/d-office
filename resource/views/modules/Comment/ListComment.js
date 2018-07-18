@@ -16,7 +16,7 @@ import {
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage
+  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
@@ -90,12 +90,10 @@ class ListComment extends Component {
 
   fetchData = async () => {
     let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
-    
-    if(this.state.isTaskComment){
+
+    if (this.state.isTaskComment) {
       url = `${API_URL}/api/HscvCongViec/GetRootCommentsOfTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
-
-    console.log('đường dẫn', url);
 
     const result = await fetch(url);
     const resultJson = await result.json();
@@ -113,28 +111,35 @@ class ListComment extends Component {
     }, () => this.fetchData())
   }
 
-  navigateToDetail() {
-    if(this.state.isTaskComment){
-      this.props.navigation.navigate('DetailTaskScreen', {
-        taskId: this.state.taskId,
-        taskType: this.state.taskType
-      });
-    }else{
-      this.props.navigation.navigate('DetailSignDocScreen', {
-        docId: this.state.docId,
-        docType: this.state.docType
-      })
-    }
-  }
-
   componentWillMount() {
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
   }
 
+  componentDidMount = () => {
+    backHandlerConfig(true, this.navigateToDetail)
+  }
+
   componentWillUnmount() {
     // this.keyboardWillShowSub.remove();
     // this.keyboardWillHideSub.remove();
+    backHandlerConfig(false, this.navigateToDetail);
+  }
+
+  navigateToDetail = () => {
+    appGetDataAndNavigate(this.props.navigation, 'ListCommentScreen');
+    return true;
+    // if (this.state.isTaskComment) {
+    //   this.props.navigation.navigate('DetailTaskScreen', {
+    //     taskId: this.state.taskId,
+    //     taskType: this.state.taskType
+    //   });
+    // } else {
+    //   this.props.navigation.navigate('DetailSignDocScreen', {
+    //     docId: this.state.docId,
+    //     docType: this.state.docType
+    //   })
+    // }
   }
 
   keyboardWillShow = (event) => {
@@ -155,7 +160,7 @@ class ListComment extends Component {
       isTaskComment: this.state.isTaskComment,
       taskId: this.state.taskId,
       taskType: this.state.taskType,
-      
+
       docId: this.state.docId,
       docType: this.state.docType
     });
@@ -187,11 +192,11 @@ class ListComment extends Component {
       VANBANDI_ID: this.state.docId,
       PARENT_ID: null,
       NGUOITAO: this.state.userId,
-      NOIDUNGTRAODOI : this.state.commentContent
+      NOIDUNGTRAODOI: this.state.commentContent
     });
 
     //phần thông tin cho công việc
-    if(this.state.isTaskComment){
+    if (this.state.isTaskComment) {
       url = `${API_URL}/api/HscvCongViec/SaveComment`;
       headers = new Headers({
         'Accept': 'application/json',
@@ -217,7 +222,7 @@ class ListComment extends Component {
     });
 
     const resultJson = await result.json();
-    if(this.state.isTaskComment){
+    if (this.state.isTaskComment) {
       if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
         const message = this.props.userInfo.Fullname + ' đã đăng trao đổi nội dung công việc #Công việc ' + this.state.taskId;
         const content = {
@@ -228,7 +233,7 @@ class ListComment extends Component {
           targetTaskId: this.state.taskId,
           targetTaskType: this.state.taskType
         }
-  
+
         resultJson.GroupTokens.forEach(token => {
           pushFirebaseNotify(content, token, 'notification');
         })

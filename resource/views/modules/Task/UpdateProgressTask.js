@@ -22,7 +22,7 @@ import * as util from 'lodash';
 import {
     API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -132,11 +132,17 @@ class UpdateProgressTask extends Component {
         }
     }
 
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
     navigateBackToDetail = () => {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+        appGetDataAndNavigate(this.props.navigation, 'UpdateProgressTaskScreen');
+        return true;
     }
 
     onSliderChange = (value) => {

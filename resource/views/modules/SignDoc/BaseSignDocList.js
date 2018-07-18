@@ -5,7 +5,10 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { ActivityIndicator, View, FlatList, RefreshControl, TouchableOpacity, Text as RnText } from 'react-native';
+import {
+  AsyncStorage, ActivityIndicator, View,
+  FlatList, RefreshControl, TouchableOpacity, Text as RnText
+} from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
@@ -19,7 +22,7 @@ import renderIf from 'render-if';
 import { List, ListItem } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -81,11 +84,23 @@ class BaseSignDocList extends Component {
     });
   }
 
-  navigateToDocDetail(docId) {
-    this.props.navigator.navigate('DetailSignDocScreen', {
+  navigateToDocDetail = (docId) => {
+    let currentScreenName = "ListIsNotProcessedScreen";
+
+    if (this.state.docType == VANBAN_CONSTANT.DA_XULY) {
+      currentScreenName = "ListIsProcessedScreen"
+    } else if (this.state.docType == VANBAN_CONSTANT.CAN_REVIEW) {
+      currentScreenName = "ListIsNotReviewedScreen"
+    } else if (this.state.docType == VANBAN_CONSTANT.DA_REVIEW) {
+      currentScreenName = "ListIsReviewedScreen"
+    }
+
+    let targetScreenParam = {
       docId,
       docType: this.state.docType
-    })
+    }
+
+    appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailSignDocScreen", targetScreenParam);
   }
 
   onFilter = () => {

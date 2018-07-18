@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    ActivityIndicator, View, Text as RnText,
+    AsyncStorage, ActivityIndicator, View, Text as RnText,
     FlatList, RefreshControl, TouchableOpacity
 } from 'react-native';
 
@@ -32,7 +32,7 @@ import {
 //utilities
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { getColorCodeByProgressValue, convertDateToString, emptyDataPage } from '../../../common/Utilities';
+import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
 
 //styles
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
@@ -96,8 +96,6 @@ class BaseTaskList extends Component {
             loadingMoreData: false,
             data: (loadingData || refreshingData) ? resultJson.ListItem : [...this.state.data, ...resultJson.ListItem]
         });
-
-        this.navigateToDetail.bind(this);
     }
 
     onFilter() {
@@ -127,11 +125,31 @@ class BaseTaskList extends Component {
         })
     }
 
-    navigateToDetail(taskId) {
-        this.props.navigator.navigate('DetailTaskScreen', {
+    navigateToDetail = async (taskId) => {
+        let { navigation } = this.props;
+        let currentScreenName = "ListPersonalTaskScreen";
+
+        if (this.state.taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
+            currentScreenName = "ListAssignedTaskScreen"
+        } else if (this.state.taskType == CONGVIEC_CONSTANT.PHOIHOP_XULY) {
+            currentScreenName = "ListCombinationTaskScreen"
+        } else if (this.state.taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
+            currentScreenName = "ListProcessedTaskScreen"
+        }
+
+        let targetScreenParam = {
             taskId,
             taskType: this.state.taskType
-        });
+        }
+
+        appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailTaskScreen", targetScreenParam)
+        // await AsyncStorage.multiSet([
+        //     [`DetailTaskScreen-PS`, screenName],
+        //     [`DetailTaskScreen-SP`, JSON.stringify(screenParam)]
+        // ]).then((rs) => {
+        //     alert(navigation);
+        //     appNavigate(navigation, screenName, screenParam);
+        // });
     }
 
     async getListSubTasks(index, isExpand, taskId, parentIds) {
@@ -215,7 +233,7 @@ class BaseTaskList extends Component {
                                 renderIf(item.HasChild && item.isExpand == true)(
                                     <TouchableOpacity onPress={
                                         (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                                        <RneIcon name='folder-open-o' type='font-awesome'/>
+                                        <RneIcon name='folder-open-o' type='font-awesome' />
                                     </TouchableOpacity>
                                 )
                             }
@@ -224,7 +242,7 @@ class BaseTaskList extends Component {
                                 renderIf(item.HasChild && item.isExpand == false)(
                                     <TouchableOpacity onPress={
                                         (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                                        <RneIcon name='folder-o' type='font-awesome'/>
+                                        <RneIcon name='folder-o' type='font-awesome' />
                                     </TouchableOpacity>
                                 )
                             }

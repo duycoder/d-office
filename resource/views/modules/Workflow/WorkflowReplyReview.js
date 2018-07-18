@@ -31,7 +31,7 @@ import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyl
 import { TabStyle } from '../../../assets/styles/TabStyle';
 
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { asyncDelay, unAuthorizePage, openSideBar, convertDateToString } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString } from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
@@ -69,11 +69,17 @@ class WorkflowReplyReview extends Component {
         });
     }
 
-    navigateBack() {
-        this.props.navigation.navigate('DetailSignDocScreen', {
-            docId: this.state.docId,
-            docType: this.state.docType
-        })
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBack);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBack);
+    }
+
+    navigateBack = () => {
+        appGetDataAndNavigate(this.props.navigation, "WorkflowReplyReviewScreen");
+        return true;
     }
 
     onConfirmReplyReview() {

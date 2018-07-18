@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     View, Text as RNText, ActivityIndicator, StyleSheet,
-    TouchableOpacity, FlatList, RefreshControl
+    TouchableOpacity, FlatList, RefreshControl, AsyncStorage
 } from 'react-native'
 
 //constant
@@ -10,7 +10,7 @@ import {
     EMPTY_STRING, THONGBAO_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
-import { appNavigate, convertDateTimeToTitle, emptyDataPage } from '../../../common/Utilities';
+import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
@@ -43,6 +43,7 @@ class ListNotification extends Component {
         let screenParam = {};
         if (item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC) {
             screenName = 'DetailTaskScreen';
+
             screenParam = {
                 taskId: item.NOTIFY_ITEM_ID,
                 taskType: item.targetTaskType || 'AssignedWork',
@@ -54,8 +55,14 @@ class ListNotification extends Component {
                 docType: item.targetDocType || 'GetListProcessing',
             }
         }
- 
-        appNavigate(this.props.navigation, screenName, screenParam);
+        appStoreDataAndNavigate(this.props.navigation, "ListNotificationScreen", new Object(), screenName, screenParam);
+    }
+
+    componentDidMount = async () => {
+        const userInfo = this.state.userInfo;
+        userInfo.numberUnReadMessage = 0;
+
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
     }
 
     componentWillMount = () => {

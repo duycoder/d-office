@@ -28,7 +28,10 @@ import { connect } from 'react-redux';
 
 //utilities
 import { API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, formatLongText, convertDateToString } from '../../../common/Utilities';
+import {
+	asyncDelay, emptyDataPage, formatLongText, convertDateToString,
+	appGetDataAndNavigate, backHandlerConfig
+} from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -60,8 +63,6 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	componentWillMount() {
-		console.log('demo', this.state.canApprove);
-
 		this.setState({
 			loading: true
 		}, () => {
@@ -194,12 +195,18 @@ class HistoryRescheduleTask extends Component {
 		)
 	}
 
-	navigateBackToDetail() {
-		this.props.navigation.navigate('DetailTaskScreen', {
-			taskId: this.state.taskId,
-			taskType: this.state.taskType
-		});
-	}
+	componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'HistoryRescheduleTaskScreen');
+        return true;
+    }
 
 	render() {
 		return (

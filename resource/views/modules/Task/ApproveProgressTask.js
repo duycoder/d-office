@@ -21,7 +21,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
-import { asyncDelay } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
@@ -56,13 +56,18 @@ class ApproveProgressTask extends Component {
     }
 
 
-    navigateBackToDetail() {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
     }
 
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, "ApproveProgressTaskScreen");
+        return true;
+    }
 
     //kiểm tra chắc chắn phê duyệt tiến độ công việc
     onConfirmApproveCompleteTask = () => {

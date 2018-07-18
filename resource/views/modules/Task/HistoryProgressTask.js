@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
 	ActivityIndicator, FlatList, StyleSheet, View as RnView, Text as RnText,
-	RefreshControl
+	RefreshControl, Platform
 } from 'react-native';
 //redux
 import { connect } from 'react-redux';
@@ -30,7 +30,10 @@ import {
 	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
-import { emptyDataPage, formatLongText, convertDateToString, convertDateTimeToString } from '../../../common/Utilities';
+import {
+	emptyDataPage, formatLongText, convertDateToString, convertDateTimeToString,
+	backHandlerConfig, appGetDataAndNavigate
+} from '../../../common/Utilities';
 
 //styles
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -128,12 +131,18 @@ class HistoryProgressTask extends Component {
 		);
 	}
 
-	navigateBackToDetail() {
-		this.props.navigation.navigate('DetailTaskScreen', {
-			taskId: this.state.taskId,
-			taskType: this.state.taskType
-		});
-	}
+	componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'HistoryProgressTaskScreen');
+        return true;
+    }
 
 	handleRefresh = () => {
 		this.setState({
