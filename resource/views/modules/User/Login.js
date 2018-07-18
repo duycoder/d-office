@@ -35,10 +35,6 @@ import FCM, { FCMEvent } from 'react-native-fcm';
 //images
 const uriBackground = require('../../../assets/images/background.png');
 const uriRibbonBackground = require('../../../assets/images/ribbon-background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png')
-const dojiIcon = require('../../../assets/images/doji-icon.png');
-const vietnameIcon = require('../../../assets/images/vietnam-icon.png');
-const vnrIcon = require('../../../assets/images/vnr-icon.png');
 const showPasswordIcon = require('../../../assets/images/visible-eye.png');
 const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
 
@@ -248,11 +244,6 @@ class Login extends Component {
                         },
                         LoginStyle.formHeader
                     ]}>
-                        {/* <Image source={dojiBigIcon} style={[{ display: this.state.headerComponentsDisplayStatus }, LoginStyle.formHeaderIcon]} /> */}
-                        {/* <Text style={[LoginStyle.formHeaderCompanyTitle,
-                        { display: this.state.headerComponentsDisplayStatus }]}>
-                            TẬP ĐOÀN VÀNG BẠC ĐÁ QUÝ DOJI
-                        </Text> */}
 
                         <Text style={[LoginStyle.formHeaderSoftwareTitle,
                         { display: this.state.headerComponentsDisplayStatus }]}>
@@ -326,17 +317,6 @@ class Login extends Component {
                         </View>
                     </ImageBackground>
                     <Animated.View style={[LoginStyle.formFooter, { display: this.state.footerAnimation }]}>
-                        {/* <View style={LoginStyle.formIconContainer}>
-                            <Image source={vietnameIcon} />
-                        </View>
-
-                        <View style={LoginStyle.formIconContainer}>
-                            <Image source={dojiIcon} />
-                        </View>
-
-                        <View style={LoginStyle.formIconContainer}>
-                            <Image source={vnrIcon} />
-                        </View> */}
                     </Animated.View>
 
                     {
