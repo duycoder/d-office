@@ -30,7 +30,7 @@ import {
 	EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
 	TASK_PROCESS_TYPE, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -177,12 +177,19 @@ class AssignTask extends Component {
 		})
 	}
 
-	navigateBackToDetail() {
-		this.props.navigation.navigate('DetailTaskScreen', {
-			taskId: this.state.taskId,
-			taskType: this.state.taskType
-		});
-	}
+
+	componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
+        return true;
+    }
 
 	renderMainProcessItem = ({ item }) => {
 		return (

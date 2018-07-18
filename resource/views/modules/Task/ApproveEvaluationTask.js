@@ -24,7 +24,7 @@ import * as util from 'lodash';
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay } from '../../../common/Utilities';
+import { asyncDelay,backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
@@ -177,12 +177,17 @@ class ApproveEvaluationTask extends Component {
         });
     }
 
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
 
-    navigateBackToDetail() {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'ApproveEvaluationTaskScreen');
+        return true;
     }
 
 

@@ -27,6 +27,7 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 import {
     emptyDataPage, formatLongText,
     convertDateToString, asyncDelay,
+    backHandlerConfig, appGetDataAndNavigate
 } from '../../../common/Utilities'
 import { executeLoading } from '../../../common/Effect'
 import {
@@ -257,11 +258,17 @@ class GroupSubTask extends Component {
         );
     }
 
-    navigateBackToDetail() {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'GroupSubTaskScreen');
+        return true;
     }
 
     render() {

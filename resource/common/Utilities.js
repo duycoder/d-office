@@ -5,7 +5,7 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { AsyncStorage, View, Text, Image } from 'react-native';
+import { AsyncStorage, View, Text, Image, BackHandler } from 'react-native';
 import * as util from 'lodash';
 //lib
 import { Button, Icon, Text as NBText } from 'native-base'
@@ -62,11 +62,11 @@ export function convertDateTimeToString(date) {
     return 'N/A';
 }
 
-export function convertDateTimeToTitle(date){
-    if(isObjectHasValue(date) && date !== ''){
+export function convertDateTimeToTitle(date) {
+    if (isObjectHasValue(date) && date !== '') {
         let jsDate = new Date(date);
         let result = '';
-        
+
         let datePart = _readableFormat(jsDate.getDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
         let timePart = _readableFormat(jsDate.getHours()) + ':' + _readableFormat(jsDate.getMinutes());
 
@@ -171,12 +171,42 @@ export function getColorCodeByProgressValue(progressValue) {
 
 
 //điều hướng
-export function appNavigate(navigation, screenName, screenParam){
-    if(navigation){
+export function appNavigate(navigation, screenName, screenParam) {
+    if (navigation) {
         navigation.navigate(screenName, screenParam);
     }
 }
 
-export function isObjectHasValue(obj){
+//lưu thông tin màn hình trước đó và di chuyển đến màn hình mới
+export async function appStoreDataAndNavigate(navigation, currentScreenName, currentScreenParam,
+    targetScreenName, targetScreenParam) {
+    await AsyncStorage.multiSet([
+        [`${targetScreenName}-PreviousScreenName`, currentScreenName.toString()],
+        [`${targetScreenName}-PreviousScreenParam`, JSON.stringify(currentScreenParam)]
+    ]).then(() => {
+        navigation.navigate(targetScreenName, targetScreenParam);
+    })
+}
+
+//lấy dữ liệu của màn hình trước đó và trửa
+export async function appGetDataAndNavigate(navigation, currentScreenName) {
+    await AsyncStorage.multiGet([`${currentScreenName}-PreviousScreenName`, `${currentScreenName}-PreviousScreenParam`]).then((rs) => {
+        const targetScreenName = rs[0][1];
+        const targetScreenParam = JSON.parse(rs[1][1]);
+
+        navigation.navigate(targetScreenName, targetScreenParam);
+    });
+}
+
+//cấu hình nút go back trên android
+export function backHandlerConfig(isAddEventListener, callback) {
+    if (isAddEventListener) {
+        BackHandler.addEventListener('hardwareBackPress', callback);
+    } else {
+        BackHandler.removeEventListener('hardwareBackPress', callback);
+    }
+}
+
+export function isObjectHasValue(obj) {
     return util.isUndefined(obj) == false && util.isNull(obj) == false;
 }

@@ -12,7 +12,7 @@ import {
     API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -79,8 +79,13 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
         this.fetchData();
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     async fetchData() {
@@ -101,11 +106,8 @@ class WorkflowStreamProcess extends Component {
         })
     }
 
-    navigateBackToDetail() {
-        this.props.navigation.navigate('DetailSignDocScreen', {
-            docId: this.state.docId,
-            docType: this.state.docType
-        });
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, "WorkflowStreamProcessScreen");
     }
 
     saveFlow = async () => {

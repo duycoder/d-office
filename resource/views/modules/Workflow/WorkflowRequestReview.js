@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction'
 
 //utilities
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import {
 	API_URL, EMPTY_STRING, HEADER_COLOR, LOADER_COLOR, Colors,
@@ -64,6 +64,14 @@ class WorkflowRequestReview extends Component {
 		}
 	}
 
+	componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
 	componentWillMount() {
 		this.fetchData();
 	}
@@ -85,11 +93,8 @@ class WorkflowRequestReview extends Component {
 		})
 	}
 
-	navigateBackToDetail() {
-		this.props.navigation.navigate('DetailSignDocScreen', {
-			docId: this.state.docId,
-			docType: this.state.docType
-		})
+	navigateBackToDetail = () => {
+		appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
 	}
 
 	renderItem = ({ item }) => {

@@ -63,11 +63,6 @@ export default class SideBar extends Component {
     }
 
     async setCurrentFocus(screenName, ref) {
-        const userInfo = this.state.userInfo;
-        userInfo.numberUnReadMessage = 0;
-        
-        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-
         this.setState({
             onFocusNow: ref,
             notifyCount: 0

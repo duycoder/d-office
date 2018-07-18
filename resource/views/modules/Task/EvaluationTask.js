@@ -23,7 +23,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay } from '../../../common/Utilities'
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities'
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -177,11 +177,17 @@ class EvaluationTask extends Component {
         });
     }
 
-    navigateToDetail() {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, 'EvaluationTaskScreen');
+        return true;
     }
 
     render() {

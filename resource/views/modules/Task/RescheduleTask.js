@@ -23,7 +23,7 @@ import DatePicker from 'react-native-datepicker';
 
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, convertDateToString, convertDateTimeToString } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -55,11 +55,18 @@ class RescheduleTask extends Component {
         })
     }
 
-    navigateBackToDetail() {
-        this.props.navigation.navigate('DetailTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        });
+
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, "RescheduleTaskScreen");
+        return true;
     }
 
     onSaveExtendTask = async () => {

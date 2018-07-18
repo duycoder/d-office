@@ -1,6 +1,7 @@
 import { Dimensions } from'react-native'
 export const WEB_URL = 'http://103.1.210.108';
-export const API_URL = 'http://103.1.210.108:81';
+// export const API_URL = 'http://103.1.210.108:81';
+export const API_URL = 'http://192.168.1.5:26633';
  
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;

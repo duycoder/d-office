@@ -19,7 +19,7 @@ import DatePicker from 'react-native-datepicker';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -76,12 +76,19 @@ class CreateSubTask extends Component {
 		})
 	}
 
-	navigateBackToDetail() {
-		this.props.navigation.navigate('DetailTaskScreen', {
-			taskId: this.state.taskId,
-			taskType: this.state.taskType
-		});
-	}
+
+	componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToDetail);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToDetail);
+    }
+
+    navigateBackToDetail = () => {
+        appGetDataAndNavigate(this.props.navigation, "CreateSubTaskScreen");
+        return true;
+    }
 
 	onCreateSubTask = async () => {
 		if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {

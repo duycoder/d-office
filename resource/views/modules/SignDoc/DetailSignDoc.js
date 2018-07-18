@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import { API_URL, VANBAN_CONSTANT, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage } from '../../../common/Utilities';
+import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -50,7 +50,13 @@ class DetailSignDoc extends Component {
             isUnAuthorize: false,
             docInfo: {},
             docId: this.props.navigation.state.params.docId,
-            docType: this.props.navigation.state.params.docType
+            docType: this.props.navigation.state.params.docType,
+
+            screenParam: {
+                userId: this.props.userInfo.ID,
+                docId: this.props.navigation.state.params.docId,
+                docType: this.props.navigation.state.params.docType,
+            }
         }
     }
 
@@ -77,56 +83,73 @@ class DetailSignDoc extends Component {
         });
     }
 
-    navigateBackToList() {
-        let screenName = 'ListIsNotProcessedScreen';
-        if (this.state.docType == VANBAN_CONSTANT.DA_XULY) {
-            screenName = 'ListIsProcessedScreen'
-        } else if (this.state.docType == VANBAN_CONSTANT.CAN_REVIEW) {
-            screenName = 'ListIsNotReviewedScreen'
-        } else if (this.state.docType == VANBAN_CONSTANT.DA_REVIEW) {
-            screenName = 'ListIsReviewedScreen'
-        }
-        this.props.navigation.navigate(screenName);
+    componentDidMount = () => {
+        backHandlerConfig(true, this.navigateBackToList);
+    }
+
+    componentWillUnmount = () => {
+        backHandlerConfig(false, this.navigateBackToList);
+    }
+
+    navigateBackToList = () => {
+        appGetDataAndNavigate(this.props.navigation, 'DetailSignDocScreen');
+        return true;
     }
 
     onReplyReview() {
-        this.props.navigation.navigate('WorkflowReplyReviewScreen', {
+
+        const targetScreenParam = {
             docId: this.state.docInfo.VanBanDi.ID,
             docType: this.state.docType,
             itemType: this.state.docInfo.Process.ITEM_TYPE
-        });
+        }
+
+        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
+    }
+
+    onProcessDoc = (item, isStepBack) => {
+        const targetScreenParam = {
+            docId: this.state.docInfo.VanBanDi.ID,
+            docType: this.state.docType,
+            processId: this.state.docInfo.Process.ID,
+            stepId: item.ID,
+            isStepBack,
+            stepName: item.NAME,
+            logId: (isStepBack == true) ? item.Log.ID : 0
+        }
+
+        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+    }
+
+    onReviewDoc = (item) => {
+        const targetScreenParam = {
+            docId: this.state.docInfo.VanBanDi.ID,
+            docType: this.state.docType,
+            processId: this.state.docInfo.Process.ID,
+            stepId: item.ID,
+            isStepBack: false,
+            stepName: 'GỬI REVIEW',
+            logId: 0
+        }
+        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onSelectWorkFlowStep(item, isStepBack) {
         if (item.REQUIRED_REVIEW != true || this.state.docInfo.Process.IS_PENDING == false) {
-            this.props.navigation.navigate('WorkflowStreamProcessScreen', {
-                docId: this.state.docInfo.VanBanDi.ID,
-                docType: this.state.docType,
-                processId: this.state.docInfo.Process.ID,
-                stepId: item.ID,
-                isStepBack,
-                stepName: item.NAME,
-                logId: (isStepBack == true) ? item.Log.ID : 0
-            });
+            this.onProcessDoc(item, isStepBack);
+
         } else {
-            this.props.navigation.navigate('WorkflowRequestReviewScreen', {
-                docId: this.state.docInfo.VanBanDi.ID,
-                docType: this.state.docType,
-                processId: this.state.docInfo.Process.ID,
-                stepId: item.ID,
-                isStepBack: false,
-                stepName: 'GỬI REVIEW',
-                logId: 0
-            })
+            this.onReviewDoc(item);
         }
     }
 
     onOpenComment = () => {
-        this.props.navigation.navigate('ListCommentScreen', {
+        const targetScreenParam = {
             docId: this.state.docId,
             docType: this.state.docType,
             isTaskComment: false
-        });
+        }
+        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
 
     render() {
