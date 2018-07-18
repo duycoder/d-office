@@ -39,7 +39,7 @@ export default class SideBar extends Component {
             userInfo: {
 
             },
-            onFocusNow: '6',
+            onFocusNow: '',
             notifyCount: 0
         }
     }
@@ -207,8 +207,7 @@ export default class SideBar extends Component {
                                     contentContainerStyle={SideBarStyle.subItemContainer} />
                             </TouchableOpacity>
                         </Panel>
-
-                        <Panel title='CÔNG VIỆC'>
+                        {this.state.onFocusNow !== '' && <Panel title='CÔNG VIỆC'>
                             <TouchableOpacity onPress={() => this.setCurrentFocus('ListPersonalTaskScreen', '6')} style={this.state.onFocusNow === '6' && SideBarStyle.listItemFocus}>
                                 <ListItem
                                     leftIcon={
@@ -271,7 +270,8 @@ export default class SideBar extends Component {
                                     titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === '9' && SideBarStyle.listItemSubTitleContainerFocus]}
                                     style={SideBarStyle.subItemContainer} />
                             </TouchableOpacity>
-                        </Panel>
+                        </Panel>}
+                        
 
                         {/*Truy vấn thông tin tài khoản người dùng*/}
                         <Panel title='TÀI KHOẢN'>
