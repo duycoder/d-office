@@ -47,7 +47,9 @@ export const LoginStyle = StyleSheet.create({
         marginHorizontal: scale(10),
         borderRadius: moderateScale(10),
     }, formContainerImageBackground: {
-        flex: 6
+        flex: 6,
+        width: '100%',
+        height: '100%'
     }, formTitle: {
         borderBottomWidth: 1,
         borderBottomColor: '#cdd3d1',
