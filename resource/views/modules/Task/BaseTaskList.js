@@ -65,6 +65,11 @@ class BaseTaskList extends Component {
 
             isAdvancedSearch: false,
             modalVisible: false,
+
+            modelSearch: {
+                maHieu: EMPTY_STRING,
+                nguoiKy: EMPTY_STRING
+            }
         }
     }
 
@@ -76,7 +81,7 @@ class BaseTaskList extends Component {
         })
     }
 
-    async fetchData() {
+    async fetchData(advancedSearch = false) {
         const loadingMoreData = this.state.loadingMoreData;
         const refreshingData = this.state.refreshingData;
         const loadingData = this.state.loadingData;
@@ -92,19 +97,22 @@ class BaseTaskList extends Component {
         } else if (taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
             apiUrlParam = 'ProcessedJob';
         }
+        if (!advancedSearch) {
+            const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
 
-        const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-        this.setState({
-            loadingData: false,
-            refreshingData: false,
-            searchingData: false,
-            loadingMoreData: false,
-            data: (loadingData || refreshingData) ? resultJson.ListItem : [...this.state.data, ...resultJson.ListItem]
-        });
+            const result = await fetch(url);
+            const resultJson = await result.json();
+    
+            this.setState({
+                loadingData: false,
+                refreshingData: false,
+                searchingData: false,
+                loadingMoreData: false,
+                data: (loadingData || refreshingData) ? resultJson.ListItem : [...this.state.data, ...resultJson.ListItem]
+            });
+        } else {
+            // do something here
+        }
     }
 
     onFilter = () => {
@@ -296,6 +304,17 @@ class BaseTaskList extends Component {
         this.setState({ isAdvancedSearch: !this.state.isAdvancedSearch });
     }
 
+    onAdvancedFilter = (modelSearch = "") => {
+        this.setState({
+            modelSearch: modelSearch,
+            loadingData: true,
+            pageIndex: DEFAULT_PAGE_INDEX
+        }, () => {
+            alert('thanhcong')
+            // this.fetchData(true);
+        });
+    }
+
     render() {
 
         return (
@@ -376,7 +395,12 @@ class BaseTaskList extends Component {
                     animationOut={"slideOutUp"}
                     style={{ margin: 0 }}
                 >
-                    <BaseDocSearch filterValue={this.state.filterValue} _toggleModal={this._toggleModal} />
+                    <BaseDocSearch 
+                        filterValue={this.state.filterValue} 
+                        _toggleModal={this._toggleModal}
+                        modelSearch={this.state.modelSearch}
+                        onAdvancedFilter={this.onAdvancedFilter}
+                    />
                 </Modal>
 
             </Container>

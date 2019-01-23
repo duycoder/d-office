@@ -11,6 +11,8 @@ import DatePicker from 'react-native-datepicker';
 import Modal from 'react-native-modal';
 
 import { DefaultStyle } from '../../../assets/styles/AdvancedSearchStyle';
+import { PanelStyle } from '../../../assets/styles/PanelStyle';
+import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
 import {
   API_URL, HEADER_COLOR, EMPTY_STRING,
   LOADER_COLOR, CONGVIEC_CONSTANT,
@@ -26,7 +28,7 @@ export default class BaseDocSearch extends Component {
     this.state = {
       //Advanced Search Bar Params
       trichYeu: this.props.filterValue,
-      maHieu: EMPTY_STRING,
+      maHieu: this.props.modelSearch.maHieu,
       doMat: EMPTY_STRING,
       doKhan: EMPTY_STRING,
       linhVucVanBan: EMPTY_STRING,
@@ -47,6 +49,7 @@ export default class BaseDocSearch extends Component {
       listLoaiVanban: [],
       listDonviBanhanh: [],
       listSoVanban: [],
+      modelSearch: {}, // save property of search for next time
     }
   }
 
@@ -56,10 +59,12 @@ export default class BaseDocSearch extends Component {
 
   submitSearch = () => {
     // post to API
-    this.props._toggleModal();
+    this.props.onAdvancedFilter(this.state.modelSearch);
+    console.log(this.state.modelSearch)
+    // this.props._toggleModal();
   }
 
-  _handleChange = fieldName => value => this.setState({ [fieldName]: value });
+  _handleChange = fieldName => value => this.setState({ [fieldName]: value, modelSearch: { ...this.state.modelSearch, [fieldName]: value} });
 
   render() {
     const pickerStyle = Platform.OS === 'ios' ? { justifyContent: 'center' } : { width: '100%' };
@@ -103,7 +108,70 @@ export default class BaseDocSearch extends Component {
                 <Input value={this.state.nguoiKy} onChangeText={this._handleChange("nguoiKy")} />
               </Item>
             </View>
-            <Panel title="Độ nghiêm trọng">
+
+            <Panel title="Lĩnh vực và đơn vị">
+              <View style={DefaultStyle.fieldRoot} >
+                <Item stackedLabel>
+                  <Label style={DefaultStyle.fieldWrapper}>Lĩnh vực văn bản</Label>
+                  <Picker
+                    iosHeader='Chọn lĩnh vực'
+                    placeholder='Chọn lĩnh vực'
+                    mode='dropdown'
+                    iosIcon={<Icon name='ios-arrow-down-outline' />}
+                    style={pickerStyle}
+                    selectedValue={this.state.linhVucVanBan}
+                    onValueChange={this._handleChange("linhVucVanBan")}>
+                    {
+                      this.state.listLinhvucVanban.length > 0 && this.state.listLinhvucVanban.map((item, index) => (
+                        <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
+                      ))
+                    }
+                  </Picker>
+                </Item>
+              </View>
+
+              <View style={DefaultStyle.fieldRoot} >
+                <Item stackedLabel>
+                  <Label style={DefaultStyle.fieldWrapper}>Loại văn bản</Label>
+                  <Picker
+                    iosHeader='Chọn loại văn bản'
+                    placeholder='Chọn loại văn bản'
+                    mode='dropdown'
+                    iosIcon={<Icon name='ios-arrow-down-outline' />}
+                    style={pickerStyle}
+                    selectedValue={this.state.loaiVanBan}
+                    onValueChange={this._handleChange("loaiVanBan")}>
+                    {
+                      this.state.listLoaiVanban.length > 0 && this.state.listLoaiVanban.map((item, index) => (
+                        <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
+                      ))
+                    }
+                  </Picker>
+                </Item>
+              </View>
+
+              <View style={DefaultStyle.fieldRoot} >
+                <Item stackedLabel>
+                  <Label style={DefaultStyle.fieldWrapper}>Đơn vị ban hành</Label>
+                  <Picker
+                    iosHeader='Chọn đơn vị'
+                    placeholder='Chọn đơn vị'
+                    mode='dropdown'
+                    iosIcon={<Icon name='ios-arrow-down-outline' />}
+                    style={pickerStyle}
+                    selectedValue={this.state.donviBanhanh}
+                    onValueChange={this._handleChange("donviBanhanh")}>
+                    {
+                      this.state.listDonviBanhanh.length > 0 && this.state.listDonviBanhanh.map((item, index) => (
+                        <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
+                      ))
+                    }
+                  </Picker>
+                </Item>
+              </View>
+            </Panel>
+
+            <Panel title="Độ quan trọng">
               <View style={DefaultStyle.fieldRoot} >
                 <Item stackedLabel>
                   <Label style={DefaultStyle.fieldWrapper}>Độ mật</Label>
@@ -136,7 +204,7 @@ export default class BaseDocSearch extends Component {
               </View>
             </Panel>
 
-            <Panel title={"Thời gian"}>
+            <Panel title="Thời gian">
               <View style={DefaultStyle.datepickerRoot}>
                 <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
                   <Label>Ban hành</Label>
@@ -274,6 +342,25 @@ export default class BaseDocSearch extends Component {
                     onDateChange={this._handleChange("ngayVanbanEnd")}
                     showIcon={false}
                   />
+                </Item>
+              </View>
+              <View style={DefaultStyle.fieldRoot} >
+                <Item stackedLabel>
+                  <Label style={DefaultStyle.fieldWrapper}>Sổ văn bản</Label>
+                  <Picker
+                    iosHeader='Chọn sổ văn bản'
+                    placeholder='Chọn sổ văn bản'
+                    mode='dropdown'
+                    iosIcon={<Icon name='ios-arrow-down-outline' />}
+                    style={pickerStyle}
+                    selectedValue={this.state.soVanban}
+                    onValueChange={this._handleChange("soVanban")}>
+                    {
+                      this.state.listSoVanban.length > 0 && this.state.listSoVanban.map((item, index) => (
+                        <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
+                      ))
+                    }
+                  </Picker>
                 </Item>
               </View>
             </Panel>

@@ -33,6 +33,7 @@ export default class Panel extends Component {
         };
         this.setMaxHeight = this.setMaxHeight.bind(this);
         this.setMinHeight = this.setMinHeight.bind(this);
+        this.toggle = this.toggle.bind(this);
     }
 
     setMaxHeight = (event) => {
@@ -99,7 +100,7 @@ export default class Panel extends Component {
         return (
             <Animated.View style={[PanelStyle.container, { height: this.state.heightAnimation }]}>
                 <View style={PanelStyle.titleContainer} onLayout={this.setMinHeight}>
-                    <TouchableOpacity onPress={() => this.toggle()}>
+                    <TouchableOpacity onPress={this.toggle}>
                         <ListItem
                             containerStyle={SideBarStyle.listItemContainer}
                             hidechevron={true}
