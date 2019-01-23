@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
     AsyncStorage, ActivityIndicator, View, Text as RnText,
-    FlatList, RefreshControl, TouchableOpacity
+    FlatList, RefreshControl, TouchableOpacity, StyleSheet, Platform, ScrollView
 } from 'react-native';
 
 //redux
@@ -16,27 +16,33 @@ import { connect } from 'react-redux';
 //lib
 import {
     Container, Header, Left, Input,
-    Item, Icon, Button, Text, Content
+    Item, Icon, Button, Text, Content, Row, Form, Label, Picker
 } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import renderIf from 'render-if';
+import DatePicker from 'react-native-datepicker';
+import Modal from 'react-native-modal';
+import { Calendar } from 'react-native-calendars';
 
 //constant
 import {
     API_URL, HEADER_COLOR, EMPTY_STRING,
     LOADER_COLOR, CONGVIEC_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-    Colors
+    Colors,
+    EMTPY_DATA_MESSAGE
 } from '../../../common/SystemConstant';
 
 //utilities
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate, appNavigate } from '../../../common/Utilities';
+import BaseDocSearch from '../../modules/AdvancedSearch/BaseDocSearch';
 
 //styles
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
-
+import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { width, height } from '../../../common/SystemConstant';
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -55,7 +61,10 @@ class BaseTaskList extends Component {
             refreshingData: false,
             searchingData: false,
             loadingMoreData: false,
-            taskType: props.taskType
+            taskType: props.taskType,
+
+            isAdvancedSearch: false,
+            modalVisible: false,
         }
     }
 
@@ -98,7 +107,7 @@ class BaseTaskList extends Component {
         });
     }
 
-    onFilter() {
+    onFilter = () => {
         this.setState({
             loadingData: true,
             pageIndex: DEFAULT_PAGE_INDEX
@@ -126,7 +135,7 @@ class BaseTaskList extends Component {
     }
 
     navigateToDetail = async (taskId) => {
-        let { navigation } = this.props;
+        // let { navigation } = this.props; // Useless
         let currentScreenName = "ListPersonalTaskScreen";
 
         if (this.state.taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
@@ -280,18 +289,36 @@ class BaseTaskList extends Component {
         );
     }
 
+    _toggleModal = () => {
+        this.setState({ modalVisible: !this.state.modalVisible });
+    }
+    _toggleAdvancedSearch = () => {
+        this.setState({ isAdvancedSearch: !this.state.isAdvancedSearch });
+    }
+
     render() {
+
         return (
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+
                     <Item style={{ backgroundColor: Colors.WHITE }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên công việc'
                             value={this.state.filterValue}
                             onChangeText={(filterValue) => this.setState({ filterValue })}
-                            onSubmitEditing={() => this.onFilter()}
+                            onSubmitEditing={this.onFilter}
+                            onTouchStart={this._toggleAdvancedSearch}
+                            onBlur={this._toggleAdvancedSearch}
                         />
                     </Item>
+                    {
+                        renderIf(this.state.isAdvancedSearch)(
+                            <Button onPress={this._toggleModal} transparent>
+                                <RnText style={{ color: "#fff", fontWeight: "bold" }}>Nâng cao</RnText>
+                            </Button>
+                        )
+                    }
                 </Header>
 
                 <Content contentContainerStyle={{ flex: 1 }}>
@@ -343,10 +370,38 @@ class BaseTaskList extends Component {
                     }
 
                 </Content>
+                <Modal
+                    isVisible={this.state.modalVisible}
+                    animationIn={"slideInDown"}
+                    animationOut={"slideOutUp"}
+                    style={{ margin: 0 }}
+                >
+                    <BaseDocSearch filterValue={this.state.filterValue} _toggleModal={this._toggleModal} />
+                </Modal>
+
             </Container>
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    }, body: {
+        width: width,
+        height: height,
+        borderRadius: 3,
+        backgroundColor: Colors.WHITE,
+    }, content: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+        marginTop: 10,
+    }, datepickerInput: {
+        width: scale(150),
+        alignSelf: 'center',
+        marginTop: verticalScale(15)
+    }
+})
 
 const mapStatetoProps = (state) => {
     return {

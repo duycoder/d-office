@@ -179,17 +179,17 @@ class AssignTask extends Component {
 
 
 	componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		backHandlerConfig(true, this.navigateBackToDetail);
+	}
 
-    componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		backHandlerConfig(false, this.navigateBackToDetail);
+	}
 
-    navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
-        return true;
-    }
+	navigateBackToDetail = () => {
+		appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
+		return true;
+	}
 
 	renderMainProcessItem = ({ item }) => {
 		return (
@@ -328,7 +328,7 @@ class AssignTask extends Component {
 							</Text>
 						</TabHeading>
 					}>
-						<Content contentContainerStyle={{ flex: 1 }}>
+						<Content>
 							<Item>
 								<Icon name='ios-search' />
 								<Input placeholder={'Họ tên'}
