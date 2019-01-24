@@ -37,7 +37,7 @@ import {
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate, appNavigate } from '../../../common/Utilities';
-import BaseDocSearch from '../../modules/AdvancedSearch/BaseDocSearch';
+import BaseTaskSearch from '../../modules/AdvancedSearch/BaseTaskSearch';
 
 //styles
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
@@ -396,7 +396,7 @@ class BaseTaskList extends Component {
                     animationOut="slideOutUp"
                     style={{ margin: 0 }}
                 >
-                    <BaseDocSearch 
+                    <BaseTaskSearch 
                         filterValue={this.state.filterValue} 
                         _toggleModal={this._toggleModal}
                         modelSearch={this.state.modelSearch}
@@ -421,10 +421,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.WHITE,
         marginTop: 10,
-    }, datepickerInput: {
-        width: scale(150),
-        alignSelf: 'center',
-        marginTop: verticalScale(15)
     }
 })
 

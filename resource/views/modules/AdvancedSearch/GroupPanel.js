@@ -67,24 +67,24 @@ export default class Panel extends Component {
       ? <RneIcon name='minus' type='font-awesome' />
       : <RneIcon name='plus' type='font-awesome' />;
 
-    let iconName = 'user';
-    switch (this.props.type) {
-      case 1:
-        iconName = 'user';
-        break;
-      case 2:
-        iconName = 'file-text';
-        break;
-      case 3:
-        iconName = 'bookmark';
-        break;
-      case 4:
-        iconName = 'calendar';
-        break;
-      default:
-        iconName = 'user';
-        break;
-    }
+    let iconName = this.props.iconName || 'user';
+    // switch (this.props.type) {
+    //   case 1:
+    //     iconName = 'user';
+    //     break;
+    //   case 2:
+    //     iconName = 'file-text';
+    //     break;
+    //   case 3:
+    //     iconName = 'bookmark';
+    //     break;
+    //   case 4:
+    //     iconName = 'calendar';
+    //     break;
+    //   default:
+    //     iconName = 'user';
+    //     break;
+    // }
     let titleLeftIcon =
       <View style={{marginRight: scale(10)}}>
         <RneIcon name={iconName} type='font-awesome' />

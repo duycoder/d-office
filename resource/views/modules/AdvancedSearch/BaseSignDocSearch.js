@@ -15,20 +15,19 @@ import DatePicker from 'react-native-datepicker';
 import { DefaultStyle, FormStyle } from '../../../assets/styles/AdvancedSearchStyle';
 // constants
 import {
-  API_URL, EMPTY_STRING, EMTPY_DATA_MESSAGE,
-  BASEDOCSEARCH_CONSTANT
+  API_URL, EMPTY_STRING, EMTPY_DATA_MESSAGE
 } from '../../../common/SystemConstant';
 // components
 import GroupPanel from './GroupPanel';
 
-export default class BaseDocSearch extends Component {
+export default class BaseSignDocSearch extends Component {
   constructor(props) {
     super(props);
     let { maHieu, doMat, doKhan,
-      linhVucVanBan, loaiVanBan, nguoiKy, donviBanhanh,
+      linhVucVanBan, loaiVanBan, nguoiKy, nguonGoc,
       ngayBanhanhStart, ngayBanhanhEnd, ngayHieulucStart, ngayHieulucEnd,
       ngayHetHieulucStart, ngayHetHieulucEnd, ngayVanbanStart, ngayVanbanEnd,
-      soVanban } = this.props.modelSearch;
+    } = this.props.modelSearch;
     this.state = {
       //Advanced Search Bar Params
       trichYeu: this.props.filterValue,
@@ -38,7 +37,7 @@ export default class BaseDocSearch extends Component {
       linhVucVanBan: linhVucVanBan || EMPTY_STRING,
       loaiVanBan: loaiVanBan || EMPTY_STRING,
       nguoiKy: nguoiKy || EMPTY_STRING,
-      donviBanhanh: donviBanhanh || EMPTY_STRING,
+      nguonGoc: nguonGoc || EMPTY_STRING,
       ngayBanhanhStart: ngayBanhanhStart || EMPTY_STRING,
       ngayBanhanhEnd: ngayBanhanhEnd || EMPTY_STRING,
       ngayHieulucStart: ngayHieulucStart || EMPTY_STRING,
@@ -47,12 +46,10 @@ export default class BaseDocSearch extends Component {
       ngayHetHieulucEnd: ngayHetHieulucEnd || EMPTY_STRING,
       ngayVanbanStart: ngayVanbanStart || EMPTY_STRING,
       ngayVanbanEnd: ngayVanbanEnd || EMPTY_STRING,
-      soVanban: soVanban || EMPTY_STRING,
 
       listLinhvucVanban: [],
       listLoaiVanban: [],
-      listDonviBanhanh: [],
-      listSoVanban: [],
+      listNguoiKy: [],
       modelSearch: this.props.modelSearch, // save property of search for next time
     }
   }
@@ -117,7 +114,6 @@ export default class BaseDocSearch extends Component {
               <RneIcon color="#fff" name='times' type='font-awesome' />
             </Button>
           </Header>
-
           <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={DefaultStyle.content}>
               <GroupPanel title="Người ký" iconName="user" type={1}>
@@ -140,16 +136,27 @@ export default class BaseDocSearch extends Component {
                   <View style={FormStyle.formLabel}>
                     <Text style={FormStyle.formLabelText}>
                       Người ký
-                </Text>
+                  </Text>
                   </View>
                   <View style={FormStyle.formInput}>
-                    <TextInput
-                      onChangeText={this._handleChange("nguoiKy")}
-                      value={this.state.nguoiKy}
-                      style={FormStyle.formInputText}
-                      underlineColorAndroid={'#f7f7f7'}
-                      placeholder="ví dụ: Nguyễn Thị Kim Tiến"
-                    />
+                    <Picker
+                      iosHeader='Chọn người ký'
+                      mode='dropdown'
+                      iosIcon={<Icon name='ios-arrow-down-outline' />}
+                      style={FormStyle.formInputPicker}
+                      selectedValue={this.state.nguoiKy}
+                      onValueChange={this._handleChange("nguoiKy")}
+                      placeholder='Chọn người ký'
+                      placeholderStyle={{ paddingLeft: 0 }}
+                      textStyle={{ paddingLeft: 0 }}
+                      renderHeader={backAction => this._renderHeader(backAction, "Chọn người ký")}
+                    >
+                      {
+                        this.state.listNguoiKy.length > 0 && this.state.listNguoiKy.map((item, index) => (
+                          <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
+                        ))
+                      }
+                    </Picker>
                   </View>
                 </View>
               </GroupPanel>
@@ -205,26 +212,23 @@ export default class BaseDocSearch extends Component {
                   </View>
 
                   <View style={FormStyle.formLabel}>
-                    <Text style={FormStyle.formLabelText}>Đơn vị ban hành</Text>
+                    <Text style={FormStyle.formLabelText}>Nguồn gửi văn bản</Text>
                   </View>
                   <View style={FormStyle.formInput}>
                     <Picker
-                      iosHeader='Chọn đơn vị'
+                      iosHeader='Chọn nguồn gửi'
                       mode='dropdown'
                       iosIcon={<Icon name='ios-arrow-down-outline' />}
                       style={FormStyle.formInputPicker}
-                      selectedValue={this.state.donviBanhanh}
-                      onValueChange={this._handleChange("donviBanhanh")}
-                      placeholder='Chọn đơn vị'
+                      selectedValue={this.state.nguonGoc}
+                      onValueChange={this._handleChange("nguonGoc")}
+                      placeholder='Chọn nguồn gửi'
                       placeholderStyle={{ paddingLeft: 0 }}
                       textStyle={{ paddingLeft: 0 }}
-                      renderHeader={backAction => this._renderHeader(backAction, "Chọn đơn vị")}
+                      renderHeader={backAction => this._renderHeader(backAction, "Chọn nguồn gửi")}
                     >
-                      {
-                        this.state.listDonviBanhanh.length > 0 && this.state.listDonviBanhanh.map((item, index) => (
-                          <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-                        ))
-                      }
+                      <Picker.Item value="Chuyển ngoài hệ thống" label="Chuyển ngoài hệ thống" />
+                      <Picker.Item value="Chuyển trong hệ thống" label="Chuyển trong hệ thống" />
                     </Picker>
                   </View>
 
@@ -299,7 +303,6 @@ export default class BaseDocSearch extends Component {
                         date={this.state.ngayBanhanhStart}
                         mode="date"
                         placeholder='Từ ngày'
-
                         format='DD/MM/YYYY'
                         // minDate={new Date()}
                         confirmBtnText='CHỌN'
@@ -467,43 +470,13 @@ export default class BaseDocSearch extends Component {
                   </View>
 
                 </View>
-                {
-                  // Sổ văn bản
-                }
-                <View style={DefaultStyle.fieldRoot} >
-                  <View style={FormStyle.formLabel}>
-                    <Text style={FormStyle.formLabelText}>Sổ văn bản</Text>
-                  </View>
-                  <View style={FormStyle.formInput}>
-                    <Picker
-                      iosHeader='Chọn sổ văn bản'
-                      mode='dropdown'
-                      iosIcon={<Icon name='ios-arrow-down-outline' />}
-                      style={FormStyle.formInputPicker}
-                      selectedValue={this.state.soVanban}
-                      onValueChange={this._handleChange("soVanban")}
-                      placeholder='Chọn sổ văn bản'
-                      placeholderStyle={{ paddingLeft: 0 }}
-                      textStyle={{ paddingLeft: 0 }}
-                      renderHeader={backAction => this._renderHeader(backAction, "Chọn sổ văn bản")}
-                    >
-                      {
-                        this.state.listSoVanban.length > 0 && this.state.listSoVanban.map((item, index) => (
-                          <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-                        ))
-                      }
-                    </Picker>
-                  </View>
-                </View>
 
               </GroupPanel>
-
               <Button style={DefaultStyle.submitButton} onPress={this.submitSearch} iconLeft primary>
                 <Icon name='ios-search' />
                 <Text style={DefaultStyle.submitButtonText}>TÌM KIẾM</Text>
               </Button>
             </View>
-
           </ScrollView>
         </View>
       </Container>

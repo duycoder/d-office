@@ -7,14 +7,16 @@ export const DefaultStyle = StyleSheet.create({
     flex: 1,
   }, body: {
     width: width,
+    flex: 1,
     // height: height,
     borderRadius: 3,
-    backgroundColor: Colors.WHITE,
-    paddingBottom: 20
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingBottom: verticalScale(20),
   }, content: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: Colors.WHITE,
-    marginTop: 10,
+    paddingBottom: verticalScale(30),
+    paddingTop: verticalScale(10),
   },
   datepickerRoot: {
     flexDirection: 'row',
@@ -74,7 +76,7 @@ export const FormStyle = StyleSheet.create({
     borderColor: '#acb7b1',
     borderRadius: moderateScale(5),
     backgroundColor: '#f7f7f7',
-    color: '#666666',
+    color: '#a7a7a7',
     height: moderateScale(45, 2),
     paddingLeft: scale(10),
     alignSelf: 'stretch'
@@ -88,7 +90,6 @@ export const FormStyle = StyleSheet.create({
     alignSelf: 'stretch'
   }, formPickerItem: {
     paddingHorizontal: scale(10),
-    marginLeft: 0,
-
+    marginLeft: 0
   }
 });

@@ -19,7 +19,8 @@ import {
   Content, Badge, Left, Right, Button
 } from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
+import Modal from 'react-native-modal';
 
 //utilities
 import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
@@ -29,7 +30,7 @@ import {
   Colors
 } from '../../../common/SystemConstant';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
-
+import BaseSignDocSearch from '../../modules/AdvancedSearch/BaseSignDocSearch';
 
 //styles
 import { ListSignDocStyle } from '../../../assets/styles/SignDocStyle';
@@ -47,7 +48,11 @@ class BaseSignDocList extends Component {
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
-      data: []
+      data: [],
+
+      modalVisible: false,
+      isAdvancedSearch: false,
+      modelSearch: {},
     }
   }
 
@@ -185,6 +190,25 @@ class BaseSignDocList extends Component {
     );
   }
 
+  _toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+  _toggleAdvancedSearch = () => {
+    this.setState({ isAdvancedSearch: !this.state.isAdvancedSearch });
+  }
+
+  onAdvancedFilter = (modelSearch = "") => {
+    this.setState({
+      modelSearch: modelSearch,
+      loadingData: true,
+      pageIndex: DEFAULT_PAGE_INDEX
+    }, () => {
+      console.log(this.state.modelSearch)
+      alert('thanhcong')
+      // this.fetchData(true);
+    });
+  }
+
   render() {
     return (
       <Container>
@@ -194,9 +218,19 @@ class BaseSignDocList extends Component {
             <Input placeholder='Mã hiệu, trích yếu'
               value={this.state.filterValue}
               onChangeText={(filterValue) => this.setState({ filterValue })}
-              onSubmitEditing={() => this.onFilter()} />
+              onSubmitEditing={this.onFilter}
+              onTouchStart={this._toggleAdvancedSearch}
+              onBlur={this._toggleAdvancedSearch}
+            />
             <Icon name='ios-document' />
           </Item>
+          {
+            renderIf(this.state.isAdvancedSearch)(
+              <Button onPress={this._toggleModal} transparent hitSlop={{ right: 20 }}>
+                <RneIcon color="#fff" name='filter' type='font-awesome' />
+              </Button>
+            )
+          }
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
@@ -242,6 +276,20 @@ class BaseSignDocList extends Component {
               />
             )
           }
+
+          <Modal
+            isVisible={this.state.modalVisible}
+            animationIn="slideInDown"
+            animationOut="slideOutUp"
+            style={{ margin: 0 }}
+          >
+            <BaseSignDocSearch
+              filterValue={this.state.filterValue}
+              _toggleModal={this._toggleModal}
+              modelSearch={this.state.modelSearch}
+              onAdvancedFilter={this.onAdvancedFilter}
+            />
+          </Modal>
         </Content>
       </Container>
     );
