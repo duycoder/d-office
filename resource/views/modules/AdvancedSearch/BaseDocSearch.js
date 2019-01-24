@@ -1,56 +1,76 @@
 import React, { Component } from 'react';
 import {
-  AsyncStorage, ActivityIndicator, View, Text as RnText,
-  FlatList, RefreshControl, TouchableOpacity, StyleSheet, Platform
+  View, Text as RnText,
+  TouchableOpacity, StyleSheet, Platform,
+  TextInput
 } from 'react-native';
 import {
   Container, Header, Left, Input,
-  Item, Icon, Button, Text, Content, Row, Form, Label, Picker
+  Item, Icon, Button, Text, Content, Row, Form, Label, Picker, Body, Right, Title
 } from 'native-base';
+import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import Modal from 'react-native-modal';
 
-import { DefaultStyle } from '../../../assets/styles/AdvancedSearchStyle';
+import { DefaultStyle, FormStyle } from '../../../assets/styles/AdvancedSearchStyle';
 import { PanelStyle } from '../../../assets/styles/PanelStyle';
 import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
 import {
-  API_URL, HEADER_COLOR, EMPTY_STRING,
-  LOADER_COLOR, CONGVIEC_CONSTANT,
-  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
-  EMTPY_DATA_MESSAGE
+  API_URL, EMPTY_STRING, EMTPY_DATA_MESSAGE,
+  BASEDOCSEARCH_CONSTANT
 } from '../../../common/SystemConstant';
-import Panel from '../../common/Panel';
+import GroupPanel from './GroupPanel';
 
 export default class BaseDocSearch extends Component {
   constructor(props) {
     super(props);
+    let { maHieu, doMat, doKhan,
+      linhVucVanBan, loaiVanBan, nguoiKy, donviBanhanh,
+      ngayBanhanhStart, ngayBanhanhEnd, ngayHieulucStart, ngayHieulucEnd,
+      ngayHetHieulucStart, ngayHetHieulucEnd, ngayVanbanStart, ngayVanbanEnd,
+      soVanban } = this.props.modelSearch;
     this.state = {
       //Advanced Search Bar Params
       trichYeu: this.props.filterValue,
-      maHieu: this.props.modelSearch.maHieu,
-      doMat: EMPTY_STRING,
-      doKhan: EMPTY_STRING,
-      linhVucVanBan: EMPTY_STRING,
-      loaiVanBan: EMPTY_STRING,
-      nguoiKy: EMPTY_STRING,
-      donviBanhanh: EMPTY_STRING,
-      ngayBanhanhStart: EMPTY_STRING,
-      ngayBanhanhEnd: EMPTY_STRING,
-      ngayHieulucStart: EMPTY_STRING,
-      ngayHieulucEnd: EMPTY_STRING,
-      ngayHetHieulucStart: EMPTY_STRING,
-      ngayHetHieulucEnd: EMPTY_STRING,
-      ngayVanbanStart: EMPTY_STRING,
-      ngayVanbanEnd: EMPTY_STRING,
-      soVanban: EMPTY_STRING,
+      maHieu: maHieu || EMPTY_STRING,
+      doMat: doMat || EMPTY_STRING,
+      doKhan: doKhan || EMPTY_STRING,
+      linhVucVanBan: linhVucVanBan || EMPTY_STRING,
+      loaiVanBan: loaiVanBan || EMPTY_STRING,
+      nguoiKy: nguoiKy || EMPTY_STRING,
+      donviBanhanh: donviBanhanh || EMPTY_STRING,
+      ngayBanhanhStart: ngayBanhanhStart || EMPTY_STRING,
+      ngayBanhanhEnd: ngayBanhanhEnd || EMPTY_STRING,
+      ngayHieulucStart: ngayHieulucStart || EMPTY_STRING,
+      ngayHieulucEnd: ngayHieulucEnd || EMPTY_STRING,
+      ngayHetHieulucStart: ngayHetHieulucStart || EMPTY_STRING,
+      ngayHetHieulucEnd: ngayHetHieulucEnd || EMPTY_STRING,
+      ngayVanbanStart: ngayVanbanStart || EMPTY_STRING,
+      ngayVanbanEnd: ngayVanbanEnd || EMPTY_STRING,
+      soVanban: soVanban || EMPTY_STRING,
 
       listLinhvucVanban: [],
       listLoaiVanban: [],
       listDonviBanhanh: [],
       listSoVanban: [],
-      modelSearch: {}, // save property of search for next time
+      modelSearch: this.props.modelSearch, // save property of search for next time
     }
+  }
+
+  _renderHeader = (backAction, title) => {
+    return (
+      <Header style={DefaultStyle.headerWrapper}>
+        <Left>
+          <Button transparent onPress={backAction} hitSlop={{right:15}}>
+            <Icon name="arrow-back" style={{ color: "#fff" }} />
+          </Button>
+        </Left>
+        <Body style={{ flex: 3 }}>
+          <Title style={{ color: "#fff" }}>{title}</Title>
+        </Body>
+        <Right />
+      </Header>
+    );
   }
 
   fetchList = () => {
@@ -64,7 +84,10 @@ export default class BaseDocSearch extends Component {
     // this.props._toggleModal();
   }
 
-  _handleChange = fieldName => value => this.setState({ [fieldName]: value, modelSearch: { ...this.state.modelSearch, [fieldName]: value} });
+  _handleChange = fieldName => value => this.setState({
+    [fieldName]: value,
+    modelSearch: { ...this.state.modelSearch, [fieldName]: value }
+  });
 
   render() {
     const pickerStyle = Platform.OS === 'ios' ? { justifyContent: 'center' } : { width: '100%' };
@@ -75,9 +98,7 @@ export default class BaseDocSearch extends Component {
         top: 0,
         marginLeft: 0
       },
-      dateInput: {
-        marginLeft: 0
-      }
+      dateInput: FormStyle.formInputPicker
     };
 
     return (
@@ -92,285 +113,383 @@ export default class BaseDocSearch extends Component {
                 onChangeText={this._handleChange("trichYeu")}
               />
             </Item>
-            <Button onPress={this.props._toggleModal} transparent>
-              <RnText style={DefaultStyle.submitButtonText}>Đóng</RnText>
+            <Button onPress={this.props._toggleModal} transparent hitSlop={{right:20}}>
+              <RneIcon color="#fff" name='times' type='font-awesome' />
             </Button>
           </Header>
+
           <View style={DefaultStyle.content}>
-
-            <View style={DefaultStyle.fieldRoot} >
-              <Item stackedLabel style={DefaultStyle.fieldWrapper}>
-                <Label>Mã hiệu</Label>
-                <Input value={this.state.maHieu} onChangeText={this._handleChange("maHieu")} />
-              </Item>
-              <Item stackedLabel style={DefaultStyle.fieldWrapper}>
-                <Label>Người ký</Label>
-                <Input value={this.state.nguoiKy} onChangeText={this._handleChange("nguoiKy")} />
-              </Item>
-            </View>
-
-            <Panel title="Lĩnh vực và đơn vị">
+            <GroupPanel title="Người ký" type={BASEDOCSEARCH_CONSTANT.NGUOI_KY}>
               <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label style={DefaultStyle.fieldWrapper}>Lĩnh vực văn bản</Label>
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>
+                    Mã hiệu
+                </Text>
+                </View>
+                <View style={FormStyle.formInput}>
+                  <TextInput
+                    onChangeText={this._handleChange("maHieu")}
+                    value={this.state.maHieu}
+                    style={FormStyle.formInputText}
+                    underlineColorAndroid={'#f7f7f7'}
+                    placeholder="ví dụ: 2/CT-BYT"
+                  />
+                </View>
+
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>
+                    Người ký
+                </Text>
+                </View>
+                <View style={FormStyle.formInput}>
+                  <TextInput
+                    onChangeText={this._handleChange("nguoiKy")}
+                    value={this.state.nguoiKy}
+                    style={FormStyle.formInputText}
+                    underlineColorAndroid={'#f7f7f7'}
+                    placeholder="ví dụ: Nguyễn Thị Kim Tiến"
+                  />
+                </View>
+              </View>
+            </GroupPanel>
+
+            <GroupPanel title="Lĩnh vực và đơn vị" type={BASEDOCSEARCH_CONSTANT.LINHVUC_DONVI}>
+              <View style={DefaultStyle.fieldRoot} >
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>Lĩnh vực văn bản</Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn lĩnh vực'
-                    placeholder='Chọn lĩnh vực'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.linhVucVanBan}
-                    onValueChange={this._handleChange("linhVucVanBan")}>
+                    onValueChange={this._handleChange("linhVucVanBan")}
+                    placeholder='Chọn lĩnh vực'
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn lĩnh vực")}
+                  >
                     {
                       this.state.listLinhvucVanban.length > 0 && this.state.listLinhvucVanban.map((item, index) => (
                         <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
                       ))
                     }
                   </Picker>
-                </Item>
-              </View>
+                </View>
 
-              <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label style={DefaultStyle.fieldWrapper}>Loại văn bản</Label>
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>Loại văn bản</Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn loại văn bản'
-                    placeholder='Chọn loại văn bản'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.loaiVanBan}
-                    onValueChange={this._handleChange("loaiVanBan")}>
+                    onValueChange={this._handleChange("loaiVanBan")}
+                    placeholder='Chọn loại văn bản'
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn loại văn bản")}
+                  >
                     {
                       this.state.listLoaiVanban.length > 0 && this.state.listLoaiVanban.map((item, index) => (
                         <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
                       ))
                     }
                   </Picker>
-                </Item>
-              </View>
+                </View>
 
-              <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label style={DefaultStyle.fieldWrapper}>Đơn vị ban hành</Label>
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>Đơn vị ban hành</Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn đơn vị'
-                    placeholder='Chọn đơn vị'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.donviBanhanh}
-                    onValueChange={this._handleChange("donviBanhanh")}>
+                    onValueChange={this._handleChange("donviBanhanh")}
+                    placeholder='Chọn đơn vị'
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn đơn vị")}
+                  >
                     {
                       this.state.listDonviBanhanh.length > 0 && this.state.listDonviBanhanh.map((item, index) => (
                         <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
                       ))
                     }
                   </Picker>
-                </Item>
-              </View>
-            </Panel>
+                </View>
 
-            <Panel title="Độ quan trọng">
+              </View>
+            </GroupPanel>
+
+            <GroupPanel title="Độ quan trọng" type={BASEDOCSEARCH_CONSTANT.DO_QUANTRONG}>
               <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label style={DefaultStyle.fieldWrapper}>Độ mật</Label>
+
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>
+                    Độ mật
+                  </Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn độ mật'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.doMat}
-                    onValueChange={this._handleChange("doMat")}>
+                    onValueChange={this._handleChange("doMat")}
+                    placeholder='Chọn độ mật'
+                    itemStyle={FormStyle.formPickerItem}
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn độ mật")}
+                  >
                     <Picker.Item value="Quan Trọng" label="Quan Trọng" />
                     <Picker.Item value="Rất Quan Trọng" label="Rất Quan Trọng" />
                   </Picker>
-                </Item>
-              </View>
-              <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label>Độ khẩn</Label>
+                </View>
+
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>
+                    Độ khẩn
+                </Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn độ khẩn'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.doKhan}
-                    onValueChange={this._handleChange("doKhan")}>
+                    onValueChange={this._handleChange("doKhan")}
+                    placeholder="Chọn độ khẩn"
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn độ khẩn")}
+                  >
                     <Picker.Item value="Bình thường" label="Bình thường" />
                     <Picker.Item value="Cao" label="Cao" />
                   </Picker>
-                </Item>
-              </View>
-            </Panel>
+                </View>
 
-            <Panel title="Thời gian">
-              <View style={DefaultStyle.datepickerRoot}>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label>Ban hành</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayBanhanhStart}
-                    mode="date"
-                    placeholder='Từ ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayBanhanhStart")}
-                    showIcon={false}
-                  />
-                </Item>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label style={{ color: '#fff' }}>Co hieu luc</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayBanhanhEnd}
-                    mode="date"
-                    placeholder='Đến ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayBanhanhEnd")}
-                    showIcon={false}
-                  />
-                </Item>
               </View>
+            </GroupPanel>
 
+            <GroupPanel title="Thời gian" type={BASEDOCSEARCH_CONSTANT.THOI_GIAN}>
+              {
+                // Ngày ban hành
+              }
               <View style={DefaultStyle.datepickerRoot}>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label>Có hiệu lực</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayHieulucStart}
-                    mode="date"
-                    placeholder='Từ ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayHieulucStart")}
-                    showIcon={false}
-                  />
-                </Item>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label style={{ color: '#fff' }}>Co hieu luc</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayHieulucEnd}
-                    mode="date"
-                    placeholder='Đến ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayHieulucEnd")}
-                    showIcon={false}
-                  />
-                </Item>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={FormStyle.formLabelText}>Ban hành</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayBanhanhStart}
+                      mode="date"
+                      placeholder='Từ ngày'
+                      format='DD/MM/YYYY'
+                      // minDate={new Date()}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayBanhanhStart")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={{ color: 'transparent' }}>.</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayBanhanhEnd}
+                      mode="date"
+                      placeholder='Đến ngày'
+                      format='DD/MM/YYYY'
+                      minDate={(this.state.ngayBanhanhStart)}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayBanhanhEnd")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
               </View>
+              {
+                // Ngày có hiệu lực
+              }
+              <View style={DefaultStyle.datepickerRoot}>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={FormStyle.formLabelText}>Có hiệu lực</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayHieulucStart}
+                      mode="date"
+                      placeholder='Từ ngày'
+                      format='DD/MM/YYYY'
+                      // minDate={new Date()}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayHieulucStart")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={{ color: 'transparent' }}>.</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayHieulucEnd}
+                      mode="date"
+                      placeholder='Đến ngày'
+                      format='DD/MM/YYYY'
+                      minDate={this.state.ngayHieulucStart}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayHieulucEnd")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+              </View>
+              {
+                // Ngày hết hiệu lực
+              }
+              <View style={DefaultStyle.datepickerRoot}>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={FormStyle.formLabelText}>Hết hiệu lực</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayHetHieulucStart}
+                      mode="date"
+                      placeholder='Từ ngày'
+                      format='DD/MM/YYYY'
+                      // minDate={new Date()}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayHetHieulucStart")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={{ color: 'transparent' }}>.</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayHetHieulucEnd}
+                      mode="date"
+                      placeholder='Đến ngày'
+                      format='DD/MM/YYYY'
+                      minDate={this.state.ngayHetHieulucStart}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayHetHieulucEnd")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+              </View>
+              {
+                // Ngày văn bản
+              }
+              <View style={DefaultStyle.datepickerRoot}>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={FormStyle.formLabelText}>Ngày văn bản</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayVanbanStart}
+                      mode="date"
+                      placeholder='Từ ngày'
+                      format='DD/MM/YYYY'
+                      // minDate={new Date()}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayVanbanStart")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
+                <View>
+                  <View style={FormStyle.formLabel}>
+                    <Text style={{ color: 'transparent' }}>.</Text>
+                  </View>
+                  <View style={FormStyle.formInput}>
+                    <DatePicker
+                      style={DefaultStyle.datepickerInput}
+                      date={this.state.ngayVanbanEnd}
+                      mode="date"
+                      placeholder='Đến ngày'
+                      format='DD/MM/YYYY'
+                      minDate={this.state.ngayVanbanStart}
+                      confirmBtnText='CHỌN'
+                      cancelBtnText='BỎ'
+                      customStyles={datePickerCustomStyles}
+                      onDateChange={this._handleChange("ngayVanbanEnd")}
+                      showIcon={false}
+                    />
+                  </View>
+                </View>
 
-              <View style={DefaultStyle.datepickerRoot}>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label>Hết hiệu lực</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayHetHieulucStart}
-                    mode="date"
-                    placeholder='Từ ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayHetHieulucStart")}
-                    showIcon={false}
-                  />
-                </Item>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label style={{ color: '#fff' }}>Co hieu luc</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayHetHieulucEnd}
-                    mode="date"
-                    placeholder='Đến ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayHetHieulucEnd")}
-                    showIcon={false}
-                  />
-                </Item>
               </View>
-
-              <View style={DefaultStyle.datepickerRoot}>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label>Ngày văn bản</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayVanbanStart}
-                    mode="date"
-                    placeholder='Từ ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayVanbanStart")}
-                    showIcon={false}
-                  />
-                </Item>
-                <Item stackedLabel style={DefaultStyle.datepickerWrapper}>
-                  <Label style={{ color: '#fff' }}>Co hieu luc</Label>
-                  <DatePicker
-                    style={DefaultStyle.datepickerInput}
-                    date={this.state.ngayVanbanEnd}
-                    mode="date"
-                    placeholder='Đến ngày'
-                    format='DD/MM/YYYY'
-                    minDate={new Date()}
-                    confirmBtnText='CHỌN'
-                    cancelBtnText='BỎ'
-                    customStyles={datePickerCustomStyles}
-                    onDateChange={this._handleChange("ngayVanbanEnd")}
-                    showIcon={false}
-                  />
-                </Item>
-              </View>
+              {
+                // Sổ văn bản
+              }
               <View style={DefaultStyle.fieldRoot} >
-                <Item stackedLabel>
-                  <Label style={DefaultStyle.fieldWrapper}>Sổ văn bản</Label>
+                <View style={FormStyle.formLabel}>
+                  <Text style={FormStyle.formLabelText}>Sổ văn bản</Text>
+                </View>
+                <View style={FormStyle.formInput}>
                   <Picker
                     iosHeader='Chọn sổ văn bản'
-                    placeholder='Chọn sổ văn bản'
                     mode='dropdown'
                     iosIcon={<Icon name='ios-arrow-down-outline' />}
-                    style={pickerStyle}
+                    style={FormStyle.formInputPicker}
                     selectedValue={this.state.soVanban}
-                    onValueChange={this._handleChange("soVanban")}>
+                    onValueChange={this._handleChange("soVanban")}
+                    placeholder='Chọn sổ văn bản'
+                    renderHeader={backAction => this._renderHeader(backAction, "Chọn sổ văn bản")}
+                  >
                     {
                       this.state.listSoVanban.length > 0 && this.state.listSoVanban.map((item, index) => (
                         <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
                       ))
                     }
                   </Picker>
-                </Item>
+                </View>
               </View>
-            </Panel>
-            <Button style={DefaultStyle.submitButton} onPress={this.submitSearch}>
-              <Text style={DefaultStyle.submitButtonText}>Tìm kiếm</Text>
+
+            </GroupPanel>
+            <Button style={DefaultStyle.submitButton} onPress={this.submitSearch} iconLeft primary>
+              <Icon name='ios-search' />
+              <Text style={DefaultStyle.submitButtonText}>TÌM KIẾM</Text>
             </Button>
           </View>
         </View>
       </Content>
-
     );
   }
 }

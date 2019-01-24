@@ -310,6 +310,7 @@ class BaseTaskList extends Component {
             loadingData: true,
             pageIndex: DEFAULT_PAGE_INDEX
         }, () => {
+            console.log(this.state.modelSearch)
             alert('thanhcong')
             // this.fetchData(true);
         });
@@ -333,8 +334,8 @@ class BaseTaskList extends Component {
                     </Item>
                     {
                         renderIf(this.state.isAdvancedSearch)(
-                            <Button onPress={this._toggleModal} transparent>
-                                <RnText style={{ color: "#fff", fontWeight: "bold" }}>Nâng cao</RnText>
+                            <Button onPress={this._toggleModal} transparent hitSlop={{right: 20}}>
+                                <RneIcon color="#fff" name='filter' type='font-awesome' />
                             </Button>
                         )
                     }
@@ -391,15 +392,15 @@ class BaseTaskList extends Component {
                 </Content>
                 <Modal
                     isVisible={this.state.modalVisible}
-                    animationIn={"slideInDown"}
-                    animationOut={"slideOutUp"}
+                    animationIn="slideInDown"
+                    animationOut="slideOutUp"
                     style={{ margin: 0 }}
                 >
                     <BaseDocSearch 
                         filterValue={this.state.filterValue} 
                         _toggleModal={this._toggleModal}
                         modelSearch={this.state.modelSearch}
-                        onAdvancedFilter={this.onAdvancedFilter}
+                        onAdvancedFilter={this.onAdvancedFilter} 
                     />
                 </Modal>
 
