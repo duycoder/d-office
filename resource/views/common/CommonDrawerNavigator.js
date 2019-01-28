@@ -76,7 +76,8 @@ import ListNotification from '../modules/Notification/ListNotification';
 //test
 import Test from '../../common/Test';
 
-
+//search
+import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
 
 const appRoutes = {
     TestScreen: {
@@ -203,7 +204,10 @@ const appRoutes = {
     },
     ListNotificationScreen: {
         screen: ListNotification
-    }
+    },
+    CalendarPickerScreen: {
+        screen: CalendarPicker
+    },
 }
 const appConfig = {
     headerMode: 'none',
@@ -226,13 +230,15 @@ const authConfig = {
 }
 const AuthStack = StackNavigator(authRoutes, authConfig);
 
-export const CommonDrawerNavigator = SwitchNavigator({
-    LoadingScreen: {
-        screen: Loading
+export const CommonDrawerNavigator = SwitchNavigator(
+    {
+        LoadingScreen: {
+            screen: Loading
+        },
+        Auth: AuthStack,
+        App: AppStack
     },
-    Auth: AuthStack,
-    App: AppStack
-
-}, {
+    {
         initialRouteName: 'LoadingScreen'
-    });
+    }
+);

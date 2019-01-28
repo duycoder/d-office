@@ -37,7 +37,7 @@ registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 1000,
+        timing: 1,
         notif: ''
     }
 

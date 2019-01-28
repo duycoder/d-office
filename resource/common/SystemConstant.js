@@ -1,6 +1,9 @@
-import { Dimensions } from'react-native'
-export const WEB_URL = 'http://103.1.210.108';
-export const API_URL = 'http://103.1.210.108:81';
+import { Dimensions } from 'react-native'
+// export const WEB_URL = 'http://103.1.210.108';
+// export const API_URL = 'http://103.1.210.108:81';
+
+export const WEB_URL = 'http://123.30.149.48';
+export const API_URL = 'http://123.30.149.48:8354';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -23,15 +26,15 @@ export const LOADMORE_COLOR = '#0082ba';
 
 export const PLANJOB_CONSTANT = {
 	CHUALAPKEHOACH: 0,
-    CHUATRINHKEHOACH: 1,
-    DATRINHKEHOACH: 2,
-    DAPHEDUYETKEHOACH: 3,
-    LAPLAIKEHOACH: 4
+	CHUATRINHKEHOACH: 1,
+	DATRINHKEHOACH: 2,
+	DAPHEDUYETKEHOACH: 3,
+	LAPLAIKEHOACH: 4
 }
 
 export const WORKFLOW_PROCESS_TYPE = {
 	MAIN_PROCESS: 1,
-	JOIN_PROCESS: 2, 
+	JOIN_PROCESS: 2,
 	ALL_PROCESS: 3
 }
 
@@ -80,4 +83,11 @@ export const Colors = {
 	BLUE_PANTONE_640C: '#0082ba',
 	RED_PANTONE_186C: '#FF0033',
 	RED_PANTONE_021C: '#FF6600'
+}
+
+export const BASEDOCSEARCH_CONSTANT = {
+	NGUOI_KY: 1,
+	LINHVUC_DONVI: 2,
+	DO_QUANTRONG: 3,
+	THOI_GIAN: 4
 }
