@@ -1,6 +1,8 @@
-import { Dimensions } from'react-native'
-export const WEB_URL = 'http://103.1.210.108';
-export const API_URL = 'http://103.1.210.108:81';
+import { Dimensions } from 'react-native'
+export const WEB_URL = 'http://123.30.149.48:8353';
+//export const API_URL = 'http://123.30.149.48:8354';
+
+export const API_URL = 'http://192.168.1.75:8098'
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -23,15 +25,15 @@ export const LOADMORE_COLOR = '#0082ba';
 
 export const PLANJOB_CONSTANT = {
 	CHUALAPKEHOACH: 0,
-    CHUATRINHKEHOACH: 1,
-    DATRINHKEHOACH: 2,
-    DAPHEDUYETKEHOACH: 3,
-    LAPLAIKEHOACH: 4
+	CHUATRINHKEHOACH: 1,
+	DATRINHKEHOACH: 2,
+	DAPHEDUYETKEHOACH: 3,
+	LAPLAIKEHOACH: 4
 }
 
 export const WORKFLOW_PROCESS_TYPE = {
 	MAIN_PROCESS: 1,
-	JOIN_PROCESS: 2, 
+	JOIN_PROCESS: 2,
 	ALL_PROCESS: 3
 }
 
@@ -47,18 +49,27 @@ export const DOKHAN_CONSTANT = {
 	THUONG_KHAN: 100
 }
 
-export const VANBAN_CONSTANT = {
+export const VANBANDI_CONSTANT = {
 	CHUA_XULY: 1,
 	DA_XULY: 2,
-	CAN_REVIEW: 3,
-	DA_REVIEW: 4,
+	THAMGIA_XULY: 3,
+	DA_BANHANH: 4,
+}
+
+export const VANBANDEN_CONSTANT = {
+	CHUA_XULY: 1,
+	DA_XULY: 2,
+	THAMGIA_XULY: 3,
+	NOIBO_DAXULY: 4,
+	NOIBO_CHUAXULY: 5
 }
 
 export const CONGVIEC_CONSTANT = {
 	CA_NHAN: 1,
 	DUOC_GIAO: 2,
 	PHOIHOP_XULY: 3,
-	DAGIAO_XULY: 4
+	DAGIAO_XULY: 4,
+	CHO_XACNHAN: 5
 }
 
 //thông báo
@@ -80,4 +91,38 @@ export const Colors = {
 	BLUE_PANTONE_640C: '#0082ba',
 	RED_PANTONE_186C: '#FF0033',
 	RED_PANTONE_021C: '#FF6600'
+}
+
+
+export const SYSTEM_FUNCTION = {
+	VanBanDenFunction: {
+		code: 'HSCV_VANBANDEN',
+		actionCodes: [
+			'HSCV_VANBANDEN_CHUAXULY',
+			'HSCV_VANBANDEN_NOIBO_CHUAXULY',
+			'HSCV_VANBANDEN_THAMGIA_XULY',
+			'HSCV_VANBANDEN_DAXULY',
+			'HSCV_VANBANDEN_NOIBO_DAXULY'
+		]
+	},
+
+	VanBanDiFunction: {
+		code: 'HSCV_VANBANDI',
+		actionCodes: [
+			'VANBANDI_CHUAXULY',
+			'VANBANDI_THAMGIA_XULY',
+			'VANBANDI_DAXULY',
+			'VANBANDI_DA_BANHANH'
+		]
+	},
+
+	CongViecFunction: {
+		code: 'HSCV_CONGVIEC',
+		actionCodes: [
+			'CONGVIEC_CANHAN',
+			'CONGVIEC_DUOCGIAO',
+			'CONGVIEC_PHOIHOPXULY',
+			'PROCESSED_JOB'
+		]
+	}
 }

@@ -38,7 +38,7 @@ import renderIf from 'render-if';
 //redux
 import { connect } from 'react-redux';
 
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction';
+import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 class WorkflowStreamProcessUsers extends Component {
 	constructor(props){

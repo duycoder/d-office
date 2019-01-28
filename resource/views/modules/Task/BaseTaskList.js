@@ -82,6 +82,8 @@ class BaseTaskList extends Component {
             apiUrlParam = 'CombinationWork';
         } else if (taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
             apiUrlParam = 'ProcessedJob';
+        }else if(taskType == CONGVIEC_CONSTANT.CHO_XACNHAN){
+            apiUrlParam = 'PendingConfirmWork'
         }
 
         const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;

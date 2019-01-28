@@ -39,7 +39,7 @@ import renderIf from 'render-if';
 import * as util from 'lodash';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction';
+import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 

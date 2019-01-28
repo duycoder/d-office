@@ -33,7 +33,7 @@ import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
-import * as userAction from '../../../redux/modules/user/UserAction';
+import * as userAction from '../../../redux/modules/User/Action';
 
 //fcm
 import FCM, { FCMEvent } from 'react-native-fcm';

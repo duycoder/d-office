@@ -22,7 +22,7 @@ const uriBackground = require('../../assets/images/background.png');
 
 //redux
 import { connect } from 'react-redux';
-import * as userAction from '../../redux/modules/user/UserAction';
+import * as userAction from '../../redux/modules/User/Action';
 
 
 //firebase
@@ -88,7 +88,7 @@ class Loading extends Component {
                     if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
                         screenName = 'ListNotificationScreen'
                     } else {
-                        screenName = storage.user.hasRoleAssignUnit ? 'ListPersonalTaskScreen' : 'ListAssignedTaskScreen';
+                        screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDiIsNotProcessScreen';
                     }
                     appNavigate(this.props.navigation, screenName, screenParam);
                 }, this.state.timing)

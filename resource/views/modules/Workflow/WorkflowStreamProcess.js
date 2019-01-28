@@ -22,7 +22,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //redux
 import { connect } from 'react-redux';
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction';
+import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
 import {
@@ -92,8 +92,8 @@ class WorkflowStreamProcess extends Component {
         this.setState({
             loadingData: true
         });
-
-        const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}`;
+        
+        const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/0`;
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -126,7 +126,7 @@ class WorkflowStreamProcess extends Component {
                 executing: true
             });
 
-            const url = `${API_URL}/api/VanBanDi/SaveFlow`;
+            const url = `${API_URL}/api/WorkFlow/SaveFlow`;
             const headers = new Headers({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
@@ -156,20 +156,20 @@ class WorkflowStreamProcess extends Component {
                 executing: false
             })
 
-            if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-                const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
-                const content = {
-                    title: 'GỬI XỬ LÝ VĂN BẢN TRÌNH KÝ',
-                    message,
-                    isTaskNotification: false,
-                    targetScreen: 'DetailSignDocScreen',
-                    targetDocId: this.state.docId,
-                    targetDocType: this.state.docType
-                }
-                resultJson.GroupTokens.forEach(token => {
-                    pushFirebaseNotify(content, token, "notification");
-                });
-            }
+            // if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
+            //     const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
+            //     const content = {
+            //         title: 'GỬI XỬ LÝ VĂN BẢN TRÌNH KÝ',
+            //         message,
+            //         isTaskNotification: false,
+            //         targetScreen: 'DetailSignDocScreen',
+            //         targetDocId: this.state.docId,
+            //         targetDocType: this.state.docType
+            //     }
+            //     resultJson.GroupTokens.forEach(token => {
+            //         pushFirebaseNotify(content, token, "notification");
+            //     });
+            // }
 
             Toast.show({
                 text: this.state.stepName + (resultJson.Status ? ' thành công' : ' không thành công'),
@@ -219,33 +219,33 @@ class WorkflowStreamProcess extends Component {
     }
 
     onFilter = (isMainProcess) => {
-        if (isMainProcess) {
-            this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.MAIN_PROCESS);
-            this.setState({
-                searchingInMain: true,
-                mainProcessPageIndex: DEFAULT_PAGE_INDEX
-            }, () => this.filterData(isMainProcess));
-        } else {
-            this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.JOIN_PROCESS);
-            this.setState({
-                searchingInJoin: true,
-                joinProcessPageIndex: DEFAULT_PAGE_INDEX
-            }, () => this.filterData(isMainProcess))
-        }
+        // if (isMainProcess) {
+        //     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.MAIN_PROCESS);
+        //     this.setState({
+        //         searchingInMain: true,
+        //         mainProcessPageIndex: DEFAULT_PAGE_INDEX
+        //     }, () => this.filterData(isMainProcess));
+        // } else {
+        //     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.JOIN_PROCESS);
+        //     this.setState({
+        //         searchingInJoin: true,
+        //         joinProcessPageIndex: DEFAULT_PAGE_INDEX
+        //     }, () => this.filterData(isMainProcess))
+        // }
     }
 
     loadingMore = (isMainProcess) => {
-        if (isMainProcess) {
-            this.setState({
-                loadingMoreInMain: true,
-                mainProcessPageIndex: this.state.mainProcessPageIndex + 1
-            }, () => this.filterData(isMainProcess));
-        } else {
-            this.setState({
-                loadingMoreInJoin: true,
-                joinProcessPageIndex: this.state.joinProcessPageIndex + 1
-            }, () => this.filterData(isMainProcess))
-        }
+        // if (isMainProcess) {
+        //     this.setState({
+        //         loadingMoreInMain: true,
+        //         mainProcessPageIndex: this.state.mainProcessPageIndex + 1
+        //     }, () => this.filterData(isMainProcess));
+        // } else {
+        //     this.setState({
+        //         loadingMoreInJoin: true,
+        //         joinProcessPageIndex: this.state.joinProcessPageIndex + 1
+        //     }, () => this.filterData(isMainProcess))
+        // }
     }
 
     renderMainProcessUsers = ({ item }) => {
@@ -297,7 +297,7 @@ class WorkflowStreamProcess extends Component {
                     </Tabs>
                 )
             } else {
-                if (this.state.flowData.hasMainProcess && this.state.flowData.hasJoinProcess) {
+                if (this.state.flowData.HasUserExecute && this.state.flowData.HasUserJoinExecute) {
                     bodyContent = (
                         <Tabs renderTabBar={() => <ScrollableTab />}
                             initialPage={this.state.currentTabIndex}
@@ -361,7 +361,7 @@ class WorkflowStreamProcess extends Component {
                                     <Icon name='ios-people-outline' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         PHỐI HỢP
-                        </Text>
+                                    </Text>
                                 </TabHeading>
                             }>
                                 <Item>
@@ -413,7 +413,7 @@ class WorkflowStreamProcess extends Component {
                                     <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         TIN NHẮN
-                        </Text>
+                                    </Text>
                                 </TabHeading>
                             }>
                                 <Content>
@@ -424,7 +424,7 @@ class WorkflowStreamProcess extends Component {
                             </Tab>
                         </Tabs>
                     )
-                } else if (this.state.flowData.hasMainProcess && this.state.flowData.hasJoinProcess == false) {
+                } else if (this.state.flowData.HasUserExecute && this.state.flowData.HasUserJoinExecute == false) {
                     bodyContent = (
                         <Tabs
                             initialPage={this.state.currentTabIndex}
@@ -499,7 +499,7 @@ class WorkflowStreamProcess extends Component {
                             </Tab>
                         </Tabs>
                     )
-                } else if (this.state.flowData.hasMainProcess == false && this.state.flowData.hasJoinProcess) {
+                } else if (this.state.flowData.HasUserExecute == false && this.state.flowData.HasUserJoinExecute) {
                     bodyContent = (
                         <Tabs
                             initialPage={this.state.currentTabIndex}

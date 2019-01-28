@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
+import { Colors } from '../../common/SystemConstant'
 import {scale, verticalScale, moderateScale} from './ScaleIndicator';
 
 export const ListPublishDocStyle = StyleSheet.create({
@@ -77,5 +78,20 @@ export const DetailPublishDocStyle = StyleSheet.create({
 
     }, time: {
         
+    },commentButtonContainer: {
+        justifyContent: 'center',
+        flexDirection: 'row'
+    }, commentCircleContainer: {
+        width: 20,
+        height: 20,
+        marginLeft: -15,
+        backgroundColor: Colors.BLUE_PANTONE_640C,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    }, commentCountText: {
+        fontSize: 10,
+        color: Colors.WHITE,
+        fontWeight: 'bold'
     }
 });
