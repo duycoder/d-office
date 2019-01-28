@@ -150,7 +150,6 @@ class Detail extends Component {
         }
         appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
-
     render() {
         let bodyContent = null;
         let workflowMenu = null;
@@ -246,7 +245,7 @@ class Detail extends Component {
         return (
             <MenuProvider>
                 <Container>
-                    <Header hasTabs style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                         <Left style={NativeBaseStyle.left}>
                             <Button transparent onPress={() => this.navigateBackToList()}>
                                 <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
@@ -264,7 +263,7 @@ class Detail extends Component {
                                 <Form style={DetailSignDocStyle.commentButtonContainer}>
                                     <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                     {
-                                        renderIf(this.state.docInfo.COMMENT_COUNT > 0)(
+                                        renderIf(this.state.docInfo !== null && this.state.docInfo.COMMENT_COUNT > 0)(
                                             <Form style={DetailSignDocStyle.commentCircleContainer}>
                                                 <Text style={DetailSignDocStyle.commentCountText}>
                                                     0
@@ -322,8 +321,7 @@ class DetailContent extends Component {
                                 </Text>
                         </TabHeading>
                     }>
-                        <Text>THÔNG TIN CHÍNH</Text>
-                        {/* <MainInfoSignDoc info={this.state.docInfo.VanBanDi} /> */}
+                        <MainInfoSignDoc info={this.state.docInfo} />
                     </Tab>
 
                     <Tab heading={
@@ -334,8 +332,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <Text>TÀI LIỆU ĐÍNH KÈM</Text>
-                        {/* <AttachSignDoc info={this.state.docInfo} /> */}
+                        <AttachSignDoc info={this.state.docInfo} />
                     </Tab>
 
                     <Tab heading={
@@ -343,11 +340,10 @@ class DetailContent extends Component {
                             <Icon name='ios-git-network' style={TabStyle.activeText} />
                             <Text style={(this.state.currentTabIndex == 2 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 ĐƠN VỊ NHẬN
-                                </Text>
+                            </Text>
                         </TabHeading>
                     }>
-                        {/* <UnitSignDoc info={this.state.docInfo} /> */}
-                        <Text>Đơn vị nhận</Text>
+                        <UnitSignDoc info={this.state.docInfo} />
                     </Tab>
 
                     <Tab heading={
@@ -358,8 +354,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <Text>Lịch sử  xử lý</Text>
-                        {/* <TimelineSignDoc info={this.state.docInfo} /> */}
+                        <TimelineSignDoc info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
             </View>

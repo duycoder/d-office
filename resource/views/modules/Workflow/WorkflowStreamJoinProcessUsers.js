@@ -124,7 +124,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                                 <Right>
                                     <CheckBox onPress={() => this.onSelectUser(item.ID)}
                                         checked={(this.state.joinProcessUsers.indexOf(item.ID) > -1)}
-                                        color={Colors.RED_PANTONE_186C} />
+                                        color={Colors.LITE_BLUE} />
                                 </Right>
                             </NbListItem>
                         ))

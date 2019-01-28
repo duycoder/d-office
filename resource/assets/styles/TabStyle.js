@@ -6,6 +6,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import {scale, verticalScale, moderateScale} from './ScaleIndicator';
+import { Colors } from '../../common/SystemConstant';
 
 export const TabStyle = StyleSheet.create({
     tabText: {
@@ -14,14 +15,14 @@ export const TabStyle = StyleSheet.create({
     activeTab: {
         backgroundColor: '#fff'
     }, activeText: {
-        color: '#FF0033',
+        color: Colors.DANK_BLUE,
         fontWeight: 'bold'
     }, inActiveTab: {
         backgroundColor: '#fff'
     }, inActiveText: {
-        color: '#FF0033'
+        color: Colors.DANK_BLUE,
     }, underLineStyle: {
         borderBottomWidth: verticalScale(4),
-        borderBottomColor: '#FF0033'
+        borderBottomColor: Colors.DANK_BLUE
     }
 });

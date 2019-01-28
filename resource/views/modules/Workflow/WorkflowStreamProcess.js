@@ -119,7 +119,7 @@ class WorkflowStreamProcess extends Component {
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         } else {
             this.setState({
@@ -176,7 +176,7 @@ class WorkflowStreamProcess extends Component {
                 type: resultJson.Status ? 'success' : 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
                 duration: 3000,
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
@@ -602,7 +602,7 @@ class WorkflowStreamProcess extends Component {
 
         return (
             <Container>
-                <Header hasTabs style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
                         <Button transparent onPress={() => this.navigateBackToDetail()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />

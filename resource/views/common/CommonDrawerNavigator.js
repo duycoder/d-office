@@ -204,7 +204,7 @@ const appRoutes = {
     ReplyCommentScreen: {
         screen: ReplyComment
     }, ApproveRescheduleTaskScreen: {
-        Approscreen: ApproveRescheduleTask
+        screen: ApproveRescheduleTask
     }, DenyRescheduleTaskScreen: {
         screen: DenyRescheduleTask
     },

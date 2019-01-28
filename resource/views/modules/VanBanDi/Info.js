@@ -4,7 +4,7 @@
  * @since: 04/05/2018
  */
 import React, { Component } from 'react'
-import { View,Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 
 //lib
 import { List, ListItem } from 'react-native-elements'
@@ -16,15 +16,15 @@ import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { convertDateToString } from '../../../common/Utilities';
 
 export default class MainInfoSignDoc extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            info: props.info
+            info: props.info.VanBanTrinhKy
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <View style={DetailSignDocStyle.container}>
                 <ScrollView>
                     <List containerStyle={DetailSignDocStyle.listContainer}>
@@ -32,14 +32,14 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    HÌNH THỨC VĂN BẢN
+                                    LOẠI VĂN BẢN
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_LOAIVANBAN}
+                                    {this.props.info.STR_LOAIVANBAN}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -50,22 +50,48 @@ export default class MainInfoSignDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_LINHVUC}
+                                    {this.props.info.STR_LINHVUCVANBAN}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    TRÍCH YẾU
+                                    NGÀY TẠO
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TRICHYEU}
+                                    {convertDateToString(this.state.info.CREATED_AT)}
                                 </Text>
-                            }/>
+                            } />
+
+                        <ListItem style={DetailSignDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                    SỐ HIỆU
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                    {this.state.info.SOHIEU === null ? "N/A" : this.state.info.SOHIEU}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailSignDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                    NGÀY VĂN BẢN
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                    {convertDateToString(this.state.info.NGAYVANBAN)}
+                                </Text>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -78,33 +104,33 @@ export default class MainInfoSignDoc extends Component {
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
                                     {convertDateToString(this.state.info.NGAYBANHANH)}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    SỐ KÝ HIỆU
+                                    NGÀY HIỆU LỰC
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SOHIEU}
+                                    {convertDateToString(this.state.info.NGAYCOHIEULUC)}
                                 </Text>
-                            }/>
+                            } />
 
-                         <ListItem style={DetailSignDocStyle.listItemContainer}
+                        <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    THỜI HẠN XỬ LÝ
+                                    NGÀY HẾT HIỆU LỰC
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                     {convertDateToString(this.state.info.THOIHANXULY)}
+                                    {convertDateToString(this.state.info.NGAYHETHIEULUC)}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -115,35 +141,22 @@ export default class MainInfoSignDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_DOKHAN}
+                                    {this.props.info.STR_DOKHAN}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    SỐ TỜ
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SOTO || 'N/A'}
-                                </Text>
-                            }/>
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    SỐ BẢN SAO
+                                    SỐ BẢN
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
                                     {this.state.info.SOBANSAO || 'N/A'}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -154,9 +167,9 @@ export default class MainInfoSignDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_NGUOIKY || 'N/A'}
+                                    {this.props.info.STR_NGUOIKY || 'N/A'}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -169,7 +182,7 @@ export default class MainInfoSignDoc extends Component {
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
                                     {this.state.info.CHUCVU}
                                 </Text>
-                            }/>
+                            } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -181,8 +194,9 @@ export default class MainInfoSignDoc extends Component {
                             subtitle={
                                 <HTMLView
                                     value={this.state.info.NOIDUNG}
+                                    stylesheet={{ p: DetailSignDocStyle.listItemSubTitleContainer }}
                                 />
-                            }/>
+                            } />
                     </List>
                 </ScrollView>
             </View>

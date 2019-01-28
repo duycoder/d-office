@@ -39,7 +39,7 @@ import renderIf from 'render-if';
 import * as util from 'lodash';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 
-import * as taskAction from '../../../redux/modules/task/TaskAction'
+import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 class AssignTaskUsers extends Component {
 	constructor(props){

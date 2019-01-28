@@ -22,7 +22,7 @@ import * as util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
-import * as taskAction from '../../../redux/modules/task/TaskAction';
+import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //utilities
 import {
@@ -210,7 +210,7 @@ class AssignTask extends Component {
 				type: 'danger',
 				buttonText: "OK",
 				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+				buttonTextStyle: { color: Colors.LITE_BLUE },
 			});
 		} else {
 			this.setState({
@@ -266,7 +266,7 @@ class AssignTask extends Component {
 				type: resultJson.Status ? 'success' : 'danger',
 				buttonText: "OK",
 				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
 				duration: 3000,
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
@@ -288,13 +288,13 @@ class AssignTask extends Component {
 		} else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (
-					<Segment style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+					<Segment style={{ backgroundColor: Colors.LITE_BLUE }}>
 						<Button first
 							active={(this.state.selectedSegmentIndex == 0)}
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 0) ? Colors.RED_PANTONE_186C : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 0) ? Colors.LITE_BLUE : Colors.WHITE
 							}}>
 								{
 									this.state.dataAssignTask.IsCapPhongBan ? 'CÁN BỘ TRONG PHÒNG' : 'PHÒNG BAN TRONG ĐƠN VỊ'
@@ -307,7 +307,7 @@ class AssignTask extends Component {
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 1) ? Colors.RED_PANTONE_186C : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 1) ? Colors.LITE_BLUE : Colors.WHITE
 							}}>
 								CHÉO
 							</Text>

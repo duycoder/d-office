@@ -58,7 +58,7 @@ class UpdateProgressTask extends Component {
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         }
         else if (util.isNull(this.state.comment) || util.isEmpty(this.state.comment)) {
@@ -67,7 +67,7 @@ class UpdateProgressTask extends Component {
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         } else {
             this.setState({
@@ -121,7 +121,7 @@ class UpdateProgressTask extends Component {
                 type: resultJson.Status ? 'success' : 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
@@ -180,7 +180,7 @@ class UpdateProgressTask extends Component {
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
                         <Button transparent onPress={() => this.navigateBackToDetail()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
@@ -202,7 +202,7 @@ class UpdateProgressTask extends Component {
                         step={1}
                         minimumValue={0}
                         maximumValue={100}
-                        minimumTrackTintColor={Colors.RED_PANTONE_186C}
+                        minimumTrackTintColor={Colors.LITE_BLUE}
                         maximumTrackTintColor={Colors.WHITE}
                         value={this.state.progressValue}
                         onValueChange={value => this.onSliderChange(value)}
@@ -247,7 +247,7 @@ class UpdateProgressTask extends Component {
                         </Item>
 
                         <Button block danger
-                            style={{ backgroundColor: Colors.RED_PANTONE_186C, marginTop: verticalScale(20) }}
+                            style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
                             onPress={() => this.onUpdateProgressTask()}>
                             <Text>
                                 CẬP NHẬT

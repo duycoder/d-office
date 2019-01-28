@@ -36,9 +36,9 @@ import {
 import renderIf from 'render-if';
 
 //views
-import MainInfoSignDoc from './Info';
-import TimelineSignDoc from './History';
-import AttachSignDoc from './Attachment';
+import MainInfoPublishDoc from './Info';
+import TimelinePublishDoc  from './History';
+import AttachPublishDoc from './Attachment';
 
 class Detail extends Component {
     constructor(props) {
@@ -245,7 +245,7 @@ class Detail extends Component {
         return (
             <MenuProvider>
                 <Container>
-                    <Header hasTabs style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                         <Left style={NativeBaseStyle.left}>
                             <Button transparent onPress={() => this.navigateBackToList()}>
                                 <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
@@ -306,6 +306,7 @@ class DetailContent extends Component {
     }
 
     render() {
+        console.log(this.state.docInfo); // Log Info Of Doc
         return (
             <View style={{ flex: 1 }}>
                 <Tabs
@@ -321,8 +322,7 @@ class DetailContent extends Component {
                                 </Text>
                         </TabHeading>
                     }>
-                        <Text>THÔNG TIN CHÍNH</Text>
-                        {/* <MainInfoSignDoc info={this.state.docInfo.VanBanDi} /> */}
+                        <MainInfoPublishDoc info={this.state.docInfo} />
                     </Tab>
 
                     <Tab heading={
@@ -333,20 +333,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <Text>TÀI LIỆU ĐÍNH KÈM</Text>
-                        {/* <AttachSignDoc info={this.state.docInfo} /> */}
-                    </Tab>
-
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 2 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-git-network' style={TabStyle.activeText} />
-                            <Text style={(this.state.currentTabIndex == 2 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                ĐƠN VỊ NHẬN
-                                </Text>
-                        </TabHeading>
-                    }>
-                        {/* <UnitSignDoc info={this.state.docInfo} /> */}
-                        <Text>Đơn vị nhận</Text>
+                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems}/>
                     </Tab>
 
                     <Tab heading={
@@ -357,8 +344,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <Text>Lịch sử  xử lý</Text>
-                        {/* <TimelineSignDoc info={this.state.docInfo} /> */}
+                        <TimelinePublishDoc info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
             </View>

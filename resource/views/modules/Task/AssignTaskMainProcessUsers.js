@@ -12,7 +12,7 @@ import {
 
 //redux
 import { connect } from 'react-redux';
-import * as taskAction from '../../../redux/modules/task/TaskAction'
+import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //utilities
 import { Colors } from '../../../common/SystemConstant';
@@ -130,7 +130,7 @@ class AssignTaskMainProcessUsrs extends Component {
                                 </Body>
 
                                 <Right>
-                                    <Radio color={Colors.RED_PANTONE_186C}
+                                    <Radio color={Colors.LITE_BLUE}
                                         selected={this.props.mainProcessUser == item.ID}
                                         onPress={() => this.onSelectUser(item.ID)} />
                                 </Right>

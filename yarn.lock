@@ -5557,9 +5557,9 @@ react-native-elements@^0.19.1:
     opencollective "^1.0.3"
     prop-types "^15.5.8"
 
-react-native-fcm@^15.0.2:
-  version "15.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-15.0.2.tgz#11448c0c494c2b03dcf1d1cf223e8a579f72e743"
+react-native-fcm@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-16.0.0.tgz#22ff9de21a2fe5cb30f8d50b1a3b4bf3bccd6434"
 
 react-native-fetch-blob@^0.10.8:
   version "0.10.8"

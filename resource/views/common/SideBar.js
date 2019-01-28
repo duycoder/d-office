@@ -140,7 +140,7 @@ export default class SideBar extends Component {
                         </TouchableOpacity>
 
                         {
-                            userFunctions.map((item, index) =>
+                            userFunctions && userFunctions.map((item, index) =>
                                 <Panel title={item.TEN_CHUCNANG} key={item.ID}>
                                     {
                                         item.ListThaoTac.map((sItem, sIndex) =>

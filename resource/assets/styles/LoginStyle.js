@@ -29,9 +29,9 @@ export const LoginStyle = StyleSheet.create({
         color: '#221f1f'
     }, formHeaderSoftwareTitle: {
         fontWeight: 'bold',
-        color: '#bf0114'
+        color: '#007cc2'
     }, formHeaderSoftwareName: {
-        color: '#bf0114',
+        color: '#00aeef',
         fontWeight: 'bold',
         fontSize: moderateScale(25,1.5)
     }, formHeaderNothing: {
@@ -40,7 +40,7 @@ export const LoginStyle = StyleSheet.create({
     formFooter: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: 'rgba(182,13,20, 0.9)'
+        backgroundColor: '#007cc2'
     }, formContainer: {
         backgroundColor: '#fff',
         marginTop: verticalScale(35),

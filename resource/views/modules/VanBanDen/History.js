@@ -23,11 +23,12 @@ export default class TimelinePublishDoc extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            VanBanDen: props.info.VanBanDen,
             lstLog: props.info.lstLog,
             data: [],
 
             refreshingData: false,
+
+            initState: props.info.WorkFlow.StartState,
         }
     }
 
@@ -36,8 +37,50 @@ export default class TimelinePublishDoc extends Component {
     }
 
     componentWillMount = () => {
+        const {initState} = this.state;
+        let data = [];
+        data.push(
+            {
+                time: convertDateTimeToString(initState.create_at),
+                title: initState.STATE_NAME,
+                titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
+                description: `Người xử lý: ${initState.TenNguoiXuLy}`,
+                renderIcon: () => <Icon name='ios-time-outline' />,
+                renderTimeBottom: () => (
+                    <View style={{ alignItems: 'flex-start', backgroundColor: Colors.WHITE, borderRadius: 6, padding: 3 }}>
+                        <Text>
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
+                                Thời gian:
+                                    </Text>
+
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
+                                {' ' + convertTimeToString(initState.create_at)}
+                            </Text>
+                        </Text>
+
+                        <Text>
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
+                                Người nhận:
+                                    </Text>
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
+                                {' ' + initState.TenNguoiNhan}
+                            </Text>
+                        </Text>
+
+                        <Text>
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
+                                Người tham gia:
+                                    </Text>
+                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
+                                {' ' + (initState.LstThamGia || []).toString()}
+                            </Text>
+                        </Text>
+                    </View>
+                ),
+            }
+        )
+
         if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
-            let data = [];
             this.state.lstLog.forEach((item, index) => {
                 data.push(
                     {
@@ -83,8 +126,12 @@ export default class TimelinePublishDoc extends Component {
 
             this.setState({
                 data
-            });
+            }, ()=>console.log(">>>this is data: "+data));
         }
+
+        this.setState({
+            data
+        }, ()=>console.log(">>>this is data: "+data));
     }
 
     render() {
@@ -92,13 +139,13 @@ export default class TimelinePublishDoc extends Component {
             <Container>
                 <Content>
                     {
-                        renderIf(util.isNull(this.state.lstLog) || util.isEmpty(this.state.lstLog))(
+                        renderIf(util.isNull(this.state.data) || util.isEmpty(this.state.data))(
                             emptyDataPage()
                         )
                     }
 
                     {
-                        renderIf(!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog))(
+                        renderIf(!util.isNull(this.state.data) && !util.isEmpty(this.state.data))(
                             <TimeLine
                                 timeStyle={{
                                     fontWeight: 'normal',

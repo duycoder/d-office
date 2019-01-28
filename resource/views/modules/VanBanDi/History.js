@@ -24,7 +24,7 @@ export default class TimelineSignDoc extends Component {
         super(props);
         this.state = {
             VanBanDi: props.info.VanBanDi,
-            lstLog: props.info.lstLog,
+            lstLog: [props.info.WorkFlow.StartState, ...props.info.WorkFlow.LstStep],
             data: [],
 
             refreshingData: false,
@@ -42,7 +42,7 @@ export default class TimelineSignDoc extends Component {
                 data.push(
                     {
                         time: convertDateToString(item.create_at),
-                        title: item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A'),
+                        title: item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.NAME : 'N/A'),
                         titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
                         description: `Người xử lý: ${item.TenNguoiXuLy}`,
                         renderIcon: () => <Icon name='ios-time-outline' />,

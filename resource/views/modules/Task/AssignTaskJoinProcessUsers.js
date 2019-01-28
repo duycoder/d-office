@@ -12,7 +12,7 @@ import {
 
 //redux
 import { connect } from 'react-redux';
-import * as taskAction from '../../../redux/modules/task/TaskAction'
+import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //lib
 import {
@@ -139,7 +139,7 @@ class AssignTaskJoinProcessUsers extends Component {
                                 </Body>
 
                                 <Right>
-                                    <CheckBox color={Colors.RED_PANTONE_186C}
+                                    <CheckBox color={Colors.LITE_BLUE}
                                         checked={this.state.joinProcessUsers.indexOf(item.ID) > -1}
                                         onPress={() => this.onSelectUser(item.ID)} />
                                 </Right>

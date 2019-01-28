@@ -122,7 +122,7 @@ class ListNotification extends Component {
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>
                         <Title>

@@ -1,8 +1,8 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://123.30.149.48:8353';
-//export const API_URL = 'http://123.30.149.48:8354';
+// export const API_URL = 'http://123.30.149.48:8354';
 
-export const API_URL = 'http://192.168.1.75:8098';
+export const API_URL = 'http://192.168.1.6:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -88,9 +88,11 @@ export const Colors = {
 	GREEN_PANTON_376C: '#7DBA00',
 	GREEN_PANTON_369C: '#4FA800',
 	GREEN_PANTONE_364C: '#337321',
-	BLUE_PANTONE_640C: '#0082ba',
+	BLUE_PANTONE_640C: '#0082ba', //00aeef 007cc2
 	RED_PANTONE_186C: '#FF0033',
-	RED_PANTONE_021C: '#FF6600'
+	RED_PANTONE_021C: '#FF6600',
+	DANK_BLUE: '#007cc2',
+	LITE_BLUE: '#00aeef'
 }
 
 export const BASEDOCSEARCH_CONSTANT = {

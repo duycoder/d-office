@@ -107,7 +107,7 @@ class WorkflowRequestReviewUsers extends Component {
 				</Body>
 
 				<Right>
-					<CheckBox checked={this.state.reviewUsers.length > 0} color={Colors.RED_PANTONE_186C} />
+					<CheckBox checked={this.state.reviewUsers.length > 0} color={Colors.LITE_BLUE} />
 				</Right>
 			</NBListItem>
 		);

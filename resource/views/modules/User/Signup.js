@@ -168,7 +168,7 @@ class Signup extends Component {
           textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+          buttonTextStyle: { color: Colors.LITE_BLUE },
           duration: 3000
         });
       });
@@ -185,7 +185,7 @@ class Signup extends Component {
           textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+          buttonTextStyle: { color: Colors.LITE_BLUE },
           duration: 3000
         });
       });
@@ -202,7 +202,7 @@ class Signup extends Component {
           textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+          buttonTextStyle: { color: Colors.LITE_BLUE },
           duration: 3000
         });
       });
@@ -219,7 +219,7 @@ class Signup extends Component {
           textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+          buttonTextStyle: { color: Colors.LITE_BLUE },
           duration: 3000
         });
       });
@@ -275,7 +275,7 @@ class Signup extends Component {
         textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.RED_PANTONE_186C },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
         duration: 3000
       })
     }
@@ -291,7 +291,7 @@ class Signup extends Component {
     const toggleLoginStyleText = (userName !== EMPTY_STRING && fullName !== EMPTY_STRING && email !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
             <Button transparent onPress={() => this.navigateBackToLogin()}>
               <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />

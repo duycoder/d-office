@@ -167,7 +167,7 @@ class EvaluationTask extends Component {
             type: resultJson.Status ? 'success' : 'danger',
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
-            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
@@ -193,7 +193,7 @@ class EvaluationTask extends Component {
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
                         <Button transparent onPress={() => this.navigateToDetail()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
@@ -424,7 +424,7 @@ class EvaluationTask extends Component {
 
 
                                 <Button block danger
-                                    style={{ backgroundColor: Colors.RED_PANTONE_186C, marginTop: verticalScale(20) }}
+                                    style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
                                     onPress={() => this.onEvaluateTask()}>
                                     <Text>
                                         GỬI ĐÁNH GIÁ CÔNG VIỆC

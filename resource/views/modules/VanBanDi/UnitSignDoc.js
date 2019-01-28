@@ -59,6 +59,7 @@ export default class UnitSignDoc extends Component {
 	}
 
 	render() {
+		console.log(">>>Donvinhan: "+this.state.ListDonVi);
 		return (
 			<Container>
 				<Header searchBar style={{ backgroundColor: Colors.WHITE }}>

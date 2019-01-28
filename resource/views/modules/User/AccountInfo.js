@@ -111,7 +111,7 @@ class AccountInfo extends Component {
 
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
             <Button transparent onPress={() => this.navigateBackToLogin()}>
               <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
@@ -171,7 +171,7 @@ class AccountInfo extends Component {
             </Form>
             <TouchableOpacity
               onPress={() => this.navigateToEditAccount()}
-              style={[LoginStyle.formButtonLogin, { backgroundColor: Colors.RED_PANTONE_186C, marginTop: verticalScale(20), borderRadius: 0 }]}
+              style={[LoginStyle.formButtonLogin, { backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20), borderRadius: 0 }]}
             >
               <Text style={[LoginStyle.formButtonText, { color: Colors.WHITE }]}>SỬA THÔNG TIN</Text>
             </TouchableOpacity>

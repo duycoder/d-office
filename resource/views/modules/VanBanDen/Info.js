@@ -22,7 +22,7 @@ export default class MainInfoPublishDoc extends Component {
         super(props)
 
         this.state = {
-            info: props.info
+            info: this.props.info.entityVanBanDen
         }
     }
 
@@ -32,16 +32,95 @@ export default class MainInfoPublishDoc extends Component {
             <View style={DetailPublishDocStyle.container}>
                 <ScrollView>
                     <List containerStyle={DetailPublishDocStyle.listContainer}>
+
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỐ/ KÝ HIỆU
+                                    ĐƠN VỊ GỬI
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.nameOfDonViGui}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    LOẠI VĂN BẢN
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.nameOfLoaiVanBan}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    LĨNH VỰC
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.nameOfLinhVucVanBan}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    SỐ HIỆU
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
                                     {this.state.info.SOHIEU}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    TRÍCH YẾU
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.state.info.TRICHYEU}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    MỨC ĐỘ QUAN TRỌNG
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.nameOfDoKhan}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    ĐỘ ƯU TIÊN
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.nameOfDoUuTien}
                                 </Text>
                             } />
 
@@ -58,55 +137,16 @@ export default class MainInfoPublishDoc extends Component {
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    LOẠI VĂN BẢN
+                                    SỔ ĐI THEO SỐ
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_HINHTHUC}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    LĨNH VỰC
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_LINHVUC}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    ĐỘ KHẨN
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_DOKHAN}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    ĐỘ MẬT
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TEN_DOMAT}
+                                    {this.state.info.SODITHEOSO}
                                 </Text>
                             } />
 
@@ -183,6 +223,20 @@ export default class MainInfoPublishDoc extends Component {
                                 <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
                                     {this.state.info.CHUCVU}
                                 </Text>
+                            } />
+
+                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    NỘI DUNG
+                                </Text>
+                            }
+                            subtitle={
+                                <HTMLView
+                                    value={this.state.info.NOIDUNG}
+                                    stylesheet={{p: DetailPublishDocStyle.listItemSubTitleContainer}}
+                                />
                             } />
                     </List>
                 </ScrollView>

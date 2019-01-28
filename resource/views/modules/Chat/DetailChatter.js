@@ -73,7 +73,7 @@ class DetailChatter extends Component {
 
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
             <Button transparent onPress={this.navigateBackToChatter}>
               <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />

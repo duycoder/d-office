@@ -81,7 +81,7 @@ export const SideBarStyle = StyleSheet.create({
         width: moderateScale(20),
         height: moderateScale(20),
         marginLeft: moderateScale(-15),
-        backgroundColor: Colors.RED_PANTONE_186C,
+        backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: moderateScale(10)

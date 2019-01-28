@@ -190,7 +190,7 @@ class BaseList extends Component {
   render() {
     return (
       <Container>
-        <Header searchBar rounded style={{ backgroundColor: Colors.RED_PANTONE_186C }}>
+        <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Item style={{ backgroundColor: Colors.WHITE }}>
             <Icon name='ios-search' />
             <Input placeholder='Mã hiệu, trích yếu'
