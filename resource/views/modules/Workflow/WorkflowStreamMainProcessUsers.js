@@ -9,7 +9,7 @@ import { Animated, View, StyleSheet, TouchableOpacity, Image } from 'react-nativ
 
 //redux
 import { connect } from 'react-redux';
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction';
+import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
 import { List, ListItem } from 'react-native-elements';

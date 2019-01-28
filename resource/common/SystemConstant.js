@@ -1,9 +1,8 @@
 import { Dimensions } from 'react-native'
-// export const WEB_URL = 'http://103.1.210.108';
-// export const API_URL = 'http://103.1.210.108:81';
+export const WEB_URL = 'http://123.30.149.48:8353';
+//export const API_URL = 'http://123.30.149.48:8354';
 
-export const WEB_URL = 'http://123.30.149.48';
-export const API_URL = 'http://123.30.149.48:8354';
+export const API_URL = 'http://192.168.1.75:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -50,18 +49,27 @@ export const DOKHAN_CONSTANT = {
 	THUONG_KHAN: 100
 }
 
-export const VANBAN_CONSTANT = {
+export const VANBANDI_CONSTANT = {
 	CHUA_XULY: 1,
 	DA_XULY: 2,
-	CAN_REVIEW: 3,
-	DA_REVIEW: 4,
+	THAMGIA_XULY: 3,
+	DA_BANHANH: 4,
+}
+
+export const VANBANDEN_CONSTANT = {
+	CHUA_XULY: 1,
+	DA_XULY: 2,
+	THAMGIA_XULY: 3,
+	NOIBO_DAXULY: 4,
+	NOIBO_CHUAXULY: 5
 }
 
 export const CONGVIEC_CONSTANT = {
 	CA_NHAN: 1,
 	DUOC_GIAO: 2,
 	PHOIHOP_XULY: 3,
-	DAGIAO_XULY: 4
+	DAGIAO_XULY: 4,
+	CHO_XACNHAN: 5
 }
 
 //thông báo
@@ -90,4 +98,37 @@ export const BASEDOCSEARCH_CONSTANT = {
 	LINHVUC_DONVI: 2,
 	DO_QUANTRONG: 3,
 	THOI_GIAN: 4
+}
+
+export const SYSTEM_FUNCTION = {
+	VanBanDenFunction: {
+		code: 'HSCV_VANBANDEN',
+		actionCodes: [
+			'HSCV_VANBANDEN_CHUAXULY',
+			'HSCV_VANBANDEN_NOIBO_CHUAXULY',
+			'HSCV_VANBANDEN_THAMGIA_XULY',
+			'HSCV_VANBANDEN_DAXULY',
+			'HSCV_VANBANDEN_NOIBO_DAXULY'
+		]
+	},
+
+	VanBanDiFunction: {
+		code: 'HSCV_VANBANDI',
+		actionCodes: [
+			'VANBANDI_CHUAXULY',
+			'VANBANDI_THAMGIA_XULY',
+			'VANBANDI_DAXULY',
+			'VANBANDI_DA_BANHANH'
+		]
+	},
+
+	CongViecFunction: {
+		code: 'HSCV_CONGVIEC',
+		actionCodes: [
+			'CONGVIEC_CANHAN',
+			'CONGVIEC_DUOCGIAO',
+			'CONGVIEC_PHOIHOPXULY',
+			'PROCESSED_JOB'
+		]
+	}
 }

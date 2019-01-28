@@ -36,7 +36,7 @@ import renderIf from 'render-if';
 
 //redux
 import { connect } from 'react-redux';
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction';
+import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';

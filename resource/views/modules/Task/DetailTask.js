@@ -70,7 +70,7 @@ class DetailTask extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/HscvCongViec/JobDetail/${this.state.taskId}/${this.state.userId}`;
+        const url = `${API_URL}/api/CongViec/Detail/${this.state.taskId}/${this.state.userId}`;
         const result = await fetch(url);
         const resultJson = await result.json();
 

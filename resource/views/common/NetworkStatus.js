@@ -3,7 +3,7 @@ import { View, Modal, NetInfo, Text, StyleSheet } from 'react-native';
 
 //lib + redux
 import { connect } from 'react-redux';
-import * as action from '../../redux/modules/network/NetworkAction';
+import * as networkAction from '../../redux/modules/network/Action';
 import { Header, Icon } from 'react-native-elements';
 
 //constant
@@ -104,7 +104,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateNetworkStatus: (isConnected) => dispatch(action.updateNetworkStatus(isConnected))
+        updateNetworkStatus: (isConnected) => dispatch(networkAction.updateNetworkStatus(isConnected))
     }
 }
 

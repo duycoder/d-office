@@ -9,7 +9,7 @@ import { ActivityIndicator, View, FlatList } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
-import * as workflowAction from '../../../redux/modules/workflow/WorkflowAction'
+import * as workflowAction from '../../../redux/modules/Workflow/Action'
 
 //utilities
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';

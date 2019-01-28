@@ -6,16 +6,20 @@
 
 import { combineReducers } from 'redux';
 
-import userReducer from '../modules/user/UserReducer';
-import workflowReducer from '../modules/workflow/WorkflowReducer';
-import taskReducer from '../modules/task/TaskReducer'
-import signDocReducer from '../modules/signdoc/SignDocReducer';
-import networkReducer from '../modules/network/NetworkReducer';
+import userReducer from '../modules/User/Reducer';
+import vanbandiReducer from '../modules/VanBanDi/Reducer';
+import vanbandenReducer from '../modules/VanBanDen/Reducer';
+import networkReducer from '../modules/network/Reducer';
+import workflowReducer from '../modules/Workflow/Reducer';
+// import taskReducer from '../modules/task/TaskReducer'
+
 
 export const globalReducer = combineReducers({
     userState: userReducer,
+    vanbandiState: vanbandiReducer,
+    vanbandenState: vanbandenReducer,
+    networkState: networkReducer,
     workflowState: workflowReducer,
-    taskState: taskReducer,  
-    signDocState: signDocReducer,
-    networkState: networkReducer
+    // taskState: taskReducer,  
+    // signDocState: signDocReducer,
 });

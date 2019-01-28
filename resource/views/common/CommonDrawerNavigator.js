@@ -7,24 +7,30 @@
 import React, { Component } from 'react';
 import { width } from '../../common/SystemConstant';
 import { DrawerNavigator, SwitchNavigator, StackNavigator } from 'react-navigation';
-//màn hình văn bản trình ký
-import ListIsNotProcessed from '../modules/SignDoc/ListIsNotProcessed';
-import ListIsNotReviewed from '../modules/SignDoc/ListIsNotReviewed';
-import ListIsProcessed from '../modules/SignDoc/ListIsProcessed';
-import ListIsReviewed from '../modules/SignDoc/ListIsReviewed';
-import DetailSignDoc from '../modules/SignDoc/DetailSignDoc';
-import ListFilterSignDoc from '../modules/SignDoc/ListFilterSignDoc';
+//màn hình văn bản đi
+import VanBanDiIsNotProcessList from '../modules/VanBanDi/IsNotProcessList';
+import VanBanDiIsProcessList from '../modules/VanBanDi/IsProcessList';
+import VanBanDiJoinProcessList from '../modules/VanBanDi/JoinProcessList';
+import VanBanDiIsPublishList from '../modules/VanBanDi/IsPublishList';
+import VanBanDiSearchList from '../modules/VanBanDi/SearchList';
+import VanBanDiDetail from '../modules/VanBanDi/Detail';
 
-//màn hình văn bản phát hành
-import ListIsPublished from '../modules/PublishDoc/ListIsPublished';
-import ListFilterPublishDoc from '../modules/PublishDoc/ListFilterPublishDoc';
-import DetailPublishDoc from '../modules/PublishDoc/DetailPublishDoc';
+//màn hình văn bản đến
+import VanBanDenIsNotProcessList from '../modules/VanBanDen/IsNotProcessList';
+import VanBanDenIsProcessList from '../modules/VanBanDen/IsProcessList';
+import VanBanDenJoinProcessList from '../modules/VanBanDen/JoinProcessList';
+import VanBanDenInternalProcessList from '../modules/VanBanDen/InternalProcessList';
+import VanBanDenInternalNotProcessList from '../modules/VanBanDen/InternalNotProcessList';
+import VanBanDenSearchList from '../modules/VanBanDen/SearchList';
+import VanBanDenDetail from '../modules/VanBanDen/Detail';
+
 
 //màn hình công việc
 import ListAssignedTask from '../modules/Task/ListAssignedTask';
 import ListCombinationTask from '../modules/Task/ListCombinationTask';
 import ListPersonalTask from '../modules/Task/ListPersonalTask';
 import ListProcessedTask from '../modules/Task/ListProcessedTask';
+import ListPendingConfirmTask from '../modules/Task/ListPendingConfirmTask';
 import ListFilterTask from '../modules/Task/ListFilterTask';
 import DetailTask from '../modules/Task/DetailTask';
 import AssignTask from '../modules/Task/AssignTask';
@@ -41,7 +47,6 @@ import HistoryEvaluateTask from '../modules/Task/HistoryEvaluateTask';
 import GroupSubTask from '../modules/Task/GroupSubTask';
 import ApproveRescheduleTask from '../modules/Task/ApproveRescheduleTask';
 import DenyRescheduleTask from '../modules/Task/DenyRescheduleTask';
-
 
 //đăng nhập + đăng ký + truy vấn tài khoản
 import Login from '../modules/User/Login';
@@ -83,31 +88,47 @@ const appRoutes = {
     TestScreen: {
         screen: Test,
     },
-    ListIsNotProcessedScreen: {
-        screen: ListIsNotProcessed
+    VanBanDiIsNotProcessScreen: {
+        screen: VanBanDiIsNotProcessList
     },
-    ListIsNotReviewedScreen: {
-        screen: ListIsNotReviewed
+    VanBanDiIsProcessScreen: {
+        screen: VanBanDiIsProcessList
     },
-    ListIsProcessedScreen: {
-        screen: ListIsProcessed
+    VanBanDiJoinProcessScreen: {
+        screen: VanBanDiJoinProcessList
     },
-    ListIsReviewedScreen: {
-        screen: ListIsReviewed
+    VanBanDiIsPublishScreen: {
+        screen: VanBanDiIsPublishList
     },
-    DetailSignDocScreen: {
-        screen: DetailSignDoc
+    VanBanDiSearchScreen: {
+        screen: VanBanDiSearchList
     },
-    ListFilterSignDocScreen: {
-        screen: ListFilterSignDoc
+    VanBanDiDetailScreen: {
+        screen: VanBanDiDetail
     },
-    ListIsPublishedScreen: {
-        screen: ListIsPublished
+    VanBanDenIsNotProcessScreen:{
+        screen: VanBanDenIsNotProcessList
     },
-    DetailPublishDocScreen: {
-        screen: DetailPublishDoc
-    }, ListFilterPublishDocScreen: {
-        screen: ListFilterPublishDoc
+    VanBanDenIsProcessScreen:{
+        screen: VanBanDenIsProcessList
+    },
+    VanBanDenJoinProcessScreen: {
+        screen: VanBanDenJoinProcessList
+    },
+    VanBanDenInternalIsNotProcessScreen:{
+        screen: VanBanDenInternalNotProcessList
+    },
+    VanBanDenInternalIsProcessScreen:{
+        screen: VanBanDenInternalProcessList
+    },
+    VanBanDenSearchScreen:{
+        screen: VanBanDenSearchList
+    },
+    VanBanDenDetailScreen:{
+        screen: VanBanDenDetail
+    },
+    WorkflowStreamProcessScreen: {
+        screen: WorkflowStreamProcess
     },
     ListAssignedTaskScreen: {
         screen: ListAssignedTask
@@ -120,6 +141,9 @@ const appRoutes = {
     },
     ListProcessedTaskScreen: {
         screen: ListProcessedTask
+    },
+    ListPendingConfirmTaskScreen: {
+        screen: ListPendingConfirmTask
     },
     ListFilterTaskScreen: {
         screen: ListFilterTask
@@ -168,9 +192,6 @@ const appRoutes = {
     WorkflowRequestReviewScreen: {
         screen: WorkflowRequestReview
     },
-    WorkflowStreamProcessScreen: {
-        screen: WorkflowStreamProcess
-    },
     WorkflowRequestReviewUsersScreen: {
         screen: WorkflowRequestReviewUsers
     },
@@ -183,7 +204,7 @@ const appRoutes = {
     ReplyCommentScreen: {
         screen: ReplyComment
     }, ApproveRescheduleTaskScreen: {
-        screen: ApproveRescheduleTask
+        Approscreen: ApproveRescheduleTask
     }, DenyRescheduleTaskScreen: {
         screen: DenyRescheduleTask
     },
@@ -211,7 +232,7 @@ const appRoutes = {
 }
 const appConfig = {
     headerMode: 'none',
-    initialRouteName: 'ListIsNotProcessedScreen',
+    initialRouteName: 'VanBanDiIsNotProcessScreen',
     drawerWidth: width * 0.8,
     contentComponent: props => <SideBar {...props} />
 }
