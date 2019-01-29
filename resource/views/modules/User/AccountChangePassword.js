@@ -100,7 +100,7 @@ class AccountChangePassword extends Component {
   }
 
   navigateBackToAccountInfo = () => {
-    this.props.navigation.navigate('ListIsNotProcessedScreen');
+    this.props.navigation.navigate('VanBanDenIsNotProcessScreen');
   }
 
   async onSaveChange() {
@@ -266,7 +266,7 @@ class AccountChangePassword extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToAccountInfo()}>
+            <Button transparent onPress={this.navigateBackToAccountInfo}>
               <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Left>

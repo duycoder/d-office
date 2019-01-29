@@ -81,6 +81,8 @@ class BaseList extends Component {
     const result = await fetch(url);
     const resultJson = await result.json();
 
+    console.log(resultJson)
+
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
       loadingData: false,

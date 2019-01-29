@@ -31,7 +31,7 @@ import { registerAppListener, registerKilledListener } from '../../firebase/Fire
 
 //style
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
-import { EMPTY_STRING } from '../../common/SystemConstant';
+import { EMPTY_STRING, Colors } from '../../common/SystemConstant';
 
 registerKilledListener();
 class Loading extends Component {
@@ -113,7 +113,7 @@ class Loading extends Component {
                     marginBottom: verticalScale(20)
                 }} />
 
-                <ProgressBar progress={this.state.progress} duration={this.state.timing} />
+                <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.LITE_BLUE} />
             </ImageBackground>
         );
     }

@@ -263,7 +263,7 @@ class Detail extends Component {
                                 <Form style={DetailSignDocStyle.commentButtonContainer}>
                                     <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                     {
-                                        renderIf(this.state.docInfo !== null && this.state.docInfo.COMMENT_COUNT > 0)(
+                                        renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
                                             <Form style={DetailSignDocStyle.commentCircleContainer}>
                                                 <Text style={DetailSignDocStyle.commentCountText}>
                                                     0

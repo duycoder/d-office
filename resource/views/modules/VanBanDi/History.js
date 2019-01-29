@@ -24,7 +24,7 @@ export default class TimelineSignDoc extends Component {
         super(props);
         this.state = {
             VanBanDi: props.info.VanBanDi,
-            lstLog: [props.info.WorkFlow.StartState, ...props.info.WorkFlow.LstStep],
+            lstLog: [],
             data: [],
 
             refreshingData: false,

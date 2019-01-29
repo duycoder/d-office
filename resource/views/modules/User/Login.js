@@ -231,9 +231,13 @@ class Login extends Component {
         this.props.navigation.navigate('SignupScreen');
     }
 
+    _handleEditing = () => {
+        this.passwordInput && this.passwordInput.focus();
+    }
+
     render() {
         const { userName, password } = this.state;
-        const toggleLoginStyleButton = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { backgroundColor: '#da2032' } : { backgroundColor: 'lightgrey' };
+        const toggleLoginStyleButton = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: 'lightgrey' };
         const toggleLoginStyleText = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
         return (
             <ImageBackground source={uriBackground} style={{ flex: 1 }}>
@@ -252,7 +256,7 @@ class Login extends Component {
 
                         <Text style={[LoginStyle.formHeaderSoftwareName,
                         { display: this.state.headerComponentsDisplayStatus }]}>
-                            D-OFFICE
+                            eBiz Office
                         </Text>
                     </Animated.View>
                     <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
@@ -275,6 +279,9 @@ class Login extends Component {
                                         value={this.state.userName}
                                         style={LoginStyle.formInputText}
                                         underlineColorAndroid={'#f7f7f7'}
+                                        returnKeyType='next'
+                                        returnKeyLabel='Tiếp'
+                                        onSubmitEditing={this._handleEditing}
                                     />
                                 </View>
 
@@ -289,7 +296,11 @@ class Login extends Component {
                                         onChangeText={(password) => this.onChangePasswordText(password)}
                                         secureTextEntry={this.state.isHidePassword}
                                         style={LoginStyle.formInputText}
-                                        underlineColorAndroid={'#f7f7f7'} />
+                                        underlineColorAndroid={'#f7f7f7'} 
+                                        returnKeyType='done'
+                                        returnKeyLabel='Xong'
+                                        ref={ref=>this.passwordInput = ref} 
+                                    />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
                                         <Image source={(this.state.isHidePassword) ? showPasswordIcon : hidePasswordIcon}
                                             style={{ display: this.state.passwordIconDisplayStatus }} />

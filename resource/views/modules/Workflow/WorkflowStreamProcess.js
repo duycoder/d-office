@@ -176,7 +176,7 @@ class WorkflowStreamProcess extends Component {
                 type: resultJson.Status ? 'success' : 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
                 duration: 3000,
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);

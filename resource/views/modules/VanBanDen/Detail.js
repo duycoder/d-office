@@ -91,7 +91,7 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'VanBanDiDetailScreen');
+        appGetDataAndNavigate(this.props.navigation, 'VanBanDenDetailScreen');
         return true;
     }
 
@@ -263,7 +263,7 @@ class Detail extends Component {
                                 <Form style={DetailPublishDocStyle.commentButtonContainer}>
                                     <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                     {
-                                        renderIf(this.state.docInfo.COMMENT_COUNT > 0)(
+                                        renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
                                             <Form style={DetailPublishDocStyle.commentCircleContainer}>
                                                 <Text style={DetailPublishDocStyle.commentCountText}>
                                                     0

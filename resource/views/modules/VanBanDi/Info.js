@@ -54,6 +54,19 @@ export default class MainInfoSignDoc extends Component {
                                 </Text>
                             } />
 
+                            <ListItem style={DetailSignDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                    TRÍCH YẾU
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                    {this.props.info.TRICHYEU}
+                                </Text>
+                            } />
+
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={

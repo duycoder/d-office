@@ -38,3 +38,13 @@ func onAdvancedSearch(modelSearch: object) => {
   message: string
 }
 modelSearch: {} with all params the same as the web form
+
+## API cần sửa
+### Văn bản đi
+`/api/WorkFlow/SaveFlow` -> khi văn thư trình cho trưởng phòng thì chỉ người tham gia xử lý nhận được văn bản còn người xử lý chính thì không.
+
+### Màn hình chi tiết
+`/api/VanBanDi/GetDetail/` -> không có `lstLog` dành cho phần hiển thị lịch sử xử lý 
+
+### Màn hình danh sách
+* Những item đã xử lý (ví dụ _đã trình cho trưởng phòng_) -> vẫn xuất hiện trong phần chưa xử lý/ tham gia xử lý

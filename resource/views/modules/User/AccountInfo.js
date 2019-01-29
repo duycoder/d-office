@@ -28,7 +28,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, emptyDataPage, convertDateTimeToString, convertDateToString } from '../../../common/Utilities'
+import { asyncDelay, emptyDataPage, convertDateTimeToString, convertDateToString, appGetDataAndNavigate } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
@@ -71,7 +71,7 @@ class AccountInfo extends Component {
   }
 
   navigateBackToLogin = () => {
-    this.props.navigation.navigate('ListIsNotProcessedScreen');
+    this.props.navigation.navigate('VanBanDenIsNotProcessScreen');
   }
 
   navigateToEditAccount = () => {
@@ -113,7 +113,7 @@ class AccountInfo extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToLogin()}>
+            <Button transparent onPress={this.navigateBackToLogin}>
               <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Left>

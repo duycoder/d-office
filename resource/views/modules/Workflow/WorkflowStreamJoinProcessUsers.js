@@ -73,6 +73,19 @@ class WorkflowStreamJoinProcessUsers extends Component {
         })
     }
 
+    setMaxHeight = (event) => {
+        this.setState({
+            maxHeight: event.nativeEvent.layout.height
+        });
+    }
+
+    setMinHeight = (event) => {
+        this.setState({
+            minHeight: event.nativeEvent.layout.height
+        });
+    }
+
+
     render() {
         const interpolateRotation = this.state.rotateAnimation.interpolate({
             inputRange: [0, 1],
@@ -90,7 +103,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
         return (
             <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
                 <View style={styles.titleContainer}>
-                    <TouchableOpacity onPress={() => this.toggle()}>
+                    <TouchableOpacity onPress={this.toggle} onLayout={this.setMinHeight}>
                         <ListItem
                             containerStyle={styles.listItemContainer}
                             hideChevron={this.state.users.length <= 0}
@@ -103,7 +116,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.body}>
+                <View style={styles.body} onLayout={this.setMaxHeight}>
                     {
                         this.state.users.map((item, index) => (
                             <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)}>
@@ -155,13 +168,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     container: {
-
+        overflow: 'scroll',
     },
     titleContainer: {
     },
     listItemContainer: {
         height: 60,
-        backgroundColor: '#FF0033',
+        backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemTitle: {
