@@ -125,7 +125,7 @@ export default class BaseDocSearch extends Component {
                   <View style={FormStyle.formLabel}>
                     <Text style={FormStyle.formLabelText}>
                       Mã hiệu
-                </Text>
+                    </Text>
                   </View>
                   <View style={FormStyle.formInput}>
                     <TextInput
@@ -140,7 +140,7 @@ export default class BaseDocSearch extends Component {
                   <View style={FormStyle.formLabel}>
                     <Text style={FormStyle.formLabelText}>
                       Người ký
-                </Text>
+                    </Text>
                   </View>
                   <View style={FormStyle.formInput}>
                     <TextInput
