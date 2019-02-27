@@ -10,6 +10,7 @@ import {
   Keyboard, Animated, Image, ImageBackground,
   TouchableOpacity
 } from 'react-native'
+import Reactotron from 'reactotron-react-native'
 
 //lib
 import {
@@ -71,7 +72,8 @@ class AccountInfo extends Component {
   }
 
   navigateBackToLogin = () => {
-    this.props.navigation.navigate('VanBanDenIsNotProcessScreen');
+    Reactotron.log(this.props.navigation)
+    this.props.navigation.navigate('VanBanDenIsNotProcessScreen'); //ListNotificationScreen
   }
 
   navigateToEditAccount = () => {

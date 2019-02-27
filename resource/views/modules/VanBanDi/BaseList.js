@@ -133,6 +133,17 @@ class BaseList extends Component {
   }
 
   renderItem = ({ item, index }) => {
+    let mahieu = (
+      <RnText>
+        {' ' + item.SOHIEU}
+      </RnText>
+    )
+    if (item.SOHIEU === null || item.SOHIEU === "") {
+      mahieu = (
+        <RnText style={{ color: Colors.RED_PANTONE_186C }}> Không rõ</RnText>
+      );
+    }
+
     return (
       <View>
         <TouchableOpacity onPress={() => this.navigateToDocDetail(item.ID)}>
@@ -165,9 +176,7 @@ class BaseList extends Component {
                   Mã hiệu:
                 </RnText>
 
-                <RnText>
-                  {' ' + item.SOHIEU}
-                </RnText>
+                {mahieu}
               </RnText>
             }
 

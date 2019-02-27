@@ -103,7 +103,7 @@ export default class Panel extends Component {
                         <ListItem
                             containerStyle={SideBarStyle.listItemContainer}
                             hidechevron={true}
-                            title={this.props.title}
+                            title={this.props.title.toUpperCase()}
                             titleStyle={SideBarStyle.listItemTitle}
                             rightIcon={
                                 <Animated.Image source={this.icon} style={iconRotationStyle} />

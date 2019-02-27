@@ -135,6 +135,9 @@ export default class TimelinePublishDoc extends Component {
     }
 
     render() {
+console.tron.log(this.props.info)
+        // console.tron.log(this.state.initState)
+        // console.tron.log(this.state.data)
         return (
             <Container>
                 <Content>

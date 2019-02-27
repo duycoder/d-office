@@ -27,8 +27,8 @@ export default class AttachSignDoc extends Component {
         super(props);
 
         this.state = {
-            VanBanDi: props.info.VanBanDi,
-            ListTaiLieu: props.info.ListTaiLieu,
+            VB_ID: props.docId,
+            ListTaiLieu: props.info,
             filterValue: EMPTY_STRING,
             searching: false
         }
@@ -39,7 +39,7 @@ export default class AttachSignDoc extends Component {
             searching: true
         });
 
-        const url = `${API_URL}/api/VanBanDi/SearchAttachment?id=${this.state.VanBanDi.ID}&attQuery=${this.state.filterValue}`;
+        const url = `${API_URL}/api/VanBanDi/SearchAttachment?id=${this.state.VB_ID}&attQuery=${this.state.filterValue}`;
         const headers = new Headers({
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8'

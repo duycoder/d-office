@@ -160,7 +160,7 @@ class Detail extends Component {
         else if (this.state.isUnAuthorize) {
             bodyContent = unAuthorizePage(this.props.navigation);
         } else {
-            bodyContent = <DetailContent docInfo={this.state.docInfo} />
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} />
 
             if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
                 workflowMenu = (
@@ -301,7 +301,8 @@ class DetailContent extends Component {
         super(props);
         this.state = {
             currentTabIndex: 0,
-            docInfo: props.docInfo
+            docInfo: props.docInfo,
+            docId: props.docId
         }
     }
 
@@ -332,7 +333,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <AttachSignDoc info={this.state.docInfo} />
+                        <AttachSignDoc info={this.state.docInfo} docId={this.state.docId} />
                     </Tab>
 
                     <Tab heading={
