@@ -70,7 +70,7 @@ class DetailTask extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/CongViec/Detail/${this.state.taskId}/${this.state.userId}`;
+        const url = `${API_URL}/api/HscvCongViec/JobDetail/${this.state.taskId}/${this.state.userId}`;
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -293,6 +293,7 @@ class DetailTask extends Component {
     }
 
     render() {
+        console.tron.log(this.state.taskInfo)
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -431,21 +432,21 @@ class DetailTask extends Component {
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
-                    // menuActions.push(
-                    //     <MenuOption key={7} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                    //         <Text style={MenuOptionStyle.text}>
-                    //             Theo dõi
-                    //         </Text>
-                    //     </MenuOption>
-                    // )
+                    menuActions.push(
+                        <MenuOption key={7} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            <Text style={MenuOptionStyle.text}>
+                                Theo dõi
+                            </Text>
+                        </MenuOption>
+                    )
                     if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
-                        {/*menuActions.push(
-                            <MenuOption key={8} style={[MenuOptionStyle.wrapper,MenuOptionStyle.wrapperBorder]}>
+                        menuActions.push(
+                            <MenuOption key={8} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
                                 <Text style={MenuOptionStyle.text}>
                                     DUYỆT KẾ HOẠCH
                                 </Text>
                             </MenuOption>
-                        )*/}
+                        )
                     }
                 } else {
                     if (task.CongViec.IS_HASPLAN == true) {
@@ -453,23 +454,23 @@ class DetailTask extends Component {
                         if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
                             // nếu chưa trình kế hoạch và là người xử lý chính thì
                             if (task.IsNguoiThucHienChinh) {
-                                {/*menuActions.push(
-                                        <MenuOption key={9} style={[MenuOptionStyle.wrapper,MenuOptionStyle.wrapperBorder]}>
-                                            <Text style={MenuOptionStyle.text}>
-                                                TRÌNH KẾ HOẠCH
+                                menuActions.push(
+                                    <MenuOption key={9} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                                        <Text style={MenuOptionStyle.text}>
+                                            TRÌNH KẾ HOẠCH
                                             </Text>
-                                        </MenuOption>
-                                    )*/}
+                                    </MenuOption>
+                                )
                             }
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
-                            {/*menuActions.push(
-                                    <MenuOption key={10} style={[MenuOptionStyle.wrapper,MenuOptionStyle.wrapperBorder]}>
-                                        <Text style={MenuOptionStyle.text}>
-                                            LẬP KẾ HOẠCH
+                            menuActions.push(
+                                <MenuOption key={10} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                                    <Text style={MenuOptionStyle.text}>
+                                        LẬP KẾ HOẠCH
                                         </Text>
-                                    </MenuOption>
-                                )*/}
+                                </MenuOption>
+                            )
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
@@ -545,6 +546,9 @@ class DetailTask extends Component {
                 </Text>
             </MenuOption>
         );
+
+        console.tron.log(">>"+menuActions)
+
         return (
             <MenuProvider>
                 <Container>
@@ -605,7 +609,7 @@ class DetailTask extends Component {
                         executeLoading(this.state.executing)
                     }
                 </Container>
-            </MenuProvider >
+            </MenuProvider>
         );
     }
 }

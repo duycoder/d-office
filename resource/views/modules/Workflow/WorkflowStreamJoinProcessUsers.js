@@ -119,7 +119,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                 <View style={styles.body} onLayout={this.setMaxHeight}>
                     {
                         this.state.users.map((item, index) => (
-                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)}>
+                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)} style={{height: this.state.rowItemHeight}}>
                                 <Left>
                                     <Title>
                                         <NbText>

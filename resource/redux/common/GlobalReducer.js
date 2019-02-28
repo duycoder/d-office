@@ -11,7 +11,7 @@ import vanbandiReducer from '../modules/VanBanDi/Reducer';
 import vanbandenReducer from '../modules/VanBanDen/Reducer';
 import networkReducer from '../modules/Network/Reducer';
 import workflowReducer from '../modules/Workflow/Reducer';
-// import taskReducer from '../modules/task/TaskReducer'
+import taskReducer from '../modules/CongViec/Reducer';
 
 
 export const globalReducer = combineReducers({
@@ -20,6 +20,6 @@ export const globalReducer = combineReducers({
     vanbandenState: vanbandenReducer,
     networkState: networkReducer,
     workflowState: workflowReducer,
-    // taskState: taskReducer,  
+    taskState: taskReducer,  
     // signDocState: signDocReducer,
 });

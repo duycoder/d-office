@@ -3,7 +3,7 @@
  * @author: duynn
  * @since: 17/05/2018
  */
-import * as type from './TaskActionType';
+import * as type from './ActionType';
 import { TASK_PROCESS_TYPE, WORKFLOW_PROCESS_TYPE } from '../../../common/SystemConstant';
 
 const initialState = {

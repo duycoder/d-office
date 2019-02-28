@@ -207,9 +207,9 @@ class CreateSubTask extends Component {
 						</Item>
 
 						<Item stackedLabel>
-							<Label>Độ khẩn</Label>
+							<Label>Mức độ quan trọng</Label>
 							<Picker
-								iosHeader='Chọn độ khẩn'
+								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
 								iosIcon={<Icon name='ios-arrow-down-outline' />}
 								style={pickerStyle}
@@ -226,7 +226,7 @@ class CreateSubTask extends Component {
 						<Item stackedLabel>
 							<Label>Lập kế hoạch</Label>
 							<Picker
-								iosHeader='Chọn độ khẩn'
+								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
 								iosIcon={<Icon name='ios-arrow-down-outline' />}
 								style={pickerStyle}

@@ -406,7 +406,7 @@ class GroupSubTask extends Component {
 
                         <Item stackedLabel>
                             <Label style={styles.dialogLabel}>
-                                {'Độ khẩn: '}
+                                {'Mức độ quan trọng: '}
                             </Label>
 
                             <Label style={styles.dialogText}>

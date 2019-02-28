@@ -37,7 +37,7 @@ export default class TimelinePublishDoc extends Component {
     }
 
     componentWillMount = () => {
-        const {initState} = this.state;
+        const { initState } = this.state;
         let data = [];
         data.push(
             {
@@ -126,16 +126,16 @@ export default class TimelinePublishDoc extends Component {
 
             this.setState({
                 data
-            }, ()=>console.log(">>>this is data: "+data));
+            }, () => console.tron.log(">>>this is data: " + data));
         }
 
         this.setState({
             data
-        }, ()=>console.log(">>>this is data: "+data));
+        }, () => console.tron.log(">>>this is data: " + data));
     }
 
     render() {
-console.tron.log(this.props.info)
+        console.tron.log(this.props.info)
         // console.tron.log(this.state.initState)
         // console.tron.log(this.state.data)
         return (

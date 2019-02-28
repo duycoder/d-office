@@ -163,7 +163,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    ĐỘ KHẨN
+                                    MỨC ĐỘ QUAN TRỌNG
                                 </Text>
                             }
                             subtitle={

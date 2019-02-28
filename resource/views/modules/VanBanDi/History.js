@@ -23,8 +23,8 @@ export default class TimelineSignDoc extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            VanBanDi: props.info.VanBanDi,
-            lstLog: [],
+            // VanBanDi: props.info.lstLog,
+            lstLog: props.info.lstLog || [],
             data: [],
 
             refreshingData: false,

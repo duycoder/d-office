@@ -116,7 +116,7 @@ class SearchList extends Component {
                   borderRadius: 3
                 }}>
                   <Text style={{fontSize: moderateScale(10,0.9), fontWeight: 'bold'}}>
-                    {(item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'T.KHẨN' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'KHẨN' : 'THƯỜNG')}
+                    {(item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG')}
                   </Text>
                 </Button>
               </Right>

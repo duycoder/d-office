@@ -41,20 +41,40 @@ class ListNotification extends Component {
     onPressNotificationItem = async (item) => {
         let screenName = EMPTY_STRING;
         let screenParam = {};
-        if (item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC) {
-            screenName = 'DetailTaskScreen';
+        // if (item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC) {
+        //     screenName = 'DetailTaskScreen';
 
+        //     screenParam = {
+        //         taskId: item.NOTIFY_ITEM_ID,
+        //         taskType: item.targetTaskType || 'AssignedWork',
+        //     }
+        // } else {
+        //     screenName = 'DetailSignDocScreen';
+        //     screenParam = {
+        //         docId: item.NOTIFY_ITEM_ID,
+        //         docType: item.targetDocType || 'GetListProcessing',
+        //     }
+        // }
+
+        let urlArr = item.URL.split("/");
+        const itemType = urlArr[2];
+        const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
+
+        if (itemType === "HSVanBanDi") {
+            screenName = "VanBanDiDetailScreen";
             screenParam = {
-                taskId: item.NOTIFY_ITEM_ID,
-                taskType: item.targetTaskType || 'AssignedWork',
-            }
-        } else {
-            screenName = 'DetailSignDocScreen';
-            screenParam = {
-                docId: item.NOTIFY_ITEM_ID,
-                docType: item.targetDocType || 'GetListProcessing',
+                docId: itemId,
+                docType: "1"
             }
         }
+        else {
+            screenName = "VanBanDenDetailScreen";
+            screenParam = {
+                docId: itemId,
+                docType: "1"
+            }
+        }
+
         appStoreDataAndNavigate(this.props.navigation, "ListNotificationScreen", new Object(), screenName, screenParam);
     }
 
@@ -120,6 +140,7 @@ class ListNotification extends Component {
     }
 
     render() {
+        console.tron.log(this.state.data)
         return (
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>

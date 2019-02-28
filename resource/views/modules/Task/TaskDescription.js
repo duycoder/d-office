@@ -76,7 +76,7 @@ export default class TaskDescription extends Component {
                             }
                             subtitle={
                                 <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {util.isNull(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()}
+                                    {util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()}
                                 </Text>
                             } />
                         <ListItem style={DetailTaskStyle.listItemContainer}
@@ -157,7 +157,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    ĐỘ KHẨN
+                                    MỨC ĐỘ QUAN TRỌNG
                                 </Text>
                             }
                             subtitle={

@@ -419,7 +419,7 @@ class AssignTask extends Component {
 							}
 						</Content>
 					</Tab>
-				</Tabs >
+				</Tabs>
 			);
 		}
 

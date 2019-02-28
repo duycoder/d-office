@@ -23,14 +23,14 @@ export default class UnitSignDoc extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			VanBanDi: props.info.VanBanDi,
-			ListDonVi: props.info.ListDonVi,
+			VanBanDi: props.info.VanBanTrinhKy,
+			ListDonVi: props.info.ListDonViNhanVanBan,
 			filterValue: EMPTY_STRING
 		}
 	}
 
 	renderItem = ({ item }) => (
-		<ListItem title={item} hideChevron={true} titleStyle={{ color: Colors.BLACK }} />
+		<ListItem title={item.TenDonVi} hideChevron={true} titleStyle={{ color: Colors.BLACK }} />
 	)
 
 	onUnitFilter = async () => {
@@ -59,7 +59,7 @@ export default class UnitSignDoc extends Component {
 	}
 
 	render() {
-		console.log(">>>Donvinhan: "+this.state.ListDonVi);
+		console.tron.log(">>>Donvinhan: "+this.state.ListDonVi);
 		return (
 			<Container>
 				<Header searchBar style={{ backgroundColor: Colors.WHITE }}>

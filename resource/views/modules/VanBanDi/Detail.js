@@ -151,6 +151,7 @@ class Detail extends Component {
         appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
     render() {
+        console.tron.log(this.state.docType)
         let bodyContent = null;
         let workflowMenu = null;
 
@@ -241,7 +242,7 @@ class Detail extends Component {
                 }
             }
         }
-
+        // console.tron.log(workflowMenu)
         return (
             <MenuProvider>
                 <Container>
@@ -333,7 +334,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <AttachSignDoc info={this.state.docInfo} docId={this.state.docId} />
+                        <AttachSignDoc info={this.state.docInfo.ListTaiLieu} docId={this.state.docId} />
                     </Tab>
 
                     <Tab heading={

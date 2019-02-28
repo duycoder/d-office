@@ -150,6 +150,7 @@ class Detail extends Component {
     }
 
     render() {        
+        console.tron.log(this.state.docType)
         let bodyContent = null;
         let workflowMenu = null;
 
