@@ -3,7 +3,7 @@ import { View, Modal, NetInfo, Text, StyleSheet } from 'react-native';
 
 //lib + redux
 import { connect } from 'react-redux';
-import * as networkAction from '../../redux/modules/Network/Action';
+import * as networkAction from '../../redux/modules/network/Action';
 import { Header, Icon } from 'react-native-elements';
 
 //constant

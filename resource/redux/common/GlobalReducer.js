@@ -9,7 +9,7 @@ import { combineReducers } from 'redux';
 import userReducer from '../modules/User/Reducer';
 import vanbandiReducer from '../modules/VanBanDi/Reducer';
 import vanbandenReducer from '../modules/VanBanDen/Reducer';
-import networkReducer from '../modules/Network/Reducer';
+import networkReducer from '../modules/network/Reducer';
 import workflowReducer from '../modules/Workflow/Reducer';
 import taskReducer from '../modules/CongViec/Reducer';
 
