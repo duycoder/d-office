@@ -28,8 +28,8 @@ export default class AttachPublishDoc extends Component {
         super(props);
 
         this.state = {
-            VanBanDen: props.info.vanBanDen,
-            ListTaiLieu: props.info.ListTaiLieu,
+            VB_ID: props.docId,
+            ListTaiLieu: props.info,
             filterValue: EMPTY_STRING,
             searching: false
         }
@@ -40,7 +40,7 @@ export default class AttachPublishDoc extends Component {
             searching: true
         });
 
-        const url = `${API_URL}/api/VanBanDen/SearchAttachment?id=${this.state.VanBanDen.ID}&attQuery=${this.state.filterValue}`;
+        const url = `${API_URL}/api/VanBanDen/SearchAttachment?id=${this.state.VB_ID}&attQuery=${this.state.filterValue}`;
         const headers = new Headers({
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8'
@@ -62,12 +62,13 @@ export default class AttachPublishDoc extends Component {
     }
 
 
-    onDownloadFile(fileName, fileLink, fileExtension) {
+    onDownloadFile(fileName, fileLink, fileExtension, fileId) {
+        // console.tron.log("fileLink: "+fileLink);
         try {
             fileLink = WEB_URL + fileLink;
             fileLink = fileLink.replace('////', '/');
             fileLink = fileLink.replace(/ /g, "%20");
-
+            // fileLink = WEB_URL + `/Common/DownloadFile?ID=${fileId}`
             const config = {
                 fileCache: true,
                 // android only options, these options be a no-op on IOS
@@ -123,7 +124,7 @@ export default class AttachPublishDoc extends Component {
     renderItem = ({ item }) => (
         <ListItem
             rightIcon={
-                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}>
+                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE, item.TAILIEU_ID)}>
                     <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
                 </TouchableOpacity>
             }
@@ -135,6 +136,7 @@ export default class AttachPublishDoc extends Component {
     )
 
     render() {
+        // console.tron.log(this.state.ListTaiLieu)
         return (
             <Container>
                 <Header searchBar style={{ backgroundColor: Colors.WHITE }}>

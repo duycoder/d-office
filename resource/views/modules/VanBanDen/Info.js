@@ -14,7 +14,8 @@ import HTMLView from 'react-native-htmlview';
 import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
-import { convertDateToString } from '../../../common/Utilities';
+import { convertDateToString, _readableFormat } from '../../../common/Utilities';
+import { Colors } from '../../../common/SystemConstant';
 
 export default class MainInfoPublishDoc extends Component {
 
@@ -28,6 +29,30 @@ export default class MainInfoPublishDoc extends Component {
 
 
     render() {
+        // Print out state.info
+        console.tron.log(this.state.info)
+        // pre-process
+        const { info } = this.state;
+
+        let congtacTime = "";
+        if (info.hasOwnProperty("GIO_CONGTAC") && info.hasOwnProperty("PHUT_CONGTAC")) {
+            congtacTime = `${_readableFormat(info.GIO_CONGTAC)}:${_readableFormat(info.PHUT_CONGTAC)}`
+        }
+
+        let sohieu = (
+            <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                {info.SOHIEU}
+            </Text>
+        );
+        if (info.SOHIEU === null) {
+            sohieu = (
+                <Text style={[DetailPublishDocStyle.listItemSubTitleContainer, {color: Colors.RED_PANTONE_186C}]}>
+                    Không rõ
+                </Text>
+            );
+        }
+
+        // render
         return (
             <View style={DetailPublishDocStyle.container}>
                 <ScrollView>
@@ -81,7 +106,7 @@ export default class MainInfoPublishDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SOHIEU}
+                                    {sohieu}
                                 </Text>
                             } />
 
@@ -137,7 +162,7 @@ export default class MainInfoPublishDoc extends Component {
                                 </Text>
                             } />
 
-                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
@@ -225,7 +250,7 @@ export default class MainInfoPublishDoc extends Component {
                                 </Text>
                             } />
 
-                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
@@ -235,9 +260,26 @@ export default class MainInfoPublishDoc extends Component {
                             subtitle={
                                 <HTMLView
                                     value={this.state.info.NOIDUNG}
-                                    stylesheet={{p: DetailPublishDocStyle.listItemSubTitleContainer}}
+                                    stylesheet={{ p: DetailPublishDocStyle.listItemSubTitleContainer }}
                                 />
                             } />
+                        {
+                            this.state.info.hasOwnProperty("NGAYCONGTAC") &&
+                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        THỜI GIAN CÔNG TÁC
+                                        </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
+                                    </Text>
+                                }
+                            />
+                        }
+
                     </List>
                 </ScrollView>
             </View>

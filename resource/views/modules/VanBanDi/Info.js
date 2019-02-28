@@ -14,6 +14,7 @@ import HTMLView from 'react-native-htmlview';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //common
 import { convertDateToString } from '../../../common/Utilities';
+import { Colors } from '../../../common/SystemConstant';
 
 export default class MainInfoSignDoc extends Component {
     constructor(props) {
@@ -24,6 +25,21 @@ export default class MainInfoSignDoc extends Component {
     }
 
     render() {
+        const { info } = this.state;
+        let sohieu = (
+            <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                {this.state.info.SOHIEU}
+            </Text>
+        );
+        if (info.SOHIEU === null || info.SOHIEU === "") {
+            sohieu = (
+                <Text style={[DetailSignDocStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
+                    Không rõ
+                </Text>
+            );
+        }
+
+
         return (
             <View style={DetailSignDocStyle.container}>
                 <ScrollView>
@@ -54,7 +70,7 @@ export default class MainInfoSignDoc extends Component {
                                 </Text>
                             } />
 
-                            <ListItem style={DetailSignDocStyle.listItemContainer}
+                        <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
@@ -88,9 +104,7 @@ export default class MainInfoSignDoc extends Component {
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SOHIEU === null ? "N/A" : this.state.info.SOHIEU}
-                                </Text>
+                                sohieu
                             } />
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}

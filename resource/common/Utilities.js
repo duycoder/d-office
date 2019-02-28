@@ -76,8 +76,8 @@ export function convertDateTimeToTitle(date) {
     return 'N/A'
 }
 
-//Thêm '0' vào trước ngày tháng nếu chỉ có một chữ số
-function _readableFormat(value) {
+//Add Zero('0') before date/time
+export function _readableFormat(value) {
     return (value < 10) ? '0' + value : value;
 }
 

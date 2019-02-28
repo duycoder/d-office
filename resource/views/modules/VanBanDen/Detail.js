@@ -69,7 +69,6 @@ class Detail extends Component {
         });
 
         const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}`;
-        console.log(url);
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -150,7 +149,7 @@ class Detail extends Component {
         appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
 
-    render() {
+    render() {        
         let bodyContent = null;
         let workflowMenu = null;
 
@@ -160,7 +159,7 @@ class Detail extends Component {
         else if (this.state.isUnAuthorize) {
             bodyContent = unAuthorizePage(this.props.navigation);
         } else {
-            bodyContent = <DetailContent docInfo={this.state.docInfo} />
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} />
 
             if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
                 workflowMenu = (
@@ -301,12 +300,13 @@ class DetailContent extends Component {
         super(props);
         this.state = {
             currentTabIndex: 0,
-            docInfo: props.docInfo
+            docInfo: props.docInfo,
+            docId: props.docId
         }
     }
 
     render() {
-        console.log(this.state.docInfo); // Log Info Of Doc
+        // console.tron.log(this.state.docInfo); // Log Info Of Doc
         return (
             <View style={{ flex: 1 }}>
                 <Tabs
@@ -333,7 +333,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems}/>
+                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems} docId={this.state.docId}/>
                     </Tab>
 
                     <Tab heading={
