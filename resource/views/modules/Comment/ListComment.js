@@ -63,7 +63,7 @@ class ListComment extends Component {
       loadingMore: false,
       refreshing: false,
       executing: false,
-      data: props.navigation.state.params.vanbandiData || [],
+      data: [],
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
       commentContent: EMPTY_STRING,
@@ -76,7 +76,6 @@ class ListComment extends Component {
   }
 
   componentWillMount = () => {
-    this.state.data.length < 0 &&
       this.setState({
         loading: true
       }, () => this.fetchData());
@@ -91,9 +90,12 @@ class ListComment extends Component {
     }, () => this.fetchData())
   }
 
-  fetchData = async (isTaskComment = this.state.isTaskComment) => {
+  fetchData = async () => {
     // let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
     let url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
+
+    const {isTaskComment}=this.state;
+
     if (isTaskComment) {
       url = `${API_URL}/api/HscvCongViec/GetRootCommentsOfTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
@@ -101,7 +103,7 @@ class ListComment extends Component {
     const result = await fetch(url);
     let resultJson = await result.json();
     if (!isTaskComment) {
-      resultJson = resultJson.LstRootComment
+      resultJson = resultJson.LstRootComment;
     }
 
     this.setState({

@@ -13,8 +13,11 @@
 		00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302DC1ABCB9D200DB3ED1 /* libRCTNetwork.a */; };
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* VanBanDOJITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* VanBanDOJITests.m */; };
+		082D76C42229610B009B468F /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0857B66220CF6BC400BEA2DA /* libRNImagePicker.a */; };
+		082D76C52229610B009B468F /* libRNReactNativeDocViewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 082D76BE22296079009B468F /* libRNReactNativeDocViewer.a */; };
+		082D76C622296159009B468F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082D76C2222960D4009B468F /* QuickLook.framework */; };
+		082D76C722296164009B468F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082D76C0222960C9009B468F /* AssetsLibrary.framework */; };
 		0857B5C220CF574E00BEA2DA /* libRNDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0857B5C120CF573900BEA2DA /* libRNDocumentPicker.a */; };
-		0857B66320CF6BDC00BEA2DA /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0857B66220CF6BC400BEA2DA /* libRNImagePicker.a */; };
 		08F92C5B20B55375003C718C /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08F92C2520B54A0A003C718C /* libRNFIRMessaging.a */; };
 		08F92C5C20B55609003C718C /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08F92C2220B54A0A003C718C /* libRNFetchBlob.a */; };
 		08F92C9320B55B1B003C718C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08F92C6B20B55B1A003C718C /* GoogleService-Info.plist */; };
@@ -102,6 +105,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = VanBanDOJI;
+		};
+		082D76BD22296079009B468F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 082D768F22296079009B468F /* RNReactNativeDocViewer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNReactNativeDocViewer;
 		};
 		0857B5C020CF573900BEA2DA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -382,6 +392,9 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* VanBanDOJITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VanBanDOJITests.m; sourceTree = "<group>"; };
 		05F559AECA1B415BAAE81B1F /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/native-base/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		082D768F22296079009B468F /* RNReactNativeDocViewer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNReactNativeDocViewer.xcodeproj; path = "../node_modules/react-native-doc-viewer/ios/RNReactNativeDocViewer.xcodeproj"; sourceTree = "<group>"; };
+		082D76C0222960C9009B468F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		082D76C2222960D4009B468F /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		0857B5BC20CF573900BEA2DA /* RNDocumentPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDocumentPicker.xcodeproj; path = "../node_modules/react-native-document-picker/ios/RNDocumentPicker.xcodeproj"; sourceTree = "<group>"; };
 		0857B5C320CF588300BEA2DA /* VanBanDOJI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = VanBanDOJI.entitlements; path = VanBanDOJI/VanBanDOJI.entitlements; sourceTree = "<group>"; };
 		0857B63420CF6BC400BEA2DA /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
@@ -446,7 +459,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0857B66320CF6BDC00BEA2DA /* libRNImagePicker.a in Frameworks */,
+				082D76C722296164009B468F /* AssetsLibrary.framework in Frameworks */,
+				082D76C622296159009B468F /* QuickLook.framework in Frameworks */,
+				082D76C42229610B009B468F /* libRNImagePicker.a in Frameworks */,
+				082D76C52229610B009B468F /* libRNReactNativeDocViewer.a in Frameworks */,
 				0857B5C220CF574E00BEA2DA /* libRNDocumentPicker.a in Frameworks */,
 				08F92C5C20B55609003C718C /* libRNFetchBlob.a in Frameworks */,
 				08F92C5B20B55375003C718C /* libRNFIRMessaging.a in Frameworks */,
@@ -552,6 +568,14 @@
 				00E356F11AD99517003FC87E /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		082D769022296079009B468F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				082D76BE22296079009B468F /* libRNReactNativeDocViewer.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		0857B5BD20CF573900BEA2DA /* Products */ = {
@@ -699,6 +723,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				082D76C2222960D4009B468F /* QuickLook.framework */,
+				082D76C0222960C9009B468F /* AssetsLibrary.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				78BAE15098E271742D421B03 /* libPods-VanBanDOJI.a */,
 				21FA4D386C8CAB4A9B27BC2E /* libPods-VanBanDOJI-tvOS.a */,
@@ -729,6 +755,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				082D768F22296079009B468F /* RNReactNativeDocViewer.xcodeproj */,
 				0857B63420CF6BC400BEA2DA /* RNImagePicker.xcodeproj */,
 				0857B5BC20CF573900BEA2DA /* RNDocumentPicker.xcodeproj */,
 				832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */,
@@ -885,7 +912,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = B86RCDG7D2;
+						DevelopmentTeam = 3589W8Y69G;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -994,6 +1021,10 @@
 					ProductGroup = 0857B63520CF6BC400BEA2DA /* Products */;
 					ProjectRef = 0857B63420CF6BC400BEA2DA /* RNImagePicker.xcodeproj */;
 				},
+				{
+					ProductGroup = 082D769022296079009B468F /* Products */;
+					ProjectRef = 082D768F22296079009B468F /* RNReactNativeDocViewer.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1039,6 +1070,13 @@
 			fileType = archive.ar;
 			path = libRCTVibration.a;
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		082D76BE22296079009B468F /* libRNReactNativeDocViewer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNReactNativeDocViewer.a;
+			remoteRef = 082D76BD22296079009B468F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		0857B5C120CF573900BEA2DA /* libRNDocumentPicker.a */ = {
@@ -1519,7 +1557,7 @@
 			baseConfigurationReference = A8DA83CDA46E68D71B2C613A /* Pods-VanBanDOJITests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = B86RCDG7D2;
+				DEVELOPMENT_TEAM = 3589W8Y69G;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1552,7 +1590,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = B86RCDG7D2;
+				DEVELOPMENT_TEAM = 3589W8Y69G;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..\node_modules\neact-native-fetch-blobios/**",

@@ -28,7 +28,8 @@ import {
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
   VANBANDEN_CONSTANT,
-  VANBANDI_CONSTANT
+  VANBANDI_CONSTANT,
+  EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
@@ -137,6 +138,16 @@ class BaseList extends Component {
     })
   }
 
+  onClearFilter = () => {
+    this.setState({
+      loadingData: true,
+      pageIndex: DEFAULT_PAGE_INDEX,
+      filterValue: EMPTY_STRING
+    }, () => {
+      this.fetchData()
+    })
+  }
+
   renderItem = ({ item, index }) => {
     return (
       <View>
@@ -202,7 +213,11 @@ class BaseList extends Component {
               value={this.state.filterValue}
               onChangeText={(filterValue) => this.setState({ filterValue })}
               onSubmitEditing={() => this.onFilter()} />
-            <Icon name='ios-document' />
+            {
+              this.state.filterValue !== EMPTY_STRING 
+              ? <Icon name='ios-close-circle' onPress={this.onClearFilter}/>
+              : <Icon name='ios-document' />
+            }
           </Item>
         </Header>
 

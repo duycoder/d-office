@@ -37,7 +37,7 @@ import renderIf from 'render-if';
 
 //views
 import MainInfoPublishDoc from './Info';
-import TimelinePublishDoc  from './History';
+import TimelinePublishDoc from './History';
 import AttachPublishDoc from './Attachment';
 
 class Detail extends Component {
@@ -113,7 +113,8 @@ class Detail extends Component {
             stepId: item.ID,
             stepName: item.NAME,
             isStepBack,
-            logId: (isStepBack == true) ? item.Log.ID : 0
+            logId: (isStepBack == true) ? item.Log.ID : 0,
+            apiUrlMiddle: 'VanBanDen'
         }
         appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
     }
@@ -149,7 +150,7 @@ class Detail extends Component {
         appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
 
-    render() {        
+    render() {
         // console.tron.log(this.state.docType)
         let bodyContent = null;
         let workflowMenu = null;
@@ -259,7 +260,9 @@ class Detail extends Component {
                         </Body>
 
                         <Right style={NativeBaseStyle.right}>
-                            <Button transparent onPress={this.onOpenComment}>
+                            {
+                                /*
+                                <Button transparent onPress={this.onOpenComment}>
                                 <Form style={DetailPublishDocStyle.commentButtonContainer}>
                                     <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                     {
@@ -267,13 +270,16 @@ class Detail extends Component {
                                             <Form style={DetailPublishDocStyle.commentCircleContainer}>
                                                 <Text style={DetailPublishDocStyle.commentCountText}>
                                                     0
-                                                    {/* {this.state.docInfo.COMMENT_COUNT} */}
+                                                    //{this.state.docInfo.COMMENT_COUNT}
                                                 </Text>
                                             </Form>
                                         )
                                     }
                                 </Form>
                             </Button>
+                                */
+                            }
+
                             {
                                 workflowMenu
                             }
@@ -334,7 +340,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems} docId={this.state.docId}/>
+                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems} docId={this.state.docId} />
                     </Tab>
 
                     <Tab heading={

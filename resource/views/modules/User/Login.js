@@ -344,8 +344,9 @@ class Login extends Component {
                             </View>
                         </View>
                     </ImageBackground>
-                    <Animated.View style={[LoginStyle.formFooter, { display: this.state.footerAnimation }]}>
-                    </Animated.View>
+                    {
+                        //<Animated.View style={[LoginStyle.formFooter, { display: this.state.footerAnimation }]}></Animated.View>
+                    }
 
                     {
                         authenticateLoading(this.state.loading)

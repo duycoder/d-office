@@ -115,7 +115,8 @@ class Detail extends Component {
             stepId: item.ID,
             stepName: item.NAME,
             isStepBack,
-            logId: (isStepBack == true) ? item.Log.ID : 0
+            logId: (isStepBack == true) ? item.Log.ID : 0,
+            apiUrlMiddle: 'VanBanDi'
         }
         appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
     }

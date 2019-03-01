@@ -14,6 +14,8 @@ target 'VanBanDOJI' do
 
     pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
 
+    pod 'RNReactNativeDocViewer', :path => '../node_modules/react-native-doc-viewer'
+
   end
 
   target 'VanBanDOJITests' do

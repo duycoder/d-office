@@ -17,8 +17,7 @@ import { appNavigate, isObjectHasValue } from '../../common/Utilities';
 import ProgressBar from './ProgressBar';
 
 //const
-const uriLogo = require('../../assets/images/doji-big-icon.png')
-const uriBackground = require('../../assets/images/background.png');
+import Images from '../../common/Images';
 
 //redux
 import { connect } from 'react-redux';
@@ -37,7 +36,7 @@ registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 1000,
+        timing: 1,
         notif: ''
     }
 
@@ -88,6 +87,7 @@ class Loading extends Component {
                     if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
                         screenName = 'ListNotificationScreen'
                     } else {
+                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
                         screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsProcessScreen';
                     }
                     appNavigate(this.props.navigation, screenName, screenParam);
@@ -104,12 +104,12 @@ class Loading extends Component {
 
     render() {
         return (
-            <ImageBackground source={uriBackground} style={{
+            <ImageBackground source={Images.background} style={{
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center'
             }}>
-                <Image source={uriLogo} style={{
+                <Image source={Images.logo} style={{
                     marginBottom: verticalScale(20)
                 }} />
 

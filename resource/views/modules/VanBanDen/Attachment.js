@@ -11,6 +11,7 @@ import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform } from '
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import RNFetchBlob from 'react-native-fetch-blob';
+import OpenFile from 'react-native-doc-viewer';
 
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
@@ -65,10 +66,10 @@ export default class AttachPublishDoc extends Component {
     onDownloadFile(fileName, fileLink, fileExtension, fileId) {
         // console.tron.log("fileLink: "+fileLink);
         try {
-            fileLink = WEB_URL + fileLink;
-            fileLink = fileLink.replace('////', '/');
+            fileLink = WEB_URL + '/Uploads' + fileLink;
+            fileLink = fileLink.replace(/\\/g, '/');
             fileLink = fileLink.replace(/ /g, "%20");
-            // fileLink = WEB_URL + `/Common/DownloadFile?ID=${fileId}`
+
             const config = {
                 fileCache: true,
                 // android only options, these options be a no-op on IOS
@@ -80,36 +81,70 @@ export default class AttachPublishDoc extends Component {
                     mediaScannable: true, // Make the file scannable  by media scanner
                 }
             }
-            
+            let dirs = RNFetchBlob.fs.dirs.DocumentDir
+            let savedName = fileLink.split("/").pop()
+            let savedPath = `${dirs}/${savedName}`
             if (Platform.OS == 'ios') {
                 config = {
                     fileCache: true,
-                    // appendExt: 'png'
+                    // appendExt: 'png',
+                    path: `${dirs}/${savedName}`
                 }
             }
 
-            // console.tron.log(fileLink)
-            RNFetchBlob.config(config)
-                .fetch('GET', fileLink)
-                .then((response) => {
-                    //kiểm tra platform nếu là android và file là ảnh
-                    if (Platform.OS == 'android' && isImage(fileExtension)) {
-                        android.actionViewIntent(response.path(), fileExtension);
-                    }
-                    response.path();
-                    // console.tron.log(`The file saved to ${response.path()}`)
-                }).catch((err) => {
-                    Alert.alert(
-                        'THÔNG BÁO',
-                        'KHÔNG THỂ TẢI ĐƯỢC FILE',
-                        [
-                            {
-                                text: 'OK',
-                                onPress: () => { }
+            RNFetchBlob.fs.exists(savedPath)
+                .then(existStatus => {
+                    if (existStatus) {
+                        // console.tron.log("File da ton tai")
+                        OpenFile.openDoc([{
+                            url: savedPath,
+                            fileNameOptional: fileName
+                        }], (error, url) => {
+                            if (error) {
+                                console.tron.log(error)
+                            } else {
+                                console.tron.log(url)
                             }
-                        ]
-                    )
-                });
+                        })
+                    }
+                    else {
+                        RNFetchBlob.config(config)
+                            .fetch('GET', fileLink)
+                            .then((response) => {
+                                //kiểm tra platform nếu là android và file là ảnh
+                                if (Platform.OS == 'android' && isImage(fileExtension)) {
+                                    android.actionViewIntent(response.path(), fileExtension);
+                                }
+                                console.tron.log(response.path())
+
+                                Alert.alert(
+                                    'THÔNG BÁO',
+                                    'TẢI FILE THÀNH CÔNG',
+                                    [
+                                        {
+                                            text: 'OK',
+                                            onPress: () => { }
+                                        }
+                                    ]
+                                )
+                            }).catch((err) => {
+                                Alert.alert(
+                                    'THÔNG BÁO',
+                                    'KHÔNG THỂ TẢI ĐƯỢC FILE',
+                                    [
+                                        {
+                                            text: 'OK',
+                                            onPress: () => { }
+                                        }
+                                    ]
+                                )
+                            });
+                    }
+                })
+                .catch(err => console.tron.log(err))
+
+            console.tron.log(fileLink)
+
         } catch (err) {
             Alert.alert({
                 'title': 'THÔNG BÁO',

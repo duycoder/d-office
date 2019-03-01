@@ -96,13 +96,19 @@ class ReplyComment extends Component {
   }
 
   fetchData = async () => {
-    let url = `${API_URL}/api/VanBanDi/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
-    
-    if(this.state.isTaskComment){
+    // let url = `${API_URL}/api/VanBanDi/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
+    let url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
+    const {isTaskComment}=this.state;
+
+    if(isTaskComment){
       url = `${API_URL}/api/HscvCongViec/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
     const result = await fetch(url);
-    const resultJson = await result.json();
+    let resultJson = await result.json();
+
+    if (!isTaskComment){
+      resultJson = resultJson.LstRootComment;
+    }
 
     this.setState({
       loading: false,
