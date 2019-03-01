@@ -101,9 +101,9 @@ export default class AttachPublishDoc extends Component {
                             fileNameOptional: fileName
                         }], (error, url) => {
                             if (error) {
-                                console.tron.log(error)
+                                console.log(error)
                             } else {
-                                console.tron.log(url)
+                                console.log(url)
                             }
                         })
                     }
@@ -115,7 +115,7 @@ export default class AttachPublishDoc extends Component {
                                 if (Platform.OS == 'android' && isImage(fileExtension)) {
                                     android.actionViewIntent(response.path(), fileExtension);
                                 }
-                                console.tron.log(response.path())
+                                // console.tron.log(response.path())
 
                                 Alert.alert(
                                     'THÔNG BÁO',
@@ -141,7 +141,7 @@ export default class AttachPublishDoc extends Component {
                             });
                     }
                 })
-                .catch(err => console.tron.log(err))
+                .catch(err => console.log(err))
 
             console.tron.log(fileLink)
 

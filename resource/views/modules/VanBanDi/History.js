@@ -40,7 +40,7 @@ export default class TimelineSignDoc extends Component {
 
     componentWillMount = () => {
         let data = [];
-        console.tron.log(this.state.lstLog)
+        // console.tron.log(this.state.lstLog)
 
         if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
             this.state.lstLog.forEach((item, index) => {
