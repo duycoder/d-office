@@ -66,6 +66,10 @@ class Login extends Component {
         this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
     }
+    componentWillUnmount() {
+        this.keyboardDidShowListener.remove();
+        this.keyboardDidHideListener.remove();
+    }
 
     _keyboardDidShow() {
         this.setState({
@@ -164,7 +168,20 @@ class Login extends Component {
 
         await asyncDelay(2000);
 
-        if (!util.isNull(resultJson)) {
+        if (resultJson.hasOwnProperty("Message")) {
+            this.setState({
+                loading: false
+            }, () => {
+                Toast.show({
+                    text: 'Lỗi máy chủ!',
+                    textStyle: { fontSize: moderateScale(12, 1.5) },
+                    buttonText: "OK",
+                    buttonStyle: { backgroundColor: "#acb7b1" },
+                    duration: 3000
+                });
+            });
+        }
+        else if (!util.isNull(resultJson)) {
             //tạo token cho thiết bị nếu lần đầu đăng nhập
             await FCM.getFCMToken().then(token => {
                 resultJson.Token = token;

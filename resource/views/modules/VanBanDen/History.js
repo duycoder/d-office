@@ -37,8 +37,10 @@ export default class TimelinePublishDoc extends Component {
     }
 
     componentWillMount = () => {
+        console.tron.log(this.props.info.WorkFlow)
         const { initState } = this.state;
         let data = [];
+        console.tron.log(initState)
         data.push(
             {
                 time: convertDateTimeToString(initState.create_at),
@@ -79,7 +81,7 @@ export default class TimelinePublishDoc extends Component {
                 ),
             }
         )
-
+        console.tron.log(this.state.lstLog)
         if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
             this.state.lstLog.forEach((item, index) => {
                 data.push(
@@ -126,16 +128,16 @@ export default class TimelinePublishDoc extends Component {
 
             this.setState({
                 data
-            }, () => console.tron.log(">>>this is data: " + data));
+            }, () => console.log(">>>this is data: " + data));
         }
 
         this.setState({
             data
-        }, () => console.tron.log(">>>this is data: " + data));
+        }, () => console.log(">>>this is data: " + data));
     }
 
     render() {
-        console.tron.log(this.props.info)
+        // console.tron.log(this.props.info)
         // console.tron.log(this.state.initState)
         // console.tron.log(this.state.data)
         return (
@@ -166,7 +168,8 @@ export default class TimelinePublishDoc extends Component {
                                 styleContainer={{ marginTop: verticalScale(10) }}
                                 data={this.state.data}
                                 isRenderSeperator
-                                columnFormat={'two-column'}
+                                columnFormat={'single-column-left'}
+                                timeContainerStyle={{minWidth: 72}}
                             />
                         )
                     }

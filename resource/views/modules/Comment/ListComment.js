@@ -63,7 +63,7 @@ class ListComment extends Component {
       loadingMore: false,
       refreshing: false,
       executing: false,
-      data: [],
+      data: props.navigation.state.params.vanbandiData || [],
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
       commentContent: EMPTY_STRING,
@@ -76,9 +76,12 @@ class ListComment extends Component {
   }
 
   componentWillMount = () => {
-    this.setState({
-      loading: true
-    }, () => this.fetchData())
+    this.state.data.length < 0 &&
+      this.setState({
+        loading: true
+      }, () => this.fetchData());
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
   }
 
   loadingMore = () => {
@@ -88,15 +91,19 @@ class ListComment extends Component {
     }, () => this.fetchData())
   }
 
-  fetchData = async () => {
-    let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
-
-    if (this.state.isTaskComment) {
+  fetchData = async (isTaskComment = this.state.isTaskComment) => {
+    // let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
+    let url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
+    if (isTaskComment) {
       url = `${API_URL}/api/HscvCongViec/GetRootCommentsOfTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
 
     const result = await fetch(url);
-    const resultJson = await result.json();
+    let resultJson = await result.json();
+    if (!isTaskComment) {
+      resultJson = resultJson.LstRootComment
+    }
+
     this.setState({
       loading: false,
       loadingMore: false,
@@ -111,22 +118,18 @@ class ListComment extends Component {
     }, () => this.fetchData())
   }
 
-  componentWillMount() {
-    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-  }
-
   componentDidMount = () => {
     backHandlerConfig(true, this.navigateToDetail)
   }
 
   componentWillUnmount() {
-    // this.keyboardWillShowSub.remove();
-    // this.keyboardWillHideSub.remove();
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
     backHandlerConfig(false, this.navigateToDetail);
   }
 
   navigateToDetail = () => {
+    // console.tron.log(this.props.navigation)
     appGetDataAndNavigate(this.props.navigation, 'ListCommentScreen');
     return true;
     // if (this.state.isTaskComment) {

@@ -130,7 +130,7 @@ class Detail extends Component {
             stepName: 'GỬI REVIEW',
             logId: 0
         }
-        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
+        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onSelectWorkFlowStep(item, isStepBack) {
@@ -146,12 +146,13 @@ class Detail extends Component {
         const targetScreenParam = {
             docId: this.state.docId,
             docType: this.state.docType,
-            isTaskComment: false
+            isTaskComment: false,
+            vanbandiData: this.state.docInfo.LstRootComment
         }
-        appStoreDataAndNavigate(this.props.navigation, "DetailSignDocScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
     render() {
-        console.tron.log(this.state.docType)
+        // console.tron.log(this.state.docType)
         let bodyContent = null;
         let workflowMenu = null;
 
@@ -308,6 +309,7 @@ class DetailContent extends Component {
     }
 
     render() {
+        // console.tron.log(this.state.docInfo)
         return (
             <View style={{ flex: 1 }}>
                 <Tabs

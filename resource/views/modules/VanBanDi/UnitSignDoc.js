@@ -8,7 +8,7 @@ import { ActivityIndicator, View, ScrollView, FlatList } from 'react-native';
 
 //lib
 import { Container, Content, Header, Icon, Item, Input, Col } from 'native-base';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import renderIf from 'render-if';
 
 //styles
@@ -29,9 +29,21 @@ export default class UnitSignDoc extends Component {
 		}
 	}
 
-	renderItem = ({ item }) => (
-		<ListItem title={item.TenDonVi} hideChevron={true} titleStyle={{ color: Colors.BLACK }} />
-	)
+	renderItem = ({ item }) => {
+		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={Colors.RED_PANTONE_186C} />
+		if (item.IsDoc) {
+			<RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.GREEN_PANTON_369C} />
+		}
+
+		return (
+			<ListItem
+				title={item.TenDonVi}
+				hideChevron={true}
+				titleStyle={{ color: Colors.BLACK }}
+				rightTitle={rightIcon}
+			/>
+		)
+	}
 
 	onUnitFilter = async () => {
 		this.setState({
@@ -59,7 +71,7 @@ export default class UnitSignDoc extends Component {
 	}
 
 	render() {
-		console.tron.log(">>>Donvinhan: "+this.state.ListDonVi);
+		// console.tron.log(this.state.ListDonVi);
 		return (
 			<Container>
 				<Header searchBar style={{ backgroundColor: Colors.WHITE }}>

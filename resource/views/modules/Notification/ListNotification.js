@@ -140,7 +140,7 @@ class ListNotification extends Component {
     }
 
     render() {
-        console.tron.log(this.state.data)
+        // console.tron.log(this.state.data)
         return (
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>

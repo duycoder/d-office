@@ -30,7 +30,7 @@ export default class MainInfoPublishDoc extends Component {
 
     render() {
         // Print out state.info
-        console.tron.log(this.state.info)
+        // console.tron.log(this.state.info)
         // pre-process
         const { info } = this.state;
 

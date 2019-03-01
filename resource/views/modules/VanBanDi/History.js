@@ -28,6 +28,7 @@ export default class TimelineSignDoc extends Component {
             data: [],
 
             refreshingData: false,
+            initState: props.info.WorkFlow.StartState,
         }
     }
 
