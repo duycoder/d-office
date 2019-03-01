@@ -148,29 +148,29 @@ export default class SideBar extends Component {
                         {
                             // Lấy chức năng của người dùng
                             userFunctions && userFunctions.map((item, index) =>
-                                <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.ID}>
+                                <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()}>
                                     {
                                         item.ListThaoTac.map((sItem, sIndex) =>
-                                            sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE
-                                                ? <TouchableOpacity
-                                                    key={sItem.ID}
-                                                    onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID)}
-                                                    style={this.state.onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
-                                                    <ListItem
-                                                        leftIcon={
-                                                            this.state.onFocusNow !== sItem.DM_THAOTAC_ID ?
-                                                                <Image source={SBIcons.doc_NotCompleted_Neutral} style={SideBarStyle.listItemLeftIcon} /> :
-                                                                <Image source={SBIcons.doc_NotCompleted_Active} style={SideBarStyle.listItemLeftIcon} />
-                                                        }
-                                                        rightIcon={
-                                                            this.state.onFocusNow !== sItem.DM_THAOTAC_ID ? mainItemIcon : subItemIcon
-                                                        }
-                                                        containerStyle={SideBarStyle.subItemContainer}
-                                                        title={sItem.TEN_THAOTAC.indexOf("Danh sách văn bản ") > -1 ? sItem.TEN_THAOTAC.replace("Danh sách văn bản ", "").toUpperCase() : sItem.TEN_THAOTAC.toUpperCase()}
-                                                        titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemSubTitleContainerFocus]}
-                                                        contentContainerStyle={SideBarStyle.subItemContainer} />
-                                                </TouchableOpacity>
-                                                : null
+                                            sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE 
+                                            ? <TouchableOpacity
+                                                key={sItem.DM_THAOTAC_ID.toString()}
+                                                onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID)}
+                                                style={this.state.onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
+                                                <ListItem
+                                                    leftIcon={
+                                                        this.state.onFocusNow !== sItem.DM_THAOTAC_ID ?
+                                                            <Image source={SBIcons.doc_NotCompleted_Neutral} style={SideBarStyle.listItemLeftIcon} /> :
+                                                            <Image source={SBIcons.doc_NotCompleted_Active} style={SideBarStyle.listItemLeftIcon} />
+                                                    }
+                                                    rightIcon={
+                                                        this.state.onFocusNow !== sItem.DM_THAOTAC_ID ? mainItemIcon : subItemIcon
+                                                    }
+                                                    containerStyle={SideBarStyle.subItemContainer}
+                                                    title={sItem.TEN_THAOTAC.indexOf("Danh sách văn bản ") > -1 ? sItem.TEN_THAOTAC.replace("Danh sách văn bản ", "").toUpperCase() : sItem.TEN_THAOTAC.toUpperCase()}
+                                                    titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemSubTitleContainerFocus]}
+                                                    contentContainerStyle={SideBarStyle.subItemContainer} />
+                                            </TouchableOpacity>
+                                            : null
                                         )
                                     }
                                 </Panel>

@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 ProgressBar.defaultProps = {
     height: verticalScale(20),
     borderRadius: 50,
-    borderColor: Colors.DANK_BLUE,
+    borderColor: Colors.LITE_BLUE,
     borderWidth: 1,
     fillColor: 'transparent',
     barColor: Colors.LITE_BLUE,

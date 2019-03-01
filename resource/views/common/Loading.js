@@ -17,7 +17,8 @@ import { appNavigate, isObjectHasValue } from '../../common/Utilities';
 import ProgressBar from './ProgressBar';
 
 //const
-import Images from '../../common/Images';
+const uriLogo = require('../../assets/images/logovnio.png')
+const uriBackground = require('../../assets/images/background.png');
 
 //redux
 import { connect } from 'react-redux';
@@ -36,13 +37,14 @@ registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 1,
+        timing: 1000,
+        duration: 800,
         notif: ''
     }
 
     progressing() {
         this.setState({
-            progress: this.state.progress + 0.25
+            progress: this.state.progress + 0.1
         });
     }
 
@@ -104,17 +106,19 @@ class Loading extends Component {
 
     render() {
         return (
-            <ImageBackground source={Images.background} style={{
+            <View style={{
                 flex: 1,
                 justifyContent: 'center',
-                alignItems: 'center'
+                alignItems: 'center',
+                backgroundColor: Colors.LITE_BLUE
             }}>
-                <Image source={Images.logo} style={{
+                <Image source={uriLogo} style={{
+                    width:150,
+                    height:150,
                     marginBottom: verticalScale(20)
-                }} />
-
-                <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.LITE_BLUE} />
-            </ImageBackground>
+                }}/>
+                <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.WHITE} />
+            </View>
         );
     }
 }

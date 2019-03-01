@@ -4,7 +4,7 @@
  * @since: 04/05/2018
  */
 import React, { Component } from 'react';
-import { LOADER_COLOR } from '../common/SystemConstant';
+import { LOADER_COLOR, Colors } from '../common/SystemConstant';
 import { Text, View, Modal, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import {indicatorResponsive, scale,moderateScale, verticalScale} from '../assets/styles/ScaleIndicator';
 
@@ -53,7 +53,7 @@ export function dataLoading(isVisible) {
     )
 }
 
-const alBorderBlockStyle = (Platform.OS === 'ios') ? {backgroundColor: 'rgba(48, 40, 41, 0.8)', width: moderateScale(150, 1.5), height: moderateScale(150, 1.5), flexDirection:'column', borderWidth: 0.5, borderColor: 'black'} : {backgroundColor: '#da2032', width: scale(200), height: verticalScale(100), flexDirection:'row'} ;
+const alBorderBlockStyle = (Platform.OS === 'ios') ? {backgroundColor: 'rgba(48, 40, 41, 0.8)', width: moderateScale(150, 1.5), height: moderateScale(150, 1.5), flexDirection:'column', borderWidth: 0.5, borderColor: 'black'} : {backgroundColor: Colors.LITE_BLUE, width: scale(200), height: verticalScale(100), flexDirection:'row'} ;
 
 const styles = StyleSheet.create({
     alContainer: {
