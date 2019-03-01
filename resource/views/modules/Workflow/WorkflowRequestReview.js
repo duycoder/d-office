@@ -183,7 +183,7 @@ class WorkflowRequestReview extends Component {
 					title: 'REVIEW VĂN BẢN TRÌNH KÝ',
 					message,
 					isTaskNotification: false,
-					targetScreen: 'DetailSignDocScreen',
+					targetScreen: 'VanBanDiDetailScreen',
 					targetDocId: this.state.docId,
 					targetDocType: this.state.docType
 				}

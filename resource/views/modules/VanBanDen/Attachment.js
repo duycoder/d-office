@@ -80,13 +80,15 @@ export default class AttachPublishDoc extends Component {
                     mediaScannable: true, // Make the file scannable  by media scanner
                 }
             }
-
+            
             if (Platform.OS == 'ios') {
                 config = {
-                    fileCache: true
+                    fileCache: true,
+                    // appendExt: 'png'
                 }
             }
 
+            // console.tron.log(fileLink)
             RNFetchBlob.config(config)
                 .fetch('GET', fileLink)
                 .then((response) => {
@@ -95,6 +97,7 @@ export default class AttachPublishDoc extends Component {
                         android.actionViewIntent(response.path(), fileExtension);
                     }
                     response.path();
+                    // console.tron.log(`The file saved to ${response.path()}`)
                 }).catch((err) => {
                     Alert.alert(
                         'THÔNG BÁO',

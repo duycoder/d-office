@@ -149,7 +149,7 @@ class WorkflowReplyReview extends Component {
                 title: 'TRẢ LỜI REVIEW VĂN BẢN',
                 message,
                 isTaskNotification: false,
-                targetScreen: 'DetailSignDocScreen',
+                targetScreen: 'VanBanDiDetailScreen',
                 targetDocId: this.state.docId,
                 targetDocType: this.state.docType
             }

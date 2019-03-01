@@ -293,7 +293,7 @@ class DetailTask extends Component {
     }
 
     render() {
-        console.tron.log(this.state.taskInfo)
+        // console.tron.log(this.state.taskInfo)
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -547,7 +547,7 @@ class DetailTask extends Component {
             </MenuOption>
         );
 
-        console.tron.log(">>"+menuActions)
+        // console.tron.log(">>"+menuActions)
 
         return (
             <MenuProvider>
