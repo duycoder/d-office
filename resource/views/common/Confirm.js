@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { API_URL } from '../../common/SystemConstant'
+import { API_URL, Colors } from '../../common/SystemConstant'
 
 //native
 import { Header } from 'react-native-elements';
@@ -67,7 +67,7 @@ export default class Confirm extends Component {
 
         //xóa các dữ liệu trong storage
         AsyncStorage.clear().then(() => {
-            appNavigate(this.props.navigation, 'LoadingScreen');
+            appNavigate(this.props.navigation, 'LoginScreen');
         })
     }
 
@@ -90,23 +90,23 @@ export default class Confirm extends Component {
                         />
                         <View style={styles.content}>
                             <Text style={styles.contentText}>
-                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng D-OFFICE?
+                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng Ebiz Office?
                             </Text>
                         </View>
 
                         <View style={styles.footer}>
                             <View style={styles.leftFooter}>
                                 <TouchableOpacity onPress={() => this.closeModal()} style={styles.footerButton}>
-                                    <Text style={styles.footerText}>
-                                        Không
+                                    <Text style={[styles.footerText, { fontWeight: 'bold', color: Colors.LITE_BLUE }]}>
+                                        KHÔNG
                                     </Text>
                                 </TouchableOpacity>
                             </View>
 
                             <View style={styles.rightFooter}>
                                 <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
-                                    <Text style={styles.footerText}>
-                                        Có
+                                    <Text style={[styles.footerText, {color: Colors.GRAY}]}>
+                                        CÓ
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -132,11 +132,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ececec'
     }, headerCenterTitle: {
-        color: '#2455A6',
+        color: Colors.LITE_BLUE,
         fontWeight: 'bold'
     }, headerOuter: {
         height: verticalScale(50),
-        borderBottomColor: '#2455A6',
+        borderBottomColor: Colors.LITE_BLUE,
         borderBottomWidth: 3,
         backgroundColor: '#fff',
         paddingHorizontal: scale(10),

@@ -144,12 +144,12 @@ export default class SideBar extends Component {
                         {
                             // Lấy chức năng của người dùng
                             userFunctions && userFunctions.map((item, index) =>
-                                <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID}>
+                                <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()}>
                                     {
                                         item.ListThaoTac.map((sItem, sIndex) =>
                                             sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE 
                                             ? <TouchableOpacity
-                                                key={sItem.DM_THAOTAC_ID}
+                                                key={sItem.DM_THAOTAC_ID.toString()}
                                                 onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID)}
                                                 style={this.state.onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
                                                 <ListItem
