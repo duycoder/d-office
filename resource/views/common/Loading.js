@@ -89,6 +89,7 @@ class Loading extends Component {
                     if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
                         screenName = 'ListNotificationScreen'
                     } else {
+                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
                         screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsProcessScreen';
                     }
                     appNavigate(this.props.navigation, screenName, screenParam);

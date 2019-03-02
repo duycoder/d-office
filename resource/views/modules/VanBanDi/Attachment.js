@@ -11,6 +11,7 @@ import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform, Permiss
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import RNFetchBlob from 'rn-fetch-blob';
+import OpenFile from 'react-native-doc-viewer';
 
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
@@ -126,6 +127,95 @@ export default class AttachSignDoc extends Component {
                         ]
                     )
                 }
+            } catch (err) {
+                Alert.alert({
+                    'title': 'THÔNG BÁO',
+                    'message': `Lỗi: ${err.toString()}`,
+                    buttons: [
+                        {
+                            text: 'OK',
+                            onPress: () => { }
+                        }
+                    ]
+                })
+            }
+        }else{
+            try {
+                fileLink = WEB_URL + '/Uploads' + fileLink;
+                fileLink = fileLink.replace(/\\/g, '/');
+                fileLink = fileLink.replace(/ /g, "%20");
+    
+                const config = {
+                    fileCache: true,
+                    // android only options, these options be a no-op on IOS
+                    addAndroidDownloads: {
+                        notification: true, // Show notification when response data transmitted
+                        title: fileName, // Title of download notification
+                        description: 'An image file.', // File description (not notification description)
+                        mime: fileExtension,
+                        mediaScannable: true, // Make the file scannable  by media scanner
+                    }
+                }
+                let dirs = RNFetchBlob.fs.dirs.DocumentDir
+                let savedName = fileLink.split("/").pop()
+                let savedPath = `${dirs}/${savedName}`
+                if (Platform.OS == 'ios') {
+                    config = {
+                        fileCache: true,
+                        // appendExt: 'png',
+                        path: `${dirs}/${savedName}`
+                    }
+                }
+    
+                RNFetchBlob.fs.exists(savedPath)
+                    .then(existStatus => {
+                        if (existStatus) {
+                            // console.tron.log("File da ton tai")
+                            OpenFile.openDoc([{
+                                url: savedPath,
+                                fileNameOptional: fileName
+                            }], (error, url) => {
+                                if (error) {
+                                    console.log(error)
+                                } else {
+                                    console.log(url)
+                                }
+                            })
+                        }
+                        else {
+                            RNFetchBlob.config(config)
+                                .fetch('GET', fileLink)
+                                .then((response) => {
+                                    //kiểm tra platform nếu là android và file là ảnh
+                                    if (Platform.OS == 'android' && isImage(fileExtension)) {
+                                        android.actionViewIntent(response.path(), fileExtension);
+                                    }
+                                    // console.tron.log(response.path())
+    
+                                    Alert.alert(
+                                        'THÔNG BÁO',
+                                        'TẢI FILE THÀNH CÔNG',
+                                        [
+                                            {
+                                                text: 'OK',
+                                                onPress: () => { }
+                                            }
+                                        ]
+                                    )
+                                }).catch((err) => {
+                                    Alert.alert(
+                                        'THÔNG BÁO',
+                                        'KHÔNG THỂ TẢI ĐƯỢC FILE',
+                                        [
+                                            {
+                                                text: 'OK',
+                                                onPress: () => { }
+                                            }
+                                        ]
+                                    )
+                                });
+                        }
+                    }).catch(err => console.log(err))
             } catch (err) {
                 Alert.alert({
                     'title': 'THÔNG BÁO',

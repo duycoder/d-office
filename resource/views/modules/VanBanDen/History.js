@@ -6,10 +6,10 @@
 'use strict'
 import React, { Component } from 'react';
 
-import { View, Text, RefreshControl } from 'react-native';
+import { View, Text, RefreshControl, StyleSheet } from 'react-native';
 
 //lib
-import { Container, Header, Content, Icon } from 'native-base';
+import { Container, Content, Icon } from 'native-base';
 import TimeLine from 'react-native-timeline-theme';
 import * as util from 'lodash';
 import renderIf from 'render-if';
@@ -18,6 +18,7 @@ import renderIf from 'render-if';
 import { convertDateTimeToString, emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
 import { LOADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { verticalScale, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
+import { HistoryStyle } from '../../../assets/styles/HistoryStyle';
 
 export default class TimelinePublishDoc extends Component {
     constructor(props) {
@@ -37,93 +38,112 @@ export default class TimelinePublishDoc extends Component {
     }
 
     componentWillMount = () => {
-        // console.tron.log(this.props.info.WorkFlow)
-        const { initState } = this.state;
         let data = [];
-        // console.tron.log(initState)
-        data.push(
-            {
-                time: convertDateTimeToString(initState.create_at),
-                title: initState.STATE_NAME,
-                titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
-                description: `Người xử lý: ${initState.TenNguoiXuLy}`,
-                renderIcon: () => <Icon name='ios-time-outline' />,
-                renderTimeBottom: () => (
-                    <View style={{ alignItems: 'flex-start', backgroundColor: Colors.WHITE, borderRadius: 6, padding: 3 }}>
-                        <Text>
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                Thời gian:
-                                    </Text>
+        // console.tron.log(this.state.lstLog)
 
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                {' ' + convertTimeToString(initState.create_at)}
-                            </Text>
-                        </Text>
-
-                        <Text>
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                Người nhận:
-                                    </Text>
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                {' ' + initState.TenNguoiNhan}
-                            </Text>
-                        </Text>
-
-                        <Text>
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                Người tham gia:
-                                    </Text>
-                            <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                {' ' + (initState.LstThamGia || []).toString()}
-                            </Text>
-                        </Text>
-                    </View>
-                ),
-            }
-        )
-        //console.tron.log(this.state.lstLog)
         if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
             this.state.lstLog.forEach((item, index) => {
-                data.push(
-                    {
-                        time: convertDateToString(item.create_at),
-                        title: item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A'),
-                        titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
-                        description: `Người xử lý: ${item.TenNguoiXuLy}`,
-                        renderIcon: () => <Icon name='ios-time-outline' />,
-                        renderTimeBottom: () => (
-                            <View style={{ alignItems: (index % 2 == 0) ? 'flex-end' : 'flex-start', backgroundColor: Colors.WHITE, borderRadius: 6, padding: 3 }}>
-                                <Text>
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                        Thời gian:
+                if (!util.isNull(item.step)) {
+                    data.push(
+                        {
+                            time: convertDateToString(item.create_at),
+                            title: item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A'),
+                            titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
+                            description: `Người xử lý: ${item.TenNguoiXuLy}`,
+                            renderIcon: () => <Icon name='ios-time-outline' />,
+                            renderDetail: () => (
+                                <View style={HistoryStyle.container}>
+                                    <Text style={HistoryStyle.titleText}>
+                                        {item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A')}
                                     </Text>
 
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                        {' ' + convertTimeToString(item.create_at)}
+                                    <Text>
+                                        <Text style={HistoryStyle.minorTitleText}>
+                                            Thời gian:
                                     </Text>
-                                </Text>
 
-                                <Text>
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                        Người nhận:
+                                        <Text style={HistoryStyle.normalText}>
+                                            {' ' + convertTimeToString(item.create_at)}
+                                        </Text>
                                     </Text>
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                        {' ' + item.TenNguoiNhan}
-                                    </Text>
-                                </Text>
 
-                                <Text>
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold' }}>
-                                        Người tham gia:
+                                    <Text>
+                                        <Text style={HistoryStyle.minorTitleText}>
+                                            Người nhận:
                                     </Text>
-                                    <Text style={{ fontSize: verticalScale(11), fontWeight: 'bold', color: '#b40000' }}>
-                                        {' ' + (item.LstThamGia || []).toString()}
+                                        <Text style={HistoryStyle.normalText}>
+                                            {' ' + item.TenNguoiNhan}
+                                        </Text>
+                                        {
+                                            item.IsDaNhan &&
+                                            <Text style={[HistoryStyle.minorTitleText, { color: Colors.GREEN_PANTON_369C }]}>
+                                                {' ' + "(Đã đọc)"}
+                                            </Text>
+                                        }
                                     </Text>
-                                </Text>
-                            </View>
-                        ),
-                    },
-                );
+                                    {
+                                        item.LstThamGia.length > 0 &&
+                                            <Text>
+                                                <Text style={HistoryStyle.minorTitleText}>
+                                                    Người tham gia:
+                                                </Text>
+                                                <Text style={HistoryStyle.normalText}>
+                                                    {' ' + (item.LstThamGia || []).toString()}
+                                                </Text>
+                                            </Text>
+                                    }
+
+                                    {
+                                        !util.isEmpty(item.MESSAGE) &&
+                                            <Text>
+                                                <Text style={HistoryStyle.minorTitleText}>
+                                                    Nội dung:
+                                            </Text>
+                                                <Text style={HistoryStyle.normalText}>
+                                                    {' ' + item.MESSAGE}
+                                                </Text>
+                                            </Text>
+                                    }
+
+                                </View>
+                            ),
+                        },
+                    );
+                }
+                else {
+                    data.push(
+                        {
+                            time: convertDateToString(item.create_at),
+                            title: "Khởi tạo",
+                            titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
+                            description: `Người xử lý: ${item.TenNguoiXuLy}`,
+                            renderIcon: () => <Icon name='ios-time-outline' />,
+                            renderDetail: () => (
+                                <View style={HistoryStyle.container}>
+                                    <Text style={HistoryStyle.titleText}>
+                                        Khởi tạo
+                                    </Text>
+                                    <Text>
+                                        <Text style={HistoryStyle.minorTitleText}>
+                                            Thời gian:
+                                        </Text>
+                                        <Text style={HistoryStyle.normalText}>
+                                            {' ' + convertTimeToString(item.create_at)}
+                                        </Text>
+                                    </Text>
+                                    <Text>
+                                        <Text style={HistoryStyle.minorTitleText}>
+                                            Người xử lý:
+                                        </Text>
+                                        <Text style={HistoryStyle.normalText}>
+                                            {' ' + item.TenNguoiXuLy}
+                                        </Text>
+                                    </Text>
+                                </View>
+                            ),
+                        }
+                    )
+                }
             });
 
             this.setState({
@@ -137,9 +157,6 @@ export default class TimelinePublishDoc extends Component {
     }
 
     render() {
-        // console.tron.log(this.props.info)
-        // console.tron.log(this.state.initState)
-        // console.tron.log(this.state.data)
         return (
             <Container>
                 <Content>
@@ -160,16 +177,17 @@ export default class TimelinePublishDoc extends Component {
                                     borderWidth: 2,
                                     borderRadius: 5,
                                     padding: moderateScale(5),
-                                    marginHorizontal: scale(5),
-                                    borderColor: '#909090'
+                                    marginHorizontal: 5,
+                                    borderColor: '#909090',
+                                    marginBottom: 8
                                 }}
                                 lineWidth={1}
                                 dashLine={true}
                                 styleContainer={{ marginTop: verticalScale(10) }}
                                 data={this.state.data}
-                                isRenderSeperator
-                                columnFormat={'single-column-left'}
-                                timeContainerStyle={{minWidth: 72}}
+                                // isRenderSeperator
+                                columnFormat={'two-column'}
+
                             />
                         )
                     }

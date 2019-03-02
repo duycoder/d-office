@@ -25,11 +25,15 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 import Panel from './Panel';
 import Confirm from './Confirm';
 import { width, Colors } from '../../common/SystemConstant';
+import Images from '../../common/Images';
+// import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
 const headerBackground = require('../../assets/images/background.png');
 const userAvatar = require('../../assets/images/avatar.png');
 const subItemIconLink = require('../../assets/images/arrow-white-right.png');
+
+// import SideBarIcon from '../../common/Icons';
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -74,7 +78,7 @@ export default class SideBar extends Component {
 
     render() {
         const { notifyCount, userFunctions } = this.state;
-        const subItemIcon = <Image source={subItemIconLink} />;
+        const subItemIcon = <Image source={Images.subItemIconLink} />;
         const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
         let notificationIcon = <View></View>;
         if (notifyCount > 0 && notifyCount < 100) {
@@ -101,9 +105,9 @@ export default class SideBar extends Component {
         return (
             <View style={SideBarStyle.container}>
                 <View style={SideBarStyle.header}>
-                    <ImageBackground source={headerBackground} style={SideBarStyle.headerBackground}>
+                    <ImageBackground source={Images.background} style={SideBarStyle.headerBackground}>
                         <View style={SideBarStyle.headerAvatarContainer}>
-                            <Image source={userAvatar} style={SideBarStyle.headerAvatar} />
+                            <Image source={Images.userAvatar} style={SideBarStyle.headerAvatar} />
                         </View>
                         <View style={[SideBarStyle.headerUserInfoContainer, { flex: 1 }]}>
                             <View style={{ flexDirection: 'row' }}>
@@ -185,7 +189,7 @@ export default class SideBar extends Component {
                                     rightIcon={
                                         this.state.onFocusNow !== '10' ? mainItemIcon : subItemIcon
                                     }
-                                    title={'Thông tin tài khoản'}
+                                    title={'THÔNG TIN TÀI KHOẢN'}
                                     containerStyle={SideBarStyle.subItemContainer}
                                     titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === '10' && SideBarStyle.listItemSubTitleContainerFocus]}
                                     style={SideBarStyle.subItemContainer} />
@@ -201,7 +205,7 @@ export default class SideBar extends Component {
                                     rightIcon={
                                         this.state.onFocusNow !== '11' ? mainItemIcon : subItemIcon
                                     }
-                                    title={'Đổi mật khẩu'}
+                                    title={'ĐỔI MẬT KHẨU'}
                                     containerStyle={SideBarStyle.subItemContainer}
                                     titleStyle={[SideBarStyle.listItemSubTitleContainer, this.state.onFocusNow === '11' && SideBarStyle.listItemSubTitleContainerFocus]}
                                     style={SideBarStyle.subItemContainer} />

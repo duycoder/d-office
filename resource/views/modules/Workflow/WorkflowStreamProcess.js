@@ -56,6 +56,7 @@ class WorkflowStreamProcess extends Component {
             stepName: util.toUpper(this.props.navigation.state.params.stepName),
             isStepBack: this.props.navigation.state.params.isStepBack,
             logId: this.props.navigation.state.params.logId,
+            apiUrlMiddle: this.props.navigation.state.params.apiUrlMiddle,
 
             executing: false,
             loadingData: false,
@@ -198,7 +199,7 @@ class WorkflowStreamProcess extends Component {
             query = this.state.joinProcessFilterValue;
             pageIndex = this.state.joinProcessPageIndex;
         }
-        const url = `${API_URL}/api/VanBanDi/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
+        const url = `${API_URL}/api/${this.state.apiUrlMiddle}/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
 
         const result = await fetch(url);
         const resultJson = await result.json();
@@ -219,33 +220,33 @@ class WorkflowStreamProcess extends Component {
     }
 
     onFilter = (isMainProcess) => {
-        // if (isMainProcess) {
-        //     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.MAIN_PROCESS);
-        //     this.setState({
-        //         searchingInMain: true,
-        //         mainProcessPageIndex: DEFAULT_PAGE_INDEX
-        //     }, () => this.filterData(isMainProcess));
-        // } else {
-        //     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.JOIN_PROCESS);
-        //     this.setState({
-        //         searchingInJoin: true,
-        //         joinProcessPageIndex: DEFAULT_PAGE_INDEX
-        //     }, () => this.filterData(isMainProcess))
-        // }
+        if (isMainProcess) {
+            this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.MAIN_PROCESS);
+            this.setState({
+                searchingInMain: true,
+                mainProcessPageIndex: DEFAULT_PAGE_INDEX
+            }, () => this.filterData(isMainProcess));
+        } else {
+            this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.JOIN_PROCESS);
+            this.setState({
+                searchingInJoin: true,
+                joinProcessPageIndex: DEFAULT_PAGE_INDEX
+            }, () => this.filterData(isMainProcess))
+        }
     }
 
     loadingMore = (isMainProcess) => {
-        // if (isMainProcess) {
-        //     this.setState({
-        //         loadingMoreInMain: true,
-        //         mainProcessPageIndex: this.state.mainProcessPageIndex + 1
-        //     }, () => this.filterData(isMainProcess));
-        // } else {
-        //     this.setState({
-        //         loadingMoreInJoin: true,
-        //         joinProcessPageIndex: this.state.joinProcessPageIndex + 1
-        //     }, () => this.filterData(isMainProcess))
-        // }
+        if (isMainProcess) {
+            this.setState({
+                loadingMoreInMain: true,
+                mainProcessPageIndex: this.state.mainProcessPageIndex + 1
+            }, () => this.filterData(isMainProcess));
+        } else {
+            this.setState({
+                loadingMoreInJoin: true,
+                joinProcessPageIndex: this.state.joinProcessPageIndex + 1
+            }, () => this.filterData(isMainProcess))
+        }
     }
 
     renderMainProcessUsers = ({ item }) => {
