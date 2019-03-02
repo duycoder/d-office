@@ -14,7 +14,7 @@ import {
 //lib
 import renderIf from 'render-if';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import { Container, Content, Header, Item, Input, Icon } from 'native-base';
 
 //styles

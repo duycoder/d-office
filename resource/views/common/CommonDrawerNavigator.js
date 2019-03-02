@@ -79,15 +79,15 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 import ListNotification from '../modules/Notification/ListNotification';
 
 //test
-import Test from '../../common/Test';
+import { TestFCM as Test } from '../../common/Test';
 
 //search
 import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
 
 const appRoutes = {
-    TestScreen: {
-        screen: Test,
-    },
+    // TestScreen: {
+    //     screen: Test,
+    // },
     VanBanDiIsNotProcessScreen: {
         screen: VanBanDiIsNotProcessList
     },
@@ -106,25 +106,25 @@ const appRoutes = {
     VanBanDiDetailScreen: {
         screen: VanBanDiDetail
     },
-    VanBanDenIsNotProcessScreen:{
+    VanBanDenIsNotProcessScreen: {
         screen: VanBanDenIsNotProcessList
     },
-    VanBanDenIsProcessScreen:{
+    VanBanDenIsProcessScreen: {
         screen: VanBanDenIsProcessList
     },
     VanBanDenJoinProcessScreen: {
         screen: VanBanDenJoinProcessList
     },
-    VanBanDenInternalIsNotProcessScreen:{
+    VanBanDenInternalIsNotProcessScreen: {
         screen: VanBanDenInternalNotProcessList
     },
-    VanBanDenInternalIsProcessScreen:{
+    VanBanDenInternalIsProcessScreen: {
         screen: VanBanDenInternalProcessList
     },
-    VanBanDenSearchScreen:{
+    VanBanDenSearchScreen: {
         screen: VanBanDenSearchList
     },
-    VanBanDenDetailScreen:{
+    VanBanDenDetailScreen: {
         screen: VanBanDenDetail
     },
     WorkflowStreamProcessScreen: {
@@ -253,6 +253,9 @@ const AuthStack = StackNavigator(authRoutes, authConfig);
 
 export const CommonDrawerNavigator = SwitchNavigator(
     {
+        TestScreen: {
+            screen: Test
+        },
         LoadingScreen: {
             screen: Loading
         },

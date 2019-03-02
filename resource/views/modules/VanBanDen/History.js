@@ -37,10 +37,10 @@ export default class TimelinePublishDoc extends Component {
     }
 
     componentWillMount = () => {
-        console.tron.log(this.props.info.WorkFlow)
+        // console.tron.log(this.props.info.WorkFlow)
         const { initState } = this.state;
         let data = [];
-        console.tron.log(initState)
+        // console.tron.log(initState)
         data.push(
             {
                 time: convertDateTimeToString(initState.create_at),
@@ -81,7 +81,7 @@ export default class TimelinePublishDoc extends Component {
                 ),
             }
         )
-        console.tron.log(this.state.lstLog)
+        //console.tron.log(this.state.lstLog)
         if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
             this.state.lstLog.forEach((item, index) => {
                 data.push(

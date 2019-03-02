@@ -5,12 +5,14 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform,
+    PermissionsAndroid
+} from 'react-native';
 
 //lib
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob'
 
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
@@ -20,9 +22,6 @@ import renderIf from 'render-if';
 import { API_URL, WEB_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { asyncDelay, isImage, emptyDataPage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
-
-const android = RNFetchBlob.android;
-
 export default class AttachPublishDoc extends Component {
     constructor(props) {
         super(props);
@@ -61,47 +60,65 @@ export default class AttachPublishDoc extends Component {
         });
     }
 
-
-    onDownloadFile(fileName, fileLink, fileExtension, fileId) {
-        // console.tron.log("fileLink: "+fileLink);
-        try {
-            fileLink = WEB_URL + fileLink;
-            fileLink = fileLink.replace('////', '/');
-            fileLink = fileLink.replace(/ /g, "%20");
-            // fileLink = WEB_URL + `/Common/DownloadFile?ID=${fileId}`
-            const config = {
-                fileCache: true,
-                // android only options, these options be a no-op on IOS
-                addAndroidDownloads: {
-                    notification: true, // Show notification when response data transmitted
-                    title: fileName, // Title of download notification
-                    description: 'An image file.', // File description (not notification description)
-                    mime: fileExtension,
-                    mediaScannable: true, // Make the file scannable  by media scanner
-                }
-            }
-            
-            if (Platform.OS == 'ios') {
-                config = {
-                    fileCache: true,
-                    // appendExt: 'png'
-                }
-            }
-
-            // console.tron.log(fileLink)
-            RNFetchBlob.config(config)
-                .fetch('GET', fileLink)
-                .then((response) => {
-                    //kiểm tra platform nếu là android và file là ảnh
-                    if (Platform.OS == 'android' && isImage(fileExtension)) {
-                        android.actionViewIntent(response.path(), fileExtension);
+    async onDownloadFile(fileName, fileLink, fileExtension) {
+        if (Platform.OS = 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                    {
+                        title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                        message:
+                            'Ebiz Office muốn truy cập vào tài liệu của bạn',
+                        buttonNeutral: 'Để sau',
+                        buttonNegative: 'Thoát',
+                        buttonPositive: 'OK',
+                    },
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    var date = new Date();
+                    var url = `${WEB_URL}//Uploads//${fileLink}`;
+                    url = url.replace('\\', '/');
+                    var ext = this.extention(url);
+                    ext = "." + ext[0];
+                    const { config, fs } = RNFetchBlob
+                    let PictureDir = fs.dirs.PictureDir
+                    let options = {
+                        fileCache: true,
+                        path: PictureDir + "/image_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext,
+                        addAndroidDownloads: {
+                            useDownloadManager: true,
+                            notification: true,
+                            path: PictureDir + "/image_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext,
+                            description: 'Image'
+                        }
                     }
-                    response.path();
-                    // console.tron.log(`The file saved to ${response.path()}`)
-                }).catch((err) => {
+                    config(options).fetch('GET', url).then((res) => {
+                        Alert.alert(
+                            'THÔNG BÁO',
+                            `DOWN LOAD THÀNH CÔNG`,
+                            [
+                                {
+                                    text: 'OK',
+                                    onPress: () => { }
+                                }
+                            ]
+                        )
+                    }).catch((err) => {
+                        Alert.alert(
+                            'THÔNG BÁO',
+                            'DOWNLOAD THẤT BẠI',
+                            [
+                                {
+                                    text: err,
+                                    onPress: () => { }
+                                }
+                            ]
+                        )
+                    })
+                } else {
                     Alert.alert(
-                        'THÔNG BÁO',
-                        'KHÔNG THỂ TẢI ĐƯỢC FILE',
+                        'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                        'Ebiz Office không có quyền truy cập',
                         [
                             {
                                 text: 'OK',
@@ -109,25 +126,30 @@ export default class AttachPublishDoc extends Component {
                             }
                         ]
                     )
-                });
-        } catch (err) {
-            Alert.alert({
-                'title': 'THÔNG BÁO',
-                'message': `Lỗi: ${err.toString()}`,
-                buttons: [
-                    {
-                        text: 'OK',
-                        onPress: () => { }
-                    }
-                ]
-            })
+                }
+            } catch (err) {
+                Alert.alert({
+                    'title': 'THÔNG BÁO',
+                    'message': `Lỗi: ${err.toString()}`,
+                    buttons: [
+                        {
+                            text: 'OK',
+                            onPress: () => { }
+                        }
+                    ]
+                })
+            }
         }
+    }
+
+    extention(filename) {
+        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
     }
 
     renderItem = ({ item }) => (
         <ListItem
             rightIcon={
-                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE, item.TAILIEU_ID)}>
+                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}>
                     <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
                 </TouchableOpacity>
             }

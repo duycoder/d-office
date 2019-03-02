@@ -1,7 +1,7 @@
 node_modules/*
-android/.gradle/*
-android/.idea/*
-android/app/build/*
+.gradle/*
+.idea/*
+build/*
 ios/*
 yarn.lock
 .DS_Store
