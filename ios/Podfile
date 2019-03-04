@@ -16,6 +16,8 @@ target 'VanBanDOJI' do
 
     pod 'RNReactNativeDocViewer', :path => '../node_modules/react-native-doc-viewer'
 
+    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   end
 
   target 'VanBanDOJITests' do

@@ -142,7 +142,7 @@ export default class AttachSignDoc extends Component {
                 })
                 .catch(err => console.log(err))
 
-            console.tron.log(fileLink)
+            // console.tron.log(fileLink)
 
         } catch (err) {
             Alert.alert({

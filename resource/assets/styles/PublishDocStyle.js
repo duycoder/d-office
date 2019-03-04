@@ -65,10 +65,10 @@ export const DetailPublishDocStyle = StyleSheet.create({
         borderBottomColor: '#e5e5e5'
     }, listItemTitleContainer: {
         fontWeight: 'bold',
-        color: 'black',
-        fontSize: moderateScale(14, 1.4)
+        color: Colors.BLACK,
+        fontSize: moderateScale(12, 1.3)
     }, listItemSubTitleContainer: {
-        fontSize: moderateScale(13, 1.3),
+        fontSize: moderateScale(12, 1.3),
         color: '#777',
         fontWeight: 'normal'
     }, timelineContainer: {

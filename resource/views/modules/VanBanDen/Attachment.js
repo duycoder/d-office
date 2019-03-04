@@ -63,8 +63,7 @@ export default class AttachPublishDoc extends Component {
     }
 
 
-    onDownloadFile(fileName, fileLink, fileExtension, fileId) {
-        // console.tron.log("fileLink: "+fileLink);
+    onDownloadFile(fileName, fileLink, fileExtension) {
         try {
             fileLink = WEB_URL + '/Uploads' + fileLink;
             fileLink = fileLink.replace(/\\/g, '/');
@@ -81,13 +80,12 @@ export default class AttachPublishDoc extends Component {
                     mediaScannable: true, // Make the file scannable  by media scanner
                 }
             }
-            let dirs = RNFetchBlob.fs.dirs.DocumentDir
-            let savedName = fileLink.split("/").pop()
-            let savedPath = `${dirs}/${savedName}`
+            let dirs = RNFetchBlob.fs.dirs.DocumentDir;
+            let savedName = fileLink.split("/").pop();
+            let savedPath = `${dirs}/${savedName}`;
             if (Platform.OS == 'ios') {
                 config = {
                     fileCache: true,
-                    // appendExt: 'png',
                     path: `${dirs}/${savedName}`
                 }
             }
@@ -95,7 +93,6 @@ export default class AttachPublishDoc extends Component {
             RNFetchBlob.fs.exists(savedPath)
                 .then(existStatus => {
                     if (existStatus) {
-                        // console.tron.log("File da ton tai")
                         OpenFile.openDoc([{
                             url: savedPath,
                             fileNameOptional: fileName
@@ -108,14 +105,15 @@ export default class AttachPublishDoc extends Component {
                         })
                     }
                     else {
+                        console.tron.log(fileLink)
                         RNFetchBlob.config(config)
                             .fetch('GET', fileLink)
                             .then((response) => {
                                 //kiểm tra platform nếu là android và file là ảnh
+                                //response.path() là đường dẫn tới file
                                 if (Platform.OS == 'android' && isImage(fileExtension)) {
                                     android.actionViewIntent(response.path(), fileExtension);
                                 }
-                                // console.tron.log(response.path())
 
                                 Alert.alert(
                                     'THÔNG BÁO',
@@ -142,9 +140,6 @@ export default class AttachPublishDoc extends Component {
                     }
                 })
                 .catch(err => console.log(err))
-
-            console.tron.log(fileLink)
-
         } catch (err) {
             Alert.alert({
                 'title': 'THÔNG BÁO',
@@ -159,22 +154,38 @@ export default class AttachPublishDoc extends Component {
         }
     }
 
-    renderItem = ({ item }) => (
-        <ListItem
-            rightIcon={
-                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE, item.TAILIEU_ID)}>
+    renderItem = ({ item }) => {
+        // let dirs = RNFetchBlob.fs.dirs.DocumentDir;
+        // let fileLink = item.DUONGDAN_FILE;
+        // fileLink = fileLink.replace(/\\/g, '/');
+        // fileLink = fileLink.replace(/ /g, "%20");
+        // let savedName = fileLink.split("/").pop();
+        // const savedPath = `${dirs}/${savedName}`;
+
+        // let iconName = "download";
+
+        // RNFetchBlob.fs.exists(savedPath)
+        // .then(existStatus=>{
+        //     // do future stuff
+        // })
+        // .catch(err=>console.log(err));
+
+        return (
+            <ListItem
+                rightIcon={
                     <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                </TouchableOpacity>
-            }
-            title={item.TENTAILIEU}
-            titleStyle={{
-                color: Colors.BLACK,
-                fontWeight: 'bold'
-            }} />
-    )
+                }
+                title={item.TENTAILIEU}
+                titleStyle={{
+                    color: Colors.BLACK,
+                    fontWeight: 'bold'
+                }}
+                onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+            />
+        );
+    }
 
     render() {
-        // console.tron.log(this.state.ListTaiLieu)
         return (
             <Container>
                 <Header searchBar style={{ backgroundColor: Colors.WHITE }}>

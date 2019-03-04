@@ -93,7 +93,7 @@ class WorkflowStreamProcess extends Component {
         this.setState({
             loadingData: true
         });
-        
+
         const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/0`;
         const result = await fetch(url);
         const resultJson = await result.json();
@@ -189,7 +189,7 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
-    filterData = async (isMainProcess) => {
+    filterData = (isMainProcess) => {
         let pageIndex = DEFAULT_PAGE_INDEX;
         let query = EMPTY_STRING;
         if (isMainProcess) {
@@ -199,16 +199,29 @@ class WorkflowStreamProcess extends Component {
             query = this.state.joinProcessFilterValue;
             pageIndex = this.state.joinProcessPageIndex;
         }
-        const url = `${API_URL}/api/${this.state.apiUrlMiddle}/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
+        console.tron.log(query)
+        // let data = this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
 
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        for (let datablock of this.state.mainProcessUsers) {
+            for (let data of datablock)
+            //  let data = datablock.LstNguoiDung.filter(x=>x.HOTEN==="Thơm")
+             console.tron.log(data)
+        }
+
+        // console.tron.log(this.state.mainProcessUsers)
+
+
+        // depleted api, working with data instead
+        // const url = `${API_URL}/api/${this.state.apiUrlMiddle}/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
+        // const result = await fetch(url);
+        // const resultJson = await result.json();
 
         if (isMainProcess) {
             this.setState({
                 searchingInMain: false,
                 loadingMoreInMain: false,
-                mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
+                mainProcessUsers: this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
+                // mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
             })
         } else {
             this.setState({

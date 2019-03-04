@@ -15,7 +15,7 @@ import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 
 export default class MainInfoPublishDoc extends Component {
 
@@ -51,6 +51,15 @@ export default class MainInfoPublishDoc extends Component {
                 </Text>
             );
         }
+
+        let trungLichHop = (
+            <Text style={{color: Colors.RED_PANTONE_186C}}>CÓ</Text> 
+        )
+        if (!info.isDuplicateCalendar) {
+            trungLichHop=(
+                <Text>KHÔNG</Text> 
+            )
+        }        
 
         // render
         return (
@@ -259,26 +268,39 @@ export default class MainInfoPublishDoc extends Component {
                             }
                             subtitle={
                                 <HTMLView
-                                    value={this.state.info.NOIDUNG}
+                                    value={this.state.info.NOIDUNG || EMPTY_STRING}
                                     stylesheet={{ p: DetailPublishDocStyle.listItemSubTitleContainer }}
                                 />
                             } />
                         {
                             this.state.info.hasOwnProperty("NGAYCONGTAC") &&
-                            <ListItem style={DetailPublishDocStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                        THỜI GIAN CÔNG TÁC
+                                <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                    hideChevron={true}
+                                    title={
+                                        <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                            THỜI GIAN CÔNG TÁC
+                                            </Text>
+                                    }
+                                    subtitle={
+                                        <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                            {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
                                         </Text>
-                                }
-                                subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
-                                    </Text>
-                                }
-                            />
+                                    }
+                                />
                         }
+
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    TRÙNG LỊCH HỌP LÃNH ĐẠO
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                  {trungLichHop}
+                                </Text>
+                            } />
 
                     </List>
                 </ScrollView>
