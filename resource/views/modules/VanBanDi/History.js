@@ -6,10 +6,11 @@
 'use strict'
 import React, { Component } from 'react';
 
-import { View, Text, RefreshControl } from 'react-native';
+import { View, Text, RefreshControl, FlatList, StyleSheet } from 'react-native';
 
 //lib
 import { Container, Header, Content, Icon } from 'native-base';
+import { Icon as RNEIcon } from 'react-native-elements';
 import TimeLine from 'react-native-timeline-theme';
 import * as util from 'lodash';
 import renderIf from 'render-if';
@@ -19,178 +20,159 @@ import HTMLView from 'react-native-htmlview';
 import { convertDateTimeToString, emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
 import { LOADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { verticalScale, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
-import { HistoryStyle } from '../../../assets/styles/HistoryStyle';
+import { HistoryStyle, TimeLineStyle } from '../../../assets/styles/HistoryStyle';
 
 export default class TimelineSignDoc extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // VanBanDi: props.info.lstLog,
-            lstLog: props.info.lstLog || [],
-            data: [],
-
-            refreshingData: false,
-            initState: props.info.WorkFlow.StartState,
+            logs: props.info.lstLog
         }
     }
 
-    handleRefresh = () => {
+    keyExtractor = (item, index) => item.ID.toString()
 
-    }
+    renderItem = ({ item }) => {
+        let identifyBackground = TimeLineStyle.initState;
+        let identifyColor = TimeLineStyle.initStateText;
+        let iconName = 'plus-circle-outline';
+        let stepName = 'KHỞI TẠO'
+        let message = 'KHỞI TẠO'
+        if (item.step != null) {
+            message = item.MESSAGE;
+            if (item.step.IS_RETURN) {
+                identifyBackground = TimeLineStyle.backState;
+                identifyColor = TimeLineStyle.backStateText;
+                iconName = 'arrow-left-drop-circle-outline';
+                stepName = 'TRẢ VỀ';
+            } else {
+                identifyBackground = TimeLineStyle.fowardState;
+                identifyColor = TimeLineStyle.fowardStateText;
+                iconName = 'arrow-right-drop-circle-outline';
+                stepName = util.toUpper(item.step.NAME);
+            }
+        }
+        return (
+            <View style={TimeLineStyle.container}>
+                <View style={TimeLineStyle.timeSection}>
+                    <Text style={TimeLineStyle.timeSectionDate}>
+                        {convertDateToString(item.create_at)}
+                    </Text>
+                    <Text style={TimeLineStyle.timeSectionHour}>
+                        {convertTimeToString(item.create_at)}
+                    </Text>
+                </View>
 
-    componentWillMount = () => {
-        let data = [];
-        // console.tron.log(this.state.lstLog)
+                <View style={TimeLineStyle.iconSection}>
+                    <View style={[TimeLineStyle.iconCircle, identifyBackground]}>
+                        <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
+                    </View>
 
-        if (!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog)) {
-            this.state.lstLog.forEach((item, index) => {
-                if (!util.isNull(item.step)) {
-                    data.push(
+                    <View style={[TimeLineStyle.iconLine, identifyBackground]}>
+                    </View>
+                </View>
+
+                <View style={TimeLineStyle.infoSection}>
+                    <View style={TimeLineStyle.infoHeader}>
+                        <Text style={[TimeLineStyle.infoText, identifyColor]}>
+                            {stepName}
+                        </Text>
+                    </View>
+                    <View style={TimeLineStyle.infoDetail}>
+                        <View style={TimeLineStyle.infoDetailRow}>
+                            <View style={TimeLineStyle.infoDetailLabel}>
+                                <Text style={TimeLineStyle.infoDetailLabelText}>
+                                    Người xử lý
+                                </Text>
+                            </View>
+
+                            <View style={TimeLineStyle.infoDetailValue}>
+                                <Text style={TimeLineStyle.infoDetailValueText}>
+                                    {item.TenNguoiXuLy}
+                                </Text>
+                            </View>
+                        </View>
+
                         {
-                            time: convertDateToString(item.create_at),
-                            title: item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A'),
-                            titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
-                            description: `Người xử lý: ${item.TenNguoiXuLy}`,
-                            renderIcon: () => <Icon name='ios-time-outline' />,
-                            renderDetail: () => (
-                                <View style={HistoryStyle.container}>
-                                    <Text style={HistoryStyle.titleText}>
-                                        {item.IS_RETURN ? 'Trả về' : 'Bước xử lý: ' + (item.step ? item.step.NAME : 'N/A')}
-                                    </Text>
-
-                                    <Text>
-                                        <Text style={HistoryStyle.minorTitleText}>
-                                            Thời gian:
-                                    </Text>
-
-                                        <Text style={HistoryStyle.normalText}>
-                                            {' ' + convertTimeToString(item.create_at)}
-                                        </Text>
-                                    </Text>
-
-                                    <Text>
-                                        <Text style={HistoryStyle.minorTitleText}>
-                                            Người nhận:
-                                    </Text>
-                                        <Text style={HistoryStyle.normalText}>
-                                            {' ' + item.TenNguoiNhan}
-                                        </Text>
-                                        {
-                                            item.IsDaNhan &&
-                                            <Text style={[HistoryStyle.minorTitleText, { color: Colors.GREEN_PANTON_369C }]}>
-                                                {' ' + "(Đã đọc)"}
+                            renderIf(item.step != null)(
+                                <View>
+                                    <View style={TimeLineStyle.infoDetailRow}>
+                                        <View style={TimeLineStyle.infoDetailLabel}>
+                                            <Text style={TimeLineStyle.infoDetailLabelText}>
+                                                Người nhận
                                             </Text>
-                                        }
-                                    </Text>
-                                    {
-                                        item.LstThamGia.length > 0 &&
-                                            <Text>
-                                                <Text style={HistoryStyle.minorTitleText}>
-                                                    Người tham gia:
-                                                </Text>
-                                                <Text style={HistoryStyle.normalText}>
-                                                    {' ' + (item.LstThamGia || []).toString()}
-                                                </Text>
-                                            </Text>
-                                    }
+                                        </View>
 
-                                    {
-                                        !util.isEmpty(item.MESSAGE) &&
-                                            <Text>
-                                                <Text style={HistoryStyle.minorTitleText}>
-                                                    Nội dung:
+                                        <View style={TimeLineStyle.infoDetailValue}>
+                                            <Text style={TimeLineStyle.infoDetailValueText}>
+                                                {item.TenNguoiNhan} {renderIf(item.IsDaNhan)(<Text style={TimeLineStyle.infoDetailValueNote}>(Đã nhận)</Text>)}
                                             </Text>
-                                                <Text style={HistoryStyle.normalText}>
-                                                    {' ' + item.MESSAGE}
-                                                </Text>
-                                            </Text>
-                                    }
+                                        </View>
+                                    </View>
 
+                                    <View style={TimeLineStyle.infoDetailRow}>
+                                        <View style={TimeLineStyle.infoDetailLabel}>
+                                            <Text style={TimeLineStyle.infoDetailLabelText}>
+                                                Người nhận
+                                            </Text>
+                                        </View>
+
+                                        <View style={TimeLineStyle.infoDetailValue}>
+                                            <Text style={TimeLineStyle.infoDetailValueText}>
+                                                {item.TenNguoiNhan}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View style={TimeLineStyle.infoDetailRow}>
+                                        <View style={TimeLineStyle.infoDetailLabel}>
+                                            <Text style={TimeLineStyle.infoDetailLabelText}>
+                                                Người tham gia
+                                            </Text>
+                                        </View>
+
+                                        <View style={TimeLineStyle.infoDetailValue}>
+                                            {
+                                                item.LstThamGia.map((name) => (
+                                                    <Text style={TimeLineStyle.infoDetailValueText}>
+                                                        - {name}
+                                                    </Text>
+                                                ))
+                                            }
+                                        </View>
+                                    </View>
                                 </View>
-                            ),
-                        },
-                    );
-                }
-                else {
-                    data.push(
-                        {
-                            time: convertDateToString(item.create_at),
-                            title: "Khởi tạo",
-                            titleStyle: { color: 'rgba(0,0,0,95)', fontWeight: 'bold' },
-                            description: `Người xử lý: ${item.TenNguoiXuLy}`,
-                            renderIcon: () => <Icon name='ios-time-outline' />,
-                            renderDetail: () => (
-                                <View style={HistoryStyle.container}>
-                                    <HTMLView 
-                                        value={item.MESSAGE}
-                                        stylesheet={{div: HistoryStyle.titleText}}
-                                    />
-                                    <Text>
-                                        <Text style={HistoryStyle.minorTitleText}>
-                                            Thời gian:
-                                        </Text>
-                                        <Text style={HistoryStyle.normalText}>
-                                            {' ' + convertTimeToString(item.create_at)}
-                                        </Text>
-                                    </Text>
-                                    <Text>
-                                        <Text style={HistoryStyle.minorTitleText}>
-                                            Người xử lý:
-                                        </Text>
-                                        <Text style={HistoryStyle.normalText}>
-                                            {' ' + item.TenNguoiXuLy}
-                                        </Text>
-                                    </Text>
-                                </View>
-                            ),
+                            )
                         }
-                    )
-                }
-            });
+                        <View style={TimeLineStyle.infoDetailRow}>
+                            <View style={TimeLineStyle.infoDetailLabel}>
+                                <Text style={TimeLineStyle.infoDetailLabelText}>
+                                    Nội dung
+                                </Text>
+                            </View>
 
-            this.setState({
-                data
-            }, () => console.log(">>>this is data: " + data));
-        }
-
-        this.setState({
-            data
-        }, () => console.log(">>>this is data: " + data));
+                            <View style={TimeLineStyle.infoDetailValue}>
+                                <Text style={TimeLineStyle.infoDetailValueText}>
+                                    {message}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        )
     }
 
     render() {
         return (
             <Container>
                 <Content>
-                    {
-                        renderIf(util.isNull(this.state.lstLog) || util.isEmpty(this.state.lstLog))(
-                            emptyDataPage()
-                        )
-                    }
-
-                    {
-                        renderIf(!util.isNull(this.state.lstLog) && !util.isEmpty(this.state.lstLog))(
-                            <TimeLine
-                                timeStyle={{
-                                    fontWeight: 'normal',
-                                    color: Colors.BLACK
-                                }}
-                                detailContainerStyle={{
-                                    borderWidth: 2,
-                                    borderRadius: 5,
-                                    padding: moderateScale(5),
-                                    marginHorizontal: scale(5),
-                                    borderColor: '#909090'
-                                }}
-                                lineWidth={1}
-                                dashLine={true}
-                                styleContainer={{ marginTop: verticalScale(10) }}
-                                data={this.state.data}
-                                // isRenderSeperator
-                                columnFormat={'two-column'}
-                            />
-                        )
-                    }
+                    <FlatList
+                        data={this.state.logs}
+                        renderItem={this.renderItem}
+                        keyExtractor={this.keyExtractor}
+                        ListEmptyComponent={emptyDataPage}
+                    />
                 </Content>
             </Container>
         );

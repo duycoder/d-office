@@ -41,7 +41,7 @@ export function convertTimeToString(date) {
     let deadline = new Date();
     if (date !== null && date !== '') {
         deadline = new Date(date);
-        let result = deadline.getHours() + ':' + deadline.getMinutes() + ':' + deadline.getSeconds();
+        let result = _readableFormat(deadline.getHours()) + ':' + _readableFormat(deadline.getMinutes()) + ':' +  _readableFormat(deadline.getSeconds());
         return result;
     }
     return 'N/A';
