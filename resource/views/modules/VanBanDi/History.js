@@ -133,8 +133,8 @@ export default class TimelineSignDoc extends Component {
 
                                         <View style={TimeLineStyle.infoDetailValue}>
                                             {
-                                                item.LstThamGia.map((name) => (
-                                                    <Text style={TimeLineStyle.infoDetailValueText}>
+                                                item.LstThamGia.map((name, index) => (
+                                                    <Text style={TimeLineStyle.infoDetailValueText} key={index.toString()}>
                                                         - {name}
                                                     </Text>
                                                 ))
