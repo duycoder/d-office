@@ -57,7 +57,7 @@ class Detail extends Component {
                 docId: this.props.navigation.state.params.docId,
                 docType: this.props.navigation.state.params.docType,
             },
-            executing: false,
+            // executing: false,
         }
     }
 
@@ -177,6 +177,7 @@ class Detail extends Component {
     }
 
     render() {
+        console.tron.log(this.state.docInfo)
         let bodyContent = null;
         let workflowButtons = [];
         if (this.state.loading) {
@@ -327,7 +328,7 @@ class DetailContent extends Component {
                     </Tab>
                 </Tabs>
                 {
-                    executeLoading(this.state.executing)
+                    // executeLoading(this.state.executing)
                 }
                 {
                     renderIf(!util.isEmpty(this.props.buttons))(
