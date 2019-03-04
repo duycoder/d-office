@@ -31,7 +31,7 @@ import {
 import renderIf from 'render-if';
 import { Icon as RneIcon } from 'react-native-elements';
 import * as util from 'lodash';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';

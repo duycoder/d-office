@@ -199,29 +199,17 @@ class WorkflowStreamProcess extends Component {
             query = this.state.joinProcessFilterValue;
             pageIndex = this.state.joinProcessPageIndex;
         }
-        console.tron.log(query)
-        // let data = this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
+        const url = `${API_URL}/api/WorkFlow/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
 
-        for (let datablock of this.state.mainProcessUsers) {
-            for (let data of datablock)
-            //  let data = datablock.LstNguoiDung.filter(x=>x.HOTEN==="Thơm")
-             console.tron.log(data)
-        }
-
-        // console.tron.log(this.state.mainProcessUsers)
-
-
-        // depleted api, working with data instead
-        // const url = `${API_URL}/api/${this.state.apiUrlMiddle}/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
-        // const result = await fetch(url);
-        // const resultJson = await result.json();
+        const result = await fetch(url);
+        const resultJson = await result.json();
 
         if (isMainProcess) {
             this.setState({
                 searchingInMain: false,
                 loadingMoreInMain: false,
-                mainProcessUsers: this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
-                // mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
+                // mainProcessUsers: this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
+                mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
             })
         } else {
             this.setState({
@@ -561,7 +549,7 @@ class WorkflowStreamProcess extends Component {
                                                                 <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
                                                                     <Text>
                                                                         TẢI THÊM
-                                                        </Text>
+                                                                    </Text>
                                                                 </Button>
                                                                 : null
                                                         )

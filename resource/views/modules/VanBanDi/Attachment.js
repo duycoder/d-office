@@ -5,12 +5,12 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 
 //lib
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import OpenFile from 'react-native-doc-viewer';
 
 //styles
@@ -22,7 +22,6 @@ import { API_URL, WEB_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../c
 import { asyncDelay, isImage, emptyDataPage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
-const android = RNFetchBlob.android;
 export default class AttachSignDoc extends Component {
     constructor(props) {
         super(props);
@@ -62,100 +61,178 @@ export default class AttachSignDoc extends Component {
     }
 
 
-    onDownloadFile(fileName, fileLink, fileExtension, fileId) {
-        // console.tron.log("fileLink: "+fileLink);
-        try {
-            fileLink = WEB_URL + '/Uploads' + fileLink;
-            fileLink = fileLink.replace(/\\/g, '/');
-            fileLink = fileLink.replace(/ /g, "%20");
-
-            const config = {
-                fileCache: true,
-                // android only options, these options be a no-op on IOS
-                addAndroidDownloads: {
-                    notification: true, // Show notification when response data transmitted
-                    title: fileName, // Title of download notification
-                    description: 'An image file.', // File description (not notification description)
-                    mime: fileExtension,
-                    mediaScannable: true, // Make the file scannable  by media scanner
-                }
-            }
-            let dirs = RNFetchBlob.fs.dirs.DocumentDir
-            let savedName = fileLink.split("/").pop()
-            let savedPath = `${dirs}/${savedName}`
-            if (Platform.OS == 'ios') {
-                config = {
-                    fileCache: true,
-                    // appendExt: 'png',
-                    path: `${dirs}/${savedName}`
-                }
-            }
-
-            RNFetchBlob.fs.exists(savedPath)
-                .then(existStatus => {
-                    if (existStatus) {
-                        // console.tron.log("File da ton tai")
-                        OpenFile.openDoc([{
-                            url: savedPath,
-                            fileNameOptional: fileName
-                        }], (error, url) => {
-                            if (error) {
-                                console.log(error)
-                            } else {
-                                console.log(url)
-                            }
-                        })
-                    }
-                    else {
-                        RNFetchBlob.config(config)
-                            .fetch('GET', fileLink)
-                            .then((response) => {
-                                //kiểm tra platform nếu là android và file là ảnh
-                                if (Platform.OS == 'android' && isImage(fileExtension)) {
-                                    android.actionViewIntent(response.path(), fileExtension);
-                                }
-                                // console.tron.log(response.path())
-
-                                Alert.alert(
-                                    'THÔNG BÁO',
-                                    'TẢI FILE THÀNH CÔNG',
-                                    [
-                                        {
-                                            text: 'OK',
-                                            onPress: () => { }
-                                        }
-                                    ]
-                                )
-                            }).catch((err) => {
-                                Alert.alert(
-                                    'THÔNG BÁO',
-                                    'KHÔNG THỂ TẢI ĐƯỢC FILE',
-                                    [
-                                        {
-                                            text: 'OK',
-                                            onPress: () => { }
-                                        }
-                                    ]
-                                )
-                            });
-                    }
-                })
-                .catch(err => console.log(err))
-
-            // console.tron.log(fileLink)
-
-        } catch (err) {
-            Alert.alert({
-                'title': 'THÔNG BÁO',
-                'message': `Lỗi: ${err.toString()}`,
-                buttons: [
+    async onDownloadFile(fileName, fileLink, fileExtension) {
+        if (Platform.OS = 'android') {
+            try {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
                     {
-                        text: 'OK',
-                        onPress: () => { }
+                        title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                        message:
+                            'Ebiz Office muốn truy cập vào tài liệu của bạn',
+                        buttonNeutral: 'Để sau',
+                        buttonNegative: 'Thoát',
+                        buttonPositive: 'OK',
+                    },
+                );
+                if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    var date = new Date();
+                    var url = `${WEB_URL}//Uploads//${fileLink}`;
+                    url = url.replace('\\', '/');
+                    var ext = this.extention(url);
+                    ext = "." + ext[0];
+                    const { config, fs } = RNFetchBlob
+                    let PictureDir = fs.dirs.PictureDir
+                    let options = {
+                        fileCache: true,
+                        addAndroidDownloads: {
+                            useDownloadManager: true,
+                            notification: true,
+                            path: PictureDir + "/image_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext,
+                            description: 'Image'
+                        }
                     }
-                ]
-            })
+                    config(options).fetch('GET', url).then((res) => {
+                        Alert.alert(
+                            'THÔNG BÁO',
+                            `DOWN LOAD THÀNH CÔNG`,
+                            [
+                                {
+                                    text: 'OK',
+                                    onPress: () => { }
+                                }
+                            ]
+                        )
+                    }).catch(() => {
+                        Alert.alert(
+                            'THÔNG BÁO',
+                            'DOWNLOAD THẤT BẠI',
+                            [
+                                {
+                                    text: err,
+                                    onPress: () => { }
+                                }
+                            ]
+                        )
+                    })
+                } else {
+                    Alert.alert(
+                        'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                        'Ebiz Office không có quyền truy cập',
+                        [
+                            {
+                                text: 'OK',
+                                onPress: () => { }
+                            }
+                        ]
+                    )
+                }
+            } catch (err) {
+                Alert.alert({
+                    'title': 'THÔNG BÁO',
+                    'message': `Lỗi: ${err.toString()}`,
+                    buttons: [
+                        {
+                            text: 'OK',
+                            onPress: () => { }
+                        }
+                    ]
+                })
+            }
+        } else {
+            try {
+                fileLink = WEB_URL + '/Uploads' + fileLink;
+                fileLink = fileLink.replace(/\\/g, '/');
+                fileLink = fileLink.replace(/ /g, "%20");
+
+                const config = {
+                    fileCache: true,
+                    // android only options, these options be a no-op on IOS
+                    addAndroidDownloads: {
+                        notification: true, // Show notification when response data transmitted
+                        title: fileName, // Title of download notification
+                        description: 'An image file.', // File description (not notification description)
+                        mime: fileExtension,
+                        mediaScannable: true, // Make the file scannable  by media scanner
+                    }
+                }
+                let dirs = RNFetchBlob.fs.dirs.DocumentDir
+                let savedName = fileLink.split("/").pop()
+                let savedPath = `${dirs}/${savedName}`
+                if (Platform.OS == 'ios') {
+                    config = {
+                        fileCache: true,
+                        // appendExt: 'png',
+                        path: `${dirs}/${savedName}`
+                    }
+                }
+
+                RNFetchBlob.fs.exists(savedPath)
+                    .then(existStatus => {
+                        if (existStatus) {
+                            // console.tron.log("File da ton tai")
+                            OpenFile.openDoc([{
+                                url: savedPath,
+                                fileNameOptional: fileName
+                            }], (error, url) => {
+                                if (error) {
+                                    console.log(error)
+                                } else {
+                                    console.log(url)
+                                }
+                            })
+                        }
+                        else {
+                            RNFetchBlob.config(config)
+                                .fetch('GET', fileLink)
+                                .then((response) => {
+                                    //kiểm tra platform nếu là android và file là ảnh
+                                    if (Platform.OS == 'android' && isImage(fileExtension)) {
+                                        android.actionViewIntent(response.path(), fileExtension);
+                                    }
+                                    // console.tron.log(response.path())
+
+                                    Alert.alert(
+                                        'THÔNG BÁO',
+                                        'TẢI FILE THÀNH CÔNG',
+                                        [
+                                            {
+                                                text: 'OK',
+                                                onPress: () => { }
+                                            }
+                                        ]
+                                    )
+                                }).catch((err) => {
+                                    Alert.alert(
+                                        'THÔNG BÁO',
+                                        'KHÔNG THỂ TẢI ĐƯỢC FILE',
+                                        [
+                                            {
+                                                text: 'OK',
+                                                onPress: () => { }
+                                            }
+                                        ]
+                                    )
+                                });
+                        }
+                    }).catch(err => console.log(err))
+            } catch (err) {
+                Alert.alert({
+                    'title': 'THÔNG BÁO',
+                    'message': `Lỗi: ${err.toString()}`,
+                    buttons: [
+                        {
+                            text: 'OK',
+                            onPress: () => { }
+                        }
+                    ]
+                })
+            }
         }
+    }
+
+    extention(filename) {
+        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
     }
 
     renderItem = ({ item }) => (
@@ -176,7 +253,7 @@ export default class AttachSignDoc extends Component {
         return (
             <Container>
                 <Header searchBar style={{ backgroundColor: Colors.WHITE }}>
-                    <Item style={{backgroundColor: Colors.WHITE}}>
+                    <Item style={{ backgroundColor: Colors.WHITE }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên tài liệu'
                             value={this.state.filterValue}

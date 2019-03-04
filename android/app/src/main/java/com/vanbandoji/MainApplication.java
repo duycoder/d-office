@@ -3,11 +3,11 @@ package com.vanbandoji;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.reactlibrary.RNReactNativeDocViewerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -29,11 +29,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
             new VectorIconsPackage(),
             new RNReactNativeDocViewerPackage(),
             new ImagePickerPackage(),
             new ReactNativeDocumentPicker(),
-            new RNFetchBlobPackage(),
             new FIRMessagingPackage()
       );
     }

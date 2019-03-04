@@ -34,7 +34,7 @@ import {
 } from 'native-base';
 import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import * as util from 'lodash';
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';

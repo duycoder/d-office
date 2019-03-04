@@ -1,0 +1,48 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\Projects\\ASP.NET\\company\\VANBAN_VNIO\\SourceMobile\\MOBILE_V2\\d-office\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-or\\values-or.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\firebase-messaging-15.0.2.aar\\3a0f9dbf7b4ddface656ad07c7f13275\\res\\values-or\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "205",
+                        "endColumns": "102",
+                        "endOffsets": "307"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "106",
+                        "endOffsets": "157"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "E:\\Projects\\ASP.NET\\company\\VANBAN_VNIO\\SourceMobile\\MOBILE_V2\\d-office\\android\\app\\build\\intermediates\\res\\merged\\debug\\values-or\\values-or.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Admin\\.gradle\\caches\\transforms-1\\files-1.1\\firebase-messaging-15.0.2.aar\\3a0f9dbf7b4ddface656ad07c7f13275\\res\\values-or\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "205",
+                        "endColumns": "102",
+                        "endOffsets": "307"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "106",
+                        "endOffsets": "157"
+                    }
+                }
+            ]
+        }
+    ]
+}

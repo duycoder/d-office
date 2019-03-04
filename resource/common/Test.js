@@ -1,18 +1,81 @@
 import React, { Component } from 'react'
 import {
-    View, AppState, AsyncStorage,
+    View, AppState, AsyncStorage, PermissionsAndroid,
     Text, TouchableOpacity, TextInput, Picker
 } from 'react-native'
 
 import { SERVER_KEY } from '../firebase/FireBaseConstant';
 
+import RNFetchBlob from 'rn-fetch-blob'
+import { Colors } from './SystemConstant';
+class TestDownLoad extends Component {
+    async download() {
 
-export default class Test extends Component {
+        try {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                {
+                    title: 'Cool Photo App Camera Permission',
+                    message:
+                        'Cool Photo App needs access to your camera ' +
+                        'so you can take awesome pictures.',
+                    buttonNeutral: 'Ask Me Later',
+                    buttonNegative: 'Cancel',
+                    buttonPositive: 'OK',
+                },
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                var date = new Date();
+                var url = 'http://123.30.149.48:8353/Uploads/1/2150/2/249/baitap_c1_hpt.docx'
+                var ext = this.extention(url);
+                ext = "." + ext[0];
+                const { config, fs } = RNFetchBlob
+                let PictureDir = fs.dirs.PictureDir
+                let options = {
+                    fileCache: true,
+                    addAndroidDownloads: {
+                        useDownloadManager: true,
+                        notification: true,
+                        path: PictureDir + "/image_" + Math.floor(date.getTime() + date.getSeconds() / 2) + ext,
+                        description: 'Image'
+                    }
+                }
+                config(options).fetch('GET', url).then((res) => {
+                    alert("Success Downloaded");
+                });
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    }
+    extention(filename) {
+        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
+    }
+
+    render() {
+        return (
+            <View style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center'
+            }}>
+                <TouchableOpacity style={{
+                    backgroundColor: Colors.LITE_BLUE
+                }} onPress={() => this.download()}>
+                    <Text>
+                        Download
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
+}
+
+class TestFCM extends Component {
     state = {
-        message: '',
-        notif: '',
-        appState: AppState.currentState,
-        token: 'cm887HHvj1U:APA91bHMILayoeS9C1b3uDXLNJ0cLI6GxrL7VmkqL0IsKWUEmgQxAn3oPJpATAQ3Waz9h9J4SMKC_xDIvCG8aZjrm7oW80I82DCSgKqEVHAxXcbwmu7zmFzvW9_9BUr85vwvpAqMoKNxZ82miLklT8UjJUtNichdYA'
+        token: 'fgE9nLFmTYg:APA91bGpRTnlRbeFcQe4M-Zj7Ys-6-34UInJKZI-3h_zxyi5XF8kxqBhfXQkcvYcXPX2dn5YBhCIaZUe0jfUC4-InVlQQE-3Bs5nlqQ0EgX6zx2nF3CQ3AQebZ5VIRyLdlscZeXNNHB1'
     }
 
     sendNotification = async () => {
@@ -21,7 +84,7 @@ export default class Test extends Component {
             data: {
                 custom_notification: {
                     id: new Date().valueOf().toString(),
-                    body: this.state.message,
+                    body: '123',
                     title: "THÔNG BÁO"
                 }
             },
@@ -44,110 +107,28 @@ export default class Test extends Component {
         const fcmResultJSON = await fcmResult.json();
 
         if (fcmResultJSON.success) {
-            //alert('gửi thành công');
+            alert('gửi thành công');
         } else {
             alert('gửi thất bại');
         }
     }
-
-    // componentDidMount = () => {
-    //     AppState.addEventListener('change', this.handleAppStateChange);
-    // }
-
-    // componentWillUnmount = () => {
-    //     AppState.removeEventListener('change', this.handleAppStateChange);
-    // }
-
-    // handleAppStateChange = (nextAppState) => {
-    //     if (this.state.currentState.match(/inactive|background/) && nextAppState == 'active') {
-    //     }
-    //     this.setState({ appState: nextAppState });
-    // }
-
-    // componentDidMount = () => {
-    //     AppState.addEventListener('change', this.handleAppStateChange);
-    // }
-
-    // componentWillUnmount = () => {
-    //     AppState.removeEventListener('change', this.handleAppStateChange);
-    // }
-
-    // handleAppStateChange = (appState) => {
-    //     if (appState == 'background') {
-    //         console.log('App is in background mode');
-    //     }
-    // }
-
     render() {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                {/* <Picker selectedValue={this.state.pickerValue} onValueChange={(pickerValue) => this.setState({ pickerValue })}
-                    style={{
-                        height: 50,
-                        width: '100%',
-                        borderRadius: 50,
-                        backgroundColor: 'green'
-                    }}>
-                    <Picker.Item value={1} label={'1'} />
-                    <Picker.Item value={2} label={'2'} />
-                    <Picker.Item value={3} label={'3'} />
-                </Picker> */}
-
-                <Text style={{ color: '#000', fontSize: 20 }}>
-                    {this.state.appState}
-                </Text>
-                <TextInput
-                    numberOfLines={5}
-                    multiline={true}
-                    value={this.state.token}
-                    editable={false}
-                    style={{
-                        borderColor: '#ccc',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        width: '90%',
-                        marginVertical: 10
-                    }} />                                                                                                                                                                 
-
-                <TextInput
-                    value={this.state.message}
-                    placeholder='Viết tin nhắn vào đây'
-                    onChangeText={(message) => this.setState({ message })} numberOfLines={5}
-                    style={{
-                        borderColor: '#ccc',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        width: '90%',
-                        marginVertical: 10
-                    }} />
-
-                {/* <TextInput
-                    value={this.state.notif}
-                    numberOfLines={5}
-                    multiline={true}
-                    style={{
-                        borderColor: '#ccc',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                        width: '90%',
-                        marginVertical: 10
-                    }} /> */}
-
-                <TouchableOpacity
-                    onPress={this.sendNotification}
-                    style={{
-                        backgroundColor: 'blue',
-                        width: 100,
-                        height: 50,
-                        borderRadius: 5,
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                    }}>
-                    <Text style={{ color: '#fff', textAlign: 'center', fontWeight: 'bold' }}>
-                        GỬI TIN NHẮN
+                <TouchableOpacity onPress={this.sendNotification} style={{
+                    width: 100,
+                    height: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: Colors.LITE_BLUE,
+                    borderRadius: 5
+                }}>
+                    <Text>
+                        GỬI
                     </Text>
                 </TouchableOpacity>
-            </View>
-        );
+            </View >
+        )
     }
 }
+export { TestFCM, TestDownLoad }

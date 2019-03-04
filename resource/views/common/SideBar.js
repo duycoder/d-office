@@ -26,7 +26,7 @@ import Panel from './Panel';
 import Confirm from './Confirm';
 import { width, Colors, SIDEBAR_CODES } from '../../common/SystemConstant';
 import Images from '../../common/Images';
-import { genIcon } from '../../common/Icons';
+// import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
 const headerBackground = require('../../assets/images/background.png');
