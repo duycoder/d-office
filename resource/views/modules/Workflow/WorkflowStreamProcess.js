@@ -189,8 +189,6 @@ class WorkflowStreamProcess extends Component {
     }
 
     filterData = async (isMainProcess) => {
-        const { userId, stepId } = this.state;
-
         let pageIndex = DEFAULT_PAGE_INDEX;
         let query = EMPTY_STRING;
         if (isMainProcess) {

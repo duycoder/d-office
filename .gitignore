@@ -1,7 +1,6 @@
 node_modules/*
-android/*
+/android/
 ios/*
 yarn.lock
 .DS_Store
-.vscode/settings.json
 demo.txt

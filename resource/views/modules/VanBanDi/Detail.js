@@ -5,22 +5,22 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RnText, Alert } from 'react-native';
+import { View, Text as RNText, TouchableOpacity as RNButton, Alert } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
 //utilities
-import { API_URL, VANBANDI_CONSTANT, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
+import { API_URL, Colors } from '../../../common/SystemConstant';
 import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { MenuStyle, MenuOptionStyle, MenuOptionsCustomStyle, MenuOptionCustomStyle } from '../../../assets/styles/MenuPopUpStyle';
+import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
 //lib
 import {
@@ -29,9 +29,9 @@ import {
     Tabs, Tab, TabHeading, ScrollableTab,
     Text, Right, Toast
 } from 'native-base';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu'
+import { MenuProvider } from 'react-native-popup-menu'
 import {
-    Icon as RneIcon
+    Icon as RneIcon, ButtonGroup
 } from 'react-native-elements';
 import renderIf from 'render-if';
 
@@ -75,7 +75,7 @@ class Detail extends Component {
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        // await asyncDelay(2000);
 
         this.setState({
             loading: false,
@@ -177,148 +177,81 @@ class Detail extends Component {
     }
 
     render() {
-        console.tron.log(this.state.docInfo)
         let bodyContent = null;
-        let workflowMenu = null;
-
+        let workflowButtons = [];
         if (this.state.loading) {
             bodyContent = dataLoading(true);
         }
         else if (this.state.isUnAuthorize) {
             bodyContent = unAuthorizePage(this.props.navigation);
         } else {
-            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} />
-
             if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
-                workflowMenu = (
-                    <Menu>
-                        <MenuTrigger>
-                            <RneIcon name='dots-three-horizontal' color={Colors.WHITE} type='entypo' size={verticalScale(25)} />
-                        </MenuTrigger>
-
-                        <MenuOptions>
-                            <MenuOption onSelect={() => this.onReplyReview()}>
-                                <RnText style={MenuOptionStyle.text}>
-                                    PHẢN HỒI
-                                </RnText>
-                            </MenuOption>
-                        </MenuOptions>
-                    </Menu>
-                )
+                workflowButtons.push({
+                    element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onReplyReview()}><RNText style={ButtonGroupStyle.buttonText}>PHẢN HỒI</RNText></RNButton>
+                })
             } else {
                 let workflowMenuOptions = [];
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStepBack) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStepBack)) {
                     this.state.docInfo.WorkFlow.LstStepBack.forEach(item => {
-                        workflowMenuOptions.push(
-                            <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, true)}>
-                                <RnText style={MenuOptionStyle.text}>
-                                    {util.capitalize(item.NAME)}
-                                </RnText>
-                            </MenuOption>
-                        )
+                        workflowButtons.push({
+                            element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, true)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RNButton>
+                        })
                     })
                 }
 
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStep) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStep)) {
                     this.state.docInfo.WorkFlow.LstStep.forEach(item => {
                         if (item.REQUIRED_REVIEW == true) {
-                            if (this.state.docInfo.WorkFlow.ReviewObj != null && this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH == true && this.state.docInfo.ReviewObj.IS_REJECT != true) {
-                                workflowMenuOptions.push(
-                                    <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, false)}>
-                                        <RnText style={MenuOptionStyle.text}>
-                                            {util.capitalize(item.NAME)}
-                                        </RnText>
-                                    </MenuOption>
-                                )
-                            } else {
-                                workflowMenuOptions.push(
-                                    <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, false)}>
-                                        <RnText style={MenuOptionStyle.text}>
-                                            Gửi review
-                                        </RnText>
-                                    </MenuOption>
-                                )
+                            if (this.state.docInfo.WorkFlow.ReviewObj == null || this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH != true || this.state.docInfo.ReviewObj.IS_REJECT == true) {
+                                item.NAME = 'GỬI REVIEW'
                             }
-                        } else {
-                            workflowMenuOptions.push(
-                                <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, false)}>
-                                    <RnText style={MenuOptionStyle.text}>
-                                        {util.capitalize(item.NAME)}
-                                    </RnText>
-                                </MenuOption>
-                            )
                         }
+                        workflowButtons.push({
+                            element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, false)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RNButton>
+                        })
                     });
                 }
-                // ky duyet van ban
-                if (!util.isNull(this.state.docInfo.WorkFlow.Function) && this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
-                    workflowMenuOptions.push(
-                        <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, false)}>
-                            <RnText style={MenuOptionStyle.text}>
-                                {this.state.docInfo.WorkFlow.Function.FUNTION_TITLE}
-                            </RnText>
-                        </MenuOption>
-                    )
-                }
-                if (workflowMenuOptions.length > 0) {
-                    workflowMenu = (
-                        <Menu>
-                            <MenuTrigger>
-                                <RneIcon name='dots-three-horizontal' color={Colors.WHITE} type='entypo' size={verticalScale(25)} />
-                            </MenuTrigger>
-
-                            <MenuOptions customStyles={MenuOptionsCustomStyle}>
-                                {workflowMenuOptions}
-                            </MenuOptions>
-                        </Menu>
-                    )
-                } else {
-                    workflowMenu = null;
-                }
             }
+
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} />
         }
         return (
-            <MenuProvider>
-                <Container>
-                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
-                        <Left style={NativeBaseStyle.left}>
-                            <Button transparent onPress={() => this.navigateBackToList()}>
-                                <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                            </Button>
-                        </Left>
+            <Container>
+                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+                    <Left style={NativeBaseStyle.left}>
+                        <Button transparent onPress={() => this.navigateBackToList()}>
+                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+                        </Button>
+                    </Left>
 
-                        <Body style={NativeBaseStyle.body}>
-                            <Title style={NativeBaseStyle.bodyTitle} >
-                                THÔNG TIN VĂN BẢN
+                    <Body style={NativeBaseStyle.body}>
+                        <Title style={NativeBaseStyle.bodyTitle} >
+                            THÔNG TIN VĂN BẢN
                             </Title>
-                        </Body>
+                    </Body>
 
-                        <Right style={NativeBaseStyle.right}>
-                            <Button transparent onPress={this.onOpenComment}>
-                                <Form style={DetailSignDocStyle.commentButtonContainer}>
-                                    <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
-                                    {
-                                        renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
-                                            <Form style={DetailSignDocStyle.commentCircleContainer}>
-                                                <Text style={DetailSignDocStyle.commentCountText}>
-                                                    0
+                    <Right style={NativeBaseStyle.right}>
+                        <Button transparent onPress={this.onOpenComment}>
+                            <Form style={DetailSignDocStyle.commentButtonContainer}>
+                                <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
+                                {
+                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
+                                        <Form style={DetailSignDocStyle.commentCircleContainer}>
+                                            <Text style={DetailSignDocStyle.commentCountText}>
+                                                0
                                                     {/* {this.state.docInfo.COMMENT_COUNT} */}
-                                                </Text>
-                                            </Form>
-                                        )
-                                    }
-                                </Form>
-                            </Button>
-                            {
-                                workflowMenu
-                            }
-                        </Right>
-                    </Header>
-                    {
-                        bodyContent
-                    }
-                </Container>
-            </MenuProvider>
+                                            </Text>
+                                        </Form>
+                                    )
+                                }
+                            </Form>
+                        </Button>
+                    </Right>
+                </Header>
+                {
+                    bodyContent
+                }
+            </Container>
         );
     }
 }
@@ -342,7 +275,6 @@ class DetailContent extends Component {
     }
 
     render() {
-        // console.tron.log(this.state.docInfo)
         return (
             <View style={{ flex: 1 }}>
                 <Tabs
@@ -396,6 +328,14 @@ class DetailContent extends Component {
                 </Tabs>
                 {
                     executeLoading(this.state.executing)
+                }
+                {
+                    renderIf(!util.isEmpty(this.props.buttons))(
+                        <ButtonGroup
+                            containerStyle={ButtonGroupStyle.container}
+                            buttons={this.props.buttons}
+                        />
+                    )
                 }
             </View>
         );
