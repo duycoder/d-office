@@ -109,21 +109,7 @@ export default class TimelineSignDoc extends Component {
                                             </Text>
                                         </View>
                                     </View>
-
-                                    <View style={TimeLineStyle.infoDetailRow}>
-                                        <View style={TimeLineStyle.infoDetailLabel}>
-                                            <Text style={TimeLineStyle.infoDetailLabelText}>
-                                                Người nhận
-                                            </Text>
-                                        </View>
-
-                                        <View style={TimeLineStyle.infoDetailValue}>
-                                            <Text style={TimeLineStyle.infoDetailValueText}>
-                                                {item.TenNguoiNhan}
-                                            </Text>
-                                        </View>
-                                    </View>
-
+                                    
                                     <View style={TimeLineStyle.infoDetailRow}>
                                         <View style={TimeLineStyle.infoDetailLabel}>
                                             <Text style={TimeLineStyle.infoDetailLabelText}>

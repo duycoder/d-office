@@ -112,20 +112,6 @@ export default class TimelinePublishDoc extends Component {
                                     <View style={TimeLineStyle.infoDetailRow}>
                                         <View style={TimeLineStyle.infoDetailLabel}>
                                             <Text style={TimeLineStyle.infoDetailLabelText}>
-                                                Người nhận
-                                            </Text>
-                                        </View>
-
-                                        <View style={TimeLineStyle.infoDetailValue}>
-                                            <Text style={TimeLineStyle.infoDetailValueText}>
-                                                {item.TenNguoiNhan}
-                                            </Text>
-                                        </View>
-                                    </View>
-
-                                    <View style={TimeLineStyle.infoDetailRow}>
-                                        <View style={TimeLineStyle.infoDetailLabel}>
-                                            <Text style={TimeLineStyle.infoDetailLabelText}>
                                                 Người tham gia
                                             </Text>
                                         </View>
