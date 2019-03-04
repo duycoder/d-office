@@ -24,6 +24,7 @@ export default class SideBarIcon extends Component {
       iconMarginLeft = 10;
 
     switch (actionCode) {
+      //#region VanbanDen
       case VanBanDenFunction.code:
         iconName = "file-download";
         break;
@@ -42,7 +43,9 @@ export default class SideBarIcon extends Component {
       case VanBanDenFunction.actionCodes[4]:
         iconName = "check-circle";
         break;
-
+      //#endregion
+      
+      //#region VanbanDi
       case VanBanDiFunction.code:
         iconName = "file-upload";
         break;
@@ -58,7 +61,9 @@ export default class SideBarIcon extends Component {
       case VanBanDiFunction.actionCodes[3]:
         iconName = "arrow-up-bold";
         break;
-
+      //#endregion
+      
+      //#region Congviec
       case CongViecFunction.code:
         iconName = "account-tie";
         break;
@@ -74,7 +79,9 @@ export default class SideBarIcon extends Component {
       case CongViecFunction.actionCodes[3]:
         iconName = "briefcase-edit";
         break;
-
+      //#endregion
+      
+      //#region Taikhoan
       case TAIKHOAN.code:
         iconName = "account-key";
         break;
@@ -84,7 +91,9 @@ export default class SideBarIcon extends Component {
       case TAIKHOAN.actionCodes[1]:
         iconName = "shield-key";
         break;
+      //#endregion
 
+      
       case THONGBAO.code:
         iconName = "message-alert";
         break;

@@ -16,7 +16,7 @@ import * as workflowAction from '../../../redux/modules/Workflow/Action';
 import { List, ListItem } from 'react-native-elements';
 import {
     ListItem as NbListItem, Text as NbText,
-    Right, Left, Title, Body, Radio, CheckBox
+    Right, Left, Title, Body, Radio, CheckBox, Toast
 } from 'native-base';
 import * as util from 'lodash';
 import { Colors } from '../../../common/SystemConstant';
@@ -28,25 +28,60 @@ class WorkflowStreamJoinProcessUsers extends Component {
         this.state = {
             title: props.title,
             users: props.users,
+            flowData: props.flowData,
 
             expanded: true,
             rowItemHeight: 60,
-            heightAnimation: new Animated.Value(60 * (props.users.length > 0 ? (props.users.length + 1) : 1)),
+            heightAnimation: new Animated.Value(60 * (props.users.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.users.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
             rotateAnimation: new Animated.Value(0),
-            joinProcessUsers: this.props.joinProcessUsers
+            joinProcessUsers: this.props.joinProcessUsers,
+            mainProcessUser: this.props.mainProcessUser
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {mainProcessUser, joinProcessUsers, users} = this.state;
+
+        if (nextProps.mainProcessUser !== mainProcessUser) {
+            // for heightAnimation
+            const newUsersLength = users.filter(x => x.ID !== nextProps.mainProcessUser).length;
+            const heightFactor = newUsersLength > 0 ? newUsersLength + 1 : 1;
+            // for joinUsers
+            if (joinProcessUsers.indexOf(nextProps.mainProcessUser) > -1 && this.props.joinProcessUsers.indexOf(nextProps.mainProcessUser) > -1) {
+                this.props.updateProcessUsers(nextProps.mainProcessUser, false);
+            }
+
+            this.setState({
+                mainProcessUser: nextProps.mainProcessUser,
+                heightAnimation: new Animated.Value(60 * heightFactor),
+                joinProcessUsers: this.props.joinProcessUsers
+            });
         }
     }
 
     onSelectUser(userId) {
-        this.props.updateProcessUsers(userId, false);
+        const { HasUserExecute, HasUserJoinExecute } = this.state.flowData;
 
-        this.setState({
-            joinProcessUsers: this.props.joinProcessUsers
-        });
+        if (HasUserExecute && HasUserJoinExecute && this.props.mainProcessUser === 0) {
+            Toast.show({
+                text: 'Vui lòng chọn người xử lý chính',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+            });
+        } else {
+            this.props.updateProcessUsers(userId, false);
+
+            this.setState({
+                joinProcessUsers: this.props.joinProcessUsers
+            });
+        }
     }
 
     toggle = () => {
-        const multiplier = this.state.users.length > 0 ? (this.state.users.length + 1) : 1;
+        const filterUsers = this.state.users.filter(x => x.ID !== this.state.mainProcessUser);
+        const multiplier = filterUsers.length > 0 ? (filterUsers.length + 1) : 1;
 
         const initialHeight = this.state.expanded ? (this.state.rowItemHeight * multiplier) : this.state.rowItemHeight;
         const finalHeight = this.state.expanded ? this.state.rowItemHeight : (this.state.rowItemHeight * multiplier);
@@ -118,8 +153,8 @@ class WorkflowStreamJoinProcessUsers extends Component {
 
                 <View style={styles.body} onLayout={this.setMaxHeight}>
                     {
-                        this.state.users.map((item, index) => (
-                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)} style={{height: this.state.rowItemHeight}}>
+                        this.state.users.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
+                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)} style={{ height: this.state.rowItemHeight }}>
                                 <Left>
                                     <Title>
                                         <NbText>
@@ -127,7 +162,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                                         </NbText>
                                     </Title>
                                 </Left>
-                                
+
                                 <Body>
                                     <NbText>
                                         {item.ChucVu}
@@ -150,7 +185,8 @@ class WorkflowStreamJoinProcessUsers extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        joinProcessUsers: state.workflowState.joinProcessUsers
+        joinProcessUsers: state.workflowState.joinProcessUsers,
+        mainProcessUser: state.workflowState.mainProcessUser
     }
 }
 

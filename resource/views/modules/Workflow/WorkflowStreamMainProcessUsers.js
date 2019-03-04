@@ -29,16 +29,23 @@ class WorkflowStreamMainProcessUsers extends Component {
         this.state = {
             title: props.title,
             users: props.users,
+            flowData: props.flowData,
 
             expanded: true,
             rowItemHeight: 60,
             heightAnimation: new Animated.Value(60 * (props.users.length > 0 ? (props.users.length + 1) : 1)),
-            rotateAnimation: new Animated.Value(0),
+            rotateAnimation: new Animated.Value(0)
         }
     }
 
     onSelectUser(userId) {
         this.props.updateProcessUsers(userId, true);
+        // if has both main and join, change join
+        if (this.state.flowData.HasUserExecute && this.state.flowData.HasUserJoinExecute) {
+            if (this.props.joinProcessUsers.indexOf(userId) > -1) {
+                this.props.updateProcessUsers(userId, false);
+            }
+        }
     }
 
     toggle = () => {
@@ -147,7 +154,8 @@ class WorkflowStreamMainProcessUsers extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        mainProcessUsers: state.workflowState.mainProcessUser
+        mainProcessUsers: state.workflowState.mainProcessUser,
+        joinProcessUsers: state.workflowState.joinProcessUsers
     }
 }
 

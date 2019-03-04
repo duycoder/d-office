@@ -62,7 +62,7 @@ export default class AttachSignDoc extends Component {
 
 
     async onDownloadFile(fileName, fileLink, fileExtension) {
-        if (Platform.OS = 'android') {
+        if (Platform.OS === 'android') {
             try {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -145,32 +145,19 @@ export default class AttachSignDoc extends Component {
                 fileLink = fileLink.replace(/\\/g, '/');
                 fileLink = fileLink.replace(/ /g, "%20");
 
-                const config = {
-                    fileCache: true,
-                    // android only options, these options be a no-op on IOS
-                    addAndroidDownloads: {
-                        notification: true, // Show notification when response data transmitted
-                        title: fileName, // Title of download notification
-                        description: 'An image file.', // File description (not notification description)
-                        mime: fileExtension,
-                        mediaScannable: true, // Make the file scannable  by media scanner
-                    }
-                }
                 let dirs = RNFetchBlob.fs.dirs.DocumentDir
                 let savedName = fileLink.split("/").pop()
                 let savedPath = `${dirs}/${savedName}`
-                if (Platform.OS == 'ios') {
-                    config = {
-                        fileCache: true,
-                        // appendExt: 'png',
-                        path: `${dirs}/${savedName}`
-                    }
+
+                const config = {
+                    fileCache: true,
+                    // appendExt: 'png',
+                    path: `${dirs}/${savedName}`
                 }
 
                 RNFetchBlob.fs.exists(savedPath)
                     .then(existStatus => {
                         if (existStatus) {
-                            // console.tron.log("File da ton tai")
                             OpenFile.openDoc([{
                                 url: savedPath,
                                 fileNameOptional: fileName
@@ -186,12 +173,6 @@ export default class AttachSignDoc extends Component {
                             RNFetchBlob.config(config)
                                 .fetch('GET', fileLink)
                                 .then((response) => {
-                                    //kiểm tra platform nếu là android và file là ảnh
-                                    if (Platform.OS == 'android' && isImage(fileExtension)) {
-                                        android.actionViewIntent(response.path(), fileExtension);
-                                    }
-                                    // console.tron.log(response.path())
-
                                     Alert.alert(
                                         'THÔNG BÁO',
                                         'TẢI FILE THÀNH CÔNG',
@@ -238,15 +219,15 @@ export default class AttachSignDoc extends Component {
     renderItem = ({ item }) => (
         <ListItem
             rightIcon={
-                <TouchableOpacity onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}>
-                    <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                </TouchableOpacity>
+                <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
             }
             title={item.TENTAILIEU}
             titleStyle={{
                 color: Colors.BLACK,
                 fontWeight: 'bold'
-            }} />
+            }}
+            onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+        />
     )
 
     render() {

@@ -63,7 +63,7 @@ export default class AttachPublishDoc extends Component {
     }
 
     async onDownloadFile(fileName, fileLink, fileExtension) {
-        if (Platform.OS = 'android') {
+        if (Platform.OS === 'android') {
             try {
                 const granted = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -147,11 +147,9 @@ export default class AttachPublishDoc extends Component {
                 let dirs = RNFetchBlob.fs.dirs.DocumentDir;
                 let savedName = fileLink.split("/").pop();
                 let savedPath = `${dirs}/${savedName}`;
-                if (Platform.OS == 'ios') {
-                    config = {
-                        fileCache: true,
-                        path: `${dirs}/${savedName}`
-                    }
+                const config = {
+                    fileCache: true,
+                    path: `${dirs}/${savedName}`
                 }
 
                 RNFetchBlob.fs.exists(savedPath)
@@ -169,16 +167,9 @@ export default class AttachPublishDoc extends Component {
                             })
                         }
                         else {
-                            console.tron.log(fileLink)
                             RNFetchBlob.config(config)
                                 .fetch('GET', fileLink)
                                 .then((response) => {
-                                    //kiểm tra platform nếu là android và file là ảnh
-                                    //response.path() là đường dẫn tới file
-                                    if (Platform.OS == 'android' && isImage(fileExtension)) {
-                                        android.actionViewIntent(response.path(), fileExtension);
-                                    }
-
                                     Alert.alert(
                                         'THÔNG BÁO',
                                         'TẢI FILE THÀNH CÔNG',

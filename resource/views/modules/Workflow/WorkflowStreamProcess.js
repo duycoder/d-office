@@ -56,7 +56,6 @@ class WorkflowStreamProcess extends Component {
             stepName: util.toUpper(this.props.navigation.state.params.stepName),
             isStepBack: this.props.navigation.state.params.isStepBack,
             logId: this.props.navigation.state.params.logId,
-            apiUrlMiddle: this.props.navigation.state.params.apiUrlMiddle,
 
             executing: false,
             loadingData: false,
@@ -189,7 +188,9 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
-    filterData = (isMainProcess) => {
+    filterData = async (isMainProcess) => {
+        const { userId, stepId } = this.state;
+
         let pageIndex = DEFAULT_PAGE_INDEX;
         let query = EMPTY_STRING;
         if (isMainProcess) {
@@ -208,7 +209,6 @@ class WorkflowStreamProcess extends Component {
             this.setState({
                 searchingInMain: false,
                 loadingMoreInMain: false,
-                // mainProcessUsers: this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
                 mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
             })
         } else {
@@ -236,6 +236,16 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
+    onClearFilter = () => {
+        this.setState({
+          loadingData: true,
+          pageIndex: DEFAULT_PAGE_INDEX,
+          mainProcessFilterValue: EMPTY_STRING
+        }, () => {
+          this.fetchData()
+        })
+      }
+
     loadingMore = (isMainProcess) => {
         if (isMainProcess) {
             this.setState({
@@ -252,13 +262,13 @@ class WorkflowStreamProcess extends Component {
 
     renderMainProcessUsers = ({ item }) => {
         return (
-            <WorkflowStreamMainProcessUsers title={item.PhongBan.NAME} users={item.LstNguoiDung} />
+            <WorkflowStreamMainProcessUsers title={item.PhongBan.NAME} users={item.LstNguoiDung} flowData={this.state.flowData} />
         );
     }
 
     renderJoinProcessUsers = ({ item }) => {
         return (
-            <WorkflowStreamJoinProcessUsers title={item.PhongBan.NAME} users={item.LstNguoiDung} />
+            <WorkflowStreamJoinProcessUsers title={item.PhongBan.NAME} users={item.LstNguoiDung} flowData={this.state.flowData} />
         );
     }
 
@@ -319,6 +329,10 @@ class WorkflowStreamProcess extends Component {
                                         value={this.state.mainProcessFilterValue}
                                         onSubmitEditing={() => this.onFilter(true)}
                                         onChangeText={(mainProcessFilterValue) => this.setState({ mainProcessFilterValue })} />
+                                    {
+                                        (this.state.mainProcessFilterValue !== EMPTY_STRING) 
+                                            && <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                                    }
                                 </Item>
 
                                 <Content contentContainerStyle={{ flex: 1 }}>

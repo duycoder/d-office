@@ -5,14 +5,14 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RnText } from 'react-native';
+import { View, Text as RnText, Alert } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
 //utilities
 import { API_URL, VANBANDI_CONSTANT, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
-import { dataLoading } from '../../../common/Effect';
+import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -27,7 +27,7 @@ import {
     Container, Header, Left, Button,
     Body, Icon, Title, Content, Form,
     Tabs, Tab, TabHeading, ScrollableTab,
-    Text, Right
+    Text, Right, Toast
 } from 'native-base';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu'
 import {
@@ -56,7 +56,8 @@ class Detail extends Component {
                 userId: this.props.userInfo.ID,
                 docId: this.props.navigation.state.params.docId,
                 docType: this.props.navigation.state.params.docType,
-            }
+            },
+            executing: false,
         }
     }
 
@@ -108,17 +109,27 @@ class Detail extends Component {
     }
 
     onProcessDoc = (item, isStepBack) => {
-        const targetScreenParam = {
-            docId: this.state.docInfo.VanBanTrinhKy.ID,
-            docType: this.state.docType,
-            processId: this.state.docInfo.WorkFlow.Process.ID,
-            stepId: item.ID,
-            stepName: item.NAME,
-            isStepBack,
-            logId: (isStepBack == true) ? item.Log.ID : 0,
-            apiUrlMiddle: 'VanBanDi'
+        if (this.state.docInfo.WorkFlow.Function && this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
+            Toast.show({
+                text: 'Vui lòng ký duyệt văn bản trước khi ban hành',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+            });
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+        else {
+            const targetScreenParam = {
+                docId: this.state.docInfo.VanBanTrinhKy.ID,
+                docType: this.state.docType,
+                processId: this.state.docInfo.WorkFlow.Process.ID,
+                stepId: item.ID,
+                stepName: item.NAME,
+                isStepBack,
+                logId: (isStepBack == true) ? item.Log.ID : 0
+            }
+            appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+        }
     }
 
     onReviewDoc = (item) => {
@@ -152,8 +163,21 @@ class Detail extends Component {
         }
         appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
+
+    onApprovalSign = () => {
+        Alert.alert(
+            'Xác nhận ký duyệt',
+            'Bạn có chắc chắn muốn thực hiện việc này?',
+            [
+                { text: 'Có', onPress: () => {/*put api call here*/ } },
+                { text: 'Không', onPress: () => { } },
+                { cancelable: false }
+            ]
+        )
+    }
+
     render() {
-        // console.tron.log(this.state.docType)
+        console.tron.log(this.state.docInfo)
         let bodyContent = null;
         let workflowMenu = null;
 
@@ -226,7 +250,16 @@ class Detail extends Component {
                         }
                     });
                 }
-
+                // ky duyet van ban
+                if (!util.isNull(this.state.docInfo.WorkFlow.Function) && this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
+                    workflowMenuOptions.push(
+                        <MenuOption key={item.ID} onSelect={() => this.onSelectWorkFlowStep(item, false)}>
+                            <RnText style={MenuOptionStyle.text}>
+                                {this.state.docInfo.WorkFlow.Function.FUNTION_TITLE}
+                            </RnText>
+                        </MenuOption>
+                    )
+                }
                 if (workflowMenuOptions.length > 0) {
                     workflowMenu = (
                         <Menu>
@@ -244,7 +277,6 @@ class Detail extends Component {
                 }
             }
         }
-        // console.tron.log(workflowMenu)
         return (
             <MenuProvider>
                 <Container>
@@ -362,6 +394,9 @@ class DetailContent extends Component {
                         <TimelineSignDoc info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
+                {
+                    executeLoading(this.state.executing)
+                }
             </View>
         );
     }
