@@ -199,7 +199,7 @@ class WorkflowStreamProcess extends Component {
             query = this.state.joinProcessFilterValue;
             pageIndex = this.state.joinProcessPageIndex;
         }
-        const url = `${API_URL}/api/${this.state.apiUrlMiddle}/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
+        const url = `${API_URL}/api/WorkFlow/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
 
         const result = await fetch(url);
         const resultJson = await result.json();
@@ -548,7 +548,7 @@ class WorkflowStreamProcess extends Component {
                                                                 <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
                                                                     <Text>
                                                                         TẢI THÊM
-                                                        </Text>
+                                                                    </Text>
                                                                 </Button>
                                                                 : null
                                                         )
