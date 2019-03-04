@@ -103,7 +103,7 @@ export default class AttachSignDoc extends Component {
                                 }
                             ]
                         )
-                    }).catch(()=> {
+                    }).catch(() => {
                         Alert.alert(
                             'THÔNG BÁO',
                             'DOWNLOAD THẤT BẠI',
@@ -139,12 +139,12 @@ export default class AttachSignDoc extends Component {
                     ]
                 })
             }
-        }else{
+        } else {
             try {
                 fileLink = WEB_URL + '/Uploads' + fileLink;
                 fileLink = fileLink.replace(/\\/g, '/');
                 fileLink = fileLink.replace(/ /g, "%20");
-    
+
                 const config = {
                     fileCache: true,
                     // android only options, these options be a no-op on IOS
@@ -166,7 +166,7 @@ export default class AttachSignDoc extends Component {
                         path: `${dirs}/${savedName}`
                     }
                 }
-    
+
                 RNFetchBlob.fs.exists(savedPath)
                     .then(existStatus => {
                         if (existStatus) {
@@ -191,7 +191,7 @@ export default class AttachSignDoc extends Component {
                                         android.actionViewIntent(response.path(), fileExtension);
                                     }
                                     // console.tron.log(response.path())
-    
+
                                     Alert.alert(
                                         'THÔNG BÁO',
                                         'TẢI FILE THÀNH CÔNG',

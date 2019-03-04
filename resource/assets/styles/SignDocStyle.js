@@ -26,9 +26,9 @@ export const DetailSignDocStyle = StyleSheet.create({
     }, listItemTitleContainer: {
         fontWeight: 'bold',
         color: 'black',
-        fontSize: moderateScale(14,1.4)
+        fontSize: moderateScale(12,1.3)
     }, listItemSubTitleContainer: {
-        fontSize: moderateScale(13,1.3),
+        fontSize: moderateScale(12,1.3),
         color: '#777',
         fontWeight: 'normal'
     }, timelineContainer: {

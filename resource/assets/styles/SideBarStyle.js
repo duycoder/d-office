@@ -62,7 +62,7 @@ export const SideBarStyle = StyleSheet.create({
         borderBottomColor: '#cccccc'
     }, listItemSubTitleContainer: {
         color: '#000',
-        marginLeft: scale(20)
+        marginLeft: scale(10)
     }, listItemFocus: {
         backgroundColor: '#cccccc',
     }, listItemSubTitleContainerFocus: {
@@ -72,7 +72,7 @@ export const SideBarStyle = StyleSheet.create({
         width: scale(30),
         height: verticalScale(30),
         resizeMode: 'contain',
-        marginLeft: scale(10)
+        // marginLeft: scale(10)
     },
     chatNotificationContainer: {
         justifyContent: 'center',

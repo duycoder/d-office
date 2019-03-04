@@ -93,7 +93,7 @@ class WorkflowStreamProcess extends Component {
         this.setState({
             loadingData: true
         });
-        
+
         const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/0`;
         const result = await fetch(url);
         const resultJson = await result.json();
@@ -189,7 +189,7 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
-    filterData = async (isMainProcess) => {
+    filterData = (isMainProcess) => {
         let pageIndex = DEFAULT_PAGE_INDEX;
         let query = EMPTY_STRING;
         if (isMainProcess) {
@@ -208,6 +208,7 @@ class WorkflowStreamProcess extends Component {
             this.setState({
                 searchingInMain: false,
                 loadingMoreInMain: false,
+                // mainProcessUsers: this.state.mainProcessUsers.filter(x => x.LstNguoiDung.filter(x => x.HOTEN.includes(query)))
                 mainProcessUsers: this.state.searchingInMain ? (resultJson.dsNgNhanChinh || []) : [...this.state.mainProcessUsers, ...(resultJson.dsNgNhanChinh || [])]
             })
         } else {

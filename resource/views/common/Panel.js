@@ -19,6 +19,7 @@ import { doc_Default, work_Default, account_Default } from '../../assets/styles/
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
 
 import SideBar from './SideBar';
+import SideBarIcon from '../../common/Icons';
 
 export default class Panel extends Component {
     constructor(props) {
@@ -30,6 +31,9 @@ export default class Panel extends Component {
             expanded: props.title === 'CÔNG VIỆC' ? true : false,
             rotateAnimation: new Animated.Value(0),
             heightAnimation: new Animated.Value(props.title === 'CÔNG VIỆC' ? verticalScale(60 * (this.props.children.length + 1)) : verticalScale(60)), //used to 60
+
+            actionCode: props.actionCode,
+            isParent: props.isParent
         };
         this.setMaxHeight = this.setMaxHeight.bind(this);
         this.setMinHeight = this.setMinHeight.bind(this);
@@ -84,17 +88,6 @@ export default class Panel extends Component {
                 }
             ]
         };
-        let titleLeftIcon = <Image 
-            source={doc_Default} 
-            style={[SideBarStyle.listItemLeftIcon, { marginLeft: 0 }]}/>
-        if (this.state.title === 'CÔNG VIỆC') {
-            titleLeftIcon = <Image source={work_Default} 
-                style={[SideBarStyle.listItemLeftIcon, { marginLeft: 0 }]}/>
-        }
-        if (this.state.title === 'TÀI KHOẢN') {
-            titleLeftIcon = <Image source={account_Default} 
-            style={[SideBarStyle.listItemLeftIcon, { marginLeft: 0 }]}/>
-        }
 
         return (
             <Animated.View style={[PanelStyle.container, { height: this.state.heightAnimation }]}>
@@ -108,7 +101,9 @@ export default class Panel extends Component {
                             rightIcon={
                                 <Animated.Image source={this.icon} style={iconRotationStyle} />
                             }
-                            leftIcon={titleLeftIcon}
+                            leftIcon={
+                                <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} />
+                            }
                         />
                     </TouchableOpacity>
                 </View>
