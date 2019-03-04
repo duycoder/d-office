@@ -1,4 +1,0 @@
-#Fri Mar 01 19:53:44 ICT 2019
-base.0=E\:\\Projects\\ASP.NET\\company\\VANBAN_VNIO\\SourceMobile\\MOBILE_V2\\d-office\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex
