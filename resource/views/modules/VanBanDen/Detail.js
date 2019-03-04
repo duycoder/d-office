@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RnButton} from 'react-native';
+import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
@@ -170,7 +170,7 @@ class Detail extends Component {
                 }
 
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStep)) {
-                    for(let i = 0; i < this.state.docInfo.WorkFlow.LstStep.length; i ++){
+                    for (let i = 0; i < this.state.docInfo.WorkFlow.LstStep.length; i++) {
                         let item = this.state.docInfo.WorkFlow.LstStep[i];
                         if (item.REQUIRED_REVIEW == true) {
                             if (this.state.docInfo.WorkFlow.ReviewObj == null || this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH != true || this.state.docInfo.ReviewObj.IS_REJECT == true) {
@@ -188,26 +188,26 @@ class Detail extends Component {
 
         return (
             <Container>
-            <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
-                <Left style={NativeBaseStyle.left}>
-                    <Button transparent onPress={() => this.navigateBackToList()}>
-                        <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                    </Button>
-                </Left>
+                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+                    <Left style={NativeBaseStyle.left}>
+                        <Button transparent onPress={() => this.navigateBackToList()}>
+                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+                        </Button>
+                    </Left>
 
-                <Body style={NativeBaseStyle.body}>
-                    <Title style={NativeBaseStyle.bodyTitle} >
-                        THÔNG TIN VĂN BẢN
+                    <Body style={NativeBaseStyle.body}>
+                        <Title style={NativeBaseStyle.bodyTitle} >
+                            THÔNG TIN VĂN BẢN
                     </Title>
-                </Body>
+                    </Body>
 
-                <Right style={NativeBaseStyle.right}>
-                </Right>
-            </Header>
-            {
-                bodyContent
-            }
-        </Container>
+                    <Right style={NativeBaseStyle.right}>
+                    </Right>
+                </Header>
+                {
+                    bodyContent
+                }
+            </Container>
         );
     }
 }
@@ -272,9 +272,14 @@ class DetailContent extends Component {
                     </Tab>
                 </Tabs>
 
-                <ButtonGroup
-                    buttons={this.props.buttons}
-                    containerStyle={ButtonGroupStyle.container} />
+                {
+                    renderIf(!util.isEmpty(this.props.buttons))(
+                        <ButtonGroup
+                            containerStyle={ButtonGroupStyle.container}
+                            buttons={this.props.buttons}
+                        />
+                    )
+                }
             </View>
         );
     }

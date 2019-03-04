@@ -14,7 +14,7 @@ import { API_URL, Colors } from '../../../common/SystemConstant';
 import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import * as util from 'lodash';
-import {moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
@@ -180,7 +180,7 @@ class Detail extends Component {
                         if (item.REQUIRED_REVIEW == true) {
                             if (this.state.docInfo.WorkFlow.ReviewObj == null || this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH != true || this.state.docInfo.ReviewObj.IS_REJECT == true) {
                                 item.NAME = 'GỬI REVIEW'
-                            } 
+                            }
                         }
                         workflowButtons.push({
                             element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, false)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RNButton>
@@ -192,42 +192,42 @@ class Detail extends Component {
             bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} />
         }
         return (
-                <Container>
-                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
-                        <Left style={NativeBaseStyle.left}>
-                            <Button transparent onPress={() => this.navigateBackToList()}>
-                                <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                            </Button>
-                        </Left>
+            <Container>
+                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+                    <Left style={NativeBaseStyle.left}>
+                        <Button transparent onPress={() => this.navigateBackToList()}>
+                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+                        </Button>
+                    </Left>
 
-                        <Body style={NativeBaseStyle.body}>
-                            <Title style={NativeBaseStyle.bodyTitle} >
-                                THÔNG TIN VĂN BẢN
+                    <Body style={NativeBaseStyle.body}>
+                        <Title style={NativeBaseStyle.bodyTitle} >
+                            THÔNG TIN VĂN BẢN
                             </Title>
-                        </Body>
+                    </Body>
 
-                        <Right style={NativeBaseStyle.right}>
-                            <Button transparent onPress={this.onOpenComment}>
-                                <Form style={DetailSignDocStyle.commentButtonContainer}>
-                                    <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
-                                    {
-                                        renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
-                                            <Form style={DetailSignDocStyle.commentCircleContainer}>
-                                                <Text style={DetailSignDocStyle.commentCountText}>
-                                                    0
+                    <Right style={NativeBaseStyle.right}>
+                        <Button transparent onPress={this.onOpenComment}>
+                            <Form style={DetailSignDocStyle.commentButtonContainer}>
+                                <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
+                                {
+                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
+                                        <Form style={DetailSignDocStyle.commentCircleContainer}>
+                                            <Text style={DetailSignDocStyle.commentCountText}>
+                                                0
                                                     {/* {this.state.docInfo.COMMENT_COUNT} */}
-                                                </Text>
-                                            </Form>
-                                        )
-                                    }
-                                </Form>
-                            </Button>
-                        </Right>
-                    </Header>
-                    {
-                        bodyContent
-                    }
-                </Container>
+                                            </Text>
+                                        </Form>
+                                    )
+                                }
+                            </Form>
+                        </Button>
+                    </Right>
+                </Header>
+                {
+                    bodyContent
+                }
+            </Container>
         );
     }
 }
@@ -303,10 +303,14 @@ class DetailContent extends Component {
                     </Tab>
                 </Tabs>
 
-                <ButtonGroup
-                    containerStyle={ButtonGroupStyle.container}
-                    buttons={this.props.buttons}
-                />
+                {
+                    renderIf(!util.isEmpty(this.props.buttons))(
+                        <ButtonGroup
+                            containerStyle={ButtonGroupStyle.container}
+                            buttons={this.props.buttons}
+                        />
+                    )
+                }
             </View>
         );
     }
