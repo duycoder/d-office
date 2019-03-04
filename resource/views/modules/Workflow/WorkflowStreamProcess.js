@@ -189,7 +189,7 @@ class WorkflowStreamProcess extends Component {
         }
     }
 
-    filterData = (isMainProcess) => {
+    filterData = async (isMainProcess) => {
         let pageIndex = DEFAULT_PAGE_INDEX;
         let query = EMPTY_STRING;
         if (isMainProcess) {
