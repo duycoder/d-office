@@ -7,15 +7,16 @@
 import React, { Component } from 'react';
 import { width } from '../../common/SystemConstant';
 import { DrawerNavigator, SwitchNavigator, StackNavigator } from 'react-navigation';
-//màn hình văn bản đi
+//#region màn hình văn bản đi
 import VanBanDiIsNotProcessList from '../modules/VanBanDi/IsNotProcessList';
 import VanBanDiIsProcessList from '../modules/VanBanDi/IsProcessList';
 import VanBanDiJoinProcessList from '../modules/VanBanDi/JoinProcessList';
 import VanBanDiIsPublishList from '../modules/VanBanDi/IsPublishList';
 import VanBanDiSearchList from '../modules/VanBanDi/SearchList';
 import VanBanDiDetail from '../modules/VanBanDi/Detail';
+//#endregion
 
-//màn hình văn bản đến
+//#region màn hình văn bản đến
 import VanBanDenIsNotProcessList from '../modules/VanBanDen/IsNotProcessList';
 import VanBanDenIsProcessList from '../modules/VanBanDen/IsProcessList';
 import VanBanDenJoinProcessList from '../modules/VanBanDen/JoinProcessList';
@@ -23,9 +24,9 @@ import VanBanDenInternalProcessList from '../modules/VanBanDen/InternalProcessLi
 import VanBanDenInternalNotProcessList from '../modules/VanBanDen/InternalNotProcessList';
 import VanBanDenSearchList from '../modules/VanBanDen/SearchList';
 import VanBanDenDetail from '../modules/VanBanDen/Detail';
+//#endregion
 
-
-//màn hình công việc
+//#region màn hình công việc
 import ListAssignedTask from '../modules/Task/ListAssignedTask';
 import ListCombinationTask from '../modules/Task/ListCombinationTask';
 import ListPersonalTask from '../modules/Task/ListPersonalTask';
@@ -47,24 +48,27 @@ import HistoryEvaluateTask from '../modules/Task/HistoryEvaluateTask';
 import GroupSubTask from '../modules/Task/GroupSubTask';
 import ApproveRescheduleTask from '../modules/Task/ApproveRescheduleTask';
 import DenyRescheduleTask from '../modules/Task/DenyRescheduleTask';
+//#endregion
 
-//đăng nhập + đăng ký + truy vấn tài khoản
+//#region đăng nhập + đăng ký + truy vấn tài khoản
 import Login from '../modules/User/Login';
 import Signup from '../modules/User/Signup';
 import AccountInfo from '../modules/User/AccountInfo';
 import AccountEditor from '../modules/User/AccountEditor';
 import AccountChangePassword from '../modules/User/AccountChangePassword';
+//#endregion
 
 import Loading from '../common/Loading';
 //sidebar
 import SideBar from './SideBar';
 
-//màn hình luồng xử lý công việc
+//#region màn hình luồng xử lý công việc
 import WorkflowReplyReview from '../modules/Workflow/WorkflowReplyReview';
 import WorkflowRequestReview from '../modules/Workflow/WorkflowRequestReview';
 import WorkflowStreamProcess from '../modules/Workflow/WorkflowStreamProcess';
 import WorkflowStreamProcessUsers from '../modules/Workflow/WorkflowStreamProcessUsers';
 import WorkflowRequestReviewUsers from '../modules/Workflow/WorkflowRequestReviewUsers';
+//#endregion
 
 //comment
 import ListComment from '../modules/Comment/ListComment';
@@ -83,6 +87,12 @@ import { TestFCM as Test } from '../../common/Test';
 
 //search
 import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
+
+//#region Lịch công tác
+import BaseCalendar from '../modules/LichCongTac/BaseCalendar';
+import EventList from '../modules/LichCongTac/EventList';
+import DetailEvent from '../modules/LichCongTac/Detail';
+//#endregion
 
 const appRoutes = {
     // TestScreen: {
@@ -226,13 +236,19 @@ const appRoutes = {
     ListNotificationScreen: {
         screen: ListNotification
     },
-    CalendarPickerScreen: {
-        screen: CalendarPicker
+    BaseCalendarScreen: {
+        screen: BaseCalendar
     },
+    EventListScreen: {
+        screen: EventList
+    },
+    DetailEventScreen: {
+        screen: DetailEvent
+    }
 }
 const appConfig = {
     headerMode: 'none',
-    initialRouteName: 'VanBanDiIsNotProcessScreen',
+    initialRouteName: 'BaseCalendarScreen',
     drawerWidth: width * 0.8,
     contentComponent: props => <SideBar {...props} />
 }
@@ -263,6 +279,6 @@ export const CommonDrawerNavigator = SwitchNavigator(
         App: AppStack
     },
     {
-        initialRouteName: 'LoadingScreen'
+        initialRouteName: 'App'
     }
 );
