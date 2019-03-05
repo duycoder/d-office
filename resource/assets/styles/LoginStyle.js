@@ -75,7 +75,7 @@ export const LoginStyle = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center'
     }, formInputText: {
-        borderWidth: scale(1),
+        borderWidth: 1,
         borderColor: '#acb7b1',
         borderRadius: moderateScale(5),
         backgroundColor: '#f7f7f7',
