@@ -71,11 +71,10 @@ class Detail extends Component {
         });
 
         const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
-        console.log(url);
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        // await asyncDelay(2000);
+        await asyncDelay(2000);
 
         this.setState({
             loading: false,
@@ -109,9 +108,11 @@ class Detail extends Component {
     }
 
     onProcessDoc = (item, isStepBack) => {
-        if (this.state.docInfo.WorkFlow.Function && this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
+        if (!isStepBack &&
+            this.state.docInfo.WorkFlow.Function &&
+            this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
             Toast.show({
-                text: 'Vui lòng ký duyệt văn bản trước khi ban hành',
+                text: 'Vui lòng ký duyệt văn bản',
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
@@ -154,6 +155,63 @@ class Detail extends Component {
         }
     }
 
+    onConfirmSignDoc = () => {
+        Alert.alert(
+            'XÁC NHẬN KÝ DUYỆT',
+            'Bạn có chắc chắn ký duyệt văn bản',
+            [
+                {
+                    text: 'CÓ',
+                    onPress: async () => {
+                        this.onSignDoc();
+                    }
+                },
+                {
+                    text: 'KHÔNG',
+                    onPress: () => { }
+                }
+            ]
+        )
+    }
+
+    onSignDoc = async () => {
+        const url = `${API_URL}/api/WorkFlow/SaveSignDoc/`;
+        this.setState({
+            executing: true
+        })
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+            },
+            body: JSON.stringify({
+                UserID: this.state.userId,
+                ItemID: this.state.docId,
+                IsUyQuyen: false
+            })
+        }).then(response => response.json());
+
+        this.setState({
+            executing: false
+        })
+
+        Toast.show({
+            text: result ? 'Ký duyệt văn bản thành công' : 'Ký duyệt văn bản không thành công',
+            type: result ? 'success' : 'danger',
+            buttonText: "OK",
+            buttonStyle: { backgroundColor: Colors.WHITE },
+            buttonTextStyle: { color: Colors.LITE_BLUE },
+            onClose: () => {
+                if (result) {
+                    this.fetchData();
+                }
+            }
+        });
+    }
+
+
     onOpenComment = () => {
         const targetScreenParam = {
             docId: this.state.docId,
@@ -162,18 +220,6 @@ class Detail extends Component {
             vanbandiData: this.state.docInfo.LstRootComment
         }
         appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
-    }
-
-    onApprovalSign = () => {
-        Alert.alert(
-            'Xác nhận ký duyệt',
-            'Bạn có chắc chắn muốn thực hiện việc này?',
-            [
-                { text: 'Có', onPress: () => {/*put api call here*/ } },
-                { text: 'Không', onPress: () => { } },
-                { cancelable: false }
-            ]
-        )
     }
 
     render() {
@@ -213,6 +259,14 @@ class Detail extends Component {
                 }
             }
 
+            const docFunction = this.state.docInfo.WorkFlow.Function;
+
+            if (docFunction && docFunction.FUNTION_NAME === "KYDUYETVANBAN") {
+                workflowButtons.push({
+                    element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmSignDoc()}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(docFunction.FUNTION_TITLE)}</RNText></RNButton>
+                })
+            }
+
             bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} />
         }
         return (
@@ -235,11 +289,10 @@ class Detail extends Component {
                             <Form style={DetailSignDocStyle.commentButtonContainer}>
                                 <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                 {
-                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('COMMENT_COUNT') && this.state.docInfo.COMMENT_COUNT > 0)(
+                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.COMMENT_COUNT > 0)(
                                         <Form style={DetailSignDocStyle.commentCircleContainer}>
                                             <Text style={DetailSignDocStyle.commentCountText}>
-                                                0
-                                                    {/* {this.state.docInfo.COMMENT_COUNT} */}
+                                                {this.state.docInfo.CommentCount}
                                             </Text>
                                         </Form>
                                     )
@@ -250,6 +303,10 @@ class Detail extends Component {
                 </Header>
                 {
                     bodyContent
+                }
+
+                {
+                    executeLoading(this.state.executing)
                 }
             </Container>
         );
@@ -326,9 +383,6 @@ class DetailContent extends Component {
                         <TimelineSignDoc info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
-                {
-                    executeLoading(this.state.executing)
-                }
                 {
                     renderIf(!util.isEmpty(this.props.buttons))(
                         <ButtonGroup
