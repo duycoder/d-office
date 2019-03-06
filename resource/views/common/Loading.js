@@ -37,8 +37,8 @@ registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 1000,
-        duration: 800,
+        timing: 10,
+        duration: 8,
         notif: ''
     }
 
@@ -90,7 +90,7 @@ class Loading extends Component {
                         screenName = 'ListNotificationScreen'
                     } else {
                         //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
-                        screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsProcessScreen';
+                        screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     }
                     appNavigate(this.props.navigation, screenName, screenParam);
                 }, this.state.timing)

@@ -28,9 +28,9 @@ export const DetailTaskStyle = StyleSheet.create({
     }, listItemTitleContainer: {
         fontWeight: 'bold',
         color: 'black',
-        fontSize: moderateScale(14, 1.3)
+        fontSize: moderateScale(12, 1.2)
     }, listItemSubTitleContainer: {
-        fontSize: moderateScale(13, 1.4),
+        fontSize: moderateScale(12, 1.2),
         color: '#777',
         fontWeight: 'normal'
     }, timelineContainer: {

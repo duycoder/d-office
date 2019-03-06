@@ -24,7 +24,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 
 import Panel from './Panel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -35,6 +35,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
+const { VANBANDEN, VANBANDI, CONGVIEC } = DM_FUNCTIONS;
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -55,7 +56,7 @@ export default class SideBar extends Component {
         const userInfo = JSON.parse(storageUserInfo);
         this.setState({
             userInfo,
-            onFocusNow: userInfo.hasRoleAssignUnit ? '6' : '7',
+            onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
             notifyCount: userInfo.numberUnReadMessage,
             userFunctions: userInfo.GroupUserFunctions
         });
@@ -69,12 +70,62 @@ export default class SideBar extends Component {
         this.refs.confirm.showModal();
     }
 
-    async setCurrentFocus(screenName, ref) {
+    setCurrentFocus(screenName, ref) {
         this.setState({
             onFocusNow: ref,
             notifyCount: 0
         });
         this.props.navigation.navigate(screenName);
+    }
+
+    generateTitle(maThaotac) {
+        let tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
+        switch(maThaotac) {
+            case VANBANDEN._CHUAXULY.NAME: 
+            tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
+            break;
+            case VANBANDEN._DAXULY.NAME: 
+            tenThaotac = VANBANDEN._DAXULY.MOBILENAME;
+            break;
+            case VANBANDEN._NOIBO_CHUAXULY.NAME: 
+            tenThaotac = VANBANDEN._NOIBO_CHUAXULY.MOBILENAME;
+            break;
+            case VANBANDEN._NOIBO_DAXULY.NAME: 
+            tenThaotac = VANBANDEN._NOIBO_DAXULY.MOBILENAME;
+            break;
+            case VANBANDEN._THAMGIA_XULY.NAME: 
+            tenThaotac = VANBANDEN._THAMGIA_XULY.MOBILENAME;
+            break;
+
+            case VANBANDI._CHUAXULY.NAME: 
+            tenThaotac = VANBANDI._CHUAXULY.MOBILENAME;
+            break;
+            case VANBANDI._DAXULY.NAME: 
+            tenThaotac = VANBANDI._DAXULY.MOBILENAME;
+            break;
+            case VANBANDI._DA_BANHANH.NAME: 
+            tenThaotac = VANBANDI._DA_BANHANH.MOBILENAME;
+            break;
+            case VANBANDI._THAMGIA_XULY.NAME: 
+            tenThaotac = VANBANDI._THAMGIA_XULY.MOBILENAME;
+            break;
+
+            case CONGVIEC._CANHAN.NAME: 
+            tenThaotac = CONGVIEC._CANHAN.MOBILENAME;
+            break;
+            case CONGVIEC._DUOCGIAO.NAME: 
+            tenThaotac = CONGVIEC._DUOCGIAO.MOBILENAME;
+            break;
+            case CONGVIEC._PHOIHOPXULY.NAME: 
+            tenThaotac = CONGVIEC._PHOIHOPXULY.MOBILENAME;
+            break;
+            case CONGVIEC._PROCESSED_JOB.NAME: 
+            tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
+            break;
+
+            default: break;
+        }
+        return tenThaotac;
     }
 
     render() {
@@ -100,8 +151,6 @@ export default class SideBar extends Component {
                 </View>
             </View>
         }
-
-        // console.tron.log(onFocusNow);
 
         return (
             <View style={SideBarStyle.container}>
@@ -163,7 +212,7 @@ export default class SideBar extends Component {
                                                             onFocusNow !== sItem.DM_THAOTAC_ID ? mainItemIcon : subItemIcon
                                                         }
                                                         containerStyle={SideBarStyle.subItemContainer}
-                                                        title={sItem.TEN_THAOTAC.indexOf("Danh sách văn bản ") > -1 ? sItem.TEN_THAOTAC.replace("Danh sách văn bản ", "").toUpperCase() : sItem.TEN_THAOTAC.toUpperCase()}
+                                                        title={this.generateTitle(sItem.MA_THAOTAC)}
                                                         titleStyle={[SideBarStyle.listItemSubTitleContainer, onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemSubTitleContainerFocus]}
                                                         contentContainerStyle={SideBarStyle.subItemContainer} />
                                                 </TouchableOpacity>
