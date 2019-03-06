@@ -9,23 +9,30 @@ import {
 } from 'native-base';
 
 import { ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
 
 import {
   Icon as RneIcon
 } from 'react-native-elements';
 import { TabStyle } from '../../../assets/styles/TabStyle';
-import { Colors } from '../../../common/SystemConstant';
+import { Colors, API_URL } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appGetDataAndNavigate, convertDateToString, appStoreDataAndNavigate, formatLongText } from '../../../common/Utilities';
+import {
+  appGetDataAndNavigate, convertDateToString, appStoreDataAndNavigate,
+  formatLongText, _readableFormat,emptyDataPage
+} from '../../../common/Utilities';
+import { dataLoading } from '../../../common/Effect';
 
-export default class EventList extends Component {
+class EventList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       currentTabIndex: 0,
       selectedDate: this.props.navigation.state.params.selectedDate,
-
+      loading: false,
+      daySchedule: [],
+      nightSchedule: [],
     }
 
     this.navigateBacktoBase = this.navigateBacktoBase.bind(this);
@@ -34,6 +41,32 @@ export default class EventList extends Component {
   navigateBacktoBase() {
     appGetDataAndNavigate(this.props.navigation, 'EventListScreen');
     return true;
+  }
+
+  fetchData = async () => {
+    this.setState({
+      loading: true
+    })
+    const date = convertDateToString(this.state.selectedDate);
+    const day = date.split('/')[0];
+    const month = date.split('/')[1];
+    const year = date.split('/')[2];
+
+    const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.props.userInfo.ID}/${month}/${year}/${day}`;
+
+    console.tron.log(url)
+
+    const result = await fetch(url)
+      .then((response) => response.json());
+    this.setState({
+      loading: false,
+      daySchedule: result.filter(item => item.GIO_CONGTAC <= 12),
+      nightSchedule: result.filter(item => item.GIO_CONGTAC > 12)
+    })
+  }
+
+  componentDidMount = () => {
+    this.fetchData();
   }
 
   render() {
@@ -56,32 +89,35 @@ export default class EventList extends Component {
           </Right>
         </Header>
         <View style={{ flex: 1 }}>
-          <Tabs
-            initialPage={this.state.currentTabIndex}
-            tabBarUnderlineStyle={TabStyle.underLineStyle}
-            onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
-            <Tab heading={
-              <TabHeading style={(this.state.currentTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                <Icon name='ios-sunny' style={TabStyle.activeText} />
-                <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                  Sáng
-                </Text>
-              </TabHeading>
-            }>
-              <Schedules timeline={"Sáng"} nav={this.props.navigation}/>
-            </Tab>
+          {
+            this.state.loading ? dataLoading(this.state.loading) :
+              <Tabs
+                initialPage={this.state.currentTabIndex}
+                tabBarUnderlineStyle={TabStyle.underLineStyle}
+                onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
+                <Tab heading={
+                  <TabHeading style={(this.state.currentTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                    <Icon name='ios-sunny' style={TabStyle.activeText} />
+                    <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                      SÁNG
+                    </Text>
+                  </TabHeading>
+                }>
+                  <Schedules timeline={"Sáng"} nav={this.props.navigation} data={this.state.daySchedule} />
+                </Tab>
 
-            <Tab heading={
-              <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                <Icon name='ios-moon' style={TabStyle.activeText} />
-                <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                  Chiều
+                <Tab heading={
+                  <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                    <Icon name='ios-moon' style={TabStyle.activeText} />
+                    <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                      CHIỀU
                 </Text>
-              </TabHeading>
-            }>
-            <Schedules timeline={"Chiều"}/>
-            </Tab>
-          </Tabs>
+                  </TabHeading>
+                }>
+                  <Schedules timeline={"Chiều"} data={this.state.nightSchedule} />
+                </Tab>
+              </Tabs>
+          }
         </View>
       </Container>
 
@@ -95,37 +131,35 @@ class Schedules extends Component {
     this.state = {
       timeline: props.timeline,
       nav: props.nav,
-      data: [
-        { id: 1, title: "Lorem Ipsum Gabana Pokemon XYZ", startTime: "14:00", endTime: "16:00", location: "802 Hinet" },
-        { id: 2, title: "Lorem Ipsum Gabana Pokemon XYZ", startTime: "14:00", endTime: "16:00", location: "802 Hinet" }
-      ]
+      data: props.data
     }
     this.renderItem = this.renderItem.bind(this);
     this.navigateToDetail = this.navigateToDetail.bind(this);
   }
 
-  fetchData() {
-    //wait for api
-  }
+  // fetchData() {
+  //   //wait for api
+  // }
 
   renderItem({ item, index }) {
     return (
       <View>
-        <RnButton onPress={()=>this.navigateToDetail(item.id)}>
+        <RnButton onPress={() => this.navigateToDetail(item.ID)}>
           <ListItem
             hideChevron={true}
-
-            title={
-              <RnText style={{ color: Colors.BLACK, fontWeight: 'bold', fontSize: moderateScale(13, 1.2) }}>
-                {formatLongText(item.title)}
-              </RnText>
-            }
-
+            title={item.TIEUDE}
+            titleStyle={{
+              color: Colors.BLACK,
+              fontWeight: 'bold',
+              fontSize: moderateScale(13, 1.2)
+            }}
             subtitle={
-              <RnText style={{color: Colors.GRAY, fontSize: moderateScale(13,1.2)}}>
-                {`${item.startTime} - ${item.endTime}, tại ${item.location}`}
-              </RnText>
+              convertDateToString(item.NGAY_CONGTAC) + " lúc " + _readableFormat(item.GIO_CONGTAC) + ":" + _readableFormat(item.PHUT_CONGTAC)
             }
+            subtitleStyle={{
+              color: Colors.GRAY,
+              fontSize: moderateScale(13, 1.2)
+            }}
           />
         </RnButton>
       </View>
@@ -141,39 +175,47 @@ class Schedules extends Component {
 
   render() {
     return (
-      <View style={{flex:1}}>
-      <FlatList
-        data={this.state.data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={this.renderItem}
-      // refreshControl={
-      //   <RefreshControl
-      //     refreshing={this.state.refreshingData}
-      //     onRefresh={this.handleRefresh}
-      //     colors={[Colors.BLUE_PANTONE_640C]}
-      //     tintColor={[Colors.BLUE_PANTONE_640C]}
-      //     title='Kéo để làm mới'
-      //     titleColor={Colors.RED}
-      //   />
-      // }
-      // ListEmptyComponent={() =>
-      //   this.state.loadingData ? null : emptyDataPage()
-      // }
-      // ListFooterComponent={() => this.state.loadingMoreData ?
-      //   <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-      //   (
-      //     this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE ?
-      //       <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-      //         <Text>
-      //           TẢI THÊM
-      //                   </Text>
-      //       </Button>
-      //       : null
-      //   )
-      // }
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={this.state.data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={this.renderItem}
+        // refreshControl={
+        //   <RefreshControl
+        //     refreshing={this.state.refreshingData}
+        //     onRefresh={this.handleRefresh}
+        //     colors={[Colors.BLUE_PANTONE_640C]}
+        //     tintColor={[Colors.BLUE_PANTONE_640C]}
+        //     title='Kéo để làm mới'
+        //     titleColor={Colors.RED}
+        //   />
+        // }
+        ListEmptyComponent={() =>
+          emptyDataPage()
+        }
+        // ListFooterComponent={() => this.state.loadingMoreData ?
+        //   <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
+        //   (
+        //     this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE ?
+        //       <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
+        //         <Text>
+        //           TẢI THÊM
+        //                   </Text>
+        //       </Button>
+        //       : null
+        //   )
+        // }
+        />
       </View>
-      
+
     );
   }
 }
+
+const mapStatetoProps = (state) => {
+  return {
+    userInfo: state.userState.userInfo
+  }
+}
+
+export default connect(mapStatetoProps)(EventList);

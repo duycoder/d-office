@@ -8,24 +8,40 @@ import {
   Content, Badge, Left, Right, Button, Title, Form
 } from 'native-base'
 
-import { Calendar } from 'react-native-calendars';
+import { Calendar, LocaleConfig } from 'react-native-calendars';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
-import { Colors, height } from '../../../common/SystemConstant';
+import { Colors, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appStoreDataAndNavigate } from '../../../common/Utilities';
+import { appStoreDataAndNavigate, convertDateTimeToString } from '../../../common/Utilities';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
+import { executeLoading, dataLoading } from '../../../common/Effect';
+import { _readableFormat } from '../../../common/Utilities';
+import * as util from 'lodash';
+import { connect } from 'react-redux';
 
-export default class BaseCalendar extends Component {
+LocaleConfig.locales['vn'] = {
+  monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+  monthNamesShort: ['Thg1.', 'Thg2.', 'Thg3.', 'Thg4.', 'Thg5.', 'Thg6.', 'Thg7.', 'Thg8.', 'Thg9.', 'Thg10.', 'Thg11.', 'Thg12.'],
+  dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', ''],
+  dayNamesShort: ['CN.', 'Th2.', 'Th3.', 'Th4.', 'Th5.', 'Th6.', 'Th7.']
+};
+
+LocaleConfig.defaultLocale = 'vn';
+
+class BaseCalendar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loadingData: false,
       yearChosen: 2019,
+      currentDate: new Date(),
+
+      loading: false,
       executing: false,
-      currentDate: new Date()
+      markedDates: {}
     }
 
     this.openPicker = this.openPicker.bind(this);
@@ -49,14 +65,53 @@ export default class BaseCalendar extends Component {
     appStoreDataAndNavigate(this.props.navigation, "BaseCalendarScreen", new Object(), "EventListScreen", targetScreenParam);
   }
 
+
+  componentDidMount = async () => {
+    this.fetchData(new Date());
+  }
+
+  fetchData = async (date) => {
+    this.setState({
+      executing: true
+    });
+
+    const currentDate = new Date();
+    const currentDateStr = `${_readableFormat(currentDate.getFullYear())}-${_readableFormat(currentDate.getMonth() + 1)}-${_readableFormat(currentDate.getDate())}`
+
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const url = `${API_URL}/api/LichCongTac/GetLichCongTacThang/${this.props.userInfo.ID}/${month}/${year}`;
+
+    let markedDates = {};
+    const resultDates = await fetch(url).then(response => response.json());
+    if (!util.isEmpty(resultDates)) {
+      for (let item of resultDates) {
+        if (markedDates[item]) {
+          continue;
+        }
+        if (util.isEqual(item, currentDateStr)) {
+          markedDates[item] = { marked: true, dotColor: Colors.WHITE }
+        } else {
+          markedDates[item] = { marked: true, dotColor: Colors.BLUE }
+        }
+      }
+    }
+
+    this.setState({
+      executing: false,
+      markedDates
+    }, () => {
+      console.tron.log(url)
+    });
+  }
+
+
   render() {
     return (
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-
           </Left>
-
           <Body style={NativeBaseStyle.body}>
             <TouchableOpacity onPress={this.openPicker}>
               <Title style={NativeBaseStyle.bodyTitle}>
@@ -74,56 +129,69 @@ export default class BaseCalendar extends Component {
 
         <Content contentContainerStyle={{ flex: 1 }}>
           {
-            // this.state.loadingData &&
-            //   <View style={{ flex: 1, justifyContent: 'center' }}>
-            //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-            //   </View>
+            this.state.loading &&
+            dataLoading(this.state.loading)
           }
 
           {
-            !this.state.loadingData && (
+            !this.state.loading && (
               <Calendar
-                // onDayPress={this.onDayPress}
                 ref={(ref) => this.baseCalendar = ref}
                 current={this.state.currentDate}
                 style={styles.calendar}
+                container={styles.container}
                 hideExtraDays
                 onDayPress={this.navigateToEventList}
                 firstDay={1}
+                markedDates={this.state.markedDates}
                 // monthFormat={'MM'}
-                // markedDates={{ [this.state.selected]: { selected: true, disableTouchEvent: true, selectedDotColor: 'orange' } }}
                 theme={{
-                  'stylesheet.calendar.main': {
-                    week: {
-                      marginTop: 5,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      height: 70
-                    }
-                  },
-                  'stylesheet.calendar.header': {
-                    dayHeader: {
-                      width: 70,
-                      textAlign: 'center',
-                      marginTop: 15
-                    }
-                  },
-                  'stylesheet.day.basic': {
+                  "stylesheet.day.basic": {
                     base: {
+                      width: '100%',
+                      position: 'absolute',
+                      top: 0,
+                      bottom: 0,
                       justifyContent: 'center',
-                      height: 70
+                      alignItems: 'center'
                     },
                     text: {
-                      fontSize: 17
-                    }
+                      fontSize: 18,
+                    },
+                    today: {
+                      backgroundColor: Colors.LITE_BLUE,
+                    },
+                    todayText: {
+                      color: '#fff',
+                    },
+                  },
+                  "stylesheet.calendar.main": {
+                    container: {
+                      paddingLeft: 5,
+                      paddingRight: 5,
+                      // backgroundColor: 'red'
+                    },
+                    monthView: {
+                      flex: 1
+                    },
+                    week: {
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      flex: 1,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#ecf0f1',
+                    },
                   }
                 }}
               />
             )
           }
 
+          {
+            executeLoading(this.state.executing)
+          }
           <PopupDialog
-            show={this.state.executing}
+            show={false}
             dialogTitle={
               <DialogTitle title={"Chọn năm"}
                 titleStyle={{
@@ -138,8 +206,8 @@ export default class BaseCalendar extends Component {
             }
             ref={(popupDialog) => { this.popupDialog = popupDialog }}
             width={0.8}
-            dialogStyle={{height:'auto'}}
-            height={'auto'}
+            dialogStyle={{ height: 'auto' }}
+            // height={'auto'}
             actions={[
               <DialogButton
                 align={'center'}
@@ -175,41 +243,72 @@ export default class BaseCalendar extends Component {
                 key="button-0"
               />,
             ]}>
-            <View style={[LoginStyle.formInputs, {marginVertical: 10}]}> 
-            <View style={LoginStyle.formInput}>
-            <TextInput style={LoginStyle.formInputText} keyboardType="numeric" ref={ref=>this.pickYear=ref} placeholder={this.state.yearChosen + ""}/>
-            
-            </View>
-            
-            </View>
+            <View style={[LoginStyle.formInputs, { marginVertical: 10 }]}>
+              <View style={LoginStyle.formInput}>
+                <TextInput style={LoginStyle.formInputText} keyboardType="numeric" ref={ref => this.pickYear = ref} placeholder={this.state.yearChosen + ""} />
 
+              </View>
+
+            </View>
           </PopupDialog>
-            
-
         </Content>
-
-
       </Container>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  calendar: {
-    // borderTopWidth: 1,
-    paddingTop: 5,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-    height: 350
-  },
-  text: {
-    textAlign: 'center',
-    borderColor: '#bbb',
-    padding: 10,
-    backgroundColor: '#eee'
-  },
   container: {
-    flex: 1,
-    backgroundColor: 'gray'
+    flex: 1
+  },
+  calendar: {
+    flex: 1
   }
-});
+})
+
+
+// const theme = {
+//   'stylesheet.calendar.header': {
+//     calendar: {
+//       paddingTop: 100,
+//       borderBottomWidth: 3,
+//       borderColor: 'red',
+//       flex: 1
+//     }
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   calendar: {
+//     paddingTop: 5,
+//     borderBottomWidth: 1,
+//     borderColor: '#eee',
+//     flex: 1
+//   },
+//   calendar: {
+//     paddingTop: 100,
+//     borderBottomWidth: 3,
+//     borderColor: 'red',
+//     flex: 1
+//   }
+//   //...(theme["stylesheet.calendar.header"])
+//   // text: {
+//   //   textAlign: 'center',
+//   //   borderColor: '#bbb',
+//   //   padding: 10,
+//   //   backgroundColor: '#eee'
+//   // },
+//   // container: {
+//   //   flex: 1,
+//   //   backgroundColor: 'gray'
+//   // }
+// });
+
+
+const mapStatetoProps = (state) => {
+  return {
+    userInfo: state.userState.userInfo
+  }
+}
+
+export default connect(mapStatetoProps)(BaseCalendar);
