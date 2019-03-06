@@ -248,7 +248,7 @@ const appRoutes = {
 }
 const appConfig = {
     headerMode: 'none',
-    initialRouteName: 'BaseCalendarScreen',
+    initialRouteName: 'VanBanDenIsNotProcessScreen',
     drawerWidth: width * 0.8,
     contentComponent: props => <SideBar {...props} />
 }
@@ -279,6 +279,6 @@ export const CommonDrawerNavigator = SwitchNavigator(
         App: AppStack
     },
     {
-        initialRouteName: 'App'
+        initialRouteName: 'LoadingScreen'
     }
 );

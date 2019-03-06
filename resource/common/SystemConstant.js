@@ -132,6 +132,12 @@ export const SYSTEM_FUNCTION = {
 			'CONGVIEC_PHOIHOPXULY',
 			'PROCESSED_JOB'
 		]
+	},
+	LichCongTacFunction:{
+		code: 'LICHCONGTAC_LANHDAO',
+		actionCodes: [
+			'QL_LICHCONGTAC_LD',
+		]
 	}
 }
 
@@ -227,6 +233,13 @@ export const DM_FUNCTIONS = {
 			NAME: 'PROCESSED_JOB',
 			IDTHAOTAC: 46,
 			MOBILENAME: 'CHỜ XÁC NHẬN'
+		}
+	},
+	LICHCONGTAC_LANHDAO: {
+		_DANHSACH: {
+			NAME: 'QL_LICHCONGTAC_LD',
+			IDTHAOTAC: 106,
+			MOBILENAME: 'LỊCH CÔNG TÁC'
 		}
 	}
 }
