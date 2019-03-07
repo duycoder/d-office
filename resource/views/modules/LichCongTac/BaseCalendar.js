@@ -13,7 +13,7 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 
 import { Colors, height } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appStoreDataAndNavigate } from '../../../common/Utilities';
+import { appStoreDataAndNavigate, convertDateToString } from '../../../common/Utilities';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 
@@ -25,7 +25,8 @@ export default class BaseCalendar extends Component {
       loadingData: false,
       yearChosen: 2019,
       executing: false,
-      currentDate: new Date()
+      currentDate: (new Date()).toISOString().split("T").shift(),
+      tempDate: ''
     }
 
     this.openPicker = this.openPicker.bind(this);
@@ -86,6 +87,7 @@ export default class BaseCalendar extends Component {
                 // onDayPress={this.onDayPress}
                 ref={(ref) => this.baseCalendar = ref}
                 current={this.state.currentDate}
+                
                 style={styles.calendar}
                 hideExtraDays
                 onDayPress={this.navigateToEventList}
@@ -167,9 +169,10 @@ export default class BaseCalendar extends Component {
                 }}
                 onPress={() => {
                   this.setState({
-                    yearChosen: this.pickYear.value,
-                    executing: false
+                    executing: false,
+                    currentDate: this.state.currentDate.replace(this.state.currentDate.split("-").shift(), this.state.tempDate)
                   });
+
                   this.popupDialog.dismiss();
                 }}
                 key="button-0"
@@ -177,7 +180,13 @@ export default class BaseCalendar extends Component {
             ]}>
             <View style={[LoginStyle.formInputs, {marginVertical: 10}]}> 
             <View style={LoginStyle.formInput}>
-            <TextInput style={LoginStyle.formInputText} keyboardType="numeric" ref={ref=>this.pickYear=ref} placeholder={this.state.yearChosen + ""}/>
+            <TextInput 
+              style={LoginStyle.formInputText} 
+              keyboardType="numeric" 
+              placeholder={this.state.yearChosen + ""}
+              value={this.state.currentDate.split("-").shift()}
+              onChangeText={(text)=>this.setState({tempDate: text})}
+            />
             
             </View>
             
