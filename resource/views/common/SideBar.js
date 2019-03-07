@@ -35,7 +35,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
-const { VANBANDEN, VANBANDI, CONGVIEC } = DM_FUNCTIONS;
+const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO } = DM_FUNCTIONS;
 
 export default class SideBar extends Component {
     constructor(props) {
@@ -123,7 +123,12 @@ export default class SideBar extends Component {
             tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
             break;
 
-            default: break;
+            case LICHCONGTAC_LANHDAO._DANHSACH.NAME: 
+            tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
+            break;
+
+            default: 
+            break;
         }
         return tenThaotac;
     }

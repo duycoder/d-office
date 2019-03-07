@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
 import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
-import { dataLoading } from '../../../common/Effect';
+import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -25,7 +25,7 @@ import {
     Container, Header, Left, Button,
     Body, Icon, Title, Content, Form,
     Tabs, Tab, TabHeading, ScrollableTab,
-    Text, Right
+    Text, Right,Toast
 } from 'native-base';
 import {
     Icon as RneIcon, ButtonGroup
@@ -53,7 +53,8 @@ class Detail extends Component {
                 userId: this.props.userInfo.ID,
                 docId: this.props.navigation.state.params.docId,
                 docType: this.props.navigation.state.params.docType,
-            }
+            },
+            executing: false
         }
     }
 
@@ -103,18 +104,48 @@ class Detail extends Component {
         appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
     }
 
-    onProcessDoc = (item, isStepBack) => {
-        const targetScreenParam = {
-            docId: this.state.docInfo.entityVanBanDen.ID,
-            docType: this.state.docType,
-            processId: this.state.docInfo.WorkFlow.Process.ID,
-            stepId: item.ID,
-            stepName: item.NAME,
-            isStepBack,
-            logId: (isStepBack == true) ? item.Log.ID : 0,
-            apiUrlMiddle: 'VanBanDen'
+    onProcessDoc = async (item, isStepBack) => {
+        let isProcessable = true;
+        if (!isStepBack) {
+            isProcessable = await this.onCheckFlow(item);
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+
+        if (isProcessable == false) {
+            Toast.show({
+                text: 'Không thể kết thúc văn bản',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+            });
+        } else {
+            const targetScreenParam = {
+                docId: this.state.docInfo.entityVanBanDen.ID,
+                docType: this.state.docType,
+                processId: this.state.docInfo.WorkFlow.Process.ID,
+                stepId: item.ID,
+                stepName: item.NAME,
+                isStepBack,
+                logId: (isStepBack == true) ? item.Log.ID : 0,
+                apiUrlMiddle: 'VanBanDen'
+            }
+            appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+        }
+    }
+
+    onCheckFlow = async (item) => {
+        this.setState({ executing: true });
+        
+        const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
+        const result = await fetch(url).then(response => response.json());
+        
+        this.setState({ executing: false })
+        
+        if (result.IsNeedExecuteFunction) {
+            return false;
+        }
+
+        return true;
     }
 
     onReviewDoc = (item) => {
@@ -206,6 +237,9 @@ class Detail extends Component {
                 </Header>
                 {
                     bodyContent
+                }
+                {
+                    executeLoading(this.state.executing)
                 }
             </Container>
         );

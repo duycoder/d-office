@@ -11,7 +11,6 @@ import { View, Text, RefreshControl, FlatList, StyleSheet } from 'react-native';
 //lib
 import { Container, Header, Content, Icon } from 'native-base';
 import { Icon as RNEIcon } from 'react-native-elements';
-import TimeLine from 'react-native-timeline-theme';
 import * as util from 'lodash';
 import renderIf from 'render-if';
 import HTMLView from 'react-native-htmlview';
@@ -40,7 +39,7 @@ export default class TimelineSignDoc extends Component {
         let message = 'KHỞI TẠO'
         if (item.step != null) {
             message = item.MESSAGE;
-            if (item.step.IS_RETURN) {
+            if (item.IS_RETURN) {
                 identifyBackground = TimeLineStyle.backState;
                 identifyColor = TimeLineStyle.backStateText;
                 iconName = 'arrow-left-drop-circle-outline';

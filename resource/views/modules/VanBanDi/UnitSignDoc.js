@@ -4,7 +4,7 @@
 * @since: 28/05/2018
 */
 import React, { Component } from 'react';
-import { ActivityIndicator, View, ScrollView, FlatList } from 'react-native';
+import { ActivityIndicator, View, ScrollView, FlatList, Text } from 'react-native';
 
 //lib
 import { Container, Content, Header, Icon, Item, Input, Col } from 'native-base';
@@ -32,17 +32,9 @@ export default class UnitSignDoc extends Component {
 	renderItem = ({ item }) => {
 		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={Colors.RED_PANTONE_186C} />
 		if (item.IsDoc) {
-			<RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.GREEN_PANTON_369C} />
+			rightIcon = <RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.GREEN_PANTON_369C} />
 		}
-
-		return (
-			<ListItem
-				title={item.TenDonVi}
-				hideChevron={true}
-				titleStyle={{ color: Colors.BLACK }}
-				rightTitle={rightIcon}
-			/>
-		)
+		return <ListItem titleStyle={{color: Colors.BLACK}} title={item.TenDonVi} rightIcon={rightIcon}/>
 	}
 
 	onUnitFilter = async () => {
@@ -53,11 +45,7 @@ export default class UnitSignDoc extends Component {
 		const url = `${API_URL}/api/VanBanDi/SearchInternalUnit?id=${this.state.VanBanDi.ID}&unitQuery=${this.state.filterValue}`;
 
 		const result = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json;charset=utf-8'
-			}
+			method: 'GET'
 		}).then(response => response.json()).then(responseJson => {
 			return responseJson;
 		});
@@ -71,7 +59,6 @@ export default class UnitSignDoc extends Component {
 	}
 
 	render() {
-		// console.tron.log(this.state.ListDonVi);
 		return (
 			<Container>
 				<Header searchBar style={{ backgroundColor: Colors.WHITE }}>

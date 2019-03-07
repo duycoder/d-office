@@ -4,9 +4,9 @@ import { View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
 import { SideBarStyle } from '../assets/styles/SideBarStyle';
-import {moderateScale} from '../assets/styles/ScaleIndicator';
+import { moderateScale } from '../assets/styles/ScaleIndicator';
 
-const { VanBanDenFunction, VanBanDiFunction, CongViecFunction } = SYSTEM_FUNCTION;
+const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction } = SYSTEM_FUNCTION;
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 
 export default class SideBarIcon extends Component {
@@ -44,7 +44,7 @@ export default class SideBarIcon extends Component {
         iconName = "check-circle";
         break;
       //#endregion
-      
+
       //#region VanbanDi
       case VanBanDiFunction.code:
         iconName = "file-upload";
@@ -62,7 +62,7 @@ export default class SideBarIcon extends Component {
         iconName = "arrow-up-bold";
         break;
       //#endregion
-      
+
       //#region Congviec
       case CongViecFunction.code:
         iconName = "account-tie";
@@ -80,7 +80,7 @@ export default class SideBarIcon extends Component {
         iconName = "briefcase-edit";
         break;
       //#endregion
-      
+
       //#region Taikhoan
       case TAIKHOAN.code:
         iconName = "account-key";
@@ -93,7 +93,10 @@ export default class SideBarIcon extends Component {
         break;
       //#endregion
 
-      
+      case LichCongTacFunction.actionCodes[0]:
+      case LichCongTacFunction.code:
+        iconName = 'calendar'
+        break;
       case THONGBAO.code:
         iconName = "message-alert";
         break;
