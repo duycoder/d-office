@@ -13,7 +13,7 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 
 import { Colors, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appStoreDataAndNavigate, convertDateTimeToString } from '../../../common/Utilities';
+import { appStoreDataAndNavigate, convertDateTimeToString, convertDateToString } from '../../../common/Utilities';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { executeLoading, dataLoading } from '../../../common/Effect';
@@ -36,26 +36,50 @@ class BaseCalendar extends Component {
 
     this.state = {
       loadingData: false,
-      yearChosen: 2019,
-      currentDate: new Date(),
+      todayDate: (new Date()).toISOString().split("T").shift(), // save today date, used as an archon
 
       loading: false,
       executing: false,
+      isOpened: false, // to open popup-dialog
+      currentDate: (new Date()).toISOString().split("T").shift(), // currentDate the Calendar point to
+      tempYear: '', // get the year chosen in popup-dialog
       markedDates: {}
     }
 
-    this.openPicker = this.openPicker.bind(this);
+    this.togglePicker = this.togglePicker.bind(this);
     this.navigateToEventList = this.navigateToEventList.bind(this);
     this.backToDefaultDate = this.backToDefaultDate.bind(this);
+    this.handleMonthChange = this.handleMonthChange.bind(this);
+    this.handleYearChange = this.handleYearChange.bind(this);
   }
 
   backToDefaultDate() {
-    this.baseCalendar.current = this.state.currentDate
+    this.setState({
+      currentDate: this.state.todayDate
+    }, () => this.fetchData(new Date()));
   }
 
-  openPicker() {
-    //Picker cua RN dang bi sida
-    this.setState({ executing: !this.setState.executing })
+  togglePicker() {
+    this.setState({
+      isOpened: !this.state.isOpened,
+      tempYear: this.state.currentDate.split("-").shift()
+    });
+  }
+
+  handleMonthChange(dateObj) {
+    this.setState({
+      currentDate: dateObj.dateString
+    }, () => this.fetchData(this.state.currentDate));
+  }
+
+  handleYearChange() {
+    const { currentDate, tempYear } = this.state;
+    const currentMonth = currentDate.split("-")[1];
+
+    this.setState({
+      currentDate: `${tempYear}-${currentMonth}-01`,
+      isOpened: false
+    });
   }
 
   navigateToEventList(day) {
@@ -74,7 +98,7 @@ class BaseCalendar extends Component {
     this.setState({
       executing: true
     });
-
+    date = new Date(date);
     const currentDate = new Date();
     const currentDateStr = `${_readableFormat(currentDate.getFullYear())}-${_readableFormat(currentDate.getMonth() + 1)}-${_readableFormat(currentDate.getDate())}`
 
@@ -84,6 +108,7 @@ class BaseCalendar extends Component {
 
     let markedDates = {};
     const resultDates = await fetch(url).then(response => response.json());
+
     if (!util.isEmpty(resultDates)) {
       for (let item of resultDates) {
         if (markedDates[item]) {
@@ -99,23 +124,27 @@ class BaseCalendar extends Component {
 
     this.setState({
       executing: false,
+      tempYear: this.state.currentDate.split("-").shift(),
       markedDates
     }, () => {
-      console.tron.log(url)
+      console.log(url)
     });
   }
 
 
   render() {
+    const yearOptions = util.range(1950, 2050);
+    const { currentDate } = this.state;
+
     return (
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
           </Left>
           <Body style={NativeBaseStyle.body}>
-            <TouchableOpacity onPress={this.openPicker}>
+            <TouchableOpacity onPress={this.togglePicker}>
               <Title style={NativeBaseStyle.bodyTitle}>
-                {this.state.yearChosen + " "} <Icon name="ios-arrow-down" style={{ fontSize: 17, color: Colors.WHITE }} />
+                {currentDate.split("-").shift()} <Icon name="ios-arrow-down" style={{ fontSize: 17, color: Colors.WHITE }} />
               </Title>
             </TouchableOpacity>
           </Body>
@@ -144,7 +173,7 @@ class BaseCalendar extends Component {
                 onDayPress={this.navigateToEventList}
                 firstDay={1}
                 markedDates={this.state.markedDates}
-                // monthFormat={'MM'}
+                onMonthChange={this.handleMonthChange}
                 theme={{
                   "stylesheet.day.basic": {
                     base: {
@@ -190,67 +219,99 @@ class BaseCalendar extends Component {
           {
             executeLoading(this.state.executing)
           }
-          <PopupDialog
-            show={false}
-            dialogTitle={
-              <DialogTitle title={"Chọn năm"}
-                titleStyle={{
-                  ...Platform.select({
-                    android: {
-                      height: verticalScale(50),
-                      justifyContent: 'center',
-                    }
-                  })
-                }}
-              />
-            }
-            ref={(popupDialog) => { this.popupDialog = popupDialog }}
-            width={0.8}
-            dialogStyle={{ height: 'auto' }}
-            // height={'auto'}
-            actions={[
-              <DialogButton
-                align={'center'}
-                buttonStyle={{
-                  backgroundColor: Colors.GRAY,
-                  alignSelf: 'stretch',
-                  alignItems: 'center',
-                  borderBottomLeftRadius: 8,
-                  borderBottomRightRadius: 8,
-                  ...Platform.select({
-                    ios: {
-                      justifyContent: 'flex-end',
-                    },
-                    android: {
-                      height: verticalScale(50),
-                      justifyContent: 'center',
-                    },
-                  })
-                }}
-                text="OK"
-                textStyle={{
-                  fontSize: moderateScale(14, 1.5),
-                  color: '#fff',
-                  textAlign: 'center'
-                }}
-                onPress={() => {
-                  this.setState({
-                    yearChosen: this.pickYear.value,
-                    executing: false
-                  });
-                  this.popupDialog.dismiss();
-                }}
-                key="button-0"
-              />,
-            ]}>
-            <View style={[LoginStyle.formInputs, { marginVertical: 10 }]}>
-              <View style={LoginStyle.formInput}>
-                <TextInput style={LoginStyle.formInputText} keyboardType="numeric" ref={ref => this.pickYear = ref} placeholder={this.state.yearChosen + ""} />
+          {
+            // <PopupDialog
+            //   show={this.state.isOpened}
+            //   dialogTitle={
+            //     <DialogTitle title={"Chọn năm"}
+            //       titleStyle={{
+            //         ...Platform.select({
+            //           android: {
+            //             height: verticalScale(50),
+            //             justifyContent: 'center',
+            //           }
+            //         })
+            //       }}
+            //     />
+            //   }
+            //   ref={(popupDialog) => { this.popupDialog = popupDialog }}
+            //   width={0.8}
+            //   dialogStyle={{ height: 'auto' }}
+            //   // height={'auto'}
+            //   actions={[
+            //     <DialogButton
+            //       align={'center'}
+            //       buttonStyle={{
+            //         backgroundColor: Colors.GRAY,
+            //         alignSelf: 'stretch',
+            //         alignItems: 'center',
+            //         borderBottomLeftRadius: 8,
+            //         borderBottomRightRadius: 8,
+            //         ...Platform.select({
+            //           ios: {
+            //             justifyContent: 'flex-end',
+            //           },
+            //           android: {
+            //             height: verticalScale(50),
+            //             justifyContent: 'center',
+            //           },
+            //         })
+            //       }}
+            //       text="OK"
+            //       textStyle={{
+            //         fontSize: moderateScale(14, 1.5),
+            //         color: '#fff',
+            //         textAlign: 'center'
+            //       }}
+            //       onPress={() => {
+            //         const { currentDate } = this.state;
+            //         const currentMonth = currentDate.split("-")[1];
+            //         this.setState({
+            //           isOpened: false,
+            //           currentDate: `${this.state.tempYear}-${currentMonth}-01`
+            //         });
 
+            //         this.popupDialog.dismiss();
+            //       }}
+            //       key="button-0"
+            //     />,
+            //   ]}>
+
+            //     <View style={[LoginStyle.formInputs, { marginVertical: 10 }]}>
+            //       <View style={LoginStyle.formInput}>
+            //         <TextInput
+            //           style={LoginStyle.formInputText}
+            //           keyboardType="numeric"
+            //           placeholder={this.state.yearChosen + ""}
+            //           value={this.state.currentDate.split("-").shift()}
+            //           onChangeText={(text) => this.setState({ tempYear: text })}
+            //         />
+            //       </View>
+            //     </View>
+
+            //     </PopupDialog>
+          }
+          <Modal animationType={"slide"} visible={this.state.isOpened} transparent>
+            <View style={{ backgroundColor: '#fafafa', position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
+                <TouchableOpacity onPress={this.togglePicker}>
+                  <Text style={{ fontWeight: 'bold' }}>Huỷ</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={this.handleYearChange}>
+                  <Text style={{ color: Colors.GREEN_PANTONE_364C, fontWeight: 'bold' }}>Chọn</Text>
+                </TouchableOpacity>
               </View>
-
+              <View style={{ borderBottomColor: Colors.GRAY, borderBottomWidth: 1 }}></View>
+              <Picker
+                selectedValue={this.state.tempYear}
+                onValueChange={(itemValue, itemIndex) => this.setState({ tempYear: itemValue })}
+              >
+                {
+                  yearOptions.map(x => <Picker.Item label={`${x}`} value={`${x}`} key={`${x}`} />)
+                }
+              </Picker>
             </View>
-          </PopupDialog>
+          </Modal>
         </Content>
       </Container>
     );
@@ -264,45 +325,8 @@ const styles = StyleSheet.create({
   calendar: {
     flex: 1
   }
-})
-
-
-// const theme = {
-//   'stylesheet.calendar.header': {
 //     calendar: {
-//       paddingTop: 100,
-//       borderBottomWidth: 3,
-//       borderColor: 'red',
-//       flex: 1
-//     }
-//   }
-// }
-
-// const styles = StyleSheet.create({
-//   calendar: {
-//     paddingTop: 5,
-//     borderBottomWidth: 1,
-//     borderColor: '#eee',
-//     flex: 1
-//   },
-//   calendar: {
-//     paddingTop: 100,
-//     borderBottomWidth: 3,
-//     borderColor: 'red',
-//     flex: 1
-//   }
-//   //...(theme["stylesheet.calendar.header"])
-//   // text: {
-//   //   textAlign: 'center',
-//   //   borderColor: '#bbb',
-//   //   padding: 10,
-//   //   backgroundColor: '#eee'
-//   // },
-//   // container: {
-//   //   flex: 1,
-//   //   backgroundColor: 'gray'
-//   // }
-// });
+});
 
 
 const mapStatetoProps = (state) => {
