@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-
+import { PermissionsAndroid } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
@@ -76,9 +76,9 @@ class ListComment extends Component {
   }
 
   componentWillMount = () => {
-      this.setState({
-        loading: true
-      }, () => this.fetchData());
+    this.setState({
+      loading: true
+    }, () => this.fetchData());
     this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
     this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
   }
@@ -91,26 +91,23 @@ class ListComment extends Component {
   }
 
   fetchData = async () => {
-    // let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
-    let url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
-
-    const {isTaskComment}=this.state;
+    let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
+    const { isTaskComment } = this.state;
 
     if (isTaskComment) {
       url = `${API_URL}/api/HscvCongViec/GetRootCommentsOfTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
 
-    const result = await fetch(url);
-    let resultJson = await result.json();
-    if (!isTaskComment) {
-      resultJson = resultJson.LstRootComment;
+    let result = await fetch(url).then((response) => response.json());
+    if (isTaskComment) {
+      result = result.LstRootComment;
     }
 
     this.setState({
       loading: false,
       loadingMore: false,
       refreshing: false,
-      data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson
+      data: this.state.loadingMore ? [...this.state.data, ...result] : result
     })
   }
 
@@ -131,20 +128,17 @@ class ListComment extends Component {
   }
 
   navigateToDetail = () => {
-    // console.tron.log(this.props.navigation)
-    appGetDataAndNavigate(this.props.navigation, 'ListCommentScreen');
-    return true;
-    // if (this.state.isTaskComment) {
-    //   this.props.navigation.navigate('DetailTaskScreen', {
-    //     taskId: this.state.taskId,
-    //     taskType: this.state.taskType
-    //   });
-    // } else {
-    //   this.props.navigation.navigate('DetailSignDocScreen', {
-    //     docId: this.state.docId,
-    //     docType: this.state.docType
-    //   })
-    // }
+    if (this.state.isTaskComment) {
+      this.props.navigation.navigate('DetailTaskScreen', {
+        taskId: this.state.taskId,
+        taskType: this.state.taskType
+      });
+    } else {
+      this.props.navigation.navigate('VanBanDiDetailScreen', {
+        docId: this.state.docId,
+        docType: this.state.docType
+      })
+    }
   }
 
   keyboardWillShow = (event) => {
@@ -250,63 +244,122 @@ class ListComment extends Component {
     }, () => this.fetchData());
   }
 
-  onDownloadFile(fileName, fileLink, fileExtension) {
-    try {
-      fileLink = WEB_URL + fileLink;
-      fileLink = fileLink.replace('////', '/');
-      if (Platform.OS == 'ios') {
-        config = {
-          fileCache: true
-        };
-        fileLink = encodeURI(fileLink);
-      } else {
-        fileLink = fileLink.replace(/ /g, "%20");
-      }
+  async onDownloadFile(fileName, fileLink, fileExtension) {
+    //config save path
+    let date = new Date();
+    let url = `${WEB_URL}//Uploads//${fileLink}`;
+    url = url.replace('\\', '/');
+    url = url.replace(/\\/g, '/');
+    url = url.replace(/ /g, "%20");
+    let regExtension = this.extention(url);
+    let extension = "." + regExtension[0];
+    const { config, fs } = RNFetchBlob;
+    let PictureDir = fs.dirs.PictureDir;
+    let savePath = PictureDir + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+    let options = {};
+    let isAllowDownload = true;
+    if (Platform.OS == 'android') {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+          message:
+            'Ebiz Office muốn truy cập vào tài liệu của bạn',
+          buttonNeutral: 'Để sau',
+          buttonNegative: 'Thoát',
+          buttonPositive: 'OK',
+        },
+      );
 
-      const config = {
-        fileCache: true,
-        // android only options, these options be a no-op on IOS
-        addAndroidDownloads: {
-          notification: true, // Show notification when response data transmitted
-          title: fileName, // Title of download notification
-          description: 'An image file.', // File description (not notification description)
-          mime: fileExtension,
-          mediaScannable: true, // Make the file scannable  by media scanner
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        options = {
+          fileCache: true,
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            path: savePath,
+            description: 'VNIO FILE'
+          }
         }
+      } else {
+        isAllowDownload = false;
       }
+    } else {
+      options = {
+        fileCache: true,
+        path: savePath
+      }
+    }
 
-      RNFetchBlob.config(config)
-        .fetch('GET', fileLink)
-        .then((response) => {
-          //kiểm tra platform nếu là android và file là ảnh
-          if (Platform.OS == 'android' && isImage(fileExtension)) {
-            android.actionViewIntent(response.path(), fileExtension);
-          }
-          response.path();
-        }).catch((err) => {
-          Alert.alert(
-            'THÔNG BÁO',
-            'KHÔNG THỂ TẢI ĐƯỢC FILE',
-            [
-              {
-                text: 'OK',
-                onPress: () => { }
+    if (isAllowDownload) {
+      config(options).fetch('GET', url).then((res) => {
+        this.setState({
+          showDialogSuccess: true
+        })
+        Alert.alert(
+          'THÔNG BÁO',
+          `DOWN LOAD THÀNH CÔNG`,
+          [
+            {
+              text: 'MỞ FILE',
+              onPress: () => {
+                let openDocConfig = {};
+
+                if (Platform.OS == 'android') {
+                  openDocConfig = {
+                    url: `file://${res.path()}`,
+                    fileName: fileName,
+                    cache: false,
+                    fileType: regExtension[0]
+                  }
+                } else {
+                  openDocConfig = {
+                    url: savePath,
+                    fileNameOptional: fileName
+                  }
+                }
+
+                OpenFile.openDoc([openDocConfig], (error, url) => {
+                  if (error) {
+                    Alert.alert(
+                      'THÔNG BÁO',
+                      error.toString(),
+                      [
+                        {
+                          text: 'OK',
+                          onPress: () => { }
+                        }
+                      ]
+                    )
+                  } else {
+                    console.log(url)
+                  }
+                })
               }
-            ]
-          )
-        });
-    } catch (err) {
-      Alert.alert({
-        'title': 'THÔNG BÁO',
-        'message': `Lỗi: ${err.toString()}`,
-        buttons: [
-          {
-            text: 'OK',
-            onPress: () => { }
-          }
-        ]
+            },
+            {
+              text: 'ĐÓNG',
+              onPress: () => { }
+            }
+          ]
+        )
+      }).catch((err) => {
+        Alert.alert(
+          'THÔNG BÁO',
+          'DOWNLOAD THẤT BẠI',
+          [
+            {
+              text: err.toString(),
+              onPress: () => { }
+            }
+          ]
+        )
       })
     }
+  }
+
+  extention(filename) {
+    return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
   }
 
   renderItem = ({ item }) => {
@@ -315,7 +368,7 @@ class ListComment extends Component {
       attachmentContent = (
         <View style={AttachCommentStyle.commentAttachContainer}>
           <View style={AttachCommentStyle.commentAttachInfo}>
-            <RneIcon name='ios-attach-outline' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
+            <RneIcon name='ios-attach' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
             <Text style={AttachCommentStyle.commentAttachText}>
               {formatLongText(item.ATTACH.TENTAILIEU, 30)}
             </Text>
@@ -375,100 +428,7 @@ class ListComment extends Component {
     )
   }
 
-  onOpenSendFile = async () => {
-    // DocumentPicker.show({
-    //   filetype: [DocumentPickerUtil.allFiles()],
-    // },(error,res) => {
-    //   // Android
-    //   console.log(
-    //      res.uri,
-    //      res.type, // mime type
-    //      res.fileName,
-    //      res.fileSize
-    //   );
-    // });
-    if (this.state.isOpen === true) {
-      this.setState({
-        avatarSource: EMPTY_STRING,
-        avatarSourceURI: EMPTY_STRING,
-        isOpen: false,
-        footerFlex: 0,
-        heightAnimation: verticalScale(50)
-      });
-      return;
-    }
-    else {
-      this.setState({
-        executing: true,
-        isOpen: true,
-      });
-      const options = {
-        title: 'Select Image',
-        storageOptions: {
-          skipBackup: true,
-          path: 'images'
-        },
-        quality: 1.0,
-        maxWidth: 500,
-        maxHeight: 500,
-      };
-
-      /**
-       * The first arg is the options object for customization (it can also be null or omitted for default options),
-       * The second arg is the callback which sends object: response (more info below in README)
-       */
-      ImagePicker.showImagePicker(options, (response) => {
-        console.log('Response = ', response);
-        console.log('Response.URI = ', response.uri);
-        console.log('Response Data = ', response.data);
-        console.log('Response Size = ', response.fileSize);
-        if (response.didCancel) {
-          console.log('User cancelled image picker');
-          this.setState({
-            isOpen: false,
-            footerFlex: 0
-          });
-        }
-        else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-          Alert.alert(
-            'THÔNG BÁO',
-            'KIỂM TRA LẠI MÁY ẢNH CỦA BẠN',
-            [
-              {
-                text: 'OK',
-                onPress: () => {
-                  this.setState({
-                    isOpen: false,
-                    footerFlex: 0
-                  });
-                }
-              }
-            ]
-          );
-        }
-        else {
-          let source = { uri: response.uri };
-          console.log('Source = ', source);
-          console.log('Source URI = ', source.uri);
-          // You can also display the image using data:
-          // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-          this.setState({
-            avatarSource: source,
-            avatarSourceURI: source.uri,
-            executing: false,
-            footerFlex: 1,
-            heightAnimation: verticalScale(250),
-          });
-        }
-      });
-    }
-  }
-
   render() {
-    // const footerFlexWhenImage = (this.state.avatarSource === EMPTY_STRING) ? this.state.footerFlex : 2;
-    const commentChosenImageIcon = (this.state.isOpen) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
     const commentSendableIcon = (this.state.avatarSource !== EMPTY_STRING || this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
     return (
       <Container>
@@ -520,9 +480,6 @@ class ListComment extends Component {
 
         <Footer style={[FooterCommentStyle.footerUploader, { height: this.state.heightAnimation }]}>
           <View style={[FooterCommentStyle.footerComment]}>
-            {/* <Button transparent onPress={this.onOpenSendFile}>
-              <RneIcon name='md-images' size={moderateScale(40)} color={commentChosenImageIcon} type='ionicon' />
-            </Button> */}
             <Input
               style={FooterCommentStyle.footerCommentContent}
               placeholder='Nhập nội dung trao đổi'
@@ -534,13 +491,6 @@ class ListComment extends Component {
               <RneIcon name='md-send' size={moderateScale(40)} color={commentSendableIcon} type='ionicon' />
             </Button>
           </View>
-          {
-            renderIf(this.state.avatarSource !== EMPTY_STRING)(
-              <View style={FooterCommentStyle.footerUploadWrapper}>
-                <Image source={this.state.avatarSource} style={FooterCommentStyle.imageUpload} />
-              </View>
-            )
-          }
         </Footer>
 
         {
