@@ -325,7 +325,6 @@ const styles = StyleSheet.create({
   calendar: {
     flex: 1
   }
-//     calendar: {
 });
 
 
