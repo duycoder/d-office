@@ -57,7 +57,7 @@ class Detail extends Component {
                 docId: this.props.navigation.state.params.docId,
                 docType: this.props.navigation.state.params.docType,
             },
-            // executing: false,
+            executing: false,
         }
     }
 

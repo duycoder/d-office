@@ -43,7 +43,6 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 
-
 class AssignTask extends Component {
 	constructor(props) {
 		super(props);
@@ -86,11 +85,8 @@ class AssignTask extends Component {
 		})
 
 		const url = `${API_URL}/api/HscvCongViec/AssignTask/${this.state.taskId}/${this.state.subTaskId}/${this.state.userId}`;
-
 		const result = await fetch(url);
 		const resultJson = await result.json();
-
-		await asyncDelay(2000);
 
 		this.setState({
 			loading: false,
@@ -102,9 +98,8 @@ class AssignTask extends Component {
 
 	onChangeSegment(index) {
 		this.setState({
-			selectedSegmentIndex: index
+			selectedSegmentIndex: index,
 		});
-
 		if (index == 0) {
 			this.setState({
 				dataMainProcessUsers: this.state.dataAssignTask.listEqualUsers || [],
@@ -179,17 +174,17 @@ class AssignTask extends Component {
 
 
 	componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		backHandlerConfig(true, this.navigateBackToDetail);
+	}
 
-    componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		backHandlerConfig(false, this.navigateBackToDetail);
+	}
 
-    navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
-        return true;
-    }
+	navigateBackToDetail = () => {
+		appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
+		return true;
+	}
 
 	renderMainProcessItem = ({ item }) => {
 		return (
@@ -425,7 +420,7 @@ class AssignTask extends Component {
 
 		return (
 			<Container>
-				<Header style={{ backgroundColor: HEADER_COLOR }}>
+				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
 						<Button transparent onPress={() => this.navigateBackToDetail()}>
 							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />

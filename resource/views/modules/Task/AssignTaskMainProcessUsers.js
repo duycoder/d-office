@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
     listItemContainer: {
         height: verticalScale(70),
-        backgroundColor: '#FF0033',
+        backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemRow: {
