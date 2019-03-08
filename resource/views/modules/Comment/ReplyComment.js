@@ -188,68 +188,138 @@ class ReplyComment extends Component {
     }
 
     this.setState({
-      executing: false
+      executing: false,
+      commentContent: EMPTY_STRING
     }, () => this.fetchData());
   }
 
-  onDownloadFile(fileName, fileLink, fileExtension) {
-    try {
-      fileLink = WEB_URL + fileLink;
-      fileLink = fileLink.replace('////', '/');
-      if (Platform.OS == 'ios') {
-        config = {
-          fileCache: true
-        };
-        fileLink = encodeURI(fileLink);
-      } else {
-        fileLink = fileLink.replace(/ /g, "%20");
-      }
+  async onDownloadFile(fileName, fileLink, fileExtension) {
+    //config save path
+    fileLink = fileLink.replace(/\\/, '');
+    fileLink = fileLink.replace(/\\/g, '/');
+    let date = new Date();
+    let url = `${WEB_URL}/Uploads/${fileLink}`;
+    // url = url.replace('\\', '/');
+    // url = url.replace(/\\/g, '/');
+    url = url.replace(/ /g, "%20");
+    let regExtension = this.extention(url);
+    let extension = "." + regExtension[0];
+    const { config, fs } = RNFetchBlob;
+    let { PictureDir, DocumentDir } = fs.dirs;
 
-      const config = {
-        fileCache: true,
-        // android only options, these options be a no-op on IOS
-        addAndroidDownloads: {
-          notification: true, // Show notification when response data transmitted
-          title: fileName, // Title of download notification
-          description: 'An image file.', // File description (not notification description)
-          mime: fileExtension,
-          mediaScannable: true, // Make the file scannable  by media scanner
+    let savePath = (Platform.OS === 'android' ? PictureDir : DocumentDir) + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+
+    let options = {};
+    let isAllowDownload = true;
+    if (Platform.OS == 'android') {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+                title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                message:
+                    'Ebiz Office muốn truy cập vào tài liệu của bạn',
+                buttonNeutral: 'Để sau',
+                buttonNegative: 'Thoát',
+                buttonPositive: 'OK',
+            },
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            options = {
+                fileCache: true,
+                addAndroidDownloads: {
+                    useDownloadManager: true,
+                    notification: true,
+                    path: savePath,
+                    description: 'VNIO FILE'
+                }
+            }
+        } else {
+            isAllowDownload = false;
         }
-      }
-
-      RNFetchBlob.config(config)
-        .fetch('GET', fileLink)
-        .then((response) => {
-          //kiểm tra platform nếu là android và file là ảnh
-          if (Platform.OS == 'android' && isImage(fileExtension)) {
-            android.actionViewIntent(response.path(), fileExtension);
-          }
-          response.path();
-        }).catch((err) => {
-          Alert.alert(
-            'THÔNG BÁO',
-            'KHÔNG THỂ TẢI ĐƯỢC FILE',
-            [
-              {
-                text: 'OK',
-                onPress: () => { }
-              }
-            ]
-          )
-        });
-    } catch (err) {
-      Alert.alert({
-        'title': 'THÔNG BÁO',
-        'message': `Lỗi: ${err.toString()}`,
-        buttons: [
-          {
-            text: 'OK',
-            onPress: () => { }
-          }
-        ]
-      })
+    } else {
+        options = {
+            fileCache: true,
+            path: savePath
+        }
     }
-  }
+
+    if (isAllowDownload) {
+        config(options).fetch('GET', url).then((res) => {
+            if (res.respInfo.status === 404) {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    'KHÔNG TÌM THẤY TÀI LIỆU',
+                    [
+                        {
+                            text: "ĐÓNG",
+                            onPress: () => { }
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    `DOWN LOAD THÀNH CÔNG`,
+                    [
+                        {
+                            text: 'MỞ FILE',
+                            onPress: () => {
+                                let openDocConfig = {};
+
+                                if (Platform.OS == 'android') {
+                                    openDocConfig = {
+                                        url: `file://${res.path()}`,
+                                        fileName: fileName,
+                                        cache: false,
+                                        fileType: regExtension[0]
+                                    }
+                                } else {
+                                    openDocConfig = {
+                                        url: savePath,
+                                        fileNameOptional: fileName
+                                    }
+                                }
+
+                                OpenFile.openDoc([openDocConfig], (error, url) => {
+                                    if (error) {
+                                        Alert.alert(
+                                            'THÔNG BÁO',
+                                            error.toString(),
+                                            [
+                                                {
+                                                    text: 'OK',
+                                                    onPress: () => { }
+                                                }
+                                            ]
+                                        )
+                                    } else {
+                                        console.log(url)
+                                    }
+                                })
+                            }
+                        },
+                        {
+                            text: 'ĐÓNG',
+                            onPress: () => { }
+                        }
+                    ]
+                );
+            }
+        }).catch((err) => {
+            Alert.alert(
+                'THÔNG BÁO',
+                'DOWNLOAD THẤT BẠI',
+                [
+                    {
+                        text: err.toString(),
+                        onPress: () => { }
+                    }
+                ]
+            )
+        })
+    }
+}
 
   renderItem = ({ item }) => {
     return (
@@ -284,7 +354,7 @@ class ReplyComment extends Component {
             }
           </View>
         </View>
-      </View >
+      </View>
     )
   }
 
@@ -307,6 +377,7 @@ class ReplyComment extends Component {
         </View>
       )
     }
+    const buttonSendColor = this.state.commentContent === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
@@ -399,7 +470,7 @@ class ReplyComment extends Component {
             value={this.state.commentContent}
             onChangeText={(commentContent) => this.setState({ commentContent })} />
           <Button transparent onPress={this.sendComment}>
-            <RneIcon name='md-send' size={moderateScale(40)} color={Colors.GRAY} type='ionicon' />
+            <RneIcon name='md-send' size={moderateScale(40)} color={buttonSendColor} type='ionicon' />
           </Button>
         </Footer>
 

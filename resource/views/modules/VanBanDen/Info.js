@@ -4,7 +4,7 @@
  * @since: 09/05/2018
  */
 import React, { Component } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 
 //lib
 import { List, ListItem } from 'react-native-elements'
@@ -14,25 +14,61 @@ import HTMLView from 'react-native-htmlview';
 import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
-import { convertDateToString, _readableFormat } from '../../../common/Utilities';
+import { convertDateToString, _readableFormat, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 
 export default class MainInfoPublishDoc extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
-            info: this.props.info.entityVanBanDen
+            info: this.props.info.entityVanBanDen,
+            loading: false,
+            events: [],
+        };
+    }
+
+    componentDidMount = () => {
+        this.fetchData();
+    }
+
+    fetchData = async () => {
+        const { NGAYCONGTAC } = this.state.info;
+        if (NGAYCONGTAC !== null) {
+            this.setState({
+                loading: true
+            })
+            const date = convertDateToString(NGAYCONGTAC);
+            const day = date.split('/')[0];
+            const month = date.split('/')[1];
+            const year = date.split('/')[2];
+
+            const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.props.userInfo.ID}/${month}/${year}/${day}`;
+
+            const result = await fetch(url)
+                .then((response) => response.json());
+
+            this.setState({
+                loading: false,
+                events: result
+            })
         }
     }
 
+    getDetailEvent = (eventId) => {
+        const targetScreenParam = {
+            id: eventId
+        }
+
+        appStoreDataAndNavigate(this.props.navigator, "VanBanDenDetailScreen", new Object(), "DetailEventScreen", targetScreenParam);
+    }
 
     render() {
         // Print out state.info
         // console.tron.log(this.state.info)
         // pre-process
-        const { info } = this.state;
+        const { info, events } = this.state;
 
         let congtacTime = "";
         if (info.hasOwnProperty("GIO_CONGTAC") && info.hasOwnProperty("PHUT_CONGTAC")) {
@@ -46,20 +82,25 @@ export default class MainInfoPublishDoc extends Component {
         );
         if (info.SOHIEU === null) {
             sohieu = (
-                <Text style={[DetailPublishDocStyle.listItemSubTitleContainer, {color: Colors.RED_PANTONE_186C}]}>
+                <Text style={[DetailPublishDocStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
                     Không rõ
                 </Text>
             );
         }
 
         let trungLichHop = (
-            <Text style={{color: Colors.RED_PANTONE_186C}}>CÓ</Text> 
+            <Text>KHÔNG</Text>
         )
-        if (!info.isDuplicateCalendar) {
-            trungLichHop=(
-                <Text>KHÔNG</Text> 
-            )
-        }        
+        if (info.hasOwnProperty("NGAYCONGTAC") && info.NGAYCONGTAC !== null && events.length > 0) {
+            let dateObj = events.filter(x => x.NGAYCONGTAC === info.NGAYCONGTAC && x.GIO_CONGTAC === info.GIO_CONGTAC && x.PHUT_CONGTAC === info.PHUT_CONGTAC);
+            if (dateObj) {
+                trungLichHop = (
+                    <TouchableOpacity onPress={() => this.getDetailEvent(dateObj.ID)}>
+                        <Text style={{ color: Colors.RED_PANTONE_186C }}>CÓ</Text>
+                    </TouchableOpacity>
+                )
+            }
+        }
 
         // render
         return (
@@ -274,19 +315,19 @@ export default class MainInfoPublishDoc extends Component {
                             } />
                         {
                             this.state.info.hasOwnProperty("NGAYCONGTAC") &&
-                                <ListItem style={DetailPublishDocStyle.listItemContainer}
-                                    hideChevron={true}
-                                    title={
-                                        <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                            THỜI GIAN CÔNG TÁC
+                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        THỜI GIAN CÔNG TÁC
                                             </Text>
-                                    }
-                                    subtitle={
-                                        <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                            {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
-                                        </Text>
-                                    }
-                                />
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
+                                    </Text>
+                                }
+                            />
                         }
 
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
@@ -298,7 +339,7 @@ export default class MainInfoPublishDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                  {trungLichHop}
+                                    {trungLichHop}
                                 </Text>
                             } />
 

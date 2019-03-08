@@ -5,12 +5,12 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { AsyncStorage, Alert, View as RnView, Text as RnText, FlatList } from 'react-native';
+import { AsyncStorage, Alert, View as RnView, Text as RnText, FlatList, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
 //lib
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption, } from 'react-native-popup-menu';
+// import {Menu, MenuTrigger, MenuOptions, MenuOption, } from 'react-native-popup-menu';
 import {
     Container, Header, Left, Button, Body,
     Title, Right, Toast, Tabs, Tab, TabHeading, ScrollableTab,
@@ -41,6 +41,7 @@ import TaskAttachment from './TaskAttachment';
 import GroupSubTask from './GroupSubTask';
 import ResultEvaluationTask from './ResultEvaluationTask'
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
+import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
 class DetailTask extends Component {
     constructor(props) {
@@ -293,7 +294,6 @@ class DetailTask extends Component {
     }
 
     render() {
-        // console.tron.log(this.state.taskInfo)
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -301,34 +301,33 @@ class DetailTask extends Component {
             if (task.CongViec.IS_BATDAU == true) {
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec == true && task.CongViec.IS_SUBTASK != true) || task.IsNguoiThucHienChinh) && (task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <MenuOption key={-1} onSelect={() => this.onUpdateTaskProgress()}
-                            style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            <Text style={MenuOptionStyle.text}>
-                                Cập nhật tiến độ
-                            </Text>
-                        </MenuOption>
+                        <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} />
                     )
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                            <MenuOption key={-111} onSelect={() => this.onRescheduleTask()}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Lùi hạn công việc
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption key={-111} onSelect={() => this.onRescheduleTask()}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Lùi hạn công việc
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} />
                         )
                     }
                 }
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
                     menuActions.push(
-                        <MenuOption key={-1} onSelect={() => this.onApproveProgressTask()}
-                            style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            <Text style={MenuOptionStyle.text}>
-                                Phản hồi công việc
-                            </Text>
-                        </MenuOption>
+                        // <MenuOption key={-1} onSelect={() => this.onApproveProgressTask()}
+                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                        //     <Text style={MenuOptionStyle.text}>
+                        //         Phản hồi công việc
+                        //     </Text>
+                        // </MenuOption>
+
+                        <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} />
                     )
                 }
 
@@ -336,12 +335,14 @@ class DetailTask extends Component {
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <MenuOption key={0} onSelect={() => this.onCreateSubTask()}
-                            style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            <Text style={MenuOptionStyle.text}>
-                                Tạo công việc con
-                            </Text>
-                        </MenuOption>
+                        // <MenuOption key={0} onSelect={() => this.onCreateSubTask()}
+                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                        //     <Text style={MenuOptionStyle.text}>
+                        //         Tạo công việc con
+                        //     </Text>
+                        // </MenuOption>
+
+                        <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} />
                     )
                 }
 
@@ -349,13 +350,15 @@ class DetailTask extends Component {
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
                     menuActions.push(
-                        <MenuOption onSelect={() => this.onAssignTask()}
-                            key={1}
-                            style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            <Text style={MenuOptionStyle.text}>
-                                Giao việc
-                            </Text>
-                        </MenuOption>
+                        // <MenuOption onSelect={() => this.onAssignTask()}
+                        //     key={1}
+                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                        //     <Text style={MenuOptionStyle.text}>
+                        //         Giao việc
+                        //     </Text>
+                        // </MenuOption>
+
+                        <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
                     )
                 }
 
@@ -379,25 +382,29 @@ class DetailTask extends Component {
                         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
                         menuActions.push(
-                            <MenuOption onSelect={() => this.onApproveEvaluationTask()}
-                                key={3}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Duyệt đánh giá công việc
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption onSelect={() => this.onApproveEvaluationTask()}
+                            //     key={3}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Duyệt đánh giá công việc
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} />
                         )
                     }
 
                     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
                         menuActions.push(
-                            <MenuOption onSelect={() => this.onEvaluationTask()}
-                                key={4}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Tự đánh giá công việc
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption onSelect={() => this.onEvaluationTask()}
+                            //     key={4}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Tự đánh giá công việc
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} />
                         )
                     }
                 }
@@ -412,40 +419,48 @@ class DetailTask extends Component {
                         && task.CongViec.DAGIAOVIEC != true) {
 
                         menuActions.push(
-                            <MenuOption onSelect={() => this.onAssignTask()}
-                                key={5}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Giao việc
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption onSelect={() => this.onAssignTask()}
+                            //     key={5}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Giao việc
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
                         )
 
                         menuActions.push(
-                            <MenuOption key={6} onSelect={() => this.onConfirmToStartTask()}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Bắt đầu xử lý
-                                </Text>
-                            </MenuOption>
-                        )
+                            // <MenuOption key={6} onSelect={() => this.onConfirmToStartTask()}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Bắt đầu xử lý
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
+                                                )
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
                     menuActions.push(
-                        <MenuOption key={7} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            <Text style={MenuOptionStyle.text}>
-                                Theo dõi
-                            </Text>
-                        </MenuOption>
+                        // <MenuOption key={7} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                        //     <Text style={MenuOptionStyle.text}>
+                        //         Theo dõi
+                        //     </Text>
+                        // </MenuOption>
+
+                        <InteractiveButton title={'Theo dõi'} />
                     )
                     if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
                         menuActions.push(
-                            <MenuOption key={8} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    DUYỆT KẾ HOẠCH
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption key={8} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         DUYỆT KẾ HOẠCH
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'DUYỆT KẾ HOẠCH'} />
                         )
                     }
                 } else {
@@ -455,46 +470,54 @@ class DetailTask extends Component {
                             // nếu chưa trình kế hoạch và là người xử lý chính thì
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    <MenuOption key={9} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                        <Text style={MenuOptionStyle.text}>
-                                            TRÌNH KẾ HOẠCH
-                                            </Text>
-                                    </MenuOption>
+                                    // <MenuOption key={9} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                                    //     <Text style={MenuOptionStyle.text}>
+                                    //         TRÌNH KẾ HOẠCH
+                                    //         </Text>
+                                    // </MenuOption>
+
+                                    <InteractiveButton title={'TRÌNH KẾ HOẠCH'} />
                                 )
                             }
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
                             menuActions.push(
-                                <MenuOption key={10} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                    <Text style={MenuOptionStyle.text}>
-                                        LẬP KẾ HOẠCH
-                                        </Text>
-                                </MenuOption>
+                                // <MenuOption key={10} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                                //     <Text style={MenuOptionStyle.text}>
+                                //         LẬP KẾ HOẠCH
+                                //         </Text>
+                                // </MenuOption>
+
+                                <InteractiveButton title={'LẬP KẾ HOẠCH'} />
                             )
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    <MenuOption key={11}
-                                        onSelect={() => this.onConfirmToStartTask()}
-                                        style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                        <Text style={MenuOptionStyle.text}>
-                                            Bắt đầu xử lý
-                                        </Text>
-                                    </MenuOption>
+                                    // <MenuOption key={11}
+                                    //     onSelect={() => this.onConfirmToStartTask()}
+                                    //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                                    //     <Text style={MenuOptionStyle.text}>
+                                    //         Bắt đầu xử lý
+                                    //     </Text>
+                                    // </MenuOption>
+
+                                    <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
                                 )
                             }
                         }
                     } else {
                         //Bắt đầu xử lý
                         menuActions.push(
-                            <MenuOption key={12}
-                                onSelect={() => this.onConfirmToStartTask()}
-                                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                <Text style={MenuOptionStyle.text}>
-                                    Bắt đầu xử lý
-                                </Text>
-                            </MenuOption>
+                            // <MenuOption key={12}
+                            //     onSelect={() => this.onConfirmToStartTask()}
+                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+                            //     <Text style={MenuOptionStyle.text}>
+                            //         Bắt đầu xử lý
+                            //     </Text>
+                            // </MenuOption>
+
+                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
                         )
                     }
                 }
@@ -504,112 +527,109 @@ class DetailTask extends Component {
         //menu thông tin về công việc
 
         menuActions.push(
-            <MenuOption
-                key='m1'
-                onSelect={() => this.onGetGroupSubTask()}
-                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                <Text style={MenuOptionStyle.text}>
-                    Các công việc con
-                </Text>
-            </MenuOption>
+            // <MenuOption
+            //     key='m1'
+            //     onSelect={() => this.onGetGroupSubTask()}
+            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+            //     <Text style={MenuOptionStyle.text}>
+            //         Các công việc con
+            //     </Text>
+            // </MenuOption>
+
+            <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} />
         );
 
         menuActions.push(
-            <MenuOption
-                key='m2'
-                onSelect={() => this.onGetProgressHistory()}
-                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                <Text style={MenuOptionStyle.text}>
-                    Theo dõi tiến độ
-                </Text>
-            </MenuOption>
+            // <MenuOption
+            //     key='m2'
+            //     onSelect={() => this.onGetProgressHistory()}
+            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+            //     <Text style={MenuOptionStyle.text}>
+            //         Theo dõi tiến độ
+            //     </Text>
+            // </MenuOption>
+
+            <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} />
         );
 
         menuActions.push(
-            <MenuOption
-                key='m3'
-                onSelect={() => this.onGetRescheduleHistory()}
-                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                <Text style={MenuOptionStyle.text}>
-                    Lịch sử lùi hạn
-                </Text>
-            </MenuOption>
+            // <MenuOption
+            //     key='m3'
+            //     onSelect={() => this.onGetRescheduleHistory()}
+            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+            //     <Text style={MenuOptionStyle.text}>
+            //         Lịch sử lùi hạn
+            //     </Text>
+            // </MenuOption>
+
+            <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} />
         );
 
         menuActions.push(
-            <MenuOption
-                key='m4'
-                onSelect={() => this.onGetEvaluationHistory()}
-                style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                <Text style={MenuOptionStyle.text}>
-                    Lịch sử phản hồi
-                </Text>
-            </MenuOption>
-        );
+            // <MenuOption
+            //     key='m4'
+            //     onSelect={() => this.onGetEvaluationHistory()}
+            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
+            //     <Text style={MenuOptionStyle.text}>
+            //         Lịch sử phản hồi
+            //     </Text>
+            // </MenuOption>
 
-        // console.tron.log(">>"+menuActions)
+            <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} />
+        );
 
         return (
-            <MenuProvider>
-                <Container>
-                    <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
-                        <Left style={NativeBaseStyle.left}>
-                            <Button transparent onPress={() => this.navigateBackToList()}>
-                                <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                            </Button>
-                        </Left>
+            <Container>
+                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+                    <Left style={NativeBaseStyle.left}>
+                        <Button transparent onPress={() => this.navigateBackToList()}>
+                            <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+                        </Button>
+                    </Left>
 
-                        <Body style={NativeBaseStyle.body}>
-                            <Title style={NativeBaseStyle.bodyTitle}>
-                                THÔNG TIN CÔNG VIỆC
+                    <Body style={NativeBaseStyle.body}>
+                        <Title style={NativeBaseStyle.bodyTitle}>
+                            THÔNG TIN CÔNG VIỆC
                             </Title>
-                        </Body>
+                    </Body>
 
-                        <Right style={NativeBaseStyle.right}>
-                            <Button transparent onPress={this.onOpenComment}>
-                                <Form style={DetailTaskStyle.commentButtonContainer}>
-                                    <NbIcon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
-                                    {
-                                        renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
-                                            <Form style={DetailTaskStyle.commentCircleContainer}>
-                                                <Text style={DetailTaskStyle.commentCountText}>
-                                                    {this.state.taskInfo.COMMENT_COUNT}
-                                                </Text>
-                                            </Form>
-                                        )
-                                    }
-                                </Form>
-                            </Button>
+                    <Right style={NativeBaseStyle.right}>
+                        <Button transparent onPress={this.onOpenComment}>
+                            <Form style={DetailTaskStyle.commentButtonContainer}>
+                                <NbIcon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
+                                {
+                                    renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
+                                        <Form style={DetailTaskStyle.commentCircleContainer}>
+                                            <Text style={DetailTaskStyle.commentCountText}>
+                                                {this.state.taskInfo.COMMENT_COUNT}
+                                            </Text>
+                                        </Form>
+                                    )
+                                }
+                            </Form>
+                        </Button>
+                    </Right>
+                </Header>
 
-                            {
-                                renderIf(menuActions.length > 0)(
-                                    <Menu style={{ marginHorizontal: scale(5) }}>
-                                        <MenuTrigger>
-                                            <Icon name='dots-three-horizontal' color={Colors.WHITE} type='entypo' size={verticalScale(25)} />
-                                        </MenuTrigger>
+                {
+                    bodyContent
+                }
 
-                                        <MenuOptions customStyles={MenuOptionsCustomStyle}>
-                                            {
-                                                menuActions
-                                            }
-                                        </MenuOptions>
-                                    </Menu>
-                                )
-                            }
-                        </Right>
-                    </Header>
-
-                    {
-                        bodyContent
-                    }
-
-                    {/* hiệu ứng xử lý */}
-
-                    {
-                        executeLoading(this.state.executing)
-                    }
-                </Container>
-            </MenuProvider>
+                {/* hiệu ứng xử lý */}
+                {
+                    menuActions.length > 0 &&
+                    <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>
+                        <ScrollView
+                            horizontal
+                        >
+                        {menuActions}
+                        </ScrollView>
+                    </RnView>
+                }
+                {
+                    executeLoading(this.state.executing)
+                }
+            </Container>
         );
     }
 }
@@ -708,6 +728,39 @@ class TaskContent extends Component {
         );
     }
 }
+
+class InteractiveButton extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: props.title
+        }
+    }
+    render() {
+        return (
+            <RnView style={styles.slide}>
+                <TouchableOpacity style={[ButtonGroupStyle.button, { marginHorizontal: 15, borderWidth: 3, borderColor: Colors.WHITE }]} onPress={this.props.onPress}>
+                    <Text style={ButtonGroupStyle.buttonText}>{this.state.title}</Text>
+                </TouchableOpacity>
+            </RnView>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    wrapper: {
+    },
+    slide: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        color: '#fff',
+        fontSize: 30,
+        fontWeight: 'bold',
+    }
+})
 
 const mapStateToProps = (state) => {
     return {

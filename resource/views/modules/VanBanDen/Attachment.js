@@ -1,5 +1,5 @@
 /**
- * @description: tài liệu đính kèm văn bản trình ký
+ * @description: tài liệu đính kèm văn bản đến
  * @author: duynn
  * @since: 04/05/2018
  */
@@ -22,7 +22,7 @@ import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //utilities
 import renderIf from 'render-if';
 import { API_URL, WEB_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, isImage, emptyDataPage, convertDateToString, convertTimeToString  } from '../../../common/Utilities';
+import { asyncDelay, isImage, emptyDataPage, convertDateToString, convertTimeToString } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 export default class AttachPublishDoc extends Component {
@@ -65,16 +65,20 @@ export default class AttachPublishDoc extends Component {
 
     async onDownloadFile(fileName, fileLink, fileExtension) {
         //config save path
+        fileLink = fileLink.replace(/\\/, '');
+        fileLink = fileLink.replace(/\\/g, '/');
         let date = new Date();
-        let url = `${WEB_URL}//Uploads//${fileLink}`;
-        url = url.replace('\\', '/');
-        url = url.replace(/\\/g, '/');
+        let url = `${WEB_URL}/Uploads/${fileLink}`;
+        // url = url.replace('\\', '/');
+        // url = url.replace(/\\/g, '/');
         url = url.replace(/ /g, "%20");
         let regExtension = this.extention(url);
         let extension = "." + regExtension[0];
         const { config, fs } = RNFetchBlob;
-        let PictureDir = fs.dirs.PictureDir;
-        let savePath = PictureDir + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+        let { PictureDir, DocumentDir } = fs.dirs;
+
+        let savePath = (Platform.OS === 'android' ? PictureDir : DocumentDir) + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+
         let options = {};
         let isAllowDownload = true;
         if (Platform.OS == 'android') {
@@ -112,53 +116,66 @@ export default class AttachPublishDoc extends Component {
 
         if (isAllowDownload) {
             config(options).fetch('GET', url).then((res) => {
-                Alert.alert(
-                    'THÔNG BÁO',
-                    `DOWN LOAD THÀNH CÔNG`,
-                    [
-                        {
-                            text: 'MỞ FILE',
-                            onPress: () => {
-                                let openDocConfig = {};
-
-                                if (Platform.OS == 'android') {
-                                    openDocConfig = {
-                                        url: `file://${res.path()}`,
-                                        fileName: fileName,
-                                        cache: false,
-                                        fileType: regExtension[0]
-                                    }
-                                } else {
-                                    openDocConfig = {
-                                        url: savePath,
-                                        fileNameOptional: fileName
-                                    }
-                                }
-
-                                OpenFile.openDoc([openDocConfig], (error, url) => {
-                                    if (error) {
-                                        Alert.alert(
-                                            'THÔNG BÁO',
-                                            error.toString(),
-                                            [
-                                                {
-                                                    text: 'OK',
-                                                    onPress: () => { }
-                                                }
-                                            ]
-                                        )
-                                    } else {
-                                        console.log(url)
-                                    }
-                                })
+                if (res.respInfo.status === 404) {
+                    Alert.alert(
+                        'THÔNG BÁO',
+                        'KHÔNG TÌM THẤY TÀI LIỆU',
+                        [
+                            {
+                                text: "ĐÓNG",
+                                onPress: () => { }
                             }
-                        },
-                        {
-                            text: 'ĐÓNG',
-                            onPress: () => { }
-                        }
-                    ]
-                )
+                        ]
+                    );
+                } else {
+                    Alert.alert(
+                        'THÔNG BÁO',
+                        `DOWN LOAD THÀNH CÔNG`,
+                        [
+                            {
+                                text: 'MỞ FILE',
+                                onPress: () => {
+                                    let openDocConfig = {};
+
+                                    if (Platform.OS == 'android') {
+                                        openDocConfig = {
+                                            url: `file://${res.path()}`,
+                                            fileName: fileName,
+                                            cache: false,
+                                            fileType: regExtension[0]
+                                        }
+                                    } else {
+                                        openDocConfig = {
+                                            url: savePath,
+                                            fileNameOptional: fileName
+                                        }
+                                    }
+
+                                    OpenFile.openDoc([openDocConfig], (error, url) => {
+                                        if (error) {
+                                            Alert.alert(
+                                                'THÔNG BÁO',
+                                                error.toString(),
+                                                [
+                                                    {
+                                                        text: 'OK',
+                                                        onPress: () => { }
+                                                    }
+                                                ]
+                                            )
+                                        } else {
+                                            console.log(url)
+                                        }
+                                    })
+                                }
+                            },
+                            {
+                                text: 'ĐÓNG',
+                                onPress: () => { }
+                            }
+                        ]
+                    );
+                }
             }).catch((err) => {
                 Alert.alert(
                     'THÔNG BÁO',

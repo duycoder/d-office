@@ -223,7 +223,7 @@ class Detail extends Component {
     }
 
     render() {
-        console.tron.log(this.state.docInfo)
+        // console.tron.log(this.state.docInfo)
         let bodyContent = null;
         let workflowButtons = [];
         if (this.state.loading) {

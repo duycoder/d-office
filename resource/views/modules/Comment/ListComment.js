@@ -240,123 +240,138 @@ class ListComment extends Component {
     }
 
     this.setState({
-      executing: false
+      executing: false,
+      commentContent: EMPTY_STRING
     }, () => this.fetchData());
   }
 
   async onDownloadFile(fileName, fileLink, fileExtension) {
     //config save path
+    fileLink = fileLink.replace(/\\/, '');
+    fileLink = fileLink.replace(/\\/g, '/');
     let date = new Date();
-    let url = `${WEB_URL}//Uploads//${fileLink}`;
-    url = url.replace('\\', '/');
-    url = url.replace(/\\/g, '/');
+    let url = `${WEB_URL}/Uploads/${fileLink}`;
+    // url = url.replace('\\', '/');
+    // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
     let regExtension = this.extention(url);
     let extension = "." + regExtension[0];
     const { config, fs } = RNFetchBlob;
-    let PictureDir = fs.dirs.PictureDir;
-    let savePath = PictureDir + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+    let { PictureDir, DocumentDir } = fs.dirs;
+
+    let savePath = (Platform.OS === 'android' ? PictureDir : DocumentDir) + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+
     let options = {};
     let isAllowDownload = true;
     if (Platform.OS == 'android') {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        {
-          title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-          message:
-            'Ebiz Office muốn truy cập vào tài liệu của bạn',
-          buttonNeutral: 'Để sau',
-          buttonNegative: 'Thoát',
-          buttonPositive: 'OK',
-        },
-      );
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+                title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                message:
+                    'Ebiz Office muốn truy cập vào tài liệu của bạn',
+                buttonNeutral: 'Để sau',
+                buttonNegative: 'Thoát',
+                buttonPositive: 'OK',
+            },
+        );
 
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        options = {
-          fileCache: true,
-          addAndroidDownloads: {
-            useDownloadManager: true,
-            notification: true,
-            path: savePath,
-            description: 'VNIO FILE'
-          }
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            options = {
+                fileCache: true,
+                addAndroidDownloads: {
+                    useDownloadManager: true,
+                    notification: true,
+                    path: savePath,
+                    description: 'VNIO FILE'
+                }
+            }
+        } else {
+            isAllowDownload = false;
         }
-      } else {
-        isAllowDownload = false;
-      }
     } else {
-      options = {
-        fileCache: true,
-        path: savePath
-      }
+        options = {
+            fileCache: true,
+            path: savePath
+        }
     }
 
     if (isAllowDownload) {
-      config(options).fetch('GET', url).then((res) => {
-        this.setState({
-          showDialogSuccess: true
-        })
-        Alert.alert(
-          'THÔNG BÁO',
-          `DOWN LOAD THÀNH CÔNG`,
-          [
-            {
-              text: 'MỞ FILE',
-              onPress: () => {
-                let openDocConfig = {};
-
-                if (Platform.OS == 'android') {
-                  openDocConfig = {
-                    url: `file://${res.path()}`,
-                    fileName: fileName,
-                    cache: false,
-                    fileType: regExtension[0]
-                  }
-                } else {
-                  openDocConfig = {
-                    url: savePath,
-                    fileNameOptional: fileName
-                  }
-                }
-
-                OpenFile.openDoc([openDocConfig], (error, url) => {
-                  if (error) {
-                    Alert.alert(
-                      'THÔNG BÁO',
-                      error.toString(),
-                      [
+        config(options).fetch('GET', url).then((res) => {
+            if (res.respInfo.status === 404) {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    'KHÔNG TÌM THẤY TÀI LIỆU',
+                    [
                         {
-                          text: 'OK',
-                          onPress: () => { }
+                            text: "ĐÓNG",
+                            onPress: () => { }
                         }
-                      ]
-                    )
-                  } else {
-                    console.log(url)
-                  }
-                })
-              }
-            },
-            {
-              text: 'ĐÓNG',
-              onPress: () => { }
+                    ]
+                );
+            } else {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    `DOWN LOAD THÀNH CÔNG`,
+                    [
+                        {
+                            text: 'MỞ FILE',
+                            onPress: () => {
+                                let openDocConfig = {};
+
+                                if (Platform.OS == 'android') {
+                                    openDocConfig = {
+                                        url: `file://${res.path()}`,
+                                        fileName: fileName,
+                                        cache: false,
+                                        fileType: regExtension[0]
+                                    }
+                                } else {
+                                    openDocConfig = {
+                                        url: savePath,
+                                        fileNameOptional: fileName
+                                    }
+                                }
+
+                                OpenFile.openDoc([openDocConfig], (error, url) => {
+                                    if (error) {
+                                        Alert.alert(
+                                            'THÔNG BÁO',
+                                            error.toString(),
+                                            [
+                                                {
+                                                    text: 'OK',
+                                                    onPress: () => { }
+                                                }
+                                            ]
+                                        )
+                                    } else {
+                                        console.log(url)
+                                    }
+                                })
+                            }
+                        },
+                        {
+                            text: 'ĐÓNG',
+                            onPress: () => { }
+                        }
+                    ]
+                );
             }
-          ]
-        )
-      }).catch((err) => {
-        Alert.alert(
-          'THÔNG BÁO',
-          'DOWNLOAD THẤT BẠI',
-          [
-            {
-              text: err.toString(),
-              onPress: () => { }
-            }
-          ]
-        )
-      })
+        }).catch((err) => {
+            Alert.alert(
+                'THÔNG BÁO',
+                'DOWNLOAD THẤT BẠI',
+                [
+                    {
+                        text: err.toString(),
+                        onPress: () => { }
+                    }
+                ]
+            )
+        })
     }
-  }
+}
 
   extention(filename) {
     return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
@@ -429,7 +444,7 @@ class ListComment extends Component {
   }
 
   render() {
-    const commentSendableIcon = (this.state.avatarSource !== EMPTY_STRING || this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
+    const commentSendableIcon = (this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
