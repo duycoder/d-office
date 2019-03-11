@@ -107,8 +107,8 @@ class BaseList extends Component {
     let targetScreenParam = {
       docId,
       docType: this.state.docType,
-      screenName: "VanBanDenDetailScreen",
-      rootScreenName: currentScreenName
+      // screenName: "VanBanDenDetailScreen",
+      // rootScreenName: currentScreenName
     }
     this.props.updateCoreNavParams(targetScreenParam);
     this.props.navigator.navigate("VanBanDenDetailScreen");

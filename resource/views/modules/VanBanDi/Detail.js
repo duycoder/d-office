@@ -96,10 +96,7 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        // this.props.navigation.goBack();
-        this.onNavigate(this.props.coreNavParams.rootScreenName)
-        // appGetDataAndNavigate(this.props.navigation, 'VanBanDiDetailScreen');
-        // return true;
+        this.props.navigation.goBack();
     }
 
     onReplyReview() {

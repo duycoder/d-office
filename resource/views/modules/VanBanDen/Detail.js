@@ -94,8 +94,7 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        this.onNavigate(this.props.coreNavParams.rootScreenName);
-        // this.props.navigation.goBack();
+        this.props.navigation.goBack();
     }
 
     navigateToBrief = () => {
@@ -187,7 +186,6 @@ class Detail extends Component {
     }
 
     render() {
-        console.tron.log(this.props)
         let bodyContent = null;
         let workflowButtons = [];
         if (this.state.loading) {

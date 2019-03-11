@@ -36,6 +36,9 @@ import AttachPublishDoc from './Attachment';
 import { ListSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 
+//redux
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class Brief extends Component {
   constructor(props) {
     super(props);
@@ -64,12 +67,7 @@ class Brief extends Component {
   }
 
   navigateBackToDetailVanban = () => {
-    // console.tron.log(this.props.navigation)
-    // this.props.navigation.goBack(null)
-    this.props.navigation.navigate(this.props.coreNavParams.screenName);
-    // this.props.navigation.dispatch(NavigationActions.back("VanBanDenDetailScreen"));
-    // appGetDataAndNavigate(this.props.navigation, 'VanBanDenBriefScreen');
-    return true;
+    this.props.navigation.goBack();
   }
 
   async fetchData() {
@@ -137,7 +135,14 @@ const mapStateToProps = (state) => {
     coreNavParams: state.navState.coreNavParams,
   }
 }
-export default connect(mapStateToProps)(Brief);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Brief);
 
 //THÔNG TIN VĂN BẢN
 class DetailContent extends Component {

@@ -252,11 +252,16 @@ const appRoutes = {
 }
 const appConfig = {
     headerMode: 'none',
-    initialRouteName: 'VanBanDenIsNotProcessScreen',
+    initialRouteName: 'VanBanDenIsNotProcessScreen'
+}
+const stack = StackNavigator(appRoutes, appConfig);
+
+const AppStack = DrawerNavigator({
+    stack: {screen: stack}
+}, {
     drawerWidth: width * 0.8,
     contentComponent: props => <SideBar {...props} />
-}
-const AppStack = DrawerNavigator(appRoutes, appConfig);
+})
 
 const authRoutes = {
     LoginScreen: {
