@@ -7,7 +7,7 @@ import { NavigationActions } from 'react-navigation';
 
 //utilities
 import { API_URL, Colors, BRIEF_CONSTANT, DOKHAN_CONSTANT } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, emptyDataPage, getColorCodeByProgressValue, convertDateToString } from '../../../common/Utilities';
+import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, emptyDataPage, getColorCodeByProgressValue, convertDateToString, formatLongText } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -43,7 +43,7 @@ class Brief extends Component {
       userId: this.props.userInfo.ID,
       isUnAuthorize: false,
 
-      docId: this.props.navigation.state.params.docId,
+      docId: this.props.coreNavParams.docId,
       docInfo: {},
 
       loading: false,
@@ -65,7 +65,9 @@ class Brief extends Component {
 
   navigateBackToDetailVanban = () => {
     // console.tron.log(this.props.navigation)
-    this.props.navigation.goBack(null)
+    // this.props.navigation.goBack(null)
+    this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    // this.props.navigation.dispatch(NavigationActions.back("VanBanDenDetailScreen"));
     // appGetDataAndNavigate(this.props.navigation, 'VanBanDenBriefScreen');
     return true;
   }
@@ -74,8 +76,6 @@ class Brief extends Component {
     this.setState({
       loading: true
     });
-
-    // console.tron.log(this.state.docId)
 
     const url = `${API_URL}/api/VanBanDen/HoSoVanBan/${this.state.docId}`;
     const result = await fetch(url);
@@ -91,7 +91,6 @@ class Brief extends Component {
   }
 
   render() {
-    console.tron.log(this.props.sId)
     let bodyContent = null;
     let workflowButtons = [];
     if (this.state.loading) {
@@ -135,8 +134,7 @@ class Brief extends Component {
 const mapStateToProps = (state) => {
   return {
     userInfo: state.userState.userInfo,
-    sId: state.navState.sId,
-    sType: state.navState.sType
+    coreNavParams: state.navState.coreNavParams,
   }
 }
 export default connect(mapStateToProps)(Brief);

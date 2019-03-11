@@ -46,8 +46,8 @@ class GroupSubTask extends Component {
 
         this.state = {
             userId: props.userInfo.ID,
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
             data: [],
             dataItem: {},
             filterValue: EMPTY_STRING,
@@ -57,8 +57,8 @@ class GroupSubTask extends Component {
             searching: false,
             executing: false,
 
-            canFinishTask: props.navigation.state.params.canFinishTask,
-            canAssignTask: props.navigation.state.params.canAssignTask
+            canFinishTask: props.extendsNavParams.canFinishTask,
+            canAssignTask: props.extendsNavParams.canAssignTask
         }
     }
 
@@ -267,8 +267,9 @@ class GroupSubTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'GroupSubTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'GroupSubTaskScreen');
+        // return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
     render() {
@@ -474,7 +475,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+            extendsNavParams: state.navState.extendsNavParams
     }
 }
 

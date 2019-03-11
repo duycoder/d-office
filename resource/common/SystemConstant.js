@@ -187,7 +187,7 @@ export const DM_FUNCTIONS = {
 			NAME: 'HSCV_VANBANDEN_NOIBO_DAXULY',
 			IDTHAOTAC: 56,
 			MOBILENAME: 'NỘI BỘ ĐÃ XỬ LÝ'
-		}
+		},
 	},
 
 	VANBANDI: {
@@ -242,4 +242,9 @@ export const DM_FUNCTIONS = {
 			MOBILENAME: 'LỊCH CÔNG TÁC'
 		}
 	}
+}
+
+export const BRIEF_CONSTANT = {
+	_DANHSACHCONGVIEC: 'DANHSACH_CONGVIEC',
+	_VANBANPHANHOI: 'VANBANPHANHOI'
 }

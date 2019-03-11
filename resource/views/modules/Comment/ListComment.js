@@ -29,7 +29,7 @@ import {
 } from 'react-native';
 import {
   Container, Header, Left, Right, Body, Title, Input,
-  Button, Content, Icon, Footer, Text as NbText
+  Button, Content, Icon, Footer, Text as NbText, Toast
 } from 'native-base';
 import { Icon as RneIcon } from 'react-native-elements';
 import * as util from 'lodash';
@@ -45,6 +45,9 @@ import { scale, verticalScale, moderateScale, indicatorResponsive } from '../../
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
+//redux
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 const android = RNFetchBlob.android;
 
 class ListComment extends Component {
@@ -52,12 +55,12 @@ class ListComment extends Component {
     super(props);
     this.state = {
       userId: props.userInfo.ID,
-      isTaskComment: props.navigation.state.params.isTaskComment,
-      taskId: props.navigation.state.params.taskId,
-      taskType: props.navigation.state.params.taskType,
+      isTaskComment: props.extendsNavParams.isTaskComment,
+      taskId: props.coreNavParams.taskId,
+      taskType: props.coreNavParams.taskType,
 
-      docId: props.navigation.state.params.docId,
-      docType: props.navigation.state.params.docType,
+      docId: props.coreNavParams.docId,
+      docType: props.coreNavParams.docType,
       footerFlex: 0,
       loading: false,
       loadingMore: false,
@@ -128,17 +131,13 @@ class ListComment extends Component {
   }
 
   navigateToDetail = () => {
-    if (this.state.isTaskComment) {
-      this.props.navigation.navigate('DetailTaskScreen', {
-        taskId: this.state.taskId,
-        taskType: this.state.taskType
-      });
-    } else {
-      this.props.navigation.navigate('VanBanDiDetailScreen', {
-        docId: this.state.docId,
-        docType: this.state.docType
-      })
-    }
+    this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    // this.props.navigation.goBack();
+    // if (this.state.isTaskComment) {
+    //   this.props.navigation.navigate('DetailTaskScreen'); // might change to goBack() soon
+    // } else {
+    //   this.props.navigation.navigate('VanBanDiDetailScreen')
+    // }
   }
 
   keyboardWillShow = (event) => {
@@ -154,95 +153,104 @@ class ListComment extends Component {
   };
 
   onReplyComment = (item) => {
-    this.props.navigation.navigate('ReplyCommentScreen', {
+    const targetScreenParams = {
       comment: item,
-      isTaskComment: this.state.isTaskComment,
-      taskId: this.state.taskId,
-      taskType: this.state.taskType,
+      isTaskComment: this.state.isTaskComment
+    };
 
-      docId: this.state.docId,
-      docType: this.state.docType
-    });
+    this.props.updateExtendsNavParams(targetScreenParams);
+    this.props.navigation.navigate('ReplyCommentScreen');
   }
 
   sendComment = async () => {
-    const data = new FormData();
-    data.append('UPloadedImage', {
-      uri: this.state.avatarSourceURI,
-      type: 'image/jpeg',
-      name: convertDateTimeToString(new Date())
-    });
+    if (util.isEmpty(this.state.commentContent) || util.isNull(this.state.commentContent)) {
+      Toast.show({
+        text: 'Vui lòng nhập nội dung bình luận',
+        type: 'danger',
+        buttonText: "OK",
+        buttonStyle: { backgroundColor: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
+      });
+    }
+    else {
+      const data = new FormData();
+      data.append('UPloadedImage', {
+        uri: this.state.avatarSourceURI,
+        type: 'image/jpeg',
+        name: convertDateTimeToString(new Date())
+      });
 
 
-    this.setState({
-      executing: true
-    });
+      this.setState({
+        executing: true
+      });
 
-    //phần thông tin cho văn bản 
-    let url = `${API_URL}/api/VanBanDi/SaveComment`;
+      //phần thông tin cho văn bản 
+      let url = `${API_URL}/api/VanBanDi/SaveComment`;
 
-    let headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json;charset=utf-8'
-    });
-
-    let body = JSON.stringify({
-      ID: 0,
-      VANBANDI_ID: this.state.docId,
-      PARENT_ID: null,
-      NGUOITAO: this.state.userId,
-      NOIDUNGTRAODOI: this.state.commentContent
-    });
-
-    //phần thông tin cho công việc
-    if (this.state.isTaskComment) {
-      url = `${API_URL}/api/HscvCongViec/SaveComment`;
-      headers = new Headers({
+      let headers = new Headers({
         'Accept': 'application/json',
         'Content-Type': 'application/json;charset=utf-8'
       });
 
-      body = JSON.stringify({
+      let body = JSON.stringify({
         ID: 0,
-        CONGVIEC_ID: this.state.taskId,
-        REPLY_ID: null,
-        USER_ID: this.state.userId,
-        NOIDUNG: this.state.commentContent,
-        CREATED_BY: this.state.userId
+        VANBANDI_ID: this.state.docId,
+        PARENT_ID: null,
+        NGUOITAO: this.state.userId,
+        NOIDUNGTRAODOI: this.state.commentContent
       });
-    }
 
-    await asyncDelay(1000);
+      //phần thông tin cho công việc
+      if (this.state.isTaskComment) {
+        url = `${API_URL}/api/HscvCongViec/SaveComment`;
+        headers = new Headers({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json;charset=utf-8'
+        });
 
-    const result = await fetch(url, {
-      method: 'post',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-    if (this.state.isTaskComment) {
-      if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-        const message = this.props.userInfo.Fullname + ' đã đăng trao đổi nội dung công việc #Công việc ' + this.state.taskId;
-        const content = {
-          title: 'TRAO ĐỔI CÔNG VIỆC',
-          message,
-          isTaskNotification: true,
-          targetScreen: 'DetailTaskScreen',
-          targetTaskId: this.state.taskId,
-          targetTaskType: this.state.taskType
-        }
-
-        resultJson.GroupTokens.forEach(token => {
-          pushFirebaseNotify(content, token, 'notification');
-        })
+        body = JSON.stringify({
+          ID: 0,
+          CONGVIEC_ID: this.state.taskId,
+          REPLY_ID: null,
+          USER_ID: this.state.userId,
+          NOIDUNG: this.state.commentContent,
+          CREATED_BY: this.state.userId
+        });
       }
-    }
 
-    this.setState({
-      executing: false,
-      commentContent: EMPTY_STRING
-    }, () => this.fetchData());
+      await asyncDelay(1000);
+
+      const result = await fetch(url, {
+        method: 'post',
+        headers,
+        body
+      });
+
+      const resultJson = await result.json();
+      if (this.state.isTaskComment) {
+        if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
+          const message = this.props.userInfo.Fullname + ' đã đăng trao đổi nội dung công việc #Công việc ' + this.state.taskId;
+          const content = {
+            title: 'TRAO ĐỔI CÔNG VIỆC',
+            message,
+            isTaskNotification: true,
+            targetScreen: 'DetailTaskScreen',
+            targetTaskId: this.state.taskId,
+            targetTaskType: this.state.taskType
+          }
+
+          resultJson.GroupTokens.forEach(token => {
+            pushFirebaseNotify(content, token, 'notification');
+          })
+        }
+      }
+
+      this.setState({
+        executing: false,
+        commentContent: EMPTY_STRING
+      }, () => this.fetchData());
+    }
   }
 
   async onDownloadFile(fileName, fileLink, fileExtension) {
@@ -264,114 +272,114 @@ class ListComment extends Component {
     let options = {};
     let isAllowDownload = true;
     if (Platform.OS == 'android') {
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-            {
-                title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-                message:
-                    'Ebiz Office muốn truy cập vào tài liệu của bạn',
-                buttonNeutral: 'Để sau',
-                buttonNegative: 'Thoát',
-                buttonPositive: 'OK',
-            },
-        );
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+          message:
+            'Ebiz Office muốn truy cập vào tài liệu của bạn',
+          buttonNeutral: 'Để sau',
+          buttonNegative: 'Thoát',
+          buttonPositive: 'OK',
+        },
+      );
 
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            options = {
-                fileCache: true,
-                addAndroidDownloads: {
-                    useDownloadManager: true,
-                    notification: true,
-                    path: savePath,
-                    description: 'VNIO FILE'
-                }
-            }
-        } else {
-            isAllowDownload = false;
-        }
-    } else {
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         options = {
-            fileCache: true,
-            path: savePath
+          fileCache: true,
+          addAndroidDownloads: {
+            useDownloadManager: true,
+            notification: true,
+            path: savePath,
+            description: 'VNIO FILE'
+          }
         }
+      } else {
+        isAllowDownload = false;
+      }
+    } else {
+      options = {
+        fileCache: true,
+        path: savePath
+      }
     }
 
     if (isAllowDownload) {
-        config(options).fetch('GET', url).then((res) => {
-            if (res.respInfo.status === 404) {
-                Alert.alert(
-                    'THÔNG BÁO',
-                    'KHÔNG TÌM THẤY TÀI LIỆU',
-                    [
-                        {
-                            text: "ĐÓNG",
-                            onPress: () => { }
-                        }
-                    ]
-                );
-            } else {
-                Alert.alert(
-                    'THÔNG BÁO',
-                    `DOWN LOAD THÀNH CÔNG`,
-                    [
-                        {
-                            text: 'MỞ FILE',
-                            onPress: () => {
-                                let openDocConfig = {};
+      config(options).fetch('GET', url).then((res) => {
+        if (res.respInfo.status === 404) {
+          Alert.alert(
+            'THÔNG BÁO',
+            'KHÔNG TÌM THẤY TÀI LIỆU',
+            [
+              {
+                text: "ĐÓNG",
+                onPress: () => { }
+              }
+            ]
+          );
+        } else {
+          Alert.alert(
+            'THÔNG BÁO',
+            `DOWN LOAD THÀNH CÔNG`,
+            [
+              {
+                text: 'MỞ FILE',
+                onPress: () => {
+                  let openDocConfig = {};
 
-                                if (Platform.OS == 'android') {
-                                    openDocConfig = {
-                                        url: `file://${res.path()}`,
-                                        fileName: fileName,
-                                        cache: false,
-                                        fileType: regExtension[0]
-                                    }
-                                } else {
-                                    openDocConfig = {
-                                        url: savePath,
-                                        fileNameOptional: fileName
-                                    }
-                                }
-
-                                OpenFile.openDoc([openDocConfig], (error, url) => {
-                                    if (error) {
-                                        Alert.alert(
-                                            'THÔNG BÁO',
-                                            error.toString(),
-                                            [
-                                                {
-                                                    text: 'OK',
-                                                    onPress: () => { }
-                                                }
-                                            ]
-                                        )
-                                    } else {
-                                        console.log(url)
-                                    }
-                                })
-                            }
-                        },
-                        {
-                            text: 'ĐÓNG',
-                            onPress: () => { }
-                        }
-                    ]
-                );
-            }
-        }).catch((err) => {
-            Alert.alert(
-                'THÔNG BÁO',
-                'DOWNLOAD THẤT BẠI',
-                [
-                    {
-                        text: err.toString(),
-                        onPress: () => { }
+                  if (Platform.OS == 'android') {
+                    openDocConfig = {
+                      url: `file://${res.path()}`,
+                      fileName: fileName,
+                      cache: false,
+                      fileType: regExtension[0]
                     }
-                ]
-            )
-        })
+                  } else {
+                    openDocConfig = {
+                      url: savePath,
+                      fileNameOptional: fileName
+                    }
+                  }
+
+                  OpenFile.openDoc([openDocConfig], (error, url) => {
+                    if (error) {
+                      Alert.alert(
+                        'THÔNG BÁO',
+                        error.toString(),
+                        [
+                          {
+                            text: 'OK',
+                            onPress: () => { }
+                          }
+                        ]
+                      )
+                    } else {
+                      console.log(url)
+                    }
+                  })
+                }
+              },
+              {
+                text: 'ĐÓNG',
+                onPress: () => { }
+              }
+            ]
+          );
+        }
+      }).catch((err) => {
+        Alert.alert(
+          'THÔNG BÁO',
+          'DOWNLOAD THẤT BẠI',
+          [
+            {
+              text: err.toString(),
+              onPress: () => { }
+            }
+          ]
+        )
+      })
     }
-}
+  }
 
   extention(filename) {
     return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
@@ -518,8 +526,16 @@ class ListComment extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    userInfo: state.userState.userInfo
+    userInfo: state.userState.userInfo,
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams,
   }
 }
 
-export default connect(mapStateToProps)(ListComment);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListComment);

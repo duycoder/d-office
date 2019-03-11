@@ -36,15 +36,15 @@ class CreateSubTask extends Component {
 		this.state = {
 			userId: props.userInfo.ID,
 
-			taskId: props.navigation.state.params.taskId,
-			taskType: props.navigation.state.params.taskType,
+			taskId: props.coreNavParams.taskId,
+			taskType: props.coreNavParams.taskType,
 
 			deadline: EMPTY_STRING,
 			content: EMPTY_STRING,
-			listPriority: props.navigation.state.params.listPriority,
-			listUrgency: props.navigation.state.params.listUrgency,
-			priorityValue: props.navigation.state.params.priorityValue, //độ ưu tiên
-			urgencyValue: props.navigation.state.params.urgencyValue, //đô khẩn
+			listPriority: props.extendsNavParams.listPriority,
+			listUrgency: props.extendsNavParams.listUrgency,
+			priorityValue: props.extendsNavParams.priorityValue, //độ ưu tiên
+			urgencyValue: props.extendsNavParams.urgencyValue, //đô khẩn
 			planValue: '0', //lập kế hoạch 
 
 			executing: false,
@@ -86,8 +86,9 @@ class CreateSubTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, "CreateSubTaskScreen");
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, "CreateSubTaskScreen");
+				// return true;
+				this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
 	onCreateSubTask = async () => {
@@ -282,7 +283,9 @@ class CreateSubTask extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		userInfo: state.userState.userInfo
+		userInfo: state.userState.userInfo,
+		coreNavParams: state.navState.coreNavParams,
+		extendsNavParams: state.navState.extendsNavParams
 	}
 }
 

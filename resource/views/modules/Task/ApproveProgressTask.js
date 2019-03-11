@@ -39,8 +39,8 @@ class ApproveProgressTask extends Component {
         this.state = {
             userId: props.userInfo.ID,
 
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
 
             content: EMPTY_STRING,
             selectedValue: '1',
@@ -65,8 +65,9 @@ class ApproveProgressTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, "ApproveProgressTaskScreen");
-        return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        // appGetDataAndNavigate(this.props.navigation, "ApproveProgressTaskScreen");
+        // return true;
     }
 
     //kiểm tra chắc chắn phê duyệt tiến độ công việc
@@ -220,7 +221,8 @@ class ApproveProgressTask extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
 

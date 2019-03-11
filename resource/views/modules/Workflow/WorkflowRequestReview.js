@@ -45,12 +45,12 @@ class WorkflowRequestReview extends Component {
 		this.state = {
 			userId: props.userInfo.ID,
 
-			docId: this.props.navigation.state.params.docId,
-			docType: this.props.navigation.state.params.docType,
-			processId: this.props.navigation.state.params.processId,
-			stepId: this.props.navigation.state.params.stepId,
-			isStepBack: this.props.navigation.state.params.isStepBack,
-			stepName: util.toUpper(this.props.navigation.state.params.stepName),
+			docId: this.coreNavParams.docId,
+			docType: this.coreNavParams.docType,
+			processId: this.extendsNavParams.processId,
+			stepId: this.extendsNavParams.stepId,
+			isStepBack: this.extendsNavParams.isStepBack,
+			stepName: util.toUpper(this.extendsNavParams.stepName),
 			message: EMPTY_STRING,
 
 			pageIndex: DEFAULT_PAGE_INDEX,
@@ -94,8 +94,10 @@ class WorkflowRequestReview extends Component {
 	}
 
 	navigateBackToDetail = () => {
-		appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
-		return true;
+		this.props.navigation.navigate(this.props.coreNavParams.screenName);
+		// this.props.navigation.goBack();
+		// appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
+		// return true;
 	}
 
 	renderItem = ({ item }) => {
@@ -330,7 +332,9 @@ class WorkflowRequestReview extends Component {
 const mapStateToProps = (state) => {
 	return {
 		userInfo: state.userState.userInfo,
-		reviewUsers: state.workflowState.reviewUsers
+		reviewUsers: state.workflowState.reviewUsers,
+		coreNavParams: state.navState.coreNavParams,
+		extendsNavParams: state.navState.extendsNavParams
 	}
 }
 

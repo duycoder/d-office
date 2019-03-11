@@ -50,9 +50,9 @@ class AssignTask extends Component {
 		this.state = {
 			userId: props.userInfo.ID,
 			loading: false,
-			taskId: props.navigation.state.params.taskId,
-			subTaskId: props.navigation.state.params.subTaskId,
-			taskType: props.navigation.state.params.taskType,
+			taskId: props.coreNavParams.taskId,
+			taskType: props.coreNavParams.taskType,
+			subTaskId: props.extendsNavParams.subTaskId,
 			executing: false,
 
 			selectedSegmentIndex: 0,
@@ -182,8 +182,9 @@ class AssignTask extends Component {
 	}
 
 	navigateBackToDetail = () => {
-		appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
-		return true;
+		this.props.navigation.navigate(this.props.coreNavParams.screenName);
+		// appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
+		// return true;
 	}
 
 	renderMainProcessItem = ({ item }) => {
@@ -280,7 +281,8 @@ class AssignTask extends Component {
 
 		if (this.state.loading) {
 			bodyContent = dataLoading(true);
-		} else {
+		} 
+		else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (
 					<Segment style={{ backgroundColor: Colors.LITE_BLUE }}>
@@ -461,7 +463,9 @@ const mapStateToProps = (state) => {
 	return {
 		userInfo: state.userState.userInfo,
 		mainProcessUser: state.taskState.mainProcessUser,
-		joinProcessUsers: state.taskState.joinProcessUsers
+		joinProcessUsers: state.taskState.joinProcessUsers,
+		coreNavParams: state.navState.coreNavParams,
+		extendsNavParams: state.navState.extendsNavParams
 	}
 }
 

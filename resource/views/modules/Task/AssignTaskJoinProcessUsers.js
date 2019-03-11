@@ -18,7 +18,8 @@ import * as taskAction from '../../../redux/modules/CongViec/Action';
 import {
     Container, Content, List as NbList, ListItem as NbListItem,
     Left, Title, Text as NbText, Body, Right, Radio,
-    CheckBox
+    CheckBox,
+    Toast
 } from 'native-base';
 import {
     ListItem
@@ -42,17 +43,39 @@ class AssignTaskJoinProcessUsers extends Component {
 
             expanded: true,
             rowItemHeight: verticalScale(70),
-            heightAnimation: new Animated.Value(verticalScale(70) * (props.data.length > 0 ? (props.data.length + 1) : 1)),
+            heightAnimation: new Animated.Value(verticalScale(70) * (props.data.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.data.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
             rotateAnimation: new Animated.Value(0),
 
-            joinProcessUsers: props.joinProcessUsers
+            joinProcessUsers: props.joinProcessUsers,
+            mainProcessUser: props.mainProcessUser
         };
 
         this.toggle = this.toggle.bind(this);
     }
 
+    componentWillReceiveProps(nextProps) {
+        const {mainProcessUser, joinProcessUsers, data} = this.state;
+
+        if (nextProps.mainProcessUser !== mainProcessUser) {
+            // for heightAnimation
+            const newUsersLength = data.filter(x => x.ID !== nextProps.mainProcessUser).length;
+            const heightFactor = newUsersLength > 0 ? newUsersLength + 1 : 1;
+            // for joinUsers
+            if (joinProcessUsers.indexOf(nextProps.mainProcessUser) > -1 && this.props.joinProcessUsers.indexOf(nextProps.mainProcessUser) > -1) {
+                this.props.updateTaskProcessors(nextProps.mainProcessUser, false);
+            }
+
+            this.setState({
+                mainProcessUser: nextProps.mainProcessUser,
+                heightAnimation: new Animated.Value(60 * heightFactor),
+                joinProcessUsers: this.props.joinProcessUsers
+            });
+        }
+    }
+
     toggle = () => {
-        const multiplier = this.state.data.length > 0 ? (this.state.data.length + 1) : 1;
+        const filterUsers = this.state.data.filter(x => x.ID !== this.state.mainProcessUser);
+        const multiplier = filterUsers.length > 0 ? (filterUsers.length + 1) : 1;
 
         const initialHeight = this.state.expanded ? (this.state.rowItemHeight * multiplier) : this.state.rowItemHeight;
         const finalHeight = this.state.expanded ? this.state.rowItemHeight : (this.state.rowItemHeight * multiplier);
@@ -80,6 +103,15 @@ class AssignTaskJoinProcessUsers extends Component {
     }
 
     onSelectUser(userId) {
+        if (this.props.mainProcessUser === 0) {
+            Toast.show({
+                text: 'Vui lòng chọn người xử lý chính',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+            });
+        }
         this.props.updateTaskProcessors(userId, false);
 
         this.setState({
@@ -107,7 +139,7 @@ class AssignTaskJoinProcessUsers extends Component {
                     <TouchableHighlight onPress={this.toggle}>
                         <ListItem
                             containerStyle={styles.listItemContainer}
-                            hideChevron={this.state.data.length <= 0}
+                            hideChevron={this.state.data.filter(x => x.ID !== this.state.mainProcessUser).length <= 0}
                             title={util.toUpper(this.state.title)}
                             titleStyle={styles.listItemTitle}
                             rightIcon={
@@ -119,7 +151,7 @@ class AssignTaskJoinProcessUsers extends Component {
 
                 <View style={styles.body}>
                     {
-                        this.state.data.map((item, index) => (
+                        this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
                             <NbListItem
                                 key={item.ID}
                                 style={styles.listItemRow}
@@ -155,7 +187,8 @@ class AssignTaskJoinProcessUsers extends Component {
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        joinProcessUsers: state.taskState.joinProcessUsers
+        joinProcessUsers: state.taskState.joinProcessUsers,
+        mainProcessUser: state.taskState.mainProcessUser,
     }
 }
 

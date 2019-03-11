@@ -45,8 +45,8 @@ class HistoryEvaluateTask extends Component {
         super(props)
         this.state = {
             userId: this.props.userInfo.ID,
-            taskId: this.props.navigation.state.params.taskId,
-            taskType: this.props.navigation.state.params.taskType,
+            taskId: this.props.coreNavParams.taskId,
+            taskType: this.props.coreNavParams.taskType,
 
             filterValue: EMPTY_STRING,
             pageIndex: DEFAULT_PAGE_INDEX,
@@ -150,8 +150,9 @@ class HistoryEvaluateTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'HistoryEvaluateTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'HistoryEvaluateTaskScreen');
+        // return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
     handleRefresh = () => {
@@ -350,7 +351,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
 

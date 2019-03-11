@@ -13,6 +13,7 @@ import {
 //redux
 import { connect } from 'react-redux';
 import * as vanbandiAction from '../../../redux/modules/VanBanDi/Action';
+import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
   Container, Header, Item, Icon, Input, Body, Text,
@@ -99,10 +100,15 @@ class BaseList extends Component {
 
     let targetScreenParam = {
       docId,
-      docType: this.state.docType
+      docType: this.state.docType,
+      screenName: "VanBanDiDetailScreen",
+      rootScreenName: currentScreenName
     }
 
-    appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDiDetailScreen", targetScreenParam);
+    this.props.updateCoreNavParams(targetScreenParam);
+    this.props.navigator.navigate("VanBanDiDetailScreen");
+
+    // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDiDetailScreen", targetScreenParam);
   }
 
   onFilter = () => {
@@ -268,7 +274,8 @@ const mapStatetoProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFilterValue: (filterValue) => dispatch(vanbandiAction.editFilterValue(filterValue))
+    editFilterValue: (filterValue) => dispatch(vanbandiAction.editFilterValue(filterValue)),
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
   }
 }
 

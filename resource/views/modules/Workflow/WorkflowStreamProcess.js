@@ -49,13 +49,13 @@ class WorkflowStreamProcess extends Component {
         this.state = {
             userId: props.userInfo.ID,
 
-            docId: this.props.navigation.state.params.docId,
-            docType: this.props.navigation.state.params.docType,
-            processId: this.props.navigation.state.params.processId,
-            stepId: this.props.navigation.state.params.stepId,
-            stepName: util.toUpper(this.props.navigation.state.params.stepName),
-            isStepBack: this.props.navigation.state.params.isStepBack,
-            logId: this.props.navigation.state.params.logId,
+            docId: this.props.coreNavParams.docId,
+            docType: this.props.coreNavParams.docType,
+            processId: this.props.extendsNavParams.processId,
+            stepId: this.props.extendsNavParams.stepId,
+            stepName: util.toUpper(this.props.extendsNavParams.stepName),
+            isStepBack: this.props.extendsNavParams.isStepBack,
+            logId: this.props.extendsNavParams.logId,
 
             executing: false,
             loadingData: false,
@@ -107,8 +107,8 @@ class WorkflowStreamProcess extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, "WorkflowStreamProcessScreen");
-        return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName)
+        // this.props.navigation.goBack();
     }
 
     saveFlow = async () => {
@@ -659,7 +659,9 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         mainProcessUser: state.workflowState.mainProcessUser,
-        joinProcessUsers: state.workflowState.joinProcessUsers
+        joinProcessUsers: state.workflowState.joinProcessUsers,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

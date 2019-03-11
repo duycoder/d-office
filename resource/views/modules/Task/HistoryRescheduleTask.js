@@ -46,9 +46,9 @@ class HistoryRescheduleTask extends Component {
 		this.state = {
 			userId: props.userInfo.ID,
 
-			taskId: props.navigation.state.params.taskId,
-			taskType: props.navigation.state.params.taskType,
-			canApprove: props.navigation.state.params.canApprove,
+			taskId: props.coreNavParams.taskId,
+			taskType: props.coreNavParams.taskType,
+			canApprove: props.extendsNavParams.canApprove,
 			data: [],
 			loading: false,
 			loadingMore: false,
@@ -204,8 +204,9 @@ class HistoryRescheduleTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'HistoryRescheduleTaskScreen');
-        return true;
+			    this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        // appGetDataAndNavigate(this.props.navigation, 'HistoryRescheduleTaskScreen');
+        // return true;
     }
 
 	render() {
@@ -437,7 +438,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
 	return {
-		userInfo: state.userState.userInfo
+		userInfo: state.userState.userInfo,
+		    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams
 	}
 }
 

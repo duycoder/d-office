@@ -141,7 +141,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                     <TouchableOpacity onPress={this.toggle} onLayout={this.setMinHeight}>
                         <ListItem
                             containerStyle={styles.listItemContainer}
-                            hideChevron={this.state.users.length <= 0}
+                            hideChevron={this.state.users.filter(x => x.ID !== this.state.mainProcessUser).length <= 0}
                             title={util.toUpper(this.state.title)}
                             titleStyle={styles.listItemTitle}
                             rightIcon={
