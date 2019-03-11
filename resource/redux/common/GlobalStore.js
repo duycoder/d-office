@@ -9,4 +9,6 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { globalReducer } from './GlobalReducer';
 
+// import Reactotron from '../../../ReactotronConfig';
+
 export const globalStore = createStore(globalReducer, applyMiddleware(thunk));

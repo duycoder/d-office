@@ -77,6 +77,9 @@ class AssignTaskMainProcessUsrs extends Component {
 
     onSelectUser(userId) {
         this.props.updateTaskProcessors(userId, true);
+        if (this.props.joinProcessUsers.indexOf(userId) > -1) {
+            this.props.updateTaskProcessors(userId, false);
+        }
     }
 
     render() {
@@ -174,6 +177,7 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         mainProcessUser: state.taskState.mainProcessUser,
+        joinProcessUsers: state.taskState.joinProcessUsers
     }
 }
 

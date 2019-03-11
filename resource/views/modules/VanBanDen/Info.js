@@ -10,14 +10,15 @@ import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import { List, ListItem } from 'react-native-elements'
 import _ from 'lodash';
 import HTMLView from 'react-native-htmlview';
+import { connect } from 'react-redux';
 //styles
 import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
 import { convertDateToString, _readableFormat, appStoreDataAndNavigate } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
 
-export default class MainInfoPublishDoc extends Component {
+class MainInfoPublishDoc extends Component {
 
     constructor(props) {
         super(props);
@@ -40,12 +41,13 @@ export default class MainInfoPublishDoc extends Component {
                 loading: true
             })
             const date = convertDateToString(NGAYCONGTAC);
-            const day = date.split('/')[0];
-            const month = date.split('/')[1];
-            const year = date.split('/')[2];
+            const dateSplit = date.split("/");
+            const day = dateSplit[0];
+            const month = dateSplit[1];
+            const year = dateSplit[2];
 
             const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.props.userInfo.ID}/${month}/${year}/${day}`;
-
+            
             const result = await fetch(url)
                 .then((response) => response.json());
 
@@ -320,7 +322,7 @@ export default class MainInfoPublishDoc extends Component {
                                 title={
                                     <Text style={DetailPublishDocStyle.listItemTitleContainer}>
                                         THỜI GIAN CÔNG TÁC
-                                            </Text>
+                                    </Text>
                                 }
                                 subtitle={
                                     <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
@@ -334,7 +336,7 @@ export default class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    TRÙNG LỊCH HỌP LÃNH ĐẠO
+                                    TRÙNG LỊCH CÔNG TÁC LÃNH ĐẠO
                                 </Text>
                             }
                             subtitle={
@@ -349,3 +351,11 @@ export default class MainInfoPublishDoc extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        userInfo: state.userState.userInfo
+    }
+}
+
+export default connect(mapStateToProps)(MainInfoPublishDoc);

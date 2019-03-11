@@ -41,6 +41,9 @@ import TimelineSignDoc from './History';
 import AttachSignDoc from './Attachment';
 import UnitSignDoc from './UnitSignDoc';
 
+//redux
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class Detail extends Component {
     constructor(props) {
         super(props);
@@ -49,20 +52,21 @@ class Detail extends Component {
             loading: false,
             isUnAuthorize: false,
             docInfo: {},
-            docId: this.props.navigation.state.params.docId,
-            docType: this.props.navigation.state.params.docType,
+            docId: this.props.coreNavParams.docId,
+            docType: this.props.coreNavParams.docType,
 
             screenParam: {
                 userId: this.props.userInfo.ID,
-                docId: this.props.navigation.state.params.docId,
-                docType: this.props.navigation.state.params.docType,
+                docId: this.props.coreNavParams.docId,
+                docType: this.props.coreNavParams.docType,
             },
             executing: false,
-        }
+        };
+        this.onNavigate=this.onNavigate.bind(this);
     }
 
     componentWillMount() {
-        this.fetchData()
+        this.fetchData();
     }
 
     async fetchData() {
@@ -92,19 +96,21 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'VanBanDiDetailScreen');
-        return true;
+        // this.props.navigation.goBack();
+        this.onNavigate(this.props.coreNavParams.rootScreenName)
+        // appGetDataAndNavigate(this.props.navigation, 'VanBanDiDetailScreen');
+        // return true;
     }
 
     onReplyReview() {
 
         const targetScreenParam = {
-            docId: this.state.docInfo.VanBanDi.ID,
-            docType: this.state.docType,
             itemType: this.state.docInfo.Process.ITEM_TYPE
         }
 
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
+        this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam);
+
+        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
     }
 
     onProcessDoc = (item, isStepBack) => {
@@ -121,29 +127,30 @@ class Detail extends Component {
         }
         else {
             const targetScreenParam = {
-                docId: this.state.docInfo.VanBanTrinhKy.ID,
-                docType: this.state.docType,
                 processId: this.state.docInfo.WorkFlow.Process.ID,
                 stepId: item.ID,
                 stepName: item.NAME,
                 isStepBack,
                 logId: (isStepBack == true) ? item.Log.ID : 0
             }
-            appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+
+            this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
+
+            // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
         }
     }
 
     onReviewDoc = (item) => {
         const targetScreenParam = {
-            docId: this.state.docInfo.VanBanDi.ID,
-            docType: this.state.docType,
             processId: this.state.docInfo.Process.ID,
             stepId: item.ID,
             isStepBack: false,
             stepName: 'GỬI REVIEW',
             logId: 0
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
+
+        this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onSelectWorkFlowStep(item, isStepBack) {
@@ -214,12 +221,19 @@ class Detail extends Component {
 
     onOpenComment = () => {
         const targetScreenParam = {
-            docId: this.state.docId,
-            docType: this.state.docType,
             isTaskComment: false,
             vanbandiData: this.state.docInfo.LstRootComment
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+        this.onNavigate("ListCommentScreen", targetScreenParam);
+
+        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+    }
+
+    onNavigate(targetScreenName, targetScreenParam) {
+        if (!util.isNull(targetScreenParam)) {
+            this.props.updateExtendsNavParams(targetScreenParam);
+        }
+        this.props.navigation.navigate(targetScreenName);
     }
 
     render() {
@@ -316,10 +330,18 @@ class Detail extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
-export default connect(mapStateToProps)(Detail);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);
 
 //THÔNG TIN VĂN BẢN
 class DetailContent extends Component {

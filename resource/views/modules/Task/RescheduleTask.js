@@ -38,11 +38,11 @@ class RescheduleTask extends Component {
         super(props);
         this.state = {
             userId: props.userInfo.ID,
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
 
             reason: EMPTY_STRING,
-            currentDeadline: convertDateToString(props.navigation.state.params.currentDeadline),
+            currentDeadline: convertDateToString(props.extendsNavParams.currentDeadline),
             deadline: EMPTY_STRING,
             executing: false,
             chosenDate: null,
@@ -65,8 +65,9 @@ class RescheduleTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, "RescheduleTaskScreen");
-        return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        // appGetDataAndNavigate(this.props.navigation, "RescheduleTaskScreen");
+        // return true;
     }
 
     onSaveExtendTask = async () => {
@@ -229,7 +230,9 @@ class RescheduleTask extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

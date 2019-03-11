@@ -37,6 +37,9 @@ import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appSto
 //styles
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 
+//redux
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -82,7 +85,7 @@ class BaseTaskList extends Component {
             apiUrlParam = 'CombinationWork';
         } else if (taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
             apiUrlParam = 'ProcessedJob';
-        }else if(taskType == CONGVIEC_CONSTANT.CHO_XACNHAN){
+        } else if (taskType == CONGVIEC_CONSTANT.CHO_XACNHAN) {
             apiUrlParam = 'PendingConfirmWork'
         }
 
@@ -141,17 +144,15 @@ class BaseTaskList extends Component {
 
         let targetScreenParam = {
             taskId,
-            taskType: this.state.taskType
+            taskType: this.state.taskType,
+            screenName: "DetailTaskScreen",
+            rootScreenName: currentScreenName
         }
 
-        appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailTaskScreen", targetScreenParam)
-        // await AsyncStorage.multiSet([
-        //     [`DetailTaskScreen-PS`, screenName],
-        //     [`DetailTaskScreen-SP`, JSON.stringify(screenParam)]
-        // ]).then((rs) => {
-        //     alert(navigation);
-        //     appNavigate(navigation, screenName, screenParam);
-        // });
+        this.props.updateCoreNavParams(targetScreenParam);
+        this.props.navigator.navigate("DetailTaskScreen");
+
+        // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailTaskScreen", targetScreenParam);
     }
 
     async getListSubTasks(index, isExpand, taskId, parentIds) {
@@ -356,4 +357,10 @@ const mapStatetoProps = (state) => {
     }
 }
 
-export default connect(mapStatetoProps)(BaseTaskList);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+    }
+}
+
+export default connect(mapStatetoProps, mapDispatchToProps)(BaseTaskList);

@@ -54,7 +54,7 @@ class EventList extends Component {
 
     const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.props.userInfo.ID}/${month}/${year}/${day}`;
 
-    console.tron.log(url)
+    // console.tron.log(url)
 
     const result = await fetch(url)
       .then((response) => response.json());

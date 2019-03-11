@@ -39,12 +39,12 @@ class UpdateProgressTask extends Component {
         this.state = {
             userId: props.userInfo.ID,
 
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
 
-            oldProgressValue: this.props.navigation.state.params.oldProgressValue,
-            progressValue: this.props.navigation.state.params.progressValue,
-            progressValueStr: this.props.navigation.state.params.progressValue.toString(),
+            oldProgressValue: this.props.extendsNavParams.oldProgressValue,
+            progressValue: this.props.extendsNavParams.progressValue,
+            progressValueStr: this.props.extendsNavParams.progressValue.toString(),
             comment: EMPTY_STRING,
 
             executing: false,
@@ -141,8 +141,9 @@ class UpdateProgressTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'UpdateProgressTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'UpdateProgressTaskScreen');
+        // return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
     onSliderChange = (value) => {
@@ -266,7 +267,9 @@ class UpdateProgressTask extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

@@ -53,10 +53,10 @@ class WorkflowReplyReview extends Component {
         this.state = {
             userId: this.props.userInfo.ID,
 
-            docId: this.props.navigation.state.params.docId,
-            docType: this.props.navigation.state.params.docType,
+            docId: this.coreNavParams.docId,
+            docType: this.coreNavParams.docType,
 
-            itemType: this.props.navigation.state.params.itemType,
+            itemType: this.extendsNavParams.itemType,
             message: EMPTY_STRING,
             selected: 1,
             executing: false
@@ -78,8 +78,8 @@ class WorkflowReplyReview extends Component {
     }
 
     navigateBack = () => {
-        appGetDataAndNavigate(this.props.navigation, "WorkflowReplyReviewScreen");
-        return true;
+        // this.props.navigation.goBack();
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
     onConfirmReplyReview() {
@@ -234,7 +234,9 @@ class WorkflowReplyReview extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

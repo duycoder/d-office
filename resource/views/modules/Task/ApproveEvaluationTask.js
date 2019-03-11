@@ -24,7 +24,7 @@ import * as util from 'lodash';
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay,backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
@@ -41,11 +41,11 @@ class ApproveEvaluationTask extends Component {
             userId: this.props.userInfo.ID,
 
             arrValue: [0, 1, 2, 3, 4, 5],
-            taskId: this.props.navigation.state.params.taskId,
-            taskType: this.props.navigation.state.params.taskType,
+            taskId: this.props.coreNavParams.taskId,
+            taskType: this.props.coreNavParams.taskType,
             comment: EMPTY_STRING,
 
-            PhieuDanhGia: this.props.navigation.state.params.PhieuDanhGia,
+            PhieuDanhGia: this.props.extendsNavParams.PhieuDanhGia,
             executing: false,
 
             TUCHU_CAO: 0,
@@ -186,8 +186,9 @@ class ApproveEvaluationTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'ApproveEvaluationTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'ApproveEvaluationTaskScreen');
+        // return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
     }
 
 
@@ -520,7 +521,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+            extendsNavParams: state.navState.extendsNavParams
     }
 }
 

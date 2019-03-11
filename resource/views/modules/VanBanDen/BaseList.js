@@ -13,6 +13,8 @@ import {
 //redux
 import { connect } from 'react-redux';
 import * as vanbandenAction from '../../../redux/modules/VanBanDen/Action';
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 //lib
 import {
   Container, Header, Item, Icon, Input, Body, Text,
@@ -102,13 +104,16 @@ class BaseList extends Component {
     } else if (this.state.docType == VANBANDEN_CONSTANT.NOIBO_DAXULY) {
       currentScreenName = "VanBanDenInternalIsProcessScreen"
     }
-
     let targetScreenParam = {
       docId,
-      docType: this.state.docType
+      docType: this.state.docType,
+      screenName: "VanBanDenDetailScreen",
+      rootScreenName: currentScreenName
     }
+    this.props.updateCoreNavParams(targetScreenParam);
+    this.props.navigator.navigate("VanBanDenDetailScreen");
 
-    appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDenDetailScreen", targetScreenParam);
+    // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDenDetailScreen", targetScreenParam);
   }
 
   onFilter = () => {
@@ -279,7 +284,8 @@ const mapStatetoProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    editFilterValue: (filterValue) => dispatch(vanbandenAction.editFilterValue(filterValue))
+    editFilterValue: (filterValue) => dispatch(vanbandenAction.editFilterValue(filterValue)),
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
   }
 }
 

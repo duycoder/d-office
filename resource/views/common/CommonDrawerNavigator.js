@@ -24,6 +24,7 @@ import VanBanDenInternalProcessList from '../modules/VanBanDen/InternalProcessLi
 import VanBanDenInternalNotProcessList from '../modules/VanBanDen/InternalNotProcessList';
 import VanBanDenSearchList from '../modules/VanBanDen/SearchList';
 import VanBanDenDetail from '../modules/VanBanDen/Detail';
+import VanBanDenBrief from '../modules/VanBanDen/Brief';
 //#endregion
 
 //#region màn hình công việc
@@ -83,7 +84,7 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 import ListNotification from '../modules/Notification/ListNotification';
 
 //test
-import { TestFCM as Test } from '../../common/Test';
+import { TestFCM as Test, TestNav } from '../../common/Test';
 
 //search
 import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
@@ -100,9 +101,9 @@ import DeptUyQuyen from '../modules/UyQuyen/DeptUyQuyen';
 //#endregion
 
 const appRoutes = {
-    // TestScreen: {
-    //     screen: Test,
-    // },
+    TestScreen: {
+        screen: TestNav,
+    },
     VanBanDiIsNotProcessScreen: {
         screen: VanBanDiIsNotProcessList
     },
@@ -141,6 +142,9 @@ const appRoutes = {
     },
     VanBanDenDetailScreen: {
         screen: VanBanDenDetail
+    },
+    VanBanDenBriefScreen: {
+        screen: VanBanDenBrief
     },
     WorkflowStreamProcessScreen: {
         screen: WorkflowStreamProcess
@@ -282,9 +286,9 @@ const AuthStack = StackNavigator(authRoutes, authConfig);
 
 export const CommonDrawerNavigator = SwitchNavigator(
     {
-        TestScreen: {
-            screen: Test
-        },
+        // TestScreen: {
+        //     screen: Test
+        // },
         LoadingScreen: {
             screen: Loading
         },
@@ -292,6 +296,7 @@ export const CommonDrawerNavigator = SwitchNavigator(
         App: AppStack
     },
     {
-        initialRouteName: 'LoadingScreen'
+        initialRouteName: 'LoadingScreen',
+        backBehavior: 'intialRoute'
     }
 );

@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
 //redux
 import { connect } from 'react-redux';
+import {NavigationActions} from 'react-navigation';
 
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
@@ -25,7 +26,7 @@ import {
     Container, Header, Left, Button,
     Body, Icon, Title, Content, Form,
     Tabs, Tab, TabHeading, ScrollableTab,
-    Text, Right,Toast
+    Text, Right, Toast
 } from 'native-base';
 import {
     Icon as RneIcon, ButtonGroup
@@ -38,6 +39,8 @@ import MainInfoPublishDoc from './Info';
 import TimelinePublishDoc from './History';
 import AttachPublishDoc from './Attachment';
 
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class Detail extends Component {
     constructor(props) {
         super(props);
@@ -46,20 +49,22 @@ class Detail extends Component {
             loading: false,
             isUnAuthorize: false,
             docInfo: {},
-            docId: this.props.navigation.state.params.docId,
-            docType: this.props.navigation.state.params.docType,
+            docId: this.props.coreNavParams.docId,
+            docType: this.props.coreNavParams.docType,
 
             screenParam: {
                 userId: this.props.userInfo.ID,
-                docId: this.props.navigation.state.params.docId,
-                docType: this.props.navigation.state.params.docType,
+                docId: this.props.coreNavParams.docId,
+                docType: this.props.coreNavParams.docType
             },
             executing: false
-        }
+        };
+
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentWillMount() {
-        this.fetchData()
+        this.fetchData();
     }
 
     async fetchData() {
@@ -89,19 +94,24 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'VanBanDenDetailScreen');
-        return true;
+        this.onNavigate(this.props.coreNavParams.rootScreenName);
+        // this.props.navigation.goBack();
+    }
+
+    navigateToBrief = () => {
+        if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
+            this.props.navigation.navigate("VanBanDenBriefScreen");
+            // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "VanBanDenBriefScreen", targetScreenParam);
+        }
     }
 
     onReplyReview() {
-
         const targetScreenParam = {
-            docId: this.state.docInfo.entityVanBanDen.ID,
-            docType: this.state.docType,
             itemType: this.state.docInfo.Process.ITEM_TYPE
         }
 
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
+        this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam)
+        // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
     }
 
     onProcessDoc = async (item, isStepBack) => {
@@ -120,8 +130,6 @@ class Detail extends Component {
             });
         } else {
             const targetScreenParam = {
-                docId: this.state.docInfo.entityVanBanDen.ID,
-                docType: this.state.docType,
                 processId: this.state.docInfo.WorkFlow.Process.ID,
                 stepId: item.ID,
                 stepName: item.NAME,
@@ -129,18 +137,20 @@ class Detail extends Component {
                 logId: (isStepBack == true) ? item.Log.ID : 0,
                 apiUrlMiddle: 'VanBanDen'
             }
-            appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
+            this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
+
+            // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
         }
     }
 
     onCheckFlow = async (item) => {
         this.setState({ executing: true });
-        
+
         const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
         const result = await fetch(url).then(response => response.json());
-        
+
         this.setState({ executing: false })
-        
+
         if (result.IsNeedExecuteFunction) {
             return false;
         }
@@ -150,15 +160,15 @@ class Detail extends Component {
 
     onReviewDoc = (item) => {
         const targetScreenParam = {
-            docId: this.state.docInfo.entityVanBanDen.ID,
-            docType: this.state.docType,
             processId: this.state.docInfo.Process.ID,
             stepId: item.ID,
             isStepBack: false,
             stepName: 'GỬI REVIEW',
             logId: 0
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
+        this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
+
+        // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onSelectWorkFlowStep(item, isStepBack) {
@@ -169,16 +179,15 @@ class Detail extends Component {
         }
     }
 
-    onOpenComment = () => {
-        const targetScreenParam = {
-            docId: this.state.docId,
-            docType: this.state.docType,
-            isTaskComment: false
+    onNavigate(targetScreenName, targetScreenParam) {
+        if(!util.isNull(targetScreenParam)){
+            this.props.updateExtendsNavParams(targetScreenParam);
         }
-        appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+        this.props.navigation.navigate(targetScreenName);
     }
 
     render() {
+        console.tron.log(this.props)
         let bodyContent = null;
         let workflowButtons = [];
         if (this.state.loading) {
@@ -233,6 +242,9 @@ class Detail extends Component {
                     </Body>
 
                     <Right style={NativeBaseStyle.right}>
+                        <Button transparent onPress={() => this.navigateToBrief()}>
+                            <RneIcon name='ios-paper' size={moderateScale(35)} color={Colors.WHITE} type='ionicon' />
+                        </Button>
                     </Right>
                 </Header>
                 {
@@ -248,10 +260,18 @@ class Detail extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
-export default connect(mapStateToProps)(Detail);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Detail);
 
 //THÔNG TIN VĂN BẢN
 class DetailContent extends Component {

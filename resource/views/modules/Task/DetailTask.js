@@ -43,23 +43,26 @@ import ResultEvaluationTask from './ResultEvaluationTask'
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class DetailTask extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userId: this.props.userInfo.ID,
-            taskId: this.props.navigation.state.params.taskId,
-            taskType: this.props.navigation.state.params.taskType,
+            taskId: this.props.coreNavParams.taskId,
+            taskType: this.props.coreNavParams.taskType,
             taskInfo: {},
             loading: false,
             executing: false,
 
             screenParam: {
                 userId: this.props.userInfo.ID,
-                taskId: this.props.navigation.state.params.taskId,
-                taskType: this.props.navigation.state.params.taskType,
+                taskId: this.props.coreNavParams.taskId,
+                taskType: this.props.coreNavParams.taskType,
             }
-        }
+        };
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentWillMount() {
@@ -156,101 +159,91 @@ class DetailTask extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'DetailTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'DetailTaskScreen');
+        // this.props.navigation.goBack();
+        this.onNavigate(this.props.coreNavParams.rootScreenName);
+        // return true;
     }
 
     //mở cuộc hội thoại
     onOpenComment = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             isTaskComment: true
         }
+        this.onNavigate("ListCommentScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
 
     //cập nhật tiến độ
     onUpdateTaskProgress = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             oldProgressValue: this.state.taskInfo.CongViec.PHANTRAMHOANTHANH || 0,
             progressValue: this.state.taskInfo.CongViec.PHANTRAMHOANTHANH || 0
         }
+        this.onNavigate("UpdateProgressTaskScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, 'UpdateProgressTaskScreen', targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, 'UpdateProgressTaskScreen', targetScreenParam);
     }
 
     //lùi hạn công việc
     onRescheduleTask = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             currentDeadline: this.state.taskInfo.CongViec.NGAYHOANTHANH_THEOMONGMUON
         }
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "RescheduleTaskScreen", targetScreenParam);
+        this.onNavigate("RescheduleTaskScreen", targetScreenParam);
+
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "RescheduleTaskScreen", targetScreenParam);
     }
 
     //phản hồi công việc hoàn thành
     onApproveProgressTask = () => {
-        const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        }
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ApproveProgressTaskScreen", targetScreenParam);
+        this.props.navigation.navigate("ApproveProgressTaskScreen");
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ApproveProgressTaskScreen", targetScreenParam);
     }
 
     //tạo công việc con
     onCreateSubTask = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             listPriority: this.state.taskInfo.listDoKhan,
             listUrgency: this.state.taskInfo.listDoUuTien,
             priorityValue: this.state.taskInfo.listDoKhan[0].Value.toString(), //độ ưu tiên
             urgencyValue: this.state.taskInfo.listDoUuTien[0].Value.toString(), //đô khẩn
         }
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "CreateSubTaskScreen", targetScreenParam);
+        this.onNavigate("CreateSubTaskScreen", targetScreenParam);
+
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "CreateSubTaskScreen", targetScreenParam);
     }
 
     //giao việc
     onAssignTask = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             subTaskId: this.state.taskInfo.CongViec.SUBTASK_ID || 0
         }
+        this.onNavigate("AssignTaskScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "AssignTaskScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "AssignTaskScreen", targetScreenParam);
     }
 
     //tự đánh giá công việc
     onEvaluationTask = () => {
-        const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
-        }
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "EvaluationTaskScreen", targetScreenParam);
+        this.onNavigate("EvaluationTaskScreen");
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "EvaluationTaskScreen", targetScreenParam);
     }
 
     //phê duyệt đánh giá công việc
     onApproveEvaluationTask = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             PhieuDanhGia: this.state.taskInfo.PhieuDanhGia || {}
         }
+        this.onNavigate("ApproveEvaluationTaskScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ApproveEvaluationTaskScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "ApproveEvaluationTaskScreen", targetScreenParam);
     }
 
     //danh sách công việc
     onGetGroupSubTask = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             canFinishTask: (this.state.taskInfo.CongViec.DAGIAOVIEC != true
                 && this.state.taskInfo.IsNguoiGiaoViec
                 && this.state.taskInfo.CongViec.IS_SUBTASK != true) || this.state.taskInfo.IsNguoiThucHienChinh,
@@ -259,41 +252,43 @@ class DetailTask extends Component {
                 && this.state.taskInfo.IsNguoiGiaoViec
                 && this.state.taskInfo.CongViec.IS_SUBTASK != true) || this.state.taskInfo.IsNguoiThucHienChinh))
         }
+        this.onNavigate("GroupSubTaskScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "GroupSubTaskScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "GroupSubTaskScreen", targetScreenParam);
     }
 
     //lịch sử cập nhật tiến độ
     onGetProgressHistory = () => {
-        const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
-        }
+        this.onNavigate("HistoryProgressTaskScreen");
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryProgressTaskScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryProgressTaskScreen", targetScreenParam);
     }
 
     //lịch sử lùi hạn
     onGetRescheduleHistory = () => {
         const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
             canApprove: this.state.taskInfo.IsNguoiGiaoViec
         }
+        this.onNavigate("HistoryRescheduleTaskScreen", targetScreenParam);
 
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryRescheduleTaskScreen", targetScreenParam);
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryRescheduleTaskScreen", targetScreenParam);
     }
 
     //lịch sử đánh giá
     onGetEvaluationHistory = () => {
-        const targetScreenParam = {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType
+        this.onNavigate("HistoryEvaluateTaskScreen");
+        // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryEvaluateTaskScreen", targetScreenParam);
+    }
+
+    onNavigate(targetScreenName, targetScreenParam) {
+        if (!util.isNull(targetScreenParam)) {
+            this.props.updateExtendsNavParams(targetScreenParam);
         }
-        appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryEvaluateTaskScreen", targetScreenParam);
+        this.props.navigation.navigate(targetScreenName);
     }
 
     render() {
+        // console.tron.log(this.state.taskInfo)
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -306,13 +301,6 @@ class DetailTask extends Component {
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                            // <MenuOption key={-111} onSelect={() => this.onRescheduleTask()}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Lùi hạn công việc
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} />
                         )
                     }
@@ -320,13 +308,6 @@ class DetailTask extends Component {
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
                     menuActions.push(
-                        // <MenuOption key={-1} onSelect={() => this.onApproveProgressTask()}
-                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                        //     <Text style={MenuOptionStyle.text}>
-                        //         Phản hồi công việc
-                        //     </Text>
-                        // </MenuOption>
-
                         <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} />
                     )
                 }
@@ -335,13 +316,6 @@ class DetailTask extends Component {
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        // <MenuOption key={0} onSelect={() => this.onCreateSubTask()}
-                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                        //     <Text style={MenuOptionStyle.text}>
-                        //         Tạo công việc con
-                        //     </Text>
-                        // </MenuOption>
-
                         <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} />
                     )
                 }
@@ -350,28 +324,15 @@ class DetailTask extends Component {
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
                     menuActions.push(
-                        // <MenuOption onSelect={() => this.onAssignTask()}
-                        //     key={1}
-                        //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                        //     <Text style={MenuOptionStyle.text}>
-                        //         Giao việc
-                        //     </Text>
-                        // </MenuOption>
-
                         <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
                     )
                 }
 
                 if (task.HasRoleAssignTask) {
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
-                        // menuActions.push(
-                        //     <MenuOption key={2}
-                        //         style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                        //         <Text style={MenuOptionStyle.text}>
-                        //             Theo dõi
-                        //         </Text>
-                        //     </MenuOption>
-                        // )
+                        menuActions.push(
+                        <InteractiveButton title={'Theo dõi'} />
+                        )
                     }
                 }
 
@@ -382,28 +343,12 @@ class DetailTask extends Component {
                         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
                         menuActions.push(
-                            // <MenuOption onSelect={() => this.onApproveEvaluationTask()}
-                            //     key={3}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Duyệt đánh giá công việc
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} />
                         )
                     }
 
                     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
                         menuActions.push(
-                            // <MenuOption onSelect={() => this.onEvaluationTask()}
-                            //     key={4}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Tự đánh giá công việc
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} />
                         )
                     }
@@ -419,47 +364,20 @@ class DetailTask extends Component {
                         && task.CongViec.DAGIAOVIEC != true) {
 
                         menuActions.push(
-                            // <MenuOption onSelect={() => this.onAssignTask()}
-                            //     key={5}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Giao việc
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
                         )
 
                         menuActions.push(
-                            // <MenuOption key={6} onSelect={() => this.onConfirmToStartTask()}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Bắt đầu xử lý
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
                                                 )
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
                     menuActions.push(
-                        // <MenuOption key={7} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                        //     <Text style={MenuOptionStyle.text}>
-                        //         Theo dõi
-                        //     </Text>
-                        // </MenuOption>
-
                         <InteractiveButton title={'Theo dõi'} />
                     )
                     if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
                         menuActions.push(
-                            // <MenuOption key={8} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         DUYỆT KẾ HOẠCH
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'DUYỆT KẾ HOẠCH'} />
                         )
                     }
@@ -470,38 +388,18 @@ class DetailTask extends Component {
                             // nếu chưa trình kế hoạch và là người xử lý chính thì
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    // <MenuOption key={9} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                    //     <Text style={MenuOptionStyle.text}>
-                                    //         TRÌNH KẾ HOẠCH
-                                    //         </Text>
-                                    // </MenuOption>
-
                                     <InteractiveButton title={'TRÌNH KẾ HOẠCH'} />
                                 )
                             }
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
                             menuActions.push(
-                                // <MenuOption key={10} style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                //     <Text style={MenuOptionStyle.text}>
-                                //         LẬP KẾ HOẠCH
-                                //         </Text>
-                                // </MenuOption>
-
                                 <InteractiveButton title={'LẬP KẾ HOẠCH'} />
                             )
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    // <MenuOption key={11}
-                                    //     onSelect={() => this.onConfirmToStartTask()}
-                                    //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                                    //     <Text style={MenuOptionStyle.text}>
-                                    //         Bắt đầu xử lý
-                                    //     </Text>
-                                    // </MenuOption>
-
                                     <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
                                 )
                             }
@@ -509,14 +407,6 @@ class DetailTask extends Component {
                     } else {
                         //Bắt đầu xử lý
                         menuActions.push(
-                            // <MenuOption key={12}
-                            //     onSelect={() => this.onConfirmToStartTask()}
-                            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-                            //     <Text style={MenuOptionStyle.text}>
-                            //         Bắt đầu xử lý
-                            //     </Text>
-                            // </MenuOption>
-
                             <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
                         )
                     }
@@ -527,54 +417,18 @@ class DetailTask extends Component {
         //menu thông tin về công việc
 
         menuActions.push(
-            // <MenuOption
-            //     key='m1'
-            //     onSelect={() => this.onGetGroupSubTask()}
-            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-            //     <Text style={MenuOptionStyle.text}>
-            //         Các công việc con
-            //     </Text>
-            // </MenuOption>
-
             <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} />
         );
 
         menuActions.push(
-            // <MenuOption
-            //     key='m2'
-            //     onSelect={() => this.onGetProgressHistory()}
-            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-            //     <Text style={MenuOptionStyle.text}>
-            //         Theo dõi tiến độ
-            //     </Text>
-            // </MenuOption>
-
             <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} />
         );
 
         menuActions.push(
-            // <MenuOption
-            //     key='m3'
-            //     onSelect={() => this.onGetRescheduleHistory()}
-            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-            //     <Text style={MenuOptionStyle.text}>
-            //         Lịch sử lùi hạn
-            //     </Text>
-            // </MenuOption>
-
             <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} />
         );
 
         menuActions.push(
-            // <MenuOption
-            //     key='m4'
-            //     onSelect={() => this.onGetEvaluationHistory()}
-            //     style={[MenuOptionStyle.wrapper, MenuOptionStyle.wrapperBorder]}>
-            //     <Text style={MenuOptionStyle.text}>
-            //         Lịch sử phản hồi
-            //     </Text>
-            // </MenuOption>
-
             <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} />
         );
 
@@ -757,15 +611,22 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        fontSize: 30,
+        fontSize: moderateScale(30, 1.1),
         fontWeight: 'bold',
     }
 })
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
 
-export default connect(mapStateToProps)(DetailTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (taskId, taskType) => dispatch(navAction.updateExtendsNavParams(taskId, taskType))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailTask);

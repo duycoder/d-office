@@ -44,8 +44,8 @@ class HistoryProgressTask extends Component {
 		super(props);
 		this.state = {
 			userId: props.userInfo.ID,
-			taskId: props.navigation.state.params.taskId,
-			taskType: props.navigation.state.params.taskType,
+			taskId: props.coreNavParams.taskId,
+			taskType: props.coreNavParams.taskType,
 
 			data: [],
 			dataItem: {},
@@ -132,17 +132,18 @@ class HistoryProgressTask extends Component {
 	}
 
 	componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		backHandlerConfig(true, this.navigateBackToDetail);
+	}
 
-    componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		backHandlerConfig(false, this.navigateBackToDetail);
+	}
 
-    navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'HistoryProgressTaskScreen');
-        return true;
-    }
+	navigateBackToDetail = () => {
+		// appGetDataAndNavigate(this.props.navigation, 'HistoryProgressTaskScreen');
+		// return true;
+		this.props.navigation.navigate(this.props.coreNavParams.screenName);
+	}
 
 	handleRefresh = () => {
 		this.setState({
@@ -333,7 +334,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
 	return {
-		userInfo: state.userState.userInfo
+		userInfo: state.userState.userInfo,
+		coreNavParams: state.navState.coreNavParams
 	}
 }
 

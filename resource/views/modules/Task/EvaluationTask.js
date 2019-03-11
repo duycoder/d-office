@@ -40,8 +40,8 @@ class EvaluationTask extends Component {
 
         this.state = {
             userId: props.userInfo.ID,
-            taskId: this.props.navigation.state.params.taskId,
-            taskType: this.props.navigation.state.params.taskType,
+            taskId: this.props.coreNavParams.taskId,
+            taskType: this.props.coreNavParams.taskType,
 
             executing: false,
             loading: true,
@@ -171,7 +171,7 @@ class EvaluationTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
-                    this.navigateToDetail();
+                    this.navigateBackToDetail();
                 }
             }
         });
@@ -186,8 +186,10 @@ class EvaluationTask extends Component {
     }
 
     navigateBackToDetail = () => {
-        appGetDataAndNavigate(this.props.navigation, 'EvaluationTaskScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'EvaluationTaskScreen');
+        // return true;
+        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+
     }
 
     render() {
@@ -195,7 +197,7 @@ class EvaluationTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateToDetail()}>
+                        <Button transparent onPress={() => this.navigateBackToDetail()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
                         </Button>
                     </Left>
@@ -484,7 +486,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
