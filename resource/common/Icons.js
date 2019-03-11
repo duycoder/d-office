@@ -6,7 +6,7 @@ import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
 import { SideBarStyle } from '../assets/styles/SideBarStyle';
 import { moderateScale } from '../assets/styles/ScaleIndicator';
 
-const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction } = SYSTEM_FUNCTION;
+const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction, UyQuyenFunction } = SYSTEM_FUNCTION;
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 
 export default class SideBarIcon extends Component {
@@ -96,6 +96,14 @@ export default class SideBarIcon extends Component {
       case LichCongTacFunction.actionCodes[0]:
       case LichCongTacFunction.code:
         iconName = 'calendar'
+        break;
+      case LichCongTacFunction.actionCodes[0]:
+      case LichCongTacFunction.code:
+        iconName = 'calendar'
+        break;
+      case UyQuyenFunction.actionCodes[0]:
+      case UyQuyenFunction.code:
+        iconName = 'account-tie'
         break;
       case THONGBAO.code:
         iconName = "message-alert";

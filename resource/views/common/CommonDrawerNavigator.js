@@ -92,6 +92,11 @@ import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
 import BaseCalendar from '../modules/LichCongTac/BaseCalendar';
 import EventList from '../modules/LichCongTac/EventList';
 import DetailEvent from '../modules/LichCongTac/Detail';
+
+//màn hình ủy quyền
+import ListUyQuyen from '../modules/UyQuyen/ListUyQuyen';
+import EditUyQuyen from '../modules/UyQuyen/EditUyQuyen';
+import DeptUyQuyen from '../modules/UyQuyen/DeptUyQuyen';
 //#endregion
 
 const appRoutes = {
@@ -244,6 +249,14 @@ const appRoutes = {
     },
     DetailEventScreen: {
         screen: DetailEvent
+    },
+    ListUyQuyenScreen: {
+        screen: ListUyQuyen
+    },
+    EditUyQuyenScreen: {
+        screen: EditUyQuyen
+    },DeptUyQuyenScreen: {
+        screen: DeptUyQuyen
     }
 }
 const appConfig = {
