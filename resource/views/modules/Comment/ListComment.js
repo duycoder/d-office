@@ -34,8 +34,8 @@ import {
 import { Icon as RneIcon } from 'react-native-elements';
 import * as util from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
-import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-import ImagePicker from 'react-native-image-picker';
+//import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+// import ImagePicker from 'react-native-image-picker';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
