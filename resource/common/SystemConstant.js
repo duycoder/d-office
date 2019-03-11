@@ -1,8 +1,8 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://123.30.149.48:8353';
-export const API_URL = 'http://123.30.149.48:8354';
+// export const API_URL = 'http://123.30.149.48:8354';
 // export const API_URL = 'http://123.30.149.48:8099';
-// export const API_URL = 'http://192.168.1.6:8098';
+export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -138,6 +138,12 @@ export const SYSTEM_FUNCTION = {
 		actionCodes: [
 			'QL_LICHCONGTAC_LD',
 		]
+	},
+	UyQuyenFunction:{
+		code: 'QUANLY_UYQUYEN',
+		actionCodes: [
+			'QL_UYQUYEN_LD',
+		]
 	}
 }
 
@@ -240,6 +246,14 @@ export const DM_FUNCTIONS = {
 			NAME: 'QL_LICHCONGTAC_LD',
 			IDTHAOTAC: 106,
 			MOBILENAME: 'LỊCH CÔNG TÁC'
+		}
+	},
+
+	QUANLY_UYQUYEN: {
+		_DANHSACH: {
+			NAME: 'DANHSACH_UYQUYEN',
+			IDTHAOTAC: 108,
+			MOBILENAME: 'ỦY QUYỀN'
 		}
 	}
 }
