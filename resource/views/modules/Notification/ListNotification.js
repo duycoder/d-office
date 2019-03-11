@@ -24,6 +24,8 @@ import renderIf from 'render-if';
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class ListNotification extends Component {
     constructor(props) {
         super(props);
@@ -74,8 +76,14 @@ class ListNotification extends Component {
                 docType: "1"
             }
         }
-
-        appStoreDataAndNavigate(this.props.navigation, "ListNotificationScreen", new Object(), screenName, screenParam);
+        this.props.updateCoreNavParams({
+            docId: screenParam.docId,
+            docType: screenParam.docType,
+            screenName: screenName,
+            rootScreenName: "ListNotificationScreen"
+        }, true);
+        this.props.navigation.navigate(screenName);
+        // appStoreDataAndNavigate(this.props.navigation, "ListNotificationScreen", new Object(), screenName, screenParam);
     }
 
     componentDidMount = async () => {
@@ -140,13 +148,12 @@ class ListNotification extends Component {
     }
 
     render() {
-        // console.tron.log(this.state.data)
         return (
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>
-                        <Title>
+                        <Title style={{color: Colors.WHITE}}>
                             THÔNG BÁO
                         </Title>
                     </Body>
@@ -222,8 +229,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams
     }
 }
 
-export default connect(mapStateToProps)(ListNotification);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateCoreNavParams: (coreNavParams, isNested) => dispatch(navAction.updateCoreNavParams(coreNavParams, isNested))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListNotification);

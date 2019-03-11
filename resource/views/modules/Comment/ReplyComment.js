@@ -103,9 +103,9 @@ class ReplyComment extends Component {
       url = `${API_URL}/api/HscvCongViec/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
     }
     let result = await fetch(url).then((response) => response.json());
-    if (isTaskComment) {
-      result = resultJson.LstRootComment;
-    }
+    // if (isTaskComment) {
+    //   result = resultJson.LstRootComment;
+    // }
 
     this.setState({
       loading: false,

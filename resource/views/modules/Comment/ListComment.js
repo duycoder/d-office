@@ -102,9 +102,10 @@ class ListComment extends Component {
     }
 
     let result = await fetch(url).then((response) => response.json());
-    if (isTaskComment) {
-      result = result.LstRootComment;
-    }
+    // console.tron.log(result)
+    // if (isTaskComment) {
+    //   result = result.LstRootComment;
+    // }
 
     this.setState({
       loading: false,

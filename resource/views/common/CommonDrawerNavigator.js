@@ -283,6 +283,7 @@ export const CommonDrawerNavigator = SwitchNavigator(
         App: AppStack
     },
     {
-        initialRouteName: 'LoadingScreen'
+        initialRouteName: 'LoadingScreen',
+        backBehavior: 'intialRoute'
     }
 );

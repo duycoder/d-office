@@ -288,6 +288,7 @@ class DetailTask extends Component {
     }
 
     render() {
+        // console.tron.log(this.state.taskInfo)
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -610,7 +611,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#fff',
-        fontSize: 30,
+        fontSize: moderateScale(30, 1.1),
         fontWeight: 'bold',
     }
 })

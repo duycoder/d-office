@@ -105,7 +105,7 @@ export default class Confirm extends Component {
 
                             <View style={styles.rightFooter}>
                                 <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
-                                    <Text style={[styles.footerText, {color: Colors.GRAY}]}>
+                                    <Text style={[styles.footerText, {color: Colors.RED_PANTONE_186C}]}>
                                         CÓ
                                     </Text>
                                 </TouchableOpacity>
