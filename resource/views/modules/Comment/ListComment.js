@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, RefreshControl } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
@@ -70,7 +70,7 @@ class ListComment extends Component {
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
       commentContent: EMPTY_STRING,
-
+      refreshingData: false,
       avatarSource: EMPTY_STRING,
       avatarSourceURI: EMPTY_STRING,
       isOpen: false,
@@ -102,10 +102,6 @@ class ListComment extends Component {
     }
 
     let result = await fetch(url).then((response) => response.json());
-    // console.tron.log(result)
-    // if (isTaskComment) {
-    //   result = result.LstRootComment;
-    // }
 
     this.setState({
       loading: false,
@@ -386,6 +382,15 @@ class ListComment extends Component {
     return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
   }
 
+  handleRefresh = () => {
+    this.setState({
+      refreshing: true,
+      pageIndex: DEFAULT_PAGE_INDEX,
+    }, () => {
+      this.fetchData()
+    })
+  }
+
   renderItem = ({ item }) => {
     let attachmentContent = null;
     if (item.ATTACH != null) {
@@ -485,6 +490,19 @@ class ListComment extends Component {
                 renderItem={this.renderItem}
                 data={this.state.data}
                 keyExtractor={(item, index) => index.toString()}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refreshingData}
+                    onRefresh={this.handleRefresh}
+                    colors={[Colors.BLUE_PANTONE_640C]}
+                    tintColor={[Colors.BLUE_PANTONE_640C]}
+                    title='Kéo để làm mới'
+                    titleColor={Colors.RED}
+                  />
+                }
+                ListEmptyComponent={() =>
+                  this.state.loading ? null : emptyDataPage()
+                }
                 ListFooterComponent={() => this.state.loadingMore ?
                   <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
                   (
