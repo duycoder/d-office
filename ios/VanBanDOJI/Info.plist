@@ -49,15 +49,15 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>$(DOffice) would like to use your camera</string>
+	<string>$(ebizVNIO) would like to use your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>$(DOffice) would like to your microphone (for videos)</string>
+	<string>$(ebizVNIO) would like to your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>$(DOffice) would like to save photos to your photo gallery</string>
+	<string>$(ebizVNIO) would like to save photos to your photo gallery</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>$(DOffice) would like access to your photo gallery</string>
+	<string>$(ebizVNIO) would like access to your photo gallery</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

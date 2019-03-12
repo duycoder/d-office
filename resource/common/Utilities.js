@@ -67,7 +67,19 @@ export function convertDateTimeToString(date) {
     return 'N/A';
 }
 
-export function convertDateTimeToTitle(date) {
+export function convertDateTimeToTitle(date, isExperiment) {
+    if (isExperiment) {
+        if (isObjectHasValue(date) && !util.isEmpty(date)) {
+            let jsDateArr = date.split("T");
+            let dateArr = jsDateArr[0].split("-"), 
+                timeArr = jsDateArr[1].split(":");
+            
+            let datePart = dateArr[2] + '/' + dateArr[1] + '/' + dateArr[0];
+            let timePart = timeArr[0] + ':' + timeArr[1];
+
+            return `${datePart} lúc ${timePart}`;
+        }
+    }
     if (isObjectHasValue(date) && date !== '') {
         let jsDate = new Date(date);
         let result = '';

@@ -48,7 +48,7 @@ class BaseList extends Component {
       userId: this.props.userInfo.ID,
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
-      docType: props.docType,
+      docType: props.docType || props.coreNavParams.docType,
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
@@ -62,6 +62,21 @@ class BaseList extends Component {
     }, () => {
       this.fetchData();
     })
+  }
+
+  componentDidMount = () => {
+    this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("check")) {
+        if (this.props.extendsNavParams.check === true) {
+          this.fetchData();
+          this.props.updateExtendsNavParams({ check: false });
+        }
+      }
+    })
+  }
+
+  componentWillUnmount = () => {
+    this.willFocusListener.remove();
   }
 
   async fetchData() {
@@ -217,9 +232,9 @@ class BaseList extends Component {
               onChangeText={(filterValue) => this.setState({ filterValue })}
               onSubmitEditing={() => this.onFilter()} />
             {
-              this.state.filterValue !== EMPTY_STRING 
-              ? <Icon name='ios-close-circle' onPress={this.onClearFilter}/>
-              : <Icon name='ios-document' />
+              this.state.filterValue !== EMPTY_STRING
+                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                : <Icon name='ios-document' />
             }
           </Item>
         </Header>
@@ -276,14 +291,17 @@ class BaseList extends Component {
 const mapStatetoProps = (state) => {
   return {
     userInfo: state.userState.userInfo,
-    filterValue: state.vanbandenState.filterValue
+    filterValue: state.vanbandenState.filterValue,
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     editFilterValue: (filterValue) => dispatch(vanbandenAction.editFilterValue(filterValue)),
-    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

@@ -23,6 +23,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 //redux
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
+import * as navAction from '../../../redux/modules/Nav/Action'; 
 
 //lib
 import {
@@ -80,12 +81,12 @@ class WorkflowStreamProcess extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
         this.fetchData();
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     async fetchData() {
@@ -106,9 +107,11 @@ class WorkflowStreamProcess extends Component {
         })
     }
 
-    navigateBackToDetail = () => {
-        this.props.navigation.navigate(this.props.coreNavParams.screenName)
-        // this.props.navigation.goBack();
+    navigateBackToDetail = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({check: isCheck})
+        }
+        this.props.navigation.goBack();
     }
 
     saveFlow = async () => {
@@ -181,7 +184,7 @@ class WorkflowStreamProcess extends Component {
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
                     if (resultJson.Status) {
-                        this.navigateBackToDetail();
+                        this.navigateBackToDetail(true);
                     }
                 }
             });
@@ -667,7 +670,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        resetProcessUsers: (workflowProcessType) => dispatch(workflowAction.resetProcessUsers(workflowProcessType))
+        resetProcessUsers: (workflowProcessType) => dispatch(workflowAction.resetProcessUsers(workflowProcessType)),
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WorkflowStreamProcess);

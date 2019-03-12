@@ -83,10 +83,13 @@ class BaseCalendar extends Component {
   }
 
   navigateToEventList(day) {
-    const targetScreenParam = {
+    // const targetScreenParam = {
+    //   selectedDate: day.dateString
+    // }
+    // appStoreDataAndNavigate(this.props.navigation, "BaseCalendarScreen", new Object(), "EventListScreen", targetScreenParam);
+    this.props.navigation.navigate("EventListScreen", {
       selectedDate: day.dateString
-    }
-    appStoreDataAndNavigate(this.props.navigation, "BaseCalendarScreen", new Object(), "EventListScreen", targetScreenParam);
+    })
   }
 
 

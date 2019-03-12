@@ -63,8 +63,25 @@ class Detail extends Component {
         this.onNavigate = this.onNavigate.bind(this);
     }
 
-    componentWillMount() {
+    componentWillMount = () => {
+        // backHandlerConfig(true, this.navigateBackToList);
         this.fetchData();
+
+    }
+
+    componentDidMount = () => {
+        this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+            if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                if (this.props.extendsNavParams.check === true) {
+                    this.fetchData();
+                }
+            }
+        })
+    }
+
+    componentWillUnmount = () => {
+        this.willFocusListener.remove();
+        // backHandlerConfig(false, this.navigateBackToList);
     }
 
     async fetchData() {
@@ -83,14 +100,6 @@ class Detail extends Component {
             docInfo: resultJson,
             isUnAuthorize: util.isNull(resultJson)
         });
-    }
-
-    componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToList);
-    }
-
-    componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToList);
     }
 
     navigateBackToList = () => {
@@ -259,7 +268,8 @@ class Detail extends Component {
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

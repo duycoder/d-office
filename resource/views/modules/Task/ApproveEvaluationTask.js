@@ -9,6 +9,7 @@ import { StyleSheet } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -171,24 +172,25 @@ class ApproveEvaluationTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
-                    this.navigateBackToDetail();
+                    this.navigateBackToDetail(true);
                 }
             }
         });
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = () => {
-        // appGetDataAndNavigate(this.props.navigation, 'ApproveEvaluationTaskScreen');
-        // return true;
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    navigateBackToDetail = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({check: isCheck})
+        }
+        this.props.navigation.goBack();
     }
 
 
@@ -527,4 +529,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ApproveEvaluationTask)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveEvaluationTask)

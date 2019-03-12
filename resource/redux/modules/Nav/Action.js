@@ -20,3 +20,10 @@ export function updateExtendsNavParams(extendsNavParams) {
 		extendsNavParams
 	}
 }
+
+export function updateActionId(actionId) {
+	return {
+		type: type.UPDATE_ACTION_ID,
+		actionId
+	}
+}

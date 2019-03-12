@@ -91,15 +91,28 @@ class Detail extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToList);
+        // backHandlerConfig(true, this.navigateBackToList);
+        this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+            if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                if (this.props.extendsNavParams.check === true) {
+                    this.fetchData();
+                }
+            }
+        })
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToList);
+        this.willFocusListener.remove();
+        // backHandlerConfig(false, this.navigateBackToList);
     }
 
     navigateBackToList = () => {
         this.props.navigation.goBack();
+    }
+
+    navigateToDetailDoc = (screenName, targetScreenParams) => {
+        this.props.updateCoreNavParams(targetScreenParams)
+        this.props.navigation.navigate(screenName);
     }
 
     onReplyReview() {
@@ -282,7 +295,7 @@ class Detail extends Component {
                 })
             }
 
-            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} />
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} />
         }
         return (
             <Container>
@@ -331,7 +344,8 @@ class Detail extends Component {
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
@@ -350,7 +364,8 @@ class DetailContent extends Component {
         this.state = {
             currentTabIndex: 0,
             docInfo: props.docInfo,
-            docId: props.docId
+            docId: props.docId,
+            userId: props.userId
         }
     }
 
@@ -370,7 +385,7 @@ class DetailContent extends Component {
                                 </Text>
                         </TabHeading>
                     }>
-                        <MainInfoSignDoc info={this.state.docInfo} />
+                        <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} />
                     </Tab>
 
                     <Tab heading={

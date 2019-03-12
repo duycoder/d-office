@@ -70,16 +70,18 @@ class WorkflowReplyReview extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBack);
+        // backHandlerConfig(true, this.navigateBack);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBack);
+        // backHandlerConfig(false, this.navigateBack);
     }
 
-    navigateBack = () => {
-        // this.props.navigation.goBack();
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    navigateBack = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({check: isCheck});
+        }
+        this.props.navigation.goBack();
     }
 
     onConfirmReplyReview() {
@@ -168,7 +170,7 @@ class WorkflowReplyReview extends Component {
             onClose: () => {
                 this.props.resetProcessUsers();
                 if (resultJson.Status) {
-                    this.navigateBack();
+                    this.navigateBack(true);
                 }
             }
         });
@@ -242,7 +244,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        resetProcessUsers: () => dispatch(workflowAction.resetProcessUsers())
+        resetProcessUsers: () => dispatch(workflowAction.resetProcessUsers()),
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
 

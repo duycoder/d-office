@@ -78,12 +78,9 @@ class ListNotification extends Component {
         }
         this.props.updateCoreNavParams({
             docId: screenParam.docId,
-            docType: screenParam.docType,
-            screenName: screenName,
-            rootScreenName: "ListNotificationScreen"
+            docType: screenParam.docType
         }, true);
         this.props.navigation.navigate(screenName);
-        // appStoreDataAndNavigate(this.props.navigation, "ListNotificationScreen", new Object(), screenName, screenParam);
     }
 
     componentDidMount = async () => {
@@ -129,21 +126,21 @@ class ListNotification extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity onPress={() => this.onPressNotificationItem(item)}>
-                <ListItem
-                    leftIcon={
-                        <View style={styles.leftTitleCircle}>
-                            <RNText style={styles.leftTitleText}>
-                                {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"}
-                            </RNText>
-                        </View>
-                    }
-                    hideChevron={true}
-                    title={item.NOIDUNG}
-                    titleStyle={styles.title}
-                    titleNumberOfLines={3}
-                    subtitle={convertDateTimeToTitle(item.NGAYTAO)} />
-            </TouchableOpacity>
+            <ListItem
+                leftIcon={
+                    <View style={styles.leftTitleCircle}>
+                        <RNText style={styles.leftTitleText}>
+                            {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"}
+                        </RNText>
+                    </View>
+                }
+                hideChevron={true}
+                title={item.NOIDUNG}
+                titleStyle={styles.title}
+                titleNumberOfLines={3}
+                subtitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                onPress={() => this.onPressNotificationItem(item)}
+            />
         );
     }
 
@@ -153,7 +150,7 @@ class ListNotification extends Component {
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>
-                        <Title style={{color: Colors.WHITE}}>
+                        <Title style={{ color: Colors.WHITE }}>
                             THÔNG BÁO
                         </Title>
                     </Body>

@@ -174,15 +174,16 @@ class AssignTask extends Component {
 
 
 	componentDidMount = () => {
-		backHandlerConfig(true, this.navigateBackToDetail);
+		// backHandlerConfig(true, this.navigateBackToDetail);
 	}
 
 	componentWillUnmount = () => {
-		backHandlerConfig(false, this.navigateBackToDetail);
+		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
 	navigateBackToDetail = () => {
-		this.props.navigation.navigate(this.props.coreNavParams.screenName);
+		// this.props.navigation.navigate(this.props.coreNavParams.screenName);
+		this.props.navigation.goBack();
 		// appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
 		// return true;
 	}

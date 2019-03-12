@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -125,7 +126,7 @@ class UpdateProgressTask extends Component {
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
-                        this.navigateBackToDetail();
+                        this.navigateBackToDetail(true);
                     }
                 }
             });
@@ -133,17 +134,18 @@ class UpdateProgressTask extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = () => {
-        // appGetDataAndNavigate(this.props.navigation, 'UpdateProgressTaskScreen');
-        // return true;
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    navigateBackToDetail = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({ check: isCheck })
+        }
+        this.props.navigation.goBack();
     }
 
     onSliderChange = (value) => {
@@ -273,7 +275,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(UpdateProgressTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
 
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateProgressTask);

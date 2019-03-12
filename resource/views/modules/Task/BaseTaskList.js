@@ -58,7 +58,7 @@ class BaseTaskList extends Component {
             refreshingData: false,
             searchingData: false,
             loadingMoreData: false,
-            taskType: props.taskType
+            taskType: props.taskType || props.coreNavParams.taskType
         }
     }
 
@@ -69,6 +69,21 @@ class BaseTaskList extends Component {
             this.fetchData();
         })
     }
+
+    omponentDidMount = () => {
+        this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
+          if (this.props.extendsNavParams.hasOwnProperty("check")) {
+            if (this.props.extendsNavParams.check === true) {
+              this.fetchData();
+              this.props.updateExtendsNavParams({ check: false });
+            }
+          }
+        })
+      }
+    
+      componentWillUnmount = () => {
+        this.willFocusListener.remove();
+      }
 
     async fetchData() {
         const loadingMoreData = this.state.loadingMoreData;
@@ -353,13 +368,16 @@ class BaseTaskList extends Component {
 
 const mapStatetoProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
 

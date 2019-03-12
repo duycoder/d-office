@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { DatePickerAndroid } from 'react-native';
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -64,10 +65,11 @@ class RescheduleTask extends Component {
         backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = () => {
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
-        // appGetDataAndNavigate(this.props.navigation, "RescheduleTaskScreen");
-        // return true;
+    navigateBackToDetail = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({ check: isCheck });
+        }
+        this.props.navigation.goBack();
     }
 
     onSaveExtendTask = async () => {
@@ -145,7 +147,7 @@ class RescheduleTask extends Component {
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
-                        this.navigateBackToDetail();
+                        this.navigateBackToDetail(true);
                     }
                 }
             });
@@ -236,4 +238,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(RescheduleTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RescheduleTask);

@@ -59,15 +59,36 @@ class Brief extends Component {
   }
 
   componentDidMount = () => {
-    backHandlerConfig(true, this.navigateBackToList);
+    // backHandlerConfig(true, this.navigateBackToList);
   }
 
   componentWillUnmount = () => {
-    backHandlerConfig(false, this.navigateBackToList);
+    // backHandlerConfig(false, this.navigateBackToList);
   }
 
-  navigateBackToDetailVanban = () => {
+  navigateBackToDetailVanbanDen = () => {
     this.props.navigation.goBack();
+    // this.props.navigation.navigate("VanBanDenDetailScreen")
+  }
+  /**
+   * Hàm điều hướng vào chi tiết văn bản đi hoặc công việc liên quan
+   */
+  navigateToDetail = (itemId, isDoc = false) => {
+    let targetScreenParam = {
+      taskId: itemId,
+      taskType: 0
+    }
+    if (isDoc) {
+      targetScreenParam = {
+        docId: itemId,
+        docType: 0
+      }
+      this.props.updateCoreNavParams(targetScreenParam);
+      this.props.navigation.navigate("VanBanDiDetailScreen");
+    }
+
+    this.props.updateCoreNavParams(targetScreenParam);
+    this.props.navigation.navigate("DetailTaskScreen");
   }
 
   async fetchData() {
@@ -97,14 +118,14 @@ class Brief extends Component {
     else if (this.state.isUnAuthorize) {
       bodyContent = unAuthorizePage(this.props.navigation);
     } else {
-      bodyContent = <DetailContent docInfo={this.state.docInfo} />
+      bodyContent = <DetailContent docInfo={this.state.docInfo} navigateToDetail={this.navigateToDetail} />
     }
 
     return (
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToDetailVanban()}>
+            <Button transparent onPress={() => this.navigateBackToDetailVanbanDen()}>
               <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Left>
@@ -172,7 +193,7 @@ class DetailContent extends Component {
               </Text>
             </TabHeading>
           }>
-            <BriefTaskList info={groupOfCongViecs} />
+            <BriefTaskList info={groupOfCongViecs} navigateToDetail={this.props.navigateToDetail} />
           </Tab>
 
           <Tab heading={
@@ -183,7 +204,7 @@ class DetailContent extends Component {
               </Text>
             </TabHeading>
           }>
-            <BriefResponseList info={groupOfVanBanDis} />
+            <BriefResponseList info={groupOfVanBanDis} navigateToDetail={this.props.navigateToDetail} />
           </Tab>
         </Tabs>
       </View>
@@ -197,18 +218,6 @@ class BriefTaskList extends Component {
     this.state = {
       data: props.info || []
     }
-  }
-
-  navigateToDetail = async (taskId) => {
-    let { navigation } = this.props;
-    let currentScreenName = "VanBanDenBriefScreen";
-
-    let targetScreenParam = {
-      taskId,
-      taskType: 0
-    }
-
-    appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailTaskScreen", targetScreenParam);
   }
 
   async getListSubTasks(index, isExpand, taskId, parentIds) {
@@ -309,7 +318,6 @@ class BriefTaskList extends Component {
           }
 
           title={
-            <TouchableOpacity onPress={() => this.navigateToDetail(item.ID)}>
               <RnText style={item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal}>
                 <RnText style={{ fontWeight: 'bold' }}>
                   Tên công việc:
@@ -318,11 +326,9 @@ class BriefTaskList extends Component {
                   {' ' + item.TENCONGVIEC}
                 </RnText>
               </RnText>
-            </TouchableOpacity>
           }
 
           subtitle={
-            <TouchableOpacity onPress={() => this.navigateToDetail(item.ID)}>
               <RnText style={[item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal, ListTaskStyle.abridgment]}>
                 <RnText style={{ fontWeight: 'bold' }}>
                   Hạn xử lý:
@@ -331,8 +337,8 @@ class BriefTaskList extends Component {
                   {' ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
                 </RnText>
               </RnText>
-            </TouchableOpacity>
           }
+          onPress={() => this.props.navigateToDetail(item.ID, false)}
         />
 
       </View>
@@ -390,7 +396,6 @@ class BriefResponseList extends Component {
 
     return (
       <View>
-        <TouchableOpacity onPress={() => this.navigateToDocDetail(item.ID)}>
           <ListItem
             hideChevron={true}
             badge={{
@@ -437,8 +442,8 @@ class BriefResponseList extends Component {
                 </RnText>
               </RnText>
             }
+            onPress={() => this.props.navigateToDetail(item.ID, true)}
           />
-        </TouchableOpacity>
       </View>
     );
   }

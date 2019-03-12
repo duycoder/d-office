@@ -118,18 +118,18 @@ class ListComment extends Component {
   }
 
   componentDidMount = () => {
-    backHandlerConfig(true, this.navigateToDetail)
+    // backHandlerConfig(true, this.navigateToDetail)
   }
 
   componentWillUnmount() {
     this.keyboardWillShowSub.remove();
     this.keyboardWillHideSub.remove();
-    backHandlerConfig(false, this.navigateToDetail);
+    // backHandlerConfig(false, this.navigateToDetail);
   }
 
   navigateToDetail = () => {
-    this.props.navigation.navigate(this.props.coreNavParams.screenName);
-    // this.props.navigation.goBack();
+    // this.props.navigation.navigate(this.props.coreNavParams.screenName);
+    this.props.navigation.goBack();
     // if (this.state.isTaskComment) {
     //   this.props.navigation.navigate('DetailTaskScreen'); // might change to goBack() soon
     // } else {
@@ -520,7 +520,7 @@ class ListComment extends Component {
           }
         </Content>
 
-        <Footer style={[FooterCommentStyle.footerUploader, { height: this.state.heightAnimation }]}>
+        <Footer style={[FooterCommentStyle.footerUploader, { height: this.state.heightAnimation, flex: this.state.footerFlex }]}>
           <View style={[FooterCommentStyle.footerComment]}>
             <Input
               style={FooterCommentStyle.footerCommentContent}

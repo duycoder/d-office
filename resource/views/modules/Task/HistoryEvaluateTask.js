@@ -142,17 +142,18 @@ class HistoryEvaluateTask extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     navigateBackToDetail = () => {
         // appGetDataAndNavigate(this.props.navigation, 'HistoryEvaluateTaskScreen');
         // return true;
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        // this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        this.props.navigation.goBack();
     }
 
     handleRefresh = () => {
@@ -175,7 +176,7 @@ class HistoryEvaluateTask extends Component {
                     </Left>
                     <Body style={NativeBaseStyle.body}>
                         <Title style={NativeBaseStyle.bodyTitle}>
-                            LỊCH SỬ PHÊ DUYỆT TIẾN ĐỘ
+                            LỊCH SỬ PHẢN HỒI
 						</Title>
                     </Body>
                     <Right style={NativeBaseStyle.right} />

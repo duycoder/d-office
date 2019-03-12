@@ -65,11 +65,11 @@ class WorkflowRequestReview extends Component {
 	}
 
 	componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
 	componentWillMount() {
@@ -93,9 +93,12 @@ class WorkflowRequestReview extends Component {
 		})
 	}
 
-	navigateBackToDetail = () => {
-		this.props.navigation.navigate(this.props.coreNavParams.screenName);
-		// this.props.navigation.goBack();
+	navigateBackToDetail = (isCheck = false) => {
+		// this.props.navigation.navigate(this.props.coreNavParams.screenName);
+		if (isCheck) {
+			this.props.updateExtendsNavParams({check: isCheck})
+		}
+		this.props.navigation.goBack();
 		// appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
 		// return true;
 	}
@@ -204,7 +207,7 @@ class WorkflowRequestReview extends Component {
 				onClose: () => {
 					this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {
-						this.navigateBackToDetail();
+						this.navigateBackToDetail(true);
 					}
 				}
 			});
@@ -340,7 +343,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		resetProcessUsers: (workflowProcessType) => (dispatch(workflowAction.resetProcessUsers(workflowProcessType)))
+		resetProcessUsers: (workflowProcessType) => (dispatch(workflowAction.resetProcessUsers(workflowProcessType))),
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
 	}
 }
 

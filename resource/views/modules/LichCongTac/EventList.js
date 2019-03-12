@@ -39,8 +39,9 @@ class EventList extends Component {
   }
 
   navigateBacktoBase() {
-    appGetDataAndNavigate(this.props.navigation, 'EventListScreen');
-    return true;
+    // appGetDataAndNavigate(this.props.navigation, 'EventListScreen');
+    // return true;
+    this.props.navigation.goBack();
   }
 
   fetchData = async () => {

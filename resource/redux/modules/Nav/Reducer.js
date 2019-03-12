@@ -2,7 +2,9 @@ import * as type from './ActionType';
 
 const initialState = {
   coreNavParams: {},
-  extendsNavParams: {}
+  extendsNavParams: {},
+  pastCoreParams: [], // save old coreNavParams
+  actionId: 0, // detect if that flow has changes?
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +18,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         extendsNavParams: action.extendsNavParams
+      };
+    case type.UPDATE_ACTION_ID:
+      return {
+        ...state,
+        actionId: action.actionId
       };
     default:
       return state;

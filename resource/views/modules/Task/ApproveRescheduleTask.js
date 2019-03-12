@@ -9,6 +9,7 @@ import React, { Component } from 'react'
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -41,13 +42,13 @@ class ApproveRescheduleTask extends Component {
         this.state = {
             userId: props.userInfo.ID,
 
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
-            canApprove: props.navigation.state.params.canApprove,
-
-            deadlineRequest: props.navigation.state.params.deadline,
-            deadlineApprove: props.navigation.state.params.deadline,
-            extendId: props.navigation.state.params.extendId,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
+            
+            // canApprove: props.extendsNavParams.canApprove,
+            deadlineRequest: props.extendsNavParams.deadline,
+            deadlineApprove: props.extendsNavParams.deadline,
+            extendId: props.extendsNavParams.extendId,
 
             executing: false,
             message: EMPTY_STRING
@@ -120,18 +121,17 @@ class ApproveRescheduleTask extends Component {
 			duration: 3000,
 			onClose: () => {
 				if (resultJson.Status) {
-					this.navigateBack();
+					this.navigateBack(true);
 				}
 			}
 		});
     }
 
-    navigateBack = () => {
-        this.props.navigation.navigate('HistoryRescheduleTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
-            canApprove: this.state.canApprove
-        })
+    navigateBack = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({check: true})
+        }
+        this.props.navigation.goBack();
     }
     render() {
         return (
@@ -212,11 +212,19 @@ class ApproveRescheduleTask extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+		extendsNavParams: state.navState.extendsNavParams
     }
 }
 
-export default connect(mapStateToProps)(ApproveRescheduleTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveRescheduleTask);
 
 
 

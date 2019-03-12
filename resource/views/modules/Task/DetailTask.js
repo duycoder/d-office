@@ -151,18 +151,23 @@ class DetailTask extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToList);
+        // backHandlerConfig(true, this.navigateBackToList);
+        this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+            if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                if (this.props.extendsNavParams.check === true) {
+                    this.fetchData();
+                }
+            }
+        });
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToList);
+        // backHandlerConfig(false, this.navigateBackToList);
+        this.willFocusListener.remove();
     }
 
     navigateBackToList = () => {
-        // appGetDataAndNavigate(this.props.navigation, 'DetailTaskScreen');
         this.props.navigation.goBack();
-        // this.onNavigate(this.props.coreNavParams.rootScreenName);
-        // return true;
     }
 
     //mở cuộc hội thoại
@@ -287,9 +292,14 @@ class DetailTask extends Component {
         this.props.navigation.navigate(targetScreenName);
     }
 
+    navigateToDetailDoc = (screenName, targetScreenParams) => {
+        this.props.updateCoreNavParams(targetScreenParams)
+        this.props.navigation.navigate(screenName);
+    }
+
     render() {
         // console.tron.log(this.state.taskInfo)
-        const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} />;
+        const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} navigateToDetailDoc={this.navigateToDetailDoc} />;
         const menuActions = [];
         if (!this.state.loading) {
             const task = this.state.taskInfo;
@@ -557,7 +567,7 @@ class TaskContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <TaskDescription info={this.props.info} />
+                        <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} />
                     </Tab>
 
                     <Tab heading={
@@ -619,13 +629,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateExtendsNavParams: (taskId, taskType) => dispatch(navAction.updateExtendsNavParams(taskId, taskType))
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
 

@@ -25,6 +25,7 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
@@ -130,14 +131,13 @@ class HistoryRescheduleTask extends Component {
 
 	onApproveReschedule = async (isApprove, extendId, deadline) => {
 		const screenName = isApprove ? 'ApproveRescheduleTaskScreen' : 'DenyRescheduleTaskScreen';
-		this.props.navigation.navigate(screenName, {
-			taskId: this.state.taskId,
-			taskType: this.state.taskType,
+		const targetParams = {
 			canApprove: this.state.canApprove,
-
 			extendId,
 			deadline
-		})
+		};
+		this.props.updateExtendsNavParams(targetParams);
+		this.props.navigation.navigate(screenName);
 	}
 
 	renderItem = ({ item }) => {
@@ -196,18 +196,24 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		// backHandlerConfig(true, this.navigateBackToList);
+		this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+			if (this.props.extendsNavParams.hasOwnProperty("check")) {
+				if (this.props.extendsNavParams.check === true) {
+					this.fetchData();
+				}
+			}
+		});
+	}
 
-    componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		// backHandlerConfig(false, this.navigateBackToList);
+		this.willFocusListener.remove();
+	}
 
-    navigateBackToDetail = () => {
-			    this.props.navigation.navigate(this.props.coreNavParams.screenName);
-        // appGetDataAndNavigate(this.props.navigation, 'HistoryRescheduleTaskScreen');
-        // return true;
-    }
+	navigateBackToDetail = () => {
+		this.props.navigation.goBack();
+	}
 
 	render() {
 		return (
@@ -439,9 +445,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	return {
 		userInfo: state.userState.userInfo,
-		    coreNavParams: state.navState.coreNavParams,
-    extendsNavParams: state.navState.extendsNavParams
+		coreNavParams: state.navState.coreNavParams,
+		extendsNavParams: state.navState.extendsNavParams
 	}
 }
 
-export default connect(mapStateToProps)(HistoryRescheduleTask)
+const mapDispatchToProps = (dispatch) => {
+	return {
+			updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HistoryRescheduleTask)

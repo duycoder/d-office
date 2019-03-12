@@ -1,8 +1,8 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://123.30.149.48:8353';
-// export const API_URL = 'http://123.30.149.48:8354';
+export const API_URL = 'http://123.30.149.48:8354';
 // export const API_URL = 'http://123.30.149.48:8099';
-export const API_URL = 'http://192.168.1.7:8098';
+// export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
@@ -223,7 +223,7 @@ export const DM_FUNCTIONS = {
 		_CANHAN: {
 			NAME: 'CONGVIEC_CANHAN',
 			IDTHAOTAC: 42,
-			MOBILENAME: 'DANH SÁCH'
+			MOBILENAME: 'CÁ NHÂN'
 		},
 		_DUOCGIAO: {
 			NAME: 'CONGVIEC_DUOCGIAO',

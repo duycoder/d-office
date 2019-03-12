@@ -20,8 +20,31 @@ export default class MainInfoSignDoc extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            info: props.info.VanBanTrinhKy
+            info: props.info.VanBanTrinhKy,
+            userId: props.userId,
+            docInfo: null
         }
+    }
+
+    componentWillMount() {
+        const { VANBANDEN_ID } = this.props.info.VanBanTrinhKy;
+        if (VANBANDEN_ID !== null) {
+            this.fetchData(VANBANDEN_ID);
+
+        }
+    }
+
+    fetchData = async (docId) => {
+        const url = `${API_URL}/api/VanBanDen/GetDetail/${docId}/${this.state.userId}/0`;
+
+        const result = await fetch(url);
+        const resultJson = await result.json();
+
+        await asyncDelay(2000);
+
+        this.setState({
+            docInfo: resultJson,
+        });
     }
 
     render() {
@@ -39,11 +62,39 @@ export default class MainInfoSignDoc extends Component {
             );
         }
 
-
+        let relateDoc;
+        if (this.state.docInfo) {
+            const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
+            relateDoc = (
+                <ListItem
+                    style={DetailSignDocStyle.listItemContainer}
+                    hideChevron={true}
+                    title={
+                        <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                            VĂN BẢN ĐẾN LIÊN QUAN
+                        </Text>
+                    }
+                    subtitle={
+                        <Text style={[DetailSignDocStyle.listItemSubTitleContainer, { color: '#262626' }]}>
+                            <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
+                            <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
+                            <Text>{`Người ký: ${NGUOIKY}`}</Text>
+                        </Text>
+                    }
+                    onPress={
+                        () => this.props.navigateToDetailDoc("VanBanDenDetailScreen", { docId: ID, docType: 1 })
+                    }
+                    containerStyle={{ backgroundColor: 'rgba(189,198,207, 0.6)' }}
+                />
+            );
+        }
         return (
             <View style={DetailSignDocStyle.container}>
                 <ScrollView>
                     <List containerStyle={DetailSignDocStyle.listContainer}>
+                        {
+                            this.state.docInfo && relateDoc
+                        }
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={

@@ -259,17 +259,18 @@ class GroupSubTask extends Component {
     }
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     navigateBackToDetail = () => {
         // appGetDataAndNavigate(this.props.navigation, 'GroupSubTaskScreen');
         // return true;
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        // this.props.navigation.navigate(this.props.coreNavParams.screenName);
+        this.props.navigation.goBack();
     }
 
     render() {

@@ -18,6 +18,7 @@ import { Icon as RneIcon } from 'react-native-elements';
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
@@ -57,17 +58,18 @@ class ApproveProgressTask extends Component {
 
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = () => {
-        this.props.navigation.navigate(this.props.coreNavParams.screenName);
-        // appGetDataAndNavigate(this.props.navigation, "ApproveProgressTaskScreen");
-        // return true;
+    navigateBackToDetail = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({check: isCheck})
+        }
+        this.props.navigation.goBack();
     }
 
     //kiểm tra chắc chắn phê duyệt tiến độ công việc
@@ -150,7 +152,7 @@ class ApproveProgressTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
-                    this.navigateBackToDetail();
+                    this.navigateBackToDetail(true);
                 }
             }
         });
@@ -226,4 +228,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ApproveProgressTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ApproveProgressTask);

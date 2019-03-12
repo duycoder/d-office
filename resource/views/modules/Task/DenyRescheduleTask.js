@@ -9,6 +9,7 @@ import React, { Component } from 'react'
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -38,11 +39,11 @@ class DenyRescheduleTask extends Component {
         this.state = {
             userId: props.userInfo.ID,
 
-            taskId: props.navigation.state.params.taskId,
-            taskType: props.navigation.state.params.taskType,
-            canApprove: props.navigation.state.params.canApprove,
-            
-            extendId: props.navigation.state.params.extendId,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
+            // canApprove: props.navigation.state.params.canApprove,
+
+            extendId: props.extendsNavParams.extendId,
 
             message: EMPTY_STRING,
             executing: false
@@ -81,42 +82,42 @@ class DenyRescheduleTask extends Component {
         })
 
         if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-			const message = this.props.userInfo.Fullname + ' đã phê duyệt yêu cầu lùi hạn';
-			const content = {
-				title: 'PHÊ DUYỆT YÊU CẦU GIA HẠN CÔNG VIỆC',
-				message,
-				isTaskNotification: true,
-				targetScreen: 'DetailTaskScreen',
-				targetTaskId: this.state.taskId,
-				targetTaskType: this.state.taskType
-			}
+            const message = this.props.userInfo.Fullname + ' đã phê duyệt yêu cầu lùi hạn';
+            const content = {
+                title: 'PHÊ DUYỆT YÊU CẦU GIA HẠN CÔNG VIỆC',
+                message,
+                isTaskNotification: true,
+                targetScreen: 'DetailTaskScreen',
+                targetTaskId: this.state.taskId,
+                targetTaskType: this.state.taskType
+            }
 
-			resultJson.GroupTokens.forEach(token => {
-				pushFirebaseNotify(content, token, 'notification');
-			})
-		}
+            resultJson.GroupTokens.forEach(token => {
+                pushFirebaseNotify(content, token, 'notification');
+            })
+        }
 
-		Toast.show({
-			text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
-			type: resultJson.Status ? 'success' : 'danger',
-			buttonText: "OK",
-			buttonStyle: { backgroundColor: Colors.WHITE },
-			buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-			duration: 3000,
-			onClose: () => {
-				if (resultJson.Status) {
-					this.navigateBack();
-				}
-			}
-		});
+        Toast.show({
+            text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
+            type: resultJson.Status ? 'success' : 'danger',
+            buttonText: "OK",
+            buttonStyle: { backgroundColor: Colors.WHITE },
+            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+            duration: 3000,
+            onClose: () => {
+                if (resultJson.Status) {
+                    this.navigateBack(true);
+                }
+            }
+        });
     }
 
-    navigateBack = () => {
-        this.props.navigation.navigate('HistoryRescheduleTaskScreen', {
-            taskId: this.state.taskId,
-            taskType: this.state.taskType,
-            canApprove: this.state.canApprove
-        })
+    navigateBack = (isCheck = false) => {
+        if (isCheck) {
+            this.props.updateExtendsNavParams({ check: true })
+        }
+        this.props.navigation.goBack();
+
     }
     render() {
         return (
@@ -138,10 +139,10 @@ class DenyRescheduleTask extends Component {
 
                 <Content>
                     <Form>
-                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center'}}>
+                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
                             <Label>Lý do từ chối gia hạn</Label>
 
-                            <Textarea rowSpan={5} bordered style={{width: '100%'}}
+                            <Textarea rowSpan={5} bordered style={{ width: '100%' }}
                                 value={this.state.message}
                                 onChangeText={message => this.setState({ message })} />
                         </Item>
@@ -166,11 +167,19 @@ class DenyRescheduleTask extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        userInfo: state.userState.userInfo
+        userInfo: state.userState.userInfo,
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
-export default connect(mapStateToProps)(DenyRescheduleTask);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DenyRescheduleTask);
 
 
 

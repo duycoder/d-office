@@ -80,7 +80,26 @@ class ReplyComment extends Component {
     this.setState({
       loading: true
     }, () => this.fetchData());
+    this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+    this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
   }
+
+  componentWillUnmount = () => {
+    this.keyboardWillShowSub.remove();
+    this.keyboardWillHideSub.remove();
+  }
+
+  keyboardWillShow = (event) => {
+    this.setState({
+      footerFlex: 1
+    })
+  };
+
+  keyboardWillHide = (event) => {
+    this.setState({
+      footerFlex: 0
+    })
+  };
 
   loadingMore = () => {
     this.setState({
@@ -116,7 +135,7 @@ class ReplyComment extends Component {
   }
 
   navigateToListComment = () => {
-    this.props.navigation.navigate('ListCommentScreen'); // might change to goBack() soon
+    this.props.navigation.goBack();
   }
 
   sendComment = async () => {

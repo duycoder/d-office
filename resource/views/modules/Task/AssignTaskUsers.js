@@ -6,21 +6,21 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    ActivityIndicator, View, Text, Modal,
-    FlatList, TouchableOpacity, Image,
-    StyleSheet
+	ActivityIndicator, View, Text, Modal,
+	FlatList, TouchableOpacity, Image,
+	StyleSheet
 } from 'react-native';
 
 //constant
 import {
-    API_URL, HEADER_COLOR
+	API_URL, HEADER_COLOR
 } from '../../../common/SystemConstant';
 
 //native-base
 import {
-    Button, Icon as NBIcon, Text as NBText, Item, Input, Title,
-    Container, Header, Content, Left, Right, Body, CheckBox,
-    Tab, Tabs, TabHeading, ScrollableTab, List as NBList, ListItem as NBListItem, Radio
+	Button, Icon as NBIcon, Text as NBText, Item, Input, Title,
+	Container, Header, Content, Left, Right, Body, CheckBox,
+	Tab, Tabs, TabHeading, ScrollableTab, List as NBList, ListItem as NBListItem, Radio
 } from 'native-base';
 
 //react-native-elements
@@ -42,59 +42,59 @@ import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-
 import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 class AssignTaskUsers extends Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
 			isMainProcess: props.isMainProcess,
 			userId: this.props.userInfo.ID,
 			listUsers: props.listUsers,
 			mainProcessUser: this.props.mainProcessUser,
-        	joinProcessUsers: this.props.joinProcessUsers
+			joinProcessUsers: this.props.joinProcessUsers
 		}
 	}
-	
-	onSelectProcessor(userId, isMainProcess){
+
+	onSelectProcessor(userId, isMainProcess) {
 		this.props.updateTaskProcessors(userId, isMainProcess);
 
 		this.setState({
 			mainProcessUser: this.props.mainProcessUser,
-        	joinProcessUsers: this.props.joinProcessUsers
+			joinProcessUsers: this.props.joinProcessUsers
 		});
 	}
 
-	render(){
-		return(
-			<View style={{flex: 1}}>
+	render() {
+		return (
+			<View style={{ flex: 1 }}>
 				<NBList>
 					{
-					this.state.listUsers.map((item, index) => (
-						<NBListItem key={index} onPress={ () => this.onSelectProcessor(item.ID, this.state.isMainProcess) }>
-							<Left>
-								<Title>
-									<NBText>
-									    {item.HOTEN}
-									</NBText>
-								</Title>
-							</Left>
-							<Right>
-								{
-									renderIf(this.state.isMainProcess)(
-										<Radio selected={this.props.mainProcessUser == item.ID} 
-										color={'#FF6600'} 
-										onPress={() => this.onSelectProcessor(item.ID, this.state.isMainProcess)}/>
-									)
-								}
+						this.state.listUsers.map((item, index) => (
+							<NBListItem key={index} onPress={() => this.onSelectProcessor(item.ID, this.state.isMainProcess)}>
+								<Left>
+									<Title>
+										<NBText>
+											{item.HOTEN}
+										</NBText>
+									</Title>
+								</Left>
+								<Right>
+									{
+										renderIf(this.state.isMainProcess)(
+											<Radio selected={this.props.mainProcessUser == item.ID}
+												color={'#FF6600'}
+												onPress={() => this.onSelectProcessor(item.ID, this.state.isMainProcess)} />
+										)
+									}
 
-								{
-									renderIf(!this.state.isMainProcess)(
-										<CheckBox checked={this.state.joinProcessUsers.indexOf(item.ID) > - 1} 
-										color={'#FF6600'} 
-										onPress={() => this.onSelectProcessor(item.ID, this.state.isMainProcess)} />
-									)
-								}
-							</Right>
-						</NBListItem>
-						))			
+									{
+										renderIf(!this.state.isMainProcess)(
+											<CheckBox checked={this.state.joinProcessUsers.indexOf(item.ID) > - 1}
+												color={'#FF6600'}
+												onPress={() => this.onSelectProcessor(item.ID, this.state.isMainProcess)} />
+										)
+									}
+								</Right>
+							</NBListItem>
+						))
 					}
 				</NBList>
 			</View>
@@ -107,7 +107,7 @@ const mapStateToProps = (state) => {
 	return {
 		userInfo: state.userState.userInfo,
 		mainProcessUser: state.taskState.mainProcessUser,
-        joinProcessUsers: state.taskState.joinProcessUsers
+		joinProcessUsers: state.taskState.joinProcessUsers
 	}
 }
 
