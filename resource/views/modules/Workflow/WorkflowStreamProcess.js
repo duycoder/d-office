@@ -315,7 +315,7 @@ class WorkflowStreamProcess extends Component {
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-person-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-person' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         CHÍNH
                                     </Text>
@@ -446,7 +446,7 @@ class WorkflowStreamProcess extends Component {
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-person-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-person' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         CHÍNH
                                 </Text>
