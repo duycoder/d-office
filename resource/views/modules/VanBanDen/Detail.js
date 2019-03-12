@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import {NavigationActions} from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
@@ -72,7 +72,7 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}`;
+        const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}/0`;
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -180,7 +180,7 @@ class Detail extends Component {
     }
 
     onNavigate(targetScreenName, targetScreenParam) {
-        if(!util.isNull(targetScreenParam)){
+        if (!util.isNull(targetScreenParam)) {
             this.props.updateExtendsNavParams(targetScreenParam);
         }
         this.props.navigation.navigate(targetScreenName);
@@ -316,7 +316,7 @@ class DetailContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-time-outline' style={TabStyle.activeText} />
+                            <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
                             <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 LỊCH SỬ XỬ LÝ
                             </Text>
