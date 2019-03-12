@@ -160,8 +160,8 @@ class DetailTask extends Component {
 
     navigateBackToList = () => {
         // appGetDataAndNavigate(this.props.navigation, 'DetailTaskScreen');
-        // this.props.navigation.goBack();
-        this.onNavigate(this.props.coreNavParams.rootScreenName);
+        this.props.navigation.goBack();
+        // this.onNavigate(this.props.coreNavParams.rootScreenName);
         // return true;
     }
 
