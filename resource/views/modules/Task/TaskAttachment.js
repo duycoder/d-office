@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 import {
     Platform, Alert, ActivityIndicator,
     View, Text, Image, ScrollView, FlatList,
-    TouchableOpacity, RefreshControl
+    TouchableOpacity, RefreshControl, PermissionsAndroid
 } from 'react-native'
 
 //lib
@@ -16,6 +16,8 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import RNFetchBlob from 'rn-fetch-blob';
 import { Container, Content, Header, Item, Input, Icon } from 'native-base';
+import OpenFile from 'react-native-doc-viewer';
+import * as util from 'lodash';
 
 //styles
 import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
@@ -26,10 +28,11 @@ import {
 } from '../../../common/SystemConstant';
 
 //utilities
-import { formatLongText, isImage, emptyDataPage, asyncDelay } from '../../../common/Utilities';
+import { formatLongText, isImage, emptyDataPage, asyncDelay, 
+    convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 
-const android = RNFetchBlob.android;
 
 export default class TaskAttachment extends Component {
 
@@ -68,97 +71,30 @@ export default class TaskAttachment extends Component {
         });
     }
 
-    renderItem = ({ item }) => (
-        <ListItem
-            leftIcon={
-                <View style={[ListTaskStyle.leftSize, {
-                    marginRight: 10
-                }]}>
-                    <RneIcon name='ios-attach-outline' size={26} type='ionicon' style={ListTaskStyle.leftIcon} />
-                </View>
-            }
-
-            rightIcon={
-                <View style={ListTaskStyle.rightSize}>
-                    <TouchableOpacity onPress={() => this.downloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}>
-                        <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                    </TouchableOpacity>
-                </View>
-            }
-            title={formatLongText(item.TENTAILIEU)}
+    renderItem = ({ item }) => {
+        let regExtension = extention(item.DUONGDAN_FILE);
+        let extension = regExtension ? regExtension[0] : "";
+        return <ListItem
+            leftIcon={getFileExtensionLogo(extension)}
+            title={item.TENTAILIEU}
             titleStyle={{
-                color: Colors.BLACK,
+                marginLeft: 10,
+                color: '#707070',
                 fontWeight: 'bold'
             }}
-        />
-    );
-
-    downloadFile(fileName, fileLink, fileExtension) {
-        try {
-            fileLink = WEB_URL + fileLink;
-            fileLink = fileLink.replace('////', '/');
-            if (Platform.OS == 'ios') {
-                config = {
-                    fileCache: true
-                };
-    
-                fileLink = encodeURI(fileLink);
-            } else
-            fileLink = fileLink.replace(/ /g, "%20");
-
-            const config = {
-                fileCache: true,
-                // android only options, these options be a no-op on IOS
-                addAndroidDownloads: {
-                    notification: true, // Show notification when response data transmitted
-                    title: fileName, // Title of download notification
-                    description: 'An image file.', // File description (not notification description)
-                    mime: fileExtension,
-                    mediaScannable: true, // Make the file scannable  by media scanner
-                }
+            subtitle={
+                getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
             }
-
-            // if (Platform.OS == 'ios') {
-            //     config = {
-            //         fileCache: true
-            //     };
-    
-            //     fileLink = encodeURI(fileLink);
-            // }
-
-            RNFetchBlob.config(config)
-                .fetch('GET', fileLink)
-                .then((response) => {
-                    //kiểm tra platform nếu là android và file là ảnh
-                    if (Platform.OS == 'android' && isImage(fileExtension)) {
-                        android.actionViewIntent(response.path(), fileExtension);
-                    }
-                    response.path();
-                    console.log('thanh cong ', fileLink);
-                }).catch((err) => {
-                    Alert.alert(
-                        'THÔNG BÁO',
-                        'KHÔNG THỂ TẢI ĐƯỢC FILE',
-                        [
-                            {
-                                text: 'OK',
-                                onPress: () => { }
-                            }
-                        ]
-                    )
-                });
-        } catch (err) {
-            Alert.alert({
-                'title': 'THÔNG BÁO',
-                'message': `Lỗi: ${err.toString()}`,
-                buttons: [
-                    {
-                        text: 'OK',
-                        onPress: () => { }
-                    }
-                ]
-            })
-        }
+            subtitleStyle={{
+                fontWeight: 'normal',
+                color: '#707070',
+                marginLeft: 10,
+            }}
+            rightIcon={
+                <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+            }
+            onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+        />
     }
 
     render() {

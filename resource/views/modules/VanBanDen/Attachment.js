@@ -6,23 +6,21 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    Alert, ActivityIndicator, FlatList, TouchableOpacity, Platform,
-    PermissionsAndroid
+    ActivityIndicator, FlatList
 } from 'react-native';
 
 //lib
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
-import RNFetchBlob from 'rn-fetch-blob'
-import OpenFile from 'react-native-doc-viewer';
 
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 
 //utilities
 import renderIf from 'render-if';
-import { API_URL, WEB_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, isImage, emptyDataPage, convertDateToString, convertTimeToString } from '../../../common/Utilities';
+import { API_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../common/SystemConstant';
+import { asyncDelay, isImage, emptyDataPage, convertDateToString, 
+    convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 export default class AttachPublishDoc extends Component {
@@ -63,140 +61,9 @@ export default class AttachPublishDoc extends Component {
         });
     }
 
-    async onDownloadFile(fileName, fileLink, fileExtension) {
-        //config save path
-        fileLink = fileLink.replace(/\\/, '');
-        fileLink = fileLink.replace(/\\/g, '/');
-        let date = new Date();
-        let url = `${WEB_URL}/Uploads/${fileLink}`;
-        // url = url.replace('\\', '/');
-        // url = url.replace(/\\/g, '/');
-        url = url.replace(/ /g, "%20");
-        let regExtension = this.extention(url);
-        let extension = "." + regExtension[0];
-        const { config, fs } = RNFetchBlob;
-        let { PictureDir, DocumentDir } = fs.dirs;
-
-        let savePath = (Platform.OS === 'android' ? PictureDir : DocumentDir) + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
-
-        let options = {};
-        let isAllowDownload = true;
-        if (Platform.OS == 'android') {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-                {
-                    title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-                    message:
-                        'Ebiz Office muốn truy cập vào tài liệu của bạn',
-                    buttonNeutral: 'Để sau',
-                    buttonNegative: 'Thoát',
-                    buttonPositive: 'OK',
-                },
-            );
-
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                options = {
-                    fileCache: true,
-                    addAndroidDownloads: {
-                        useDownloadManager: true,
-                        notification: true,
-                        path: savePath,
-                        description: 'VNIO FILE'
-                    }
-                }
-            } else {
-                isAllowDownload = false;
-            }
-        } else {
-            options = {
-                fileCache: true,
-                path: savePath
-            }
-        }
-
-        if (isAllowDownload) {
-            config(options).fetch('GET', url).then((res) => {
-                if (res.respInfo.status === 404) {
-                    Alert.alert(
-                        'THÔNG BÁO',
-                        'KHÔNG TÌM THẤY TÀI LIỆU',
-                        [
-                            {
-                                text: "ĐÓNG",
-                                onPress: () => { }
-                            }
-                        ]
-                    );
-                } else {
-                    Alert.alert(
-                        'THÔNG BÁO',
-                        `DOWN LOAD THÀNH CÔNG`,
-                        [
-                            {
-                                text: 'MỞ FILE',
-                                onPress: () => {
-                                    let openDocConfig = {};
-
-                                    if (Platform.OS == 'android') {
-                                        openDocConfig = {
-                                            url: `file://${res.path()}`,
-                                            fileName: fileName,
-                                            cache: false,
-                                            fileType: regExtension[0]
-                                        }
-                                    } else {
-                                        openDocConfig = {
-                                            url: savePath,
-                                            fileNameOptional: fileName
-                                        }
-                                    }
-
-                                    OpenFile.openDoc([openDocConfig], (error, url) => {
-                                        if (error) {
-                                            Alert.alert(
-                                                'THÔNG BÁO',
-                                                error.toString(),
-                                                [
-                                                    {
-                                                        text: 'OK',
-                                                        onPress: () => { }
-                                                    }
-                                                ]
-                                            )
-                                        } else {
-                                            console.log(url)
-                                        }
-                                    })
-                                }
-                            },
-                            {
-                                text: 'ĐÓNG',
-                                onPress: () => { }
-                            }
-                        ]
-                    );
-                }
-            }).catch((err) => {
-                Alert.alert(
-                    'THÔNG BÁO',
-                    'DOWNLOAD THẤT BẠI',
-                    [
-                        {
-                            text: err.toString(),
-                            onPress: () => { }
-                        }
-                    ]
-                )
-            })
-        }
-    }
-
-    extention(filename) {
-        return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
-    }
 
     renderItem = ({ item }) => {
-        let regExtension = this.extention(item.DUONGDAN_FILE);
+        let regExtension = extention(item.DUONGDAN_FILE);
         let extension = regExtension ? regExtension[0] : "";
         return <ListItem
             leftIcon={getFileExtensionLogo(extension)}
@@ -217,7 +84,7 @@ export default class AttachPublishDoc extends Component {
             rightIcon={
                 <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
             }
-            onPress={() => this.onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+            onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
         />
     }
 

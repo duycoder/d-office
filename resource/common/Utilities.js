@@ -5,11 +5,16 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { AsyncStorage, View, Text, Image, BackHandler } from 'react-native';
+import {
+    Alert, AsyncStorage, View, Text,
+    Image, BackHandler, Platform, PermissionsAndroid
+} from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
+import OpenFile from 'react-native-doc-viewer';
 import * as util from 'lodash';
 //lib
 import { Button, Icon, Text as NBText } from 'native-base'
-import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors } from './SystemConstant'
+import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL } from './SystemConstant'
 
 //style
 import { verticalScale, moderateScale } from '../assets/styles/ScaleIndicator';
@@ -41,7 +46,7 @@ export function convertTimeToString(date) {
     let deadline = new Date();
     if (date !== null && date !== '') {
         deadline = new Date(date);
-        let result = _readableFormat(deadline.getHours()) + ':' + _readableFormat(deadline.getMinutes()) + ':' +  _readableFormat(deadline.getSeconds());
+        let result = _readableFormat(deadline.getHours()) + ':' + _readableFormat(deadline.getMinutes()) + ':' + _readableFormat(deadline.getSeconds());
         return result;
     }
     return 'N/A';
@@ -216,4 +221,138 @@ export function backHandlerConfig(isAddEventListener, callback) {
 
 export function isObjectHasValue(obj) {
     return util.isUndefined(obj) == false && util.isNull(obj) == false;
+}
+
+//get file extension
+export const extention = (filename) => {
+    return (/[.]/.exec(filename)) ? /[^.]+$/.exec(filename) : undefined;
+}
+
+export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
+    //config save path
+    fileLink = fileLink.replace(/\\/, '');
+    fileLink = fileLink.replace(/\\/g, '/');
+    let date = new Date();
+    let url = `${WEB_URL}/Uploads/${fileLink}`;
+    // url = url.replace('\\', '/');
+    // url = url.replace(/\\/g, '/');
+    url = url.replace(/ /g, "%20");
+
+    let regExtension = extention(url);
+    let extension = "." + regExtension[0];
+    const { config, fs } = RNFetchBlob;
+    let { PictureDir, DocumentDir } = fs.dirs;
+
+    let savePath = (Platform.OS === 'android' ? PictureDir : DocumentDir) + "/vnio_" + Math.floor(date.getTime() + date.getSeconds() / 2) + extension;
+
+    let options = {};
+    let isAllowDownload = true;
+    if (Platform.OS == 'android') {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+            {
+                title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
+                message:
+                    'Ebiz Office muốn truy cập vào tài liệu của bạn',
+                buttonNeutral: 'Để sau',
+                buttonNegative: 'Thoát',
+                buttonPositive: 'OK',
+            },
+        );
+
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            options = {
+                fileCache: true,
+                addAndroidDownloads: {
+                    useDownloadManager: true,
+                    notification: true,
+                    path: savePath,
+                    description: 'VNIO FILE'
+                }
+            }
+        } else {
+            isAllowDownload = false;
+        }
+    } else {
+        options = {
+            fileCache: true,
+            path: savePath
+        }
+    }
+
+    if (isAllowDownload) {
+        config(options).fetch('GET', url).then((res) => {
+            if (res.respInfo.status === 404) {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    'KHÔNG TÌM THẤY TÀI LIỆU',
+                    [
+                        {
+                            text: "ĐÓNG",
+                            onPress: () => { }
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert(
+                    'THÔNG BÁO',
+                    `DOWN LOAD THÀNH CÔNG`,
+                    [
+                        {
+                            text: 'MỞ FILE',
+                            onPress: () => {
+                                let openDocConfig = {};
+
+                                if (Platform.OS == 'android') {
+                                    openDocConfig = {
+                                        url: `file://${res.path()}`,
+                                        fileName: fileName,
+                                        cache: false,
+                                        fileType: util.toLower(regExtension[0])
+                                    }
+                                } else {
+                                    openDocConfig = {
+                                        url: savePath,
+                                        fileNameOptional: fileName
+                                    }
+                                }
+
+                                OpenFile.openDoc([openDocConfig], (error, url) => {
+                                    if (error) {
+                                        Alert.alert(
+                                            'THÔNG BÁO',
+                                            error.toString(),
+                                            [
+                                                {
+                                                    text: 'OK',
+                                                    onPress: () => { }
+                                                }
+                                            ]
+                                        )
+                                    } else {
+                                        console.log(url)
+                                    }
+                                })
+                            }
+                        },
+                        {
+                            text: 'ĐÓNG',
+                            onPress: () => { }
+                        }
+                    ]
+                );
+            }
+        }).catch((err) => {
+            Alert.alert(
+                'THÔNG BÁO',
+                'DOWNLOAD THẤT BẠI',
+                [
+                    {
+                        text: err.toString(),
+                        onPress: () => { }
+                    }
+                ]
+            )
+        })
+    }
 }
