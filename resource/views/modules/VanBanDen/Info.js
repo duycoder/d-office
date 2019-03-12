@@ -47,7 +47,7 @@ class MainInfoPublishDoc extends Component {
             const year = dateSplit[2];
 
             const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.props.userInfo.ID}/${month}/${year}/${day}`;
-            
+
             const result = await fetch(url)
                 .then((response) => response.json());
 
@@ -90,18 +90,35 @@ class MainInfoPublishDoc extends Component {
             );
         }
 
-        let trungLichHop = (
-            <Text>KHÔNG</Text>
-        )
-        if (info.hasOwnProperty("NGAYCONGTAC") && info.NGAYCONGTAC !== null && events.length > 0) {
-            let dateObj = events.filter(x => x.NGAYCONGTAC === info.NGAYCONGTAC && x.GIO_CONGTAC === info.GIO_CONGTAC && x.PHUT_CONGTAC === info.PHUT_CONGTAC);
-            if (dateObj) {
-                trungLichHop = (
-                    <TouchableOpacity onPress={() => this.getDetailEvent(dateObj.ID)}>
+        let trungLichHop = null;
+        if (!this.props.info.isDuplicateCalendar) {
+            trungLichHop = (
+                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                    <View style={{ flex: 1 }}>
                         <Text style={{ color: Colors.RED_PANTONE_186C }}>CÓ</Text>
-                    </TouchableOpacity>
-                )
-            }
+                    </View>
+
+
+                    <View style={{ flex: 1 }}>
+                        <TouchableOpacity style={{
+                            backgroundColor: Colors.RED_PANTONE_186C,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: 30,
+                            borderRadius: 5
+                        }}
+                            onPress={() => this.getDetailEvent(dateObj.ID)}>
+                            <Text style={{ color: Colors.WHITE, fontWeight: 'bold' }}>
+                                CHI TIẾT
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+        } else {
+            trungLichHop = (
+                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>KHÔNG</Text>
+            )
         }
 
         // render
@@ -339,11 +356,7 @@ class MainInfoPublishDoc extends Component {
                                     TRÙNG LỊCH CÔNG TÁC LÃNH ĐẠO
                                 </Text>
                             }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {trungLichHop}
-                                </Text>
-                            } />
+                            subtitle={trungLichHop} />
 
                     </List>
                 </ScrollView>
