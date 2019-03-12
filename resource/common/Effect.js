@@ -80,6 +80,9 @@ export function getFileExtensionLogo(extension) {
     let isIcon = false;
     let iconName = null;
     let extText = null;
+    if(extension){
+        extension = extension.toLowerCase();
+    }
     if (imageExtensions.includes(extension)) {
         isIcon = true;
         iconName = 'google-photos'
