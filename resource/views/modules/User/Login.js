@@ -168,7 +168,7 @@ class Login extends Component {
 
         await asyncDelay(2000);
 
-        if (resultJson.hasOwnProperty("Message")) {
+        if (resultJson != null && resultJson.hasOwnProperty("Message")) {
             this.setState({
                 loading: false
             }, () => {
