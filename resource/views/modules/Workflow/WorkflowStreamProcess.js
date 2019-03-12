@@ -10,7 +10,8 @@ import { ActivityIndicator, View, Text as RnText, FlatList } from 'react-native'
 //utilites
 import {
     API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors
+    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
+    MODULE_CONSTANT
 } from '../../../common/SystemConstant';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -159,20 +160,20 @@ class WorkflowStreamProcess extends Component {
                 executing: false
             })
 
-            // if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-            //     const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
-            //     const content = {
-            //         title: 'GỬI XỬ LÝ VĂN BẢN TRÌNH KÝ',
-            //         message,
-            //         isTaskNotification: false,
-            //         targetScreen: 'DetailSignDocScreen',
-            //         targetDocId: this.state.docId,
-            //         targetDocType: this.state.docType
-            //     }
-            //     resultJson.GroupTokens.forEach(token => {
-            //         pushFirebaseNotify(content, token, "notification");
-            //     });
-            // }
+            if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
+                const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
+                const content = {
+                    title: 'GỬI XỬ LÝ VĂN BẢN',
+                    message,
+                    isTaskNotification: false,
+                    targetScreen: resultJson.ItemType == MODULE_CONSTANT.VANBANDEN ? "VanBanDenDetailScreen" : "VanBanDiDetailScreen",
+                    targetDocId: this.state.docId,
+                    targetDocType: this.state.docType
+                }
+                resultJson.GroupTokens.forEach(token => {
+                    pushFirebaseNotify(content, token, "notification");
+                });
+            }
 
             Toast.show({
                 text: this.state.stepName + (resultJson.Status ? ' thành công' : ' không thành công'),
@@ -239,13 +240,13 @@ class WorkflowStreamProcess extends Component {
 
     onClearFilter = () => {
         this.setState({
-          loadingData: true,
-          pageIndex: DEFAULT_PAGE_INDEX,
-          mainProcessFilterValue: EMPTY_STRING
+            loadingData: true,
+            pageIndex: DEFAULT_PAGE_INDEX,
+            mainProcessFilterValue: EMPTY_STRING
         }, () => {
-          this.fetchData()
+            this.fetchData()
         })
-      }
+    }
 
     loadingMore = (isMainProcess) => {
         if (isMainProcess) {
@@ -331,8 +332,8 @@ class WorkflowStreamProcess extends Component {
                                         onSubmitEditing={() => this.onFilter(true)}
                                         onChangeText={(mainProcessFilterValue) => this.setState({ mainProcessFilterValue })} />
                                     {
-                                        (this.state.mainProcessFilterValue !== EMPTY_STRING) 
-                                            && <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                                        (this.state.mainProcessFilterValue !== EMPTY_STRING)
+                                        && <Icon name='ios-close-circle' onPress={this.onClearFilter} />
                                     }
                                 </Item>
 
