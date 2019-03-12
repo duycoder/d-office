@@ -296,19 +296,19 @@ class DetailTask extends Component {
             if (task.CongViec.IS_BATDAU == true) {
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec == true && task.CongViec.IS_SUBTASK != true) || task.IsNguoiThucHienChinh) && (task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} />
+                        <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} key={1} />
                     )
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                            <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} />
+                            <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} key={2} />
                         )
                     }
                 }
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
                     menuActions.push(
-                        <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} />
+                        <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} key={3} />
                     )
                 }
 
@@ -316,7 +316,7 @@ class DetailTask extends Component {
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} />
+                        <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} key={4} />
                     )
                 }
 
@@ -324,14 +324,14 @@ class DetailTask extends Component {
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
                     menuActions.push(
-                        <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
+                        <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} key={5} />
                     )
                 }
 
                 if (task.HasRoleAssignTask) {
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                        <InteractiveButton title={'Theo dõi'} />
+                            <InteractiveButton title={'Theo dõi'} key={6} />
                         )
                     }
                 }
@@ -343,13 +343,13 @@ class DetailTask extends Component {
                         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
                         menuActions.push(
-                            <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} />
+                            <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
                         )
                     }
 
                     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
                         menuActions.push(
-                            <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} />
+                            <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
                         )
                     }
                 }
@@ -364,21 +364,21 @@ class DetailTask extends Component {
                         && task.CongViec.DAGIAOVIEC != true) {
 
                         menuActions.push(
-                            <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} />
+                            <InteractiveButton title={'GIAO VIỆC'} onPress={() => this.onAssignTask()} key={9} />
                         )
 
                         menuActions.push(
-                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
-                                                )
+                            <InteractiveButton title={'BẮT ĐẦU XỬ LÝ'} onPress={() => this.onConfirmToStartTask()} key={10} />
+                        )
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
                     menuActions.push(
-                        <InteractiveButton title={'Theo dõi'} />
+                        <InteractiveButton title={'THEO DÕI'} key={11} />
                     )
                     if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
                         menuActions.push(
-                            <InteractiveButton title={'DUYỆT KẾ HOẠCH'} />
+                            <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
                         )
                     }
                 } else {
@@ -388,26 +388,26 @@ class DetailTask extends Component {
                             // nếu chưa trình kế hoạch và là người xử lý chính thì
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    <InteractiveButton title={'TRÌNH KẾ HOẠCH'} />
+                                    <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
                                 )
                             }
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
                             menuActions.push(
-                                <InteractiveButton title={'LẬP KẾ HOẠCH'} />
+                                <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
                             )
                         }
                         else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
-                                    <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
+                                    <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
                                 )
                             }
                         }
                     } else {
                         //Bắt đầu xử lý
                         menuActions.push(
-                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} />
+                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
                         )
                     }
                 }
@@ -417,19 +417,19 @@ class DetailTask extends Component {
         //menu thông tin về công việc
 
         menuActions.push(
-            <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} />
+            <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} key={17} />
         );
 
         menuActions.push(
-            <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} />
+            <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} key={18} />
         );
 
         menuActions.push(
-            <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} />
+            <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} key={19} />
         );
 
         menuActions.push(
-            <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} />
+            <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} key={20} />
         );
 
         return (
@@ -476,7 +476,7 @@ class DetailTask extends Component {
                         <ScrollView
                             horizontal
                         >
-                        {menuActions}
+                            {menuActions}
                         </ScrollView>
                     </RnView>
                 }
@@ -593,8 +593,8 @@ class InteractiveButton extends Component {
     render() {
         return (
             <RnView style={styles.slide}>
-                <TouchableOpacity style={[ButtonGroupStyle.button, { marginHorizontal: 15, borderWidth: 3, borderColor: Colors.WHITE }]} onPress={this.props.onPress}>
-                    <Text style={ButtonGroupStyle.buttonText}>{this.state.title}</Text>
+                <TouchableOpacity style={[ButtonGroupStyle.button, { paddingHorizontal: 10, borderWidth: 3, borderColor: Colors.WHITE }]} onPress={this.props.onPress}>
+                    <Text style={ButtonGroupStyle.buttonText}>{util.toUpper(this.state.title)}</Text>
                 </TouchableOpacity>
             </RnView>
         );
@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     slide: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     text: {
         color: '#fff',
