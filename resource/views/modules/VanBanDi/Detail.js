@@ -74,7 +74,10 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}`;
+        const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/0`;
+        
+        console.tron.log(url);
+        
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -304,7 +307,7 @@ class Detail extends Component {
                             <Form style={DetailSignDocStyle.commentButtonContainer}>
                                 <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
                                 {
-                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.COMMENT_COUNT > 0)(
+                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.CommentCount > 0)(
                                         <Form style={DetailSignDocStyle.commentCircleContainer}>
                                             <Text style={DetailSignDocStyle.commentCountText}>
                                                 {this.state.docInfo.CommentCount}
@@ -397,7 +400,7 @@ class DetailContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-time-outline' style={TabStyle.activeText} />
+                            <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
                             <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 LỊCH SỬ XỬ LÝ
                             </Text>
