@@ -79,12 +79,10 @@ class BaseList extends Component {
       apiUrlParam = 'NoiBoDaXuLy'
     }
 
-    const url = `${API_URL}/api/VanBanDen/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
+    const url = `${API_URL}/api/VanBanDen/${apiUrlParam}/${this.state.userId}/0/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
 
     const result = await fetch(url);
     const resultJson = await result.json();
-
-    console.log(resultJson)
 
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
