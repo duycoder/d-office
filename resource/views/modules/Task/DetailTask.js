@@ -353,13 +353,13 @@ class DetailTask extends Component {
                     )
                 }
 
-                if (task.HasRoleAssignTask) {
-                    if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
-                        menuActions.push(
-                            <InteractiveButton title={'Theo dõi'} key={6} />
-                        )
-                    }
-                }
+                // if (task.HasRoleAssignTask) {
+                //     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
+                //         menuActions.push(
+                //             <InteractiveButton title={'Theo dõi'} key={6} />
+                //         )
+                //     }
+                // }
 
                 if (task.CongViec.NGUOIGIAOVIECDAPHANHOI == true) {
                     if (task.IsNguoiGiaoViec == true
@@ -398,9 +398,9 @@ class DetailTask extends Component {
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
-                    menuActions.push(
-                        <InteractiveButton title={'THEO DÕI'} key={11} />
-                    )
+                    // menuActions.push(
+                    //     <InteractiveButton title={'THEO DÕI'} key={11} />
+                    // )
                     if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
                         menuActions.push(
                             <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />

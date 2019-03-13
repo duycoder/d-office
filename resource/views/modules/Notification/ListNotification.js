@@ -61,12 +61,20 @@ class ListNotification extends Component {
         let urlArr = item.URL.split("/");
         const itemType = urlArr[2];
         const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
-
+        // console.tron.log(item)
+        // console.tron.log(itemId)
         if (itemType === "HSVanBanDi") {
             screenName = "VanBanDiDetailScreen";
             screenParam = {
                 docId: itemId,
                 docType: "1"
+            }
+        }
+        else if (itemType === "QuanLyCongViec") {
+            screenName = "DetailTaskScreen";
+            screenParam = {
+                taskId: urlArr[4],
+                taskType: "1"
             }
         }
         else {
@@ -76,10 +84,7 @@ class ListNotification extends Component {
                 docType: "1"
             }
         }
-        this.props.updateCoreNavParams({
-            docId: screenParam.docId,
-            docType: screenParam.docType
-        }, true);
+        this.props.updateCoreNavParams(screenParam);
         this.props.navigation.navigate(screenName);
     }
 
@@ -233,7 +238,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCoreNavParams: (coreNavParams, isNested) => dispatch(navAction.updateCoreNavParams(coreNavParams, isNested))
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
     }
 }
 

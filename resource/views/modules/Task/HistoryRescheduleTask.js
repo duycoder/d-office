@@ -31,7 +31,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
 import {
 	asyncDelay, emptyDataPage, formatLongText, convertDateToString,
-	appGetDataAndNavigate, backHandlerConfig
+	appGetDataAndNavigate, backHandlerConfig, convertDateTimeToString
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -152,37 +152,51 @@ class HistoryRescheduleTask extends Component {
 					</Button>
 				}
 				body={
-					<RnView style={styles.rowContainer}>
-						<RnText style={styles.rowDateContainer}>
+					<RnView>
+						<RnView style={styles.rowContainer}>
+							<RnText style={styles.rowDateContainer}>
+								<RnText>
+									{'Xin lùi đến: '}
+								</RnText>
+
+								<RnText style={styles.rowDate}>
+									{convertDateToString(item.HANKETHUC) + ' '}
+								</RnText>
+							</RnText>
 							<RnText>
-								{'Xin lùi đến: '}
-							</RnText>
-
-							<RnText style={styles.rowDate}>
-								{convertDateToString(item.HANKETHUC) + ' '}
-							</RnText>
-						</RnText>
-						<RnText>
-							<RnText style={styles.rowStatusLabel}>
-								{'Trạng thái: '}
-							</RnText>
-							{
-								util.isNull(item.IS_APPROVED) ?
-									<RnText style={[styles.notConfirmText, styles.rowStatus]}>
-										Chưa phê duyệt
+								<RnText style={styles.rowStatusLabel}>
+									{'Trạng thái: '}
+								</RnText>
+								{
+									util.isNull(item.IS_APPROVED) ?
+										<RnText style={[styles.notConfirmText, styles.rowStatus]}>
+											Chưa phê duyệt
 								</RnText> :
-									(
-										item.IS_APPROVED ?
-											<RnText style={[styles.approveText, styles.rowStatus]}>
-												Đã phê duyệt
+										(
+											item.IS_APPROVED ?
+												<RnText style={[styles.approveText, styles.rowStatus]}>
+													Đã phê duyệt
 										</RnText>
-											: <RnText style={[styles.denyText, styles.rowStatus]}>
-												Không phê duyệt
+												: <RnText style={[styles.denyText, styles.rowStatus]}>
+													Không phê duyệt
 										</RnText>
-									)
-							}
-						</RnText>
-
+										)
+								}
+							</RnText>
+						</RnView>
+						{
+							item.IS_APPROVED &&
+							<RnView style={[styles.rowContainer, {marginTop: 5}]}>
+								<RnText>
+									<RnText style={styles.rowStatusLabel}>
+									{`Đồng ý phê duyệt tới: `}
+									</RnText>
+									<RnText style={[styles.approveText, styles.rowStatus]}>
+										{convertDateToString(item.HANKETTHUC_LANHDAODUYET)}
+									</RnText>
+								</RnText>
+							</RnView>
+						}
 					</RnView>
 				}
 
@@ -452,7 +466,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-			updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
 	}
 }
 

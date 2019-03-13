@@ -23,7 +23,7 @@ import * as util from 'lodash';
 //redux
 import { connect } from 'react-redux';
 import * as taskAction from '../../../redux/modules/CongViec/Action';
-
+import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
 	API_URL, HEADER_COLOR, DEFAULT_PAGE_INDEX,
@@ -181,11 +181,11 @@ class AssignTask extends Component {
 		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
-	navigateBackToDetail = () => {
-		// this.props.navigation.navigate(this.props.coreNavParams.screenName);
+	navigateBackToDetail = (isCheck = false) => {
+		if (isCheck) {
+			this.props.updateExtendsNavParams({check: isCheck});
+		}
 		this.props.navigation.goBack();
-		// appGetDataAndNavigate(this.props.navigation, 'AssignTaskScreen');
-		// return true;
 	}
 
 	renderMainProcessItem = ({ item }) => {
@@ -268,7 +268,7 @@ class AssignTask extends Component {
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {
-						this.navigateBackToDetail();
+						this.navigateBackToDetail(true);
 					}
 				}
 			});
@@ -472,7 +472,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		resetTaskProcessors: (processType) => dispatch(taskAction.resetTaskProcessors(processType))
+		resetTaskProcessors: (processType) => dispatch(taskAction.resetTaskProcessors(processType)),
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
 	}
 }
 

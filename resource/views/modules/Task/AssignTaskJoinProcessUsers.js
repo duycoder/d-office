@@ -67,7 +67,7 @@ class AssignTaskJoinProcessUsers extends Component {
 
             this.setState({
                 mainProcessUser: nextProps.mainProcessUser,
-                heightAnimation: new Animated.Value(60 * heightFactor),
+                heightAnimation: new Animated.Value(verticalScale(70) * heightFactor),
                 joinProcessUsers: this.props.joinProcessUsers
             });
         }

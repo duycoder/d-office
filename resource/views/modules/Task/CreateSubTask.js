@@ -267,7 +267,7 @@ class CreateSubTask extends Component {
 						</Item>
 
 						<Button block danger
-							style={{ backgroundColor: HEADER_COLOR, marginTop: verticalScale(20) }}
+							style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
 							onPress={() => this.onCreateSubTask()}>
 							<Text>
 								TẠO CÔNG VIỆC

@@ -194,7 +194,7 @@ class ApproveProgressTask extends Component {
                             <Picker
                                 iosHeader='Chọn kết quả đánh giá'
                                 iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                style={{ width: '100%' }}
+                                style={{ width: undefined }}
                                 selectedValue={this.state.selectedValue}
                                 onValueChange={this.onValueChange.bind(this)}
                                 mode='dropdown'>

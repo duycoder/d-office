@@ -288,18 +288,13 @@ export default class ResultEvaluationTask extends Component {
                             </Row>
 
                             <Row>
-                                <Col style={[styles.columnFooter, styles.wideColumn]}>
+                                <Col size={80} style={[styles.columnFooter]}>
                                     <Text style={styles.columnHeaderText}>
                                         Tổng cộng
                                     </Text>
                                 </Col>
-                                <Col style={[styles.columnFooter, styles.wideColumn]}>
-                                </Col>
-                                <Col style={[styles.columnFooter, styles.wideColumn]}>
-                                </Col>
-                                <Col style={[styles.columnFooter, styles.wideColumn]}>
-                                </Col>
-                                <Col style={[styles.columnFooter, styles.wideColumn]}>
+                                
+                                <Col size={20} style={[styles.columnFooter]}>
                                     <Text style={styles.columnHeaderText}>
                                         {this.state.data.TONGDIEM}
                                     </Text>
