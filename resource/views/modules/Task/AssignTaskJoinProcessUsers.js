@@ -119,6 +119,18 @@ class AssignTaskJoinProcessUsers extends Component {
         });
     }
 
+    setMaxHeight = (event) => {
+        this.setState({
+            maxHeight: event.nativeEvent.layout.height
+        });
+    }
+
+    setMinHeight = (event) => {
+        this.setState({
+            minHeight: event.nativeEvent.layout.height
+        });
+    }
+
     render() {
         const interpolateRotation = this.state.rotateAnimation.interpolate({
             inputRange: [0, 1],
@@ -135,8 +147,8 @@ class AssignTaskJoinProcessUsers extends Component {
 
         return (
             <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
-                <View style={styles.titleContainer}>
-                    <TouchableHighlight onPress={this.toggle}>
+                <View style={styles.titleContainer} onLayout={this.setMinHeight} >
+                    <TouchableOpacity onPress={this.toggle}>
                         <ListItem
                             containerStyle={styles.listItemContainer}
                             hideChevron={this.state.data.filter(x => x.ID !== this.state.mainProcessUser).length <= 0}
@@ -146,15 +158,15 @@ class AssignTaskJoinProcessUsers extends Component {
                                 <Animated.Image source={this.icon} style={iconRotationStyle} />
                             }
                         />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={styles.body}>
+                <View style={styles.body} onPress={this.setMaxHeight}>
                     {
                         this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
                             <NbListItem
                                 key={item.ID}
-                                style={styles.listItemRow}
+                                style={{height: this.state.rowItemHeight}}
                                 onPress={() => this.onSelectUser(item.ID)}>
                                 <Left>
                                     <Title>

@@ -82,6 +82,18 @@ class AssignTaskMainProcessUsrs extends Component {
         }
     }
 
+    setMaxHeight = (event) => {
+        this.setState({
+            maxHeight: event.nativeEvent.layout.height
+        });
+    }
+
+    setMinHeight = (event) => {
+        this.setState({
+            minHeight: event.nativeEvent.layout.height
+        });
+    }
+
     render() {
         const interpolateRotation = this.state.rotateAnimation.interpolate({
             inputRange: [0, 1],
@@ -98,8 +110,8 @@ class AssignTaskMainProcessUsrs extends Component {
 
         return (
             <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
-                <View style={styles.titleContainer}>
-                    <TouchableHighlight onPress={this.toggle}>
+                <View style={styles.titleContainer} >
+                    <TouchableHighlight onPress={this.toggle} onLayout={this.setMinHeight}>
                         <ListItem
                             containerStyle={styles.listItemContainer}
                             hideChevron={this.state.data.length <= 0}
@@ -112,11 +124,11 @@ class AssignTaskMainProcessUsrs extends Component {
                     </TouchableHighlight>
                 </View>
 
-                <View style={styles.body}>
+                <View style={styles.body} onLayout={this.setMaxHeight}>
                     {
                         this.state.data.map((item, index) => (
                             <NbListItem
-                                key={item.ID} style={styles.listItemRow}
+                                key={item.ID} style={{height: this.state.rowItemHeight}}
                                 onPress={() => this.onSelectUser(item.ID)}>
                                 <Left>
                                     <Title>

@@ -28,7 +28,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 
 import Panel from './Panel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -46,9 +46,7 @@ class SideBar extends Component {
         super(props);
         this.state = {
             showModal: false,
-            userInfo: {
-
-            },
+            userInfo: {},
             onFocusNow: '',
             notifyCount: 0,
             userFunctions: []
@@ -75,7 +73,7 @@ class SideBar extends Component {
         this.refs.confirm.showModal();
     }
 
-    setCurrentFocus(screenName, ref, actionCode) {
+    setCurrentFocus(screenName, ref, actionCode = EMPTY_STRING) {
         this.setState({
             onFocusNow: ref,
             notifyCount: 0
@@ -90,11 +88,9 @@ class SideBar extends Component {
         // Reset Route
         const resetAction = NavigationActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({ routeName: screenName })]
+            actions: [NavigationActions.navigate({ routeName: screenName })] // navigate
         });
         this.props.navigation.dispatch(resetAction);
-        // navigate
-        // this.props.navigation.navigate(screenName);
     }
 
     generateTitle(maThaotac) {
