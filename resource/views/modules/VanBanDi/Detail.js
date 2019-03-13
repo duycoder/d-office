@@ -61,6 +61,7 @@ class Detail extends Component {
                 docType: this.props.coreNavParams.docType,
             },
             executing: false,
+            hasAuthorization: props.hasAuthorization || 0
         };
         this.onNavigate=this.onNavigate.bind(this);
     }
@@ -74,7 +75,7 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/0`;
+        const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
         
         console.tron.log(url);
         
@@ -345,7 +346,8 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         coreNavParams: state.navState.coreNavParams,
-        extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams,
+        hasAuthorization: state.navState.hasAuthorization
     }
 }
 

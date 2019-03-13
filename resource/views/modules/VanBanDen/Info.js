@@ -7,8 +7,7 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 
 //lib
-import { List, ListItem } from 'react-native-elements'
-import _ from 'lodash';
+import { List, ListItem } from 'react-native-elements';
 import HTMLView from 'react-native-htmlview';
 import { connect } from 'react-redux';
 //styles
@@ -26,11 +25,12 @@ class MainInfoPublishDoc extends Component {
         this.state = {
             info: this.props.info.entityVanBanDen,
             loading: false,
-            events: [],
+            events: null,
+            hasAuthorization: props.hasAuthorization || 0
         };
     }
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         this.fetchData();
     }
 
@@ -50,7 +50,6 @@ class MainInfoPublishDoc extends Component {
 
             const result = await fetch(url)
                 .then((response) => response.json());
-
             this.setState({
                 loading: false,
                 events: result
@@ -58,12 +57,12 @@ class MainInfoPublishDoc extends Component {
         }
     }
 
-    getDetailEvent = (eventId) => {
-        const targetScreenParam = {
-            id: eventId
+    getDetailEvent = () => {
+        let eventId = 0;
+        if (this.state.events) {
+            eventId = this.state.events.ID;            
         }
-
-        appStoreDataAndNavigate(this.props.navigator, "VanBanDenDetailScreen", new Object(), "DetailEventScreen", targetScreenParam);
+        this.props.navigateToEvent(eventId);
     }
 
     render() {
@@ -97,22 +96,23 @@ class MainInfoPublishDoc extends Component {
                     <View style={{ flex: 1 }}>
                         <Text style={{ color: Colors.RED_PANTONE_186C }}>CÓ</Text>
                     </View>
-
-
-                    <View style={{ flex: 1 }}>
-                        <TouchableOpacity style={{
-                            backgroundColor: Colors.RED_PANTONE_186C,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: 30,
-                            borderRadius: 5
-                        }}
-                            onPress={() => this.getDetailEvent(dateObj.ID)}>
-                            <Text style={{ color: Colors.WHITE, fontWeight: 'bold' }}>
-                                CHI TIẾT
+                    {
+                        this.state.hasAuthorization === 0 &&
+                        <View style={{ flex: 1 }}>
+                            <TouchableOpacity style={{
+                                backgroundColor: Colors.RED_PANTONE_186C,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                height: 30,
+                                borderRadius: 5
+                            }}
+                                onPress={() => this.getDetailEvent()}>
+                                <Text style={{ color: Colors.WHITE, fontWeight: 'bold' }}>
+                                    CHI TIẾT
                             </Text>
-                        </TouchableOpacity>
-                    </View>
+                            </TouchableOpacity>
+                        </View>
+                    }
                 </View>
             )
         } else {

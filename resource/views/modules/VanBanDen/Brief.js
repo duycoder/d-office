@@ -47,6 +47,7 @@ class Brief extends Component {
       isUnAuthorize: false,
 
       docId: this.props.coreNavParams.docId,
+      docType: this.props.coreNavParams.docType,
       docInfo: {},
 
       loading: false,
@@ -60,15 +61,27 @@ class Brief extends Component {
 
   componentDidMount = () => {
     // backHandlerConfig(true, this.navigateBackToList);
+    this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("check")) {
+        if (this.props.extendsNavParams.check === true) {
+          this.fetchData();
+        }
+      }
+    })
   }
 
   componentWillUnmount = () => {
     // backHandlerConfig(false, this.navigateBackToList);
+    this.willFocusListener.remove();
   }
 
   navigateBackToDetailVanbanDen = () => {
+    const pastNavParams = {
+      docId: this.state.docId,
+      docType: this.state.docType
+    }
+    this.props.updateCoreNavParams(pastNavParams);
     this.props.navigation.goBack();
-    // this.props.navigation.navigate("VanBanDenDetailScreen")
   }
   /**
    * Hàm điều hướng vào chi tiết văn bản đi hoặc công việc liên quan
@@ -76,12 +89,14 @@ class Brief extends Component {
   navigateToDetail = (itemId, isDoc = false) => {
     let targetScreenParam = {
       taskId: itemId,
-      taskType: 0
+      taskType: 0,
+      fromBrief: true
     }
     if (isDoc) {
       targetScreenParam = {
         docId: itemId,
-        docType: 0
+        docType: 0,
+        fromBrief: true
       }
       this.props.updateCoreNavParams(targetScreenParam);
       this.props.navigation.navigate("VanBanDiDetailScreen");
@@ -318,25 +333,25 @@ class BriefTaskList extends Component {
           }
 
           title={
-              <RnText style={item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Tên công việc:
+            <RnText style={item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal}>
+              <RnText style={{ fontWeight: 'bold' }}>
+                Tên công việc:
                 </RnText>
-                <RnText>
-                  {' ' + item.TENCONGVIEC}
-                </RnText>
+              <RnText>
+                {' ' + item.TENCONGVIEC}
               </RnText>
+            </RnText>
           }
 
           subtitle={
-              <RnText style={[item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal, ListTaskStyle.abridgment]}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Hạn xử lý:
+            <RnText style={[item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal, ListTaskStyle.abridgment]}>
+              <RnText style={{ fontWeight: 'bold' }}>
+                Hạn xử lý:
                             </RnText>
-                <RnText>
-                  {' ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
-                </RnText>
+              <RnText>
+                {' ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
               </RnText>
+            </RnText>
           }
           onPress={() => this.props.navigateToDetail(item.ID, false)}
         />
@@ -396,54 +411,54 @@ class BriefResponseList extends Component {
 
     return (
       <View>
-          <ListItem
-            hideChevron={true}
-            badge={{
-              value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
-              textStyle: {
-                color: Colors.WHITE,
-                fontWeight: 'bold'
-              },
-              containerStyle: {
-                backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? Colors.RED_PANTONE_186C : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C),
-                borderRadius: 3
+        <ListItem
+          hideChevron={true}
+          badge={{
+            value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
+            textStyle: {
+              color: Colors.WHITE,
+              fontWeight: 'bold'
+            },
+            containerStyle: {
+              backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? Colors.RED_PANTONE_186C : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C),
+              borderRadius: 3
+            }
+          }}
+          leftIcon={
+            <View style={ListSignDocStyle.leftSide}>
+              {
+                renderIf(item.hasOwnProperty("groupOfCongViecs") && item.groupOfCongViecs.length > 0)(
+                  <TouchableOpacity onPress={
+                    (index, childData) => this.getListSubTasks.bind(this)(index, item.groupOfCongViecs)}>
+                    <RneIcon name='folder-open-o' type='font-awesome' />
+                  </TouchableOpacity>
+                )
               }
-            }}
-            leftIcon={
-              <View style={ListSignDocStyle.leftSide}>
-                {
-                  renderIf(item.hasOwnProperty("groupOfCongViecs") && item.groupOfCongViecs.length > 0) (
-                    <TouchableOpacity onPress={
-                      (index, childData) => this.getListSubTasks.bind(this)(index, item.groupOfCongViecs)}>
-                      <RneIcon name='folder-open-o' type='font-awesome' />
-                    </TouchableOpacity>
-                  )
-                }
-              </View>
-            }
+            </View>
+          }
 
-            title={
-              <RnText style={item.IS_READ === true ? ListSignDocStyle.textRead : ListSignDocStyle.textNormal}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Mã hiệu:
+          title={
+            <RnText style={item.IS_READ === true ? ListSignDocStyle.textRead : ListSignDocStyle.textNormal}>
+              <RnText style={{ fontWeight: 'bold' }}>
+                Mã hiệu:
                 </RnText>
 
-                {mahieu}
+              {mahieu}
+            </RnText>
+          }
+
+          subtitle={
+            <RnText style={[item.IS_READ === true ? ListSignDocStyle.textRead : ListSignDocStyle.textNormal, ListSignDocStyle.abridgment]}>
+              <RnText style={{ fontWeight: 'bold' }}>
+                Trích yếu:
+                </RnText>
+              <RnText>
+                {' ' + formatLongText(item.TRICHYEU, 50)}
               </RnText>
-            }
-
-            subtitle={
-              <RnText style={[item.IS_READ === true ? ListSignDocStyle.textRead : ListSignDocStyle.textNormal, ListSignDocStyle.abridgment]}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Trích yếu:
-                </RnText>
-                <RnText>
-                  {' ' + formatLongText(item.TRICHYEU, 50)}
-                </RnText>
-              </RnText>
-            }
-            onPress={() => this.props.navigateToDetail(item.ID, true)}
-          />
+            </RnText>
+          }
+          onPress={() => this.props.navigateToDetail(item.ID, true)}
+        />
       </View>
     );
   }

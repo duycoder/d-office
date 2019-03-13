@@ -78,6 +78,8 @@ class WorkflowStreamProcess extends Component {
             searchingInJoin: false,
             loadingMoreInMain: false,
             loadingMoreInJoin: false,
+
+            hasAuthorization: props.hasAuthorization || 0
         }
     }
 
@@ -95,7 +97,7 @@ class WorkflowStreamProcess extends Component {
             loadingData: true
         });
 
-        const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/0`;
+        const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/${this.state.hasAuthorization}`;
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -665,7 +667,8 @@ const mapStateToProps = (state) => {
         mainProcessUser: state.workflowState.mainProcessUser,
         joinProcessUsers: state.workflowState.joinProcessUsers,
         coreNavParams: state.navState.coreNavParams,
-        extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams,
+        hasAuthorization: state.navState.hasAuthorization
     }
 }
 

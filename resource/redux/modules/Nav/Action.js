@@ -21,9 +21,9 @@ export function updateExtendsNavParams(extendsNavParams) {
 	}
 }
 
-export function updateActionId(actionId) {
+export function updateAuthorization(hasAuthorization) {
 	return {
-		type: type.UPDATE_ACTION_ID,
-		actionId
+		type: type.UPDATE_AUTHORIZATION,
+		hasAuthorization
 	}
 }

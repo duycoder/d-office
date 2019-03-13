@@ -49,7 +49,8 @@ class BaseList extends Component {
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
-      data: []
+      data: [],
+      hasAuthorization: props.hasAuthorization || 0
     }
   }
 
@@ -89,7 +90,7 @@ class BaseList extends Component {
       apiUrlParam = 'DaBanHanh';
     }
 
-    const url = `${API_URL}/api/VanBanDi/${apiUrlParam}/${this.state.userId}/0/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
+    const url = `${API_URL}/api/VanBanDi/${apiUrlParam}/${this.state.userId}/${this.state.hasAuthorization}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
 
     const result = await fetch(url);
     const resultJson = await result.json();
@@ -115,9 +116,7 @@ class BaseList extends Component {
 
     let targetScreenParam = {
       docId,
-      docType: this.state.docType,
-      screenName: "VanBanDiDetailScreen",
-      rootScreenName: currentScreenName
+      docType: this.state.docType
     }
 
     this.props.updateCoreNavParams(targetScreenParam);
@@ -283,7 +282,10 @@ class BaseList extends Component {
 const mapStatetoProps = (state) => {
   return {
     userInfo: state.userState.userInfo,
-    filterValue: state.vanbandiState.filterValue
+    filterValue: state.vanbandiState.filterValue,
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams,
+    hasAuthorization: state.navState.hasAuthorization
   }
 }
 

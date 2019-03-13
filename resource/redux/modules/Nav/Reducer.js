@@ -4,7 +4,7 @@ const initialState = {
   coreNavParams: {},
   extendsNavParams: {},
   pastCoreParams: [], // save old coreNavParams
-  actionId: 0, // detect if that flow has changes?
+  hasAuthorization: 0, // detect if that 
 }
 
 const reducer = (state = initialState, action) => {
@@ -19,10 +19,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         extendsNavParams: action.extendsNavParams
       };
-    case type.UPDATE_ACTION_ID:
+    case type.UPDATE_AUTHORIZATION:
       return {
         ...state,
-        actionId: action.actionId
+        hasAuthorization: action.hasAuthorization
       };
     default:
       return state;

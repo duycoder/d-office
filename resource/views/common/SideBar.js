@@ -10,6 +10,9 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+//redux
+import {connect}from 'react-redux';
+import * as navAction from '../../redux/modules/Nav/Action';
 //native-base
 import {
     Container, Header, Content,
@@ -37,7 +40,7 @@ import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
 
-export default class SideBar extends Component {
+class SideBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,6 +66,7 @@ export default class SideBar extends Component {
     }
 
     navigate(screenName) {
+
         this.props.navigation.push(screenName);
     }
 
@@ -70,11 +74,21 @@ export default class SideBar extends Component {
         this.refs.confirm.showModal();
     }
 
-    setCurrentFocus(screenName, ref) {
+    setCurrentFocus(screenName, ref, actionCode) {
         this.setState({
             onFocusNow: ref,
             notifyCount: 0
         });
+        // check authorize
+        if (actionCode.includes("UYQUYEN")) {
+            this.props.updateAuthorization(1);
+        }
+        else {
+            this.props.updateAuthorization(0);
+        }
+        // Reset Route
+
+        // navigate
         this.props.navigation.navigate(screenName);
     }
 
@@ -211,7 +225,7 @@ export default class SideBar extends Component {
                                             sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE
                                                 ? <TouchableOpacity
                                                     key={sItem.DM_THAOTAC_ID.toString()}
-                                                    onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID)}
+                                                    onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
                                                     style={onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
                                                     <ListItem
                                                         leftIcon={
@@ -282,3 +296,11 @@ export default class SideBar extends Component {
         );
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(SideBar);

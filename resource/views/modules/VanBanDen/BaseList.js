@@ -44,15 +44,17 @@ class BaseList extends Component {
     super(props);
 
     this.state = {
-      filterValue: this.props.filterValue,
-      userId: this.props.userInfo.ID,
+      filterValue: props.filterValue,
+      userId: props.userInfo.ID,
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
       docType: props.docType || props.coreNavParams.docType,
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
-      data: []
+      data: [],
+
+      hasAuthorization: props.hasAuthorization || 0
     }
   }
 
@@ -94,7 +96,7 @@ class BaseList extends Component {
       apiUrlParam = 'NoiBoDaXuLy'
     }
 
-    const url = `${API_URL}/api/VanBanDen/${apiUrlParam}/${this.state.userId}/0/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
+    const url = `${API_URL}/api/VanBanDen/${apiUrlParam}/${this.state.userId}/${this.state.hasAuthorization}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
 
     const result = await fetch(url);
     const resultJson = await result.json();
@@ -119,14 +121,10 @@ class BaseList extends Component {
     }
     let targetScreenParam = {
       docId,
-      docType: this.state.docType,
-      // screenName: "VanBanDenDetailScreen",
-      // rootScreenName: currentScreenName
+      docType: this.state.docType
     }
     this.props.updateCoreNavParams(targetScreenParam);
     this.props.navigator.navigate("VanBanDenDetailScreen");
-
-    // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDenDetailScreen", targetScreenParam);
   }
 
   onFilter = () => {
@@ -293,7 +291,8 @@ const mapStatetoProps = (state) => {
     userInfo: state.userState.userInfo,
     filterValue: state.vanbandenState.filterValue,
     coreNavParams: state.navState.coreNavParams,
-    extendsNavParams: state.navState.extendsNavParams
+    extendsNavParams: state.navState.extendsNavParams,
+    hasAuthorization: state.navState.hasAuthorization
   }
 }
 

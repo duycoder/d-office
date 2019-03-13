@@ -60,7 +60,8 @@ class WorkflowRequestReview extends Component {
 			loading: false,
 			searching: false,
 			loadingMore: false,
-			executing: false
+			executing: false,
+			hasAuthorization: props.hasAuthorization || 0
 		}
 	}
 
@@ -81,7 +82,7 @@ class WorkflowRequestReview extends Component {
 			loading: true
 		});
 
-		const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack ? 1 : 0}/0`;
+		const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack ? 1 : 0}/${this.state.hasAuthorization}`;
 		console.log('đường dẫn', url);
 		
 		const result = await fetch(url);
@@ -337,7 +338,8 @@ const mapStateToProps = (state) => {
 		userInfo: state.userState.userInfo,
 		reviewUsers: state.workflowState.reviewUsers,
 		coreNavParams: state.navState.coreNavParams,
-		extendsNavParams: state.navState.extendsNavParams
+		extendsNavParams: state.navState.extendsNavParams,
+		hasAuthorization: state.navState.hasAuthorization
 	}
 }
 

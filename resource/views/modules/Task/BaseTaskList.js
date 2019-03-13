@@ -12,6 +12,7 @@ import {
 
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
@@ -36,10 +37,6 @@ import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appSto
 
 //styles
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
-
-//redux
-import * as navAction from '../../../redux/modules/Nav/Action';
-
 
 class BaseTaskList extends Component {
     constructor(props) {

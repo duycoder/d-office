@@ -60,7 +60,9 @@ class DetailTask extends Component {
                 userId: this.props.userInfo.ID,
                 taskId: this.props.coreNavParams.taskId,
                 taskType: this.props.coreNavParams.taskType,
-            }
+            },
+
+            fromBrief: this.props.coreNavParams.fromBrief
         };
         this.onNavigate = this.onNavigate.bind(this);
     }

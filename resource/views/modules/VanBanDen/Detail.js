@@ -57,7 +57,10 @@ class Detail extends Component {
                 docId: this.props.coreNavParams.docId,
                 docType: this.props.coreNavParams.docType
             },
-            executing: false
+            executing: false,
+
+            check: false,
+            hasAuthorization: props.hasAuthorization || 0
         };
 
         this.onNavigate = this.onNavigate.bind(this);
@@ -73,6 +76,7 @@ class Detail extends Component {
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
+                    this.setState({check: true});
                     this.fetchData();
                 }
             }
@@ -89,7 +93,7 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}/0`;
+        const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -103,13 +107,30 @@ class Detail extends Component {
     }
 
     navigateBackToList = () => {
-        this.props.navigation.goBack();
+        if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
+            this.props.updateExtendsNavParams({check: this.state.check})
+            this.props.navigation.goBack();
+        }
     }
 
     navigateToBrief = () => {
         if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
             this.props.navigation.navigate("VanBanDenBriefScreen");
-            // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "VanBanDenBriefScreen", targetScreenParam);
+        }
+    }
+    
+    navigateToEvent = (eventId) => {
+        if (eventId > 0) {
+            this.props.navigation.navigate("DetailEventScreen", {id: eventId});
+        }
+        else {
+            Toast.show({
+                text: 'Hiện chưa có lịch công tác',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+            });
         }
     }
 
@@ -230,7 +251,7 @@ class Detail extends Component {
                     }
                 }
             }
-            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} />
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} hasAuthorization={this.state.hasAuthorization} navigateToEvent={this.navigateToEvent} />
         }
 
         return (
@@ -269,7 +290,8 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         coreNavParams: state.navState.coreNavParams,
-        extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams,
+        hasAuthorization: state.navState.hasAuthorization
     }
 }
 
@@ -288,7 +310,8 @@ class DetailContent extends Component {
         this.state = {
             currentTabIndex: 0,
             docInfo: props.docInfo,
-            docId: props.docId
+            docId: props.docId,
+            hasAuthorization: props.hasAuthorization
         }
     }
 
@@ -308,7 +331,7 @@ class DetailContent extends Component {
                                 </Text>
                         </TabHeading>
                     }>
-                        <MainInfoPublishDoc info={this.state.docInfo} />
+                        <MainInfoPublishDoc info={this.state.docInfo} hasAuthorization={this.state.hasAuthorization} navigateToEvent={this.props.navigateToEvent} />
                     </Tab>
 
                     <Tab heading={
