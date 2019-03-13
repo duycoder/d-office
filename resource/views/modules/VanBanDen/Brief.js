@@ -101,9 +101,10 @@ class Brief extends Component {
       this.props.updateCoreNavParams(targetScreenParam);
       this.props.navigation.navigate("VanBanDiDetailScreen");
     }
-
-    this.props.updateCoreNavParams(targetScreenParam);
-    this.props.navigation.navigate("DetailTaskScreen");
+    else {
+      this.props.updateCoreNavParams(targetScreenParam);
+      this.props.navigation.navigate("DetailTaskScreen");
+    }
   }
 
   async fetchData() {
@@ -169,6 +170,7 @@ const mapStateToProps = (state) => {
   return {
     userInfo: state.userState.userInfo,
     coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams
   }
 }
 

@@ -30,7 +30,7 @@ export default class TaskDescription extends Component {
             isArrivedDoc: false,
 
             userId: props.userId,
-
+            fromBrief: props.fromBrief || false
         }
     }
 
@@ -42,6 +42,12 @@ export default class TaskDescription extends Component {
         }
         if (VANBANDI_ID !== null) {
             this.fetchData(VANBANDI_ID);
+        }
+    }
+
+    getDetailParent = (screenName, targetScreenParams) => {
+        if (!this.state.fromBrief) {
+            this.props.navigateToDetailDoc(screenName, targetScreenParams);
         }
     }
 
@@ -86,9 +92,9 @@ export default class TaskDescription extends Component {
                             </Text>
                         }
                         onPress={
-                            () => this.props.navigateToDetailDoc("VanBanDenDetailScreen", { docId: ID, docType: 1 })
+                            () => this.getDetailParent("VanBanDenDetailScreen", { docId: ID, docType: 1, from: "detail" })
                         }
-                        containerStyle={{ backgroundColor: 'rgba(189,198,207, 0.6)' }}
+                        containerStyle={{backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)'}}
                     />
                 );
             }
@@ -113,9 +119,9 @@ export default class TaskDescription extends Component {
                             </Text>
                         }
                         onPress={
-                            () => this.props.navigateToDetailDoc("VanBanDiDetailScreen", { docId: ID, docType: 1 })
+                            () => this.getDetailParent("VanBanDiDetailScreen", { docId: ID, docType: 1, from: "detail" })
                         }
-                        containerStyle={{ backgroundColor: 'rgba(189,198,207, 0.6)' }}
+                        containerStyle={{backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)'}}
                     />
                 );
             }

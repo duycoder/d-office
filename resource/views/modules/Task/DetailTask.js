@@ -62,7 +62,8 @@ class DetailTask extends Component {
                 taskType: this.props.coreNavParams.taskType,
             },
 
-            fromBrief: this.props.coreNavParams.fromBrief
+            fromBrief: this.props.coreNavParams.fromBrief || false,
+            check: false,
         };
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -155,9 +156,19 @@ class DetailTask extends Component {
     componentDidMount = () => {
         // backHandlerConfig(true, this.navigateBackToList);
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
-            if (this.props.extendsNavParams.hasOwnProperty("check")) {
-                if (this.props.extendsNavParams.check === true) {
-                    this.fetchData();
+            if (this.props.extendsNavParams) {
+                if (this.props.extendsNavParams.hasOwnProperty("from")) {
+                    if (this.props.extendsNavParams.from === "detail") {
+                        this.props.updateCoreNavParams({
+                            taskId: this.state.taskId,
+                            taskType: this.state.taskType
+                        });
+                    }
+                }
+                if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                    if (this.props.extendsNavParams.check === true) {
+                        this.setState({ check: true }, () => this.fetchData())
+                    }
                 }
             }
         });
@@ -169,7 +180,10 @@ class DetailTask extends Component {
     }
 
     navigateBackToList = () => {
-        this.props.navigation.goBack();
+        if (this.state.taskInfo.hasOwnProperty("CongViec")) {
+            this.props.updateExtendsNavParams({ check: this.state.check });
+            this.props.navigation.goBack();
+        }
     }
 
     //mở cuộc hội thoại
@@ -300,8 +314,7 @@ class DetailTask extends Component {
     }
 
     render() {
-        // console.tron.log(this.state.taskInfo)
-        const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} navigateToDetailDoc={this.navigateToDetailDoc} />;
+        const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />;
         const menuActions = [];
         if (!this.state.loading) {
             const task = this.state.taskInfo;
@@ -508,7 +521,8 @@ class TaskContent extends Component {
         this.state = {
             userInfo: props.userInfo,
             info: props.info,
-            selectedTabIndex: 0
+            selectedTabIndex: 0,
+            fromBrief: props.fromBrief
         }
     }
 
@@ -528,7 +542,7 @@ class TaskContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <TaskDescription info={this.props.info} />
+                    <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
                     </Tab>
 
                     <Tab heading={
@@ -569,7 +583,7 @@ class TaskContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} />
+                        <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
                     </Tab>
 
                     <Tab heading={

@@ -22,7 +22,8 @@ export default class MainInfoSignDoc extends Component {
         this.state = {
             info: props.info.VanBanTrinhKy,
             userId: props.userId,
-            docInfo: null
+            docInfo: null,
+            fromBrief: props.fromBrief
         }
     }
 
@@ -45,6 +46,12 @@ export default class MainInfoSignDoc extends Component {
         this.setState({
             docInfo: resultJson,
         });
+    }
+
+    getDetailDoc = (screenName, targetScreenParams) => {
+        if (!this.state.fromBrief) {
+            this.props.navigateToDetailDoc(screenName, targetScreenParams);
+        }
     }
 
     render() {
@@ -82,9 +89,9 @@ export default class MainInfoSignDoc extends Component {
                         </Text>
                     }
                     onPress={
-                        () => this.props.navigateToDetailDoc("VanBanDenDetailScreen", { docId: ID, docType: 1 })
+                        () => this.getDetailDoc("VanBanDenDetailScreen", { docId: ID, docType: 1, from: 'detail' })
                     }
-                    containerStyle={{ backgroundColor: 'rgba(189,198,207, 0.6)' }}
+                    containerStyle={{ backgroundColor: !this.state.fromBrief ? 'rgba(189,198,207, 0.6)' : Colors.WHITE }}
                 />
             );
         }

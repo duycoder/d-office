@@ -60,14 +60,15 @@ class Detail extends Component {
             executing: false,
 
             check: false,
-            hasAuthorization: props.hasAuthorization || 0
+            hasAuthorization: props.hasAuthorization || 0,
+            from: props.coreNavParams.from || "list", // check if send from `list` or `detail`
         };
 
         this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentWillMount = () => {
-        // backHandlerConfig(true, this.navigateBackToList);
+        // backHandlerConfig(true, this.navigateBack);
         this.fetchData();
 
     }
@@ -76,8 +77,7 @@ class Detail extends Component {
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
-                    this.setState({check: true});
-                    this.fetchData();
+                    this.setState({check: true}, () => this.fetchData());
                 }
             }
         })
@@ -85,7 +85,7 @@ class Detail extends Component {
 
     componentWillUnmount = () => {
         this.willFocusListener.remove();
-        // backHandlerConfig(false, this.navigateBackToList);
+        // backHandlerConfig(false, this.navigateBack);
     }
 
     async fetchData() {
@@ -106,9 +106,14 @@ class Detail extends Component {
         });
     }
 
-    navigateBackToList = () => {
-        if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
-            this.props.updateExtendsNavParams({check: this.state.check})
+    navigateBack = () => {
+        if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) { // done loading
+            if (this.state.from === "list") {
+                this.props.updateExtendsNavParams({check: this.state.check})
+            }
+            else {
+                this.props.updateExtendsNavParams({from: "detail"});
+            }
             this.props.navigation.goBack();
         }
     }
@@ -258,7 +263,7 @@ class Detail extends Component {
             <Container>
                 <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToList()}>
+                        <Button transparent onPress={() => this.navigateBack()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
                         </Button>
                     </Left>

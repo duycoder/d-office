@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 import { View, Text as RNText, TouchableOpacity as RNButton, Alert } from 'react-native';
 //redux
 import { connect } from 'react-redux';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
@@ -41,9 +42,6 @@ import TimelineSignDoc from './History';
 import AttachSignDoc from './Attachment';
 import UnitSignDoc from './UnitSignDoc';
 
-//redux
-import * as navAction from '../../../redux/modules/Nav/Action';
-
 class Detail extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +59,10 @@ class Detail extends Component {
                 docType: this.props.coreNavParams.docType,
             },
             executing: false,
-            hasAuthorization: props.hasAuthorization || 0
+            hasAuthorization: props.hasAuthorization || 0,
+            fromBrief: props.coreNavParams.fromBrief || false,
+            check: false,
+            from: props.from || "list"
         };
         this.onNavigate=this.onNavigate.bind(this);
     }
@@ -77,8 +78,6 @@ class Detail extends Component {
 
         const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
         
-        console.tron.log(url);
-        
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -92,11 +91,19 @@ class Detail extends Component {
     }
 
     componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToList);
+        // backHandlerConfig(true, this.navigateBack);
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+            if (this.props.extendsNavParams.hasOwnProperty("from")) {
+                if (this.props.extendsNavParams.from === "detail") {
+                    this.props.updateCoreNavParams({
+                        docId: this.state.docId,
+                        docType: this.state.docType
+                    });
+                }
+            }
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
-                    this.fetchData();
+                    this.setState({check: true}, () => this.fetchData());
                 }
             }
         })
@@ -104,11 +111,19 @@ class Detail extends Component {
 
     componentWillUnmount = () => {
         this.willFocusListener.remove();
-        // backHandlerConfig(false, this.navigateBackToList);
+        // backHandlerConfig(false, this.navigateBack);
     }
 
-    navigateBackToList = () => {
-        this.props.navigation.goBack();
+    navigateBack = () => {
+        if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
+            if (this.state.from === "list") {
+                this.props.updateExtendsNavParams({check: this.state.check});
+            }
+            else {
+                this.props.updateExtendsNavParams({from: true});
+            }
+            this.props.navigation.goBack();
+        }
     }
 
     navigateToDetailDoc = (screenName, targetScreenParams) => {
@@ -296,13 +311,13 @@ class Detail extends Component {
                 })
             }
 
-            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} />
+            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
         }
         return (
             <Container>
                 <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToList()}>
+                        <Button transparent onPress={() => this.navigateBack()}>
                             <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
                         </Button>
                     </Left>
@@ -353,6 +368,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
         updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
@@ -367,7 +383,8 @@ class DetailContent extends Component {
             currentTabIndex: 0,
             docInfo: props.docInfo,
             docId: props.docId,
-            userId: props.userId
+            userId: props.userId,
+            fromBrief: props.fromBrief
         }
     }
 
@@ -387,7 +404,7 @@ class DetailContent extends Component {
                                 </Text>
                         </TabHeading>
                     }>
-                        <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} />
+                        <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
                     </Tab>
 
                     <Tab heading={
