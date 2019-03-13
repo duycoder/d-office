@@ -9,9 +9,10 @@ import {
     ImageBackground, Modal,
     TouchableOpacity
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 
 //redux
-import {connect}from 'react-redux';
+import { connect } from 'react-redux';
 import * as navAction from '../../redux/modules/Nav/Action';
 //native-base
 import {
@@ -87,66 +88,70 @@ class SideBar extends Component {
             this.props.updateAuthorization(0);
         }
         // Reset Route
-
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({ routeName: screenName })]
+        });
+        this.props.navigation.dispatch(resetAction);
         // navigate
-        this.props.navigation.navigate(screenName);
+        // this.props.navigation.navigate(screenName);
     }
 
     generateTitle(maThaotac) {
         let tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
-        switch(maThaotac) {
-            case VANBANDEN._CHUAXULY.NAME: 
-            tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
-            break;
-            case VANBANDEN._DAXULY.NAME: 
-            tenThaotac = VANBANDEN._DAXULY.MOBILENAME;
-            break;
-            case VANBANDEN._NOIBO_CHUAXULY.NAME: 
-            tenThaotac = VANBANDEN._NOIBO_CHUAXULY.MOBILENAME;
-            break;
-            case VANBANDEN._NOIBO_DAXULY.NAME: 
-            tenThaotac = VANBANDEN._NOIBO_DAXULY.MOBILENAME;
-            break;
-            case VANBANDEN._THAMGIA_XULY.NAME: 
-            tenThaotac = VANBANDEN._THAMGIA_XULY.MOBILENAME;
-            break;
+        switch (maThaotac) {
+            case VANBANDEN._CHUAXULY.NAME:
+                tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
+                break;
+            case VANBANDEN._DAXULY.NAME:
+                tenThaotac = VANBANDEN._DAXULY.MOBILENAME;
+                break;
+            case VANBANDEN._NOIBO_CHUAXULY.NAME:
+                tenThaotac = VANBANDEN._NOIBO_CHUAXULY.MOBILENAME;
+                break;
+            case VANBANDEN._NOIBO_DAXULY.NAME:
+                tenThaotac = VANBANDEN._NOIBO_DAXULY.MOBILENAME;
+                break;
+            case VANBANDEN._THAMGIA_XULY.NAME:
+                tenThaotac = VANBANDEN._THAMGIA_XULY.MOBILENAME;
+                break;
 
-            case VANBANDI._CHUAXULY.NAME: 
-            tenThaotac = VANBANDI._CHUAXULY.MOBILENAME;
-            break;
-            case VANBANDI._DAXULY.NAME: 
-            tenThaotac = VANBANDI._DAXULY.MOBILENAME;
-            break;
-            case VANBANDI._DA_BANHANH.NAME: 
-            tenThaotac = VANBANDI._DA_BANHANH.MOBILENAME;
-            break;
-            case VANBANDI._THAMGIA_XULY.NAME: 
-            tenThaotac = VANBANDI._THAMGIA_XULY.MOBILENAME;
-            break;
+            case VANBANDI._CHUAXULY.NAME:
+                tenThaotac = VANBANDI._CHUAXULY.MOBILENAME;
+                break;
+            case VANBANDI._DAXULY.NAME:
+                tenThaotac = VANBANDI._DAXULY.MOBILENAME;
+                break;
+            case VANBANDI._DA_BANHANH.NAME:
+                tenThaotac = VANBANDI._DA_BANHANH.MOBILENAME;
+                break;
+            case VANBANDI._THAMGIA_XULY.NAME:
+                tenThaotac = VANBANDI._THAMGIA_XULY.MOBILENAME;
+                break;
 
-            case CONGVIEC._CANHAN.NAME: 
-            tenThaotac = CONGVIEC._CANHAN.MOBILENAME;
-            break;
-            case CONGVIEC._DUOCGIAO.NAME: 
-            tenThaotac = CONGVIEC._DUOCGIAO.MOBILENAME;
-            break;
-            case CONGVIEC._PHOIHOPXULY.NAME: 
-            tenThaotac = CONGVIEC._PHOIHOPXULY.MOBILENAME;
-            break;
-            case CONGVIEC._PROCESSED_JOB.NAME: 
-            tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
-            break;
+            case CONGVIEC._CANHAN.NAME:
+                tenThaotac = CONGVIEC._CANHAN.MOBILENAME;
+                break;
+            case CONGVIEC._DUOCGIAO.NAME:
+                tenThaotac = CONGVIEC._DUOCGIAO.MOBILENAME;
+                break;
+            case CONGVIEC._PHOIHOPXULY.NAME:
+                tenThaotac = CONGVIEC._PHOIHOPXULY.MOBILENAME;
+                break;
+            case CONGVIEC._PROCESSED_JOB.NAME:
+                tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
+                break;
 
-            case LICHCONGTAC_LANHDAO._DANHSACH.NAME: 
-            tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
-            break;
+            case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
+                tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
+                break;
 
-            case QUANLY_UYQUYEN._DANHSACH.NAME: 
-            tenThaotac = QUANLY_UYQUYEN._DANHSACH.MOBILENAME;
-            break;
+            case QUANLY_UYQUYEN._DANHSACH.NAME:
+                tenThaotac = QUANLY_UYQUYEN._DANHSACH.MOBILENAME;
+                break;
 
-            default: 
-            break;
+            default:
+                break;
         }
         return tenThaotac;
     }
@@ -205,7 +210,7 @@ class SideBar extends Component {
                             style={onFocusNow === '0' && SideBarStyle.listItemFocus}>
                             <ListItem
                                 leftIcon={
-                                    <SideBarIcon actionCode={THONGBAO.code} status={onFocusNow === '0'} isParent={true}/>
+                                    <SideBarIcon actionCode={THONGBAO.code} status={onFocusNow === '0'} isParent={true} />
                                 }
                                 rightIcon={
                                     notificationIcon
@@ -280,7 +285,7 @@ class SideBar extends Component {
                         <TouchableOpacity onPress={() => this.onLogOut()}>
                             <ListItem
                                 leftIcon={
-                                    <SideBarIcon actionCode={DANGXUAT.code} isParent={true}/>
+                                    <SideBarIcon actionCode={DANGXUAT.code} isParent={true} />
                                 }
                                 hideChevron={true}
                                 containerStyle={SideBarStyle.listItemContainer}

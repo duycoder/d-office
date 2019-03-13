@@ -22,7 +22,7 @@ import {
 //lib
 import {
   Alert, View, Text, FlatList, Platform,
-  TouchableOpacity, ScrollView
+  TouchableOpacity, ScrollView, Keyboard
 } from 'react-native';
 import {
   Container, Header, Left, Right, Body, Title, Input,

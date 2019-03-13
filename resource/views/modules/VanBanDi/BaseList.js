@@ -66,7 +66,11 @@ class BaseList extends Component {
     this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
-          this.fetchData();
+          this.setState({
+            loadingData: true
+          }, () => {
+            this.fetchData();
+          });
           this.props.updateExtendsNavParams({ check: false });
         }
       }

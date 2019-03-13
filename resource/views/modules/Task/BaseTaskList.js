@@ -67,20 +67,24 @@ class BaseTaskList extends Component {
         })
     }
 
-    omponentDidMount = () => {
+    componentDidMount = () => {
         this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
-          if (this.props.extendsNavParams.hasOwnProperty("check")) {
-            if (this.props.extendsNavParams.check === true) {
-              this.fetchData();
-              this.props.updateExtendsNavParams({ check: false });
+            if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                if (this.props.extendsNavParams.check === true) {
+                    this.setState({
+                        loadingData: true
+                    }, () => {
+                        this.fetchData();
+                    });
+                    this.props.updateExtendsNavParams({ check: false });
+                }
             }
-          }
-        })
-      }
-    
-      componentWillUnmount = () => {
+        });
+    }
+
+    componentWillUnmount = () => {
         this.willFocusListener.remove();
-      }
+    }
 
     async fetchData() {
         const loadingMoreData = this.state.loadingMoreData;
@@ -156,9 +160,7 @@ class BaseTaskList extends Component {
 
         let targetScreenParam = {
             taskId,
-            taskType: this.state.taskType,
-            screenName: "DetailTaskScreen",
-            rootScreenName: currentScreenName
+            taskType: this.state.taskType
         }
 
         this.props.updateCoreNavParams(targetScreenParam);

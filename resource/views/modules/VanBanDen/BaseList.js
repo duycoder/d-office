@@ -67,10 +67,14 @@ class BaseList extends Component {
   }
 
   componentDidMount = () => {
-    this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
+    this.didFocusListener = this.props.navigator.addListener('didFocus', () => {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
-          this.fetchData();
+          this.setState({
+            loadingData: true
+          }, () => {
+            this.fetchData();
+          });
           this.props.updateExtendsNavParams({ check: false });
         }
       }
@@ -78,7 +82,7 @@ class BaseList extends Component {
   }
 
   componentWillUnmount = () => {
-    this.willFocusListener.remove();
+    this.didFocusListener.remove();
   }
 
   async fetchData() {
