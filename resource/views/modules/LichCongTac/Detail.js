@@ -26,8 +26,6 @@ export default class DetailEvent extends Component {
       data: {},
       loading: false,
     }
-
-    this.navigateToEventList = this.navigateToEventList.bind(this);
   }
 
 
@@ -49,9 +47,8 @@ export default class DetailEvent extends Component {
     this.fetchData();
   }
 
-  navigateToEventList() {
-    appGetDataAndNavigate(this.props.navigation, 'DetailEventScreen');
-    return true;
+  navigateBack = () => {
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -60,7 +57,7 @@ export default class DetailEvent extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateToEventList()}>
+            <Button transparent onPress={() => this.navigateBack()}>
               <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Left>

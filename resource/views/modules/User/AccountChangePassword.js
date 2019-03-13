@@ -13,7 +13,7 @@ import {
 
 //lib
 import {
-  Container, Content, CheckBox, Form, Item, Input, Label, Toast,
+  Container, Content, Form, Item, Input, Label, Toast,
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
 import { Icon } from 'react-native-elements';
@@ -99,10 +99,6 @@ class AccountChangePassword extends Component {
     });
   }
 
-  navigateBackToAccountInfo = () => {
-    this.props.navigation.navigate('VanBanDenIsNotProcessScreen');
-  }
-
   async onSaveChange() {
 
     this.setState({
@@ -179,7 +175,7 @@ class AccountChangePassword extends Component {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
         duration: 3000,
-        onClose: this.signOut,
+        onClose: () => this.signOut()
       })
     }
     else {
@@ -266,9 +262,6 @@ class AccountChangePassword extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={this.navigateBackToAccountInfo}>
-              <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -277,9 +270,6 @@ class AccountChangePassword extends Component {
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
-            {/* <Button transparent onPress={() => this.navigateToEditAccount()}>
-              <Icon name='ios-save' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button> */}
           </Right>
         </Header>
         <ImageBackground style={{ flex: 1 }}>

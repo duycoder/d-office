@@ -6,18 +6,17 @@
 'use strict'
 import React, { Component } from 'react'
 import {
-  AsyncStorage, View, ScrollView, Text, TextInput,
-  Keyboard, Animated, Image, ImageBackground,
+  View, Text,
+  Keyboard, Image, ImageBackground,
   TouchableOpacity
 } from 'react-native'
 
 //lib
 import {
-  Container, Content, CheckBox, Form, Item, Input, Label, Toast,
+  Container, Content, Form, Item, Input, Label, Toast,
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
 import { Icon } from 'react-native-elements';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 import DatePicker from 'react-native-datepicker';
 //constants
@@ -29,7 +28,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { scale, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
+import { asyncDelay } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
@@ -49,7 +48,7 @@ class AccountEditor extends Component {
   constructor(props) {
     super(props);
 
-    const { fullName, dateOfBirth, mobilePhone, address } = props.navigation.state.params;
+    const { fullName, dateOfBirth, mobilePhone, address } = props.extendsNavParams;
 
     this.state = {
       id: props.userInfo.ID,
@@ -103,8 +102,11 @@ class AccountEditor extends Component {
     });
   }
 
-  navigateBackToAccountInfo = () => {
-    this.props.navigation.navigate('AccountInfoScreen');
+  navigateBackToAccountInfo = (isCheck = false) => {
+    if (isCheck) {
+      this.props.updateExtendsNavParams({check: isCheck});
+    }
+    this.props.navigation.goBack();
   }
 
   async onSaveAccountInfo() {
@@ -194,7 +196,7 @@ class AccountEditor extends Component {
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
         duration: 3000,
         onClose: () => {
-          this.props.navigation.navigate('AccountInfoScreen');
+          this.navigateBackToAccountInfo(true)
         }
       })
     }
@@ -275,6 +277,7 @@ class AccountEditor extends Component {
                   onChangeText={this._handleFieldNameChange('mobilePhone')}
                   placeholder={this.state.mobilePhone}
                   autoCorrect={false}
+                  keyboardType="phone-pad"
                 />
               </Item>
               <Item stackedLabel>
@@ -304,13 +307,15 @@ class AccountEditor extends Component {
 
 const mapStatetoProps = (state) => {
   return {
-    userInfo: state.userState.userInfo
+    userInfo: state.userState.userInfo,
+    extendsNavParams: state.navState.extendsNavParams
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserInfo: (data) => dispatch(userAction.setUserInfo(data))
+    setUserInfo: (data) => dispatch(userAction.setUserInfo(data)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

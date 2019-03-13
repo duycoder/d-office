@@ -4,37 +4,35 @@
  * @since: 04/05/2018
  */
 'use strict'
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import {
-  AsyncStorage, View, ScrollView, Text, TextInput,
-  Keyboard, Animated, Image, ImageBackground,
+  View, Text,
+  Image, ImageBackground,
   TouchableOpacity
-} from 'react-native'
-import Reactotron from 'reactotron-react-native'
+} from 'react-native';
 
 //lib
 import {
-  Container, Content, CheckBox, Form, Item, Input, Label, Toast,
+  Container, Content, Form, Item, Input, Label,
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
 import { Icon } from 'react-native-elements';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, EMTPY_DATA_MESSAGE } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
-import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, emptyDataPage, convertDateTimeToString, convertDateToString, appGetDataAndNavigate } from '../../../common/Utilities'
+import { authenticateLoading, dataLoading } from '../../../common/Effect';
+import { convertDateToString } from '../../../common/Utilities';
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-
+import * as navAction from '../../../redux/modules/Nav/Action';
 //fcm
 import FCM, { FCMEvent } from 'react-native-fcm';
 
@@ -71,35 +69,57 @@ class AccountInfo extends Component {
     }
   }
 
-  navigateBackToLogin = () => {
-    Reactotron.log(this.props.navigation)
-    this.props.navigation.navigate('VanBanDenIsNotProcessScreen'); //ListNotificationScreen
-  }
-
   navigateToEditAccount = () => {
-    this.props.navigation.navigate('AccountEditorScreen', {
+    const targetScreenParams = {
       fullName: this.state.fullName,
       dateOfBirth: this.state.dateOfBirth,
       mobilePhone: this.state.mobilePhone,
       address: this.state.address,
-    });
+    }
+    this.props.updateExtendsNavParams(targetScreenParams);
+    this.props.navigation.navigate('AccountEditorScreen');
   }
 
-  componentWillMount = async () => {
+  fetchData = async () => {
     const url = `${API_URL}/api/account/GetUserInfo/${this.state.id}`;
     let result = await fetch(url)
       .then(response => response.json())
       .then(responseJson => responseJson);
 
-    console.log('Result sau khi mount = ', result);
     this.setState({
       userName: result.TENDANGNHAP,
       fullName: result.HOTEN,
       email: result.EMAIL,
       dateOfBirth: convertDateToString(result.NGAYSINH),
       mobilePhone: result.DIENTHOAI,
-      address: result.DIACHI
+      address: result.DIACHI,
+      loading: false
     });
+  }
+
+  componentWillMount = () => {
+    this.setState({
+      loading: true
+    }, () => this.fetchData())
+  }
+
+  componentDidMount = () => {
+    this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("check")) {
+        if (this.props.extendsNavParams.check === true) {
+          this.setState({
+            loading: true
+          }, () => {
+            this.fetchData();
+          });
+          this.props.updateExtendsNavParams({ check: false });
+        }
+      }
+    });
+  }
+
+  componentWillUnmount = () => {
+    this.willFocusListener.remove();
   }
 
   render() {
@@ -115,9 +135,6 @@ class AccountInfo extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={this.navigateBackToLogin}>
-              <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -126,9 +143,6 @@ class AccountInfo extends Component {
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
-            {/* <Button transparent onPress={() => this.navigateToEditAccount()}>
-              <Icon name='ios-save' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button> */}
           </Right>
         </Header>
         <ImageBackground style={{ flex: 1 }}>
@@ -180,7 +194,7 @@ class AccountInfo extends Component {
           </Content>
         </ImageBackground>
         {
-          authenticateLoading(this.state.loading)
+          dataLoading(this.state.loading)
         }
       </Container>
     );
@@ -189,13 +203,15 @@ class AccountInfo extends Component {
 
 const mapStatetoProps = (state) => {
   return {
-    userInfo: state.userState.userInfo
+    userInfo: state.userState.userInfo,
+    extendsNavParams: state.navState.extendsNavParams
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUserInfo: (data) => dispatch(userAction.setUserInfo(data))
+    setUserInfo: (data) => dispatch(userAction.setUserInfo(data)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

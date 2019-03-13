@@ -34,14 +34,14 @@ class EventList extends Component {
       daySchedule: [],
       nightSchedule: [],
     }
-
-    this.navigateBacktoBase = this.navigateBacktoBase.bind(this);
   }
 
-  navigateBacktoBase() {
-    // appGetDataAndNavigate(this.props.navigation, 'EventListScreen');
-    // return true;
+  navigateBack = () => {
     this.props.navigation.goBack();
+  }
+  
+  navigateToDetail = (screenName, targetScreenParam) => {
+    this.props.navigation.navigate(screenName, targetScreenParam);
   }
 
   fetchData = async () => {
@@ -75,7 +75,7 @@ class EventList extends Component {
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBacktoBase()}>
+            <Button transparent onPress={() => this.navigateBack()}>
               <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Left>
@@ -104,7 +104,7 @@ class EventList extends Component {
                     </Text>
                   </TabHeading>
                 }>
-                  <Schedules timeline={"Sáng"} nav={this.props.navigation} data={this.state.daySchedule} />
+                  <Schedules timeline={"Sáng"} data={this.state.daySchedule} navigateToDetail={this.navigateToDetail} />
                 </Tab>
 
                 <Tab heading={
@@ -115,7 +115,7 @@ class EventList extends Component {
                 </Text>
                   </TabHeading>
                 }>
-                  <Schedules timeline={"Chiều"} data={this.state.nightSchedule} />
+                  <Schedules timeline={"Chiều"} data={this.state.nightSchedule} navigateToDetail={this.navigateToDetail} />
                 </Tab>
               </Tabs>
           }
@@ -138,14 +138,9 @@ class Schedules extends Component {
     this.navigateToDetail = this.navigateToDetail.bind(this);
   }
 
-  // fetchData() {
-  //   //wait for api
-  // }
-
   renderItem({ item, index }) {
     return (
       <View>
-        <RnButton onPress={() => this.navigateToDetail(item.ID)}>
           <ListItem
             hideChevron={true}
             title={item.TIEUDE}
@@ -161,17 +156,10 @@ class Schedules extends Component {
               color: Colors.GRAY,
               fontSize: moderateScale(13, 1.2)
             }}
+            onPress={()=>this.props.navigateToDetail("DetailEventScreen", {id: item.ID})}
           />
-        </RnButton>
       </View>
     );
-  }
-
-  navigateToDetail(id) {
-    const targetScreenParam = {
-      id: id
-    }
-    appStoreDataAndNavigate(this.state.nav, "EventListScreen", new Object(), "DetailEventScreen", targetScreenParam);
   }
 
   render() {

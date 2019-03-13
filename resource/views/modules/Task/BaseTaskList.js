@@ -92,9 +92,8 @@ class BaseTaskList extends Component {
         const loadingData = this.state.loadingData;
 
         let apiUrlParam = 'PersonalWork';
-
+        
         const { taskType } = this.state;
-
         if (taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
             apiUrlParam = 'AssignedWork';
         } else if (taskType == CONGVIEC_CONSTANT.PHOIHOP_XULY) {
@@ -104,9 +103,8 @@ class BaseTaskList extends Component {
         } else if (taskType == CONGVIEC_CONSTANT.CHO_XACNHAN) {
             apiUrlParam = 'PendingConfirmWork'
         }
-
+        
         const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -165,8 +163,6 @@ class BaseTaskList extends Component {
 
         this.props.updateCoreNavParams(targetScreenParam);
         this.props.navigator.navigate("DetailTaskScreen");
-
-        // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "DetailTaskScreen", targetScreenParam);
     }
 
     async getListSubTasks(index, isExpand, taskId, parentIds) {
