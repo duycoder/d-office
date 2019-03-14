@@ -94,14 +94,8 @@ class WorkflowRequestReview extends Component {
 		})
 	}
 
-	navigateBackToDetail = (isCheck = false) => {
-		// this.props.navigation.navigate(this.props.coreNavParams.screenName);
-		if (isCheck) {
-			this.props.updateExtendsNavParams({check: isCheck})
-		}
+	navigateBackToDetail = () => {
 		this.props.navigation.goBack();
-		// appGetDataAndNavigate(this.props.navigation, "WorkflowRequestReviewScreen");
-		// return true;
 	}
 
 	renderItem = ({ item }) => {
@@ -196,6 +190,8 @@ class WorkflowRequestReview extends Component {
 				resultJson.GroupTokens.forEach(token => {
 					pushFirebaseNotify(content, token, "notification");
 				});
+
+				this.props.updateExtendsNavParams({ check: true });
 			}
 
 			Toast.show({
@@ -208,7 +204,7 @@ class WorkflowRequestReview extends Component {
 				onClose: () => {
 					this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {
-						this.navigateBackToDetail(true);
+						this.navigateBackToDetail();
 					}
 				}
 			});

@@ -114,7 +114,9 @@ class UpdateProgressTask extends Component {
 
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, 'notification');
-                })
+                });
+
+                this.props.updateExtendsNavParams({ check: true });
             }
 
             Toast.show({
@@ -126,7 +128,7 @@ class UpdateProgressTask extends Component {
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
-                        this.navigateBackToDetail(true);
+                        this.navigateBackToDetail();
                     }
                 }
             });
@@ -141,10 +143,7 @@ class UpdateProgressTask extends Component {
         // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = (isCheck = false) => {
-        if (isCheck) {
-            this.props.updateExtendsNavParams({ check: isCheck })
-        }
+    navigateBackToDetail = () => {
         this.props.navigation.goBack();
     }
 

@@ -102,10 +102,7 @@ class AccountEditor extends Component {
     });
   }
 
-  navigateBackToAccountInfo = (isCheck = false) => {
-    if (isCheck) {
-      this.props.updateExtendsNavParams({check: isCheck});
-    }
+  navigateBackToAccountInfo = () => {
     this.props.navigation.goBack();
   }
 
@@ -187,6 +184,7 @@ class AccountEditor extends Component {
         return responseJson;
       });
     if (result.Status) {
+      this.props.updateExtendsNavParams({ check: true });
       Toast.show({
         text: 'Đã lưu thông tin tài khoản!',
         type: 'success',
@@ -196,9 +194,9 @@ class AccountEditor extends Component {
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
         duration: 3000,
         onClose: () => {
-          this.navigateBackToAccountInfo(true)
+          this.navigateBackToAccountInfo()
         }
-      })
+      });
     }
     else {
       Toast.show({
@@ -209,7 +207,7 @@ class AccountEditor extends Component {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
         duration: 3000
-      })
+      });
     }
   }
 

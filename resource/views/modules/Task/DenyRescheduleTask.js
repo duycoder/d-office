@@ -94,7 +94,9 @@ class DenyRescheduleTask extends Component {
 
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
-            })
+            });
+
+            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -106,16 +108,13 @@ class DenyRescheduleTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
-                    this.navigateBack(true);
+                    this.navigateBack();
                 }
             }
         });
     }
 
-    navigateBack = (isCheck = false) => {
-        if (isCheck) {
-            this.props.updateExtendsNavParams({ check: true })
-        }
+    navigateBack = () => {
         this.props.navigation.goBack();
 
     }

@@ -79,19 +79,16 @@ class CreateSubTask extends Component {
 
 
 	componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		// backHandlerConfig(true, this.navigateBackToDetail);
+	}
 
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		// backHandlerConfig(false, this.navigateBackToDetail);
+	}
 
-    navigateBackToDetail = (isCheck = false) => {
-			if(isCheck){
-				this.props.updateExtendsNavParams({check: isCheck});
-			}
-			this.props.navigation.goBack();
-    }
+	navigateBackToDetail = () => {
+		this.props.navigation.goBack();
+	}
 
 	onCreateSubTask = async () => {
 		if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {
@@ -145,6 +142,8 @@ class CreateSubTask extends Component {
 				executing: false
 			});
 
+			resultJson.Status && this.props.updateExtendsNavParams({ check: true });
+
 			Toast.show({
 				text: resultJson.Status ? 'Tạo công việc con thành công' : 'Tạo công việc con không thành công',
 				type: resultJson.Status ? 'success' : 'danger',
@@ -154,7 +153,7 @@ class CreateSubTask extends Component {
 				duration: 3000,
 				onClose: () => {
 					if (resultJson.Status) {
-						this.navigateBackToDetail(true);
+						this.navigateBackToDetail();
 					}
 				}
 			});
@@ -293,7 +292,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-			updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
 	}
 }
 

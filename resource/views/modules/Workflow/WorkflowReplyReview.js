@@ -77,10 +77,7 @@ class WorkflowReplyReview extends Component {
         // backHandlerConfig(false, this.navigateBack);
     }
 
-    navigateBack = (isCheck = false) => {
-        if (isCheck) {
-            this.props.updateExtendsNavParams({check: isCheck});
-        }
+    navigateBack = () => {
         this.props.navigation.goBack();
     }
 
@@ -158,6 +155,8 @@ class WorkflowReplyReview extends Component {
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, "notification");
             });
+
+            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -170,7 +169,7 @@ class WorkflowReplyReview extends Component {
             onClose: () => {
                 this.props.resetProcessUsers();
                 if (resultJson.Status) {
-                    this.navigateBack(true);
+                    this.navigateBack();
                 }
             }
         });

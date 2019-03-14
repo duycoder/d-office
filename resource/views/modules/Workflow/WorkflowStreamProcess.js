@@ -110,10 +110,7 @@ class WorkflowStreamProcess extends Component {
         })
     }
 
-    navigateBackToDetail = (isCheck = false) => {
-        if (isCheck) {
-            this.props.updateExtendsNavParams({check: isCheck})
-        }
+    navigateBackToDetail = () => {
         this.props.navigation.goBack();
     }
 
@@ -175,6 +172,8 @@ class WorkflowStreamProcess extends Component {
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, "notification");
                 });
+
+                this.props.updateExtendsNavParams({ check: true });
             }
 
             Toast.show({
@@ -187,7 +186,7 @@ class WorkflowStreamProcess extends Component {
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
                     if (resultJson.Status) {
-                        this.navigateBackToDetail(true);
+                        this.navigateBackToDetail();
                     }
                 }
             });

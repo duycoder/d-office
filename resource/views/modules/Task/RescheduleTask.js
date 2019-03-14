@@ -58,17 +58,14 @@ class RescheduleTask extends Component {
 
 
     componentDidMount = () => {
-        backHandlerConfig(true, this.navigateBackToDetail);
+        // backHandlerConfig(true, this.navigateBackToDetail);
     }
 
     componentWillUnmount = () => {
-        backHandlerConfig(false, this.navigateBackToDetail);
+        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    navigateBackToDetail = (isCheck = false) => {
-        if (isCheck) {
-            this.props.updateExtendsNavParams({ check: isCheck });
-        }
+    navigateBackToDetail = () => {
         this.props.navigation.goBack();
     }
 
@@ -134,7 +131,9 @@ class RescheduleTask extends Component {
 
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, 'notification');
-                })
+                });
+
+                this.props.updateExtendsNavParams({ check: true });
             }
 
             //hiển thị kết quả xử lý
@@ -147,7 +146,7 @@ class RescheduleTask extends Component {
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
-                        this.navigateBackToDetail(true);
+                        this.navigateBackToDetail();
                     }
                 }
             });

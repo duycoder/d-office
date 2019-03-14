@@ -181,10 +181,7 @@ class AssignTask extends Component {
 		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
-	navigateBackToDetail = (isCheck = false) => {
-		if (isCheck) {
-			this.props.updateExtendsNavParams({check: isCheck});
-		}
+	navigateBackToDetail = () => {
 		this.props.navigation.goBack();
 	}
 
@@ -255,7 +252,8 @@ class AssignTask extends Component {
 
 				resultJson.GroupTokens.forEach(token => {
 					pushFirebaseNotify(content, token, 'notification');
-				})
+				});
+				this.props.updateExtendsNavParams({ check: true });
 			}
 
 			Toast.show({
@@ -268,7 +266,7 @@ class AssignTask extends Component {
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {
-						this.navigateBackToDetail(true);
+						this.navigateBackToDetail();
 					}
 				}
 			});
