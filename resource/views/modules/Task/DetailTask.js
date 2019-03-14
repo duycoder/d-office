@@ -401,28 +401,28 @@ class DetailTask extends Component {
                     // menuActions.push(
                     //     <InteractiveButton title={'THEO DÕI'} key={11} />
                     // )
-                    if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
-                        menuActions.push(
-                            <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
-                        )
-                    }
+                    // if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
+                    //     menuActions.push(
+                    //         <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
+                    //     )
+                    // }
                 } else {
                     if (task.CongViec.IS_HASPLAN == true) {
                         // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
-                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
-                            // nếu chưa trình kế hoạch và là người xử lý chính thì
-                            if (task.IsNguoiThucHienChinh) {
-                                menuActions.push(
-                                    <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
-                                )
-                            }
-                        }
-                        else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
-                            menuActions.push(
-                                <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
-                            )
-                        }
-                        else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
+                        // if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
+                        //     // nếu chưa trình kế hoạch và là người xử lý chính thì
+                        //     if (task.IsNguoiThucHienChinh) {
+                        //         menuActions.push(
+                        //             <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
+                        //         )
+                        //     }
+                        // }
+                        // else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
+                            // menuActions.push(
+                            //     <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
+                            // )
+                        // }
+                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(
                                     <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
@@ -542,7 +542,7 @@ class TaskContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                    <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
+                        <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
                     </Tab>
 
                     <Tab heading={

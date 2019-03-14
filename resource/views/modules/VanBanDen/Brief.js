@@ -237,7 +237,7 @@ class BriefTaskList extends Component {
     }
   }
 
-  async getListSubTasks(index, isExpand, taskId, parentIds) {
+  /* async getListSubTasks(index, isExpand, taskId, parentIds) {
     if (isExpand == false) {
       this.setState({
         executing: true
@@ -293,7 +293,7 @@ class BriefTaskList extends Component {
         data: this.state.data
       })
     }
-  }
+  } */
 
   renderItem = ({ item, index }) => {
     return (
@@ -314,23 +314,11 @@ class BriefTaskList extends Component {
 
           leftIcon={
             <View style={ListTaskStyle.leftSide}>
-              {
-                renderIf(item.HasChild && item.isExpand == true)(
-                  <TouchableOpacity onPress={
-                    (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                    <RneIcon name='folder-open-o' type='font-awesome' />
-                  </TouchableOpacity>
-                )
-              }
-
-              {
-                renderIf(item.HasChild && item.isExpand == false)(
-                  <TouchableOpacity onPress={
-                    (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                    <RneIcon name='folder-o' type='font-awesome' />
-                  </TouchableOpacity>
-                )
-              }
+            {
+              renderIf(item.HAS_FILE)(
+                <Icon name='ios-attach' />
+              )
+            }
             </View>
           }
 
@@ -385,19 +373,9 @@ class BriefResponseList extends Component {
     }
   }
 
-  navigateToDocDetail = (docId) => {
-    let currentScreenName = "VanBanDenBriefScreen";
-    let targetScreenParam = {
-      docId,
-      docType: 0
-    }
-
-    appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDiDetailScreen", targetScreenParam);
-  }
-
-  getListSubTasks(index, childData) {
+  /* getListSubTasks(index, childData) {
     this.state.data.splice((index + 1), 0, childData);
-  }
+  } */
 
   renderItem = ({ item, index }) => {
     let mahieu = (
@@ -428,14 +406,11 @@ class BriefResponseList extends Component {
           }}
           leftIcon={
             <View style={ListSignDocStyle.leftSide}>
-              {
-                renderIf(item.hasOwnProperty("groupOfCongViecs") && item.groupOfCongViecs.length > 0)(
-                  <TouchableOpacity onPress={
-                    (index, childData) => this.getListSubTasks.bind(this)(index, item.groupOfCongViecs)}>
-                    <RneIcon name='folder-open-o' type='font-awesome' />
-                  </TouchableOpacity>
-                )
-              }
+            {
+              renderIf(item.HAS_FILE)(
+                <Icon name='ios-attach' />
+              )
+            }
             </View>
           }
 

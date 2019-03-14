@@ -43,26 +43,10 @@ class ListNotification extends Component {
     onPressNotificationItem = async (item) => {
         let screenName = EMPTY_STRING;
         let screenParam = {};
-        // if (item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC) {
-        //     screenName = 'DetailTaskScreen';
-
-        //     screenParam = {
-        //         taskId: item.NOTIFY_ITEM_ID,
-        //         taskType: item.targetTaskType || 'AssignedWork',
-        //     }
-        // } else {
-        //     screenName = 'DetailSignDocScreen';
-        //     screenParam = {
-        //         docId: item.NOTIFY_ITEM_ID,
-        //         docType: item.targetDocType || 'GetListProcessing',
-        //     }
-        // }
 
         let urlArr = item.URL.split("/");
         const itemType = urlArr[2];
         const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
-        // console.tron.log(item)
-        // console.tron.log(itemId)
         if (itemType === "HSVanBanDi") {
             screenName = "VanBanDiDetailScreen";
             screenParam = {
@@ -143,7 +127,7 @@ class ListNotification extends Component {
                 title={item.NOIDUNG}
                 titleStyle={styles.title}
                 titleNumberOfLines={3}
-                subtitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                subtitle={convertDateTimeToTitle(item.NGAYTAO)}
                 onPress={() => this.onPressNotificationItem(item)}
             />
         );

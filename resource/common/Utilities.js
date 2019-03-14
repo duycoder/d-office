@@ -35,7 +35,7 @@ export function convertDateToString(date) {
     let deadline = new Date();
     if (date !== null && date !== '') {
         deadline = new Date(date);
-        let deadlineStr = (_readableFormat(deadline.getDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + deadline.getFullYear());
+        let deadlineStr = (_readableFormat(deadline.getUTCDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + deadline.getFullYear());
         return deadlineStr;
     }
     return 'N/A';
@@ -46,7 +46,7 @@ export function convertTimeToString(date) {
     let deadline = new Date();
     if (date !== null && date !== '') {
         deadline = new Date(date);
-        let result = _readableFormat(deadline.getHours()) + ':' + _readableFormat(deadline.getMinutes()) + ':' + _readableFormat(deadline.getSeconds());
+        let result = _readableFormat(deadline.getUTCHours()) + ':' + _readableFormat(deadline.getUTCMinutes()) + ':' + _readableFormat(deadline.getUTCSeconds());
         return result;
     }
     return 'N/A';
@@ -57,35 +57,32 @@ export function convertDateTimeToString(date) {
 
     if (date !== null && date !== '') {
         let deadline = new Date(date);
-        //const pad = val => val < 10 ? '0' + val : val; // Append '0' before alone dateTime
-
-        let deadlineStr = _readableFormat(deadline.getDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + deadline.getFullYear();
-
-        deadlineStr += ' ' + _readableFormat(deadline.getHours()) + ':' + _readableFormat(deadline.getMinutes()) + ':' + _readableFormat(deadline.getSeconds());
+        let deadlineStr = _readableFormat(deadline.getUTCDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + deadline.getFullYear();
+        deadlineStr += ' ' + _readableFormat(deadline.getUTCHours()) + ':' + _readableFormat(deadline.getUTCMinutes()) + ':' + _readableFormat(deadline.getUTCSeconds());
         return deadlineStr;
     }
     return 'N/A';
 }
 
-export function convertDateTimeToTitle(date, isExperiment) {
-    if (isExperiment) {
-        if (isObjectHasValue(date) && !util.isEmpty(date)) {
-            let jsDateArr = date.split("T");
-            let dateArr = jsDateArr[0].split("-"), 
-                timeArr = jsDateArr[1].split(":");
+export function convertDateTimeToTitle(date, isExperiment = false ) {
+    // if (isExperiment) {
+    //     if (isObjectHasValue(date) && !util.isEmpty(date)) {
+    //         let jsDateArr = date.split("T");
+    //         let dateArr = jsDateArr[0].split("-"), 
+    //             timeArr = jsDateArr[1].split(":");
             
-            let datePart = dateArr[2] + '/' + dateArr[1] + '/' + dateArr[0];
-            let timePart = timeArr[0] + ':' + timeArr[1];
+    //         let datePart = dateArr[2] + '/' + dateArr[1] + '/' + dateArr[0];
+    //         let timePart = timeArr[0] + ':' + timeArr[1];
 
-            return `${datePart} lúc ${timePart}`;
-        }
-    }
+    //         return `${datePart} lúc ${timePart}`;
+    //     }
+    // }
     if (isObjectHasValue(date) && date !== '') {
         let jsDate = new Date(date);
         let result = '';
 
-        let datePart = _readableFormat(jsDate.getDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
-        let timePart = _readableFormat(jsDate.getHours()) + ':' + _readableFormat(jsDate.getMinutes());
+        let datePart = _readableFormat(jsDate.getUTCDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
+        let timePart = _readableFormat(jsDate.getUTCHours()) + ':' + _readableFormat(jsDate.getUTCMinutes());
 
         result = `${datePart} lúc ${timePart}`;
         return result;

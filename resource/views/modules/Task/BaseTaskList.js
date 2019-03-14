@@ -92,7 +92,7 @@ class BaseTaskList extends Component {
         const loadingData = this.state.loadingData;
 
         let apiUrlParam = 'PersonalWork';
-        
+
         const { taskType } = this.state;
         if (taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
             apiUrlParam = 'AssignedWork';
@@ -103,7 +103,7 @@ class BaseTaskList extends Component {
         } else if (taskType == CONGVIEC_CONSTANT.CHO_XACNHAN) {
             apiUrlParam = 'PendingConfirmWork'
         }
-        
+
         const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
         const result = await fetch(url);
         const resultJson = await result.json();
@@ -243,20 +243,8 @@ class BaseTaskList extends Component {
                     leftIcon={
                         <View style={ListTaskStyle.leftSide}>
                             {
-                                renderIf(item.HasChild && item.isExpand == true)(
-                                    <TouchableOpacity onPress={
-                                        (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                                        <RneIcon name='folder-open-o' type='font-awesome' />
-                                    </TouchableOpacity>
-                                )
-                            }
-
-                            {
-                                renderIf(item.HasChild && item.isExpand == false)(
-                                    <TouchableOpacity onPress={
-                                        (idx, isExpand, taskId, parentIds) => this.getListSubTasks.bind(this)(index, item.isExpand, item.ID, item.parentIds)}>
-                                        <RneIcon name='folder-o' type='font-awesome' />
-                                    </TouchableOpacity>
+                                renderIf(item.HAS_FILE)(
+                                    <Icon name='ios-attach' />
                                 )
                             }
                         </View>

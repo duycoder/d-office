@@ -130,7 +130,7 @@ class Detail extends Component {
         }
         else {
             Toast.show({
-                text: 'Hiện chưa có lịch công tác',
+                text: 'Không tìm thấy lịch công tác yêu cầu',
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },

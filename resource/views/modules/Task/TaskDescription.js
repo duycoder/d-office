@@ -11,7 +11,7 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 //common
-import { convertDateToString, asyncDelay, formatLongText } from '../../../common/Utilities';
+import { convertDateToString, asyncDelay, formatLongText, convertDateTimeToTitle } from '../../../common/Utilities';
 
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import * as util from 'lodash';
@@ -82,10 +82,10 @@ export default class TaskDescription extends Component {
                         title={
                             <Text style={DetailTaskStyle.listItemTitleContainer}>
                                 VĂN BẢN ĐẾN LIÊN QUAN
-                        </Text>
+                            </Text>
                         }
                         subtitle={
-                            <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
+                            <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
                                 <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
                                 <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
                                 <Text>{`Người ký: ${NGUOIKY}`}</Text>
@@ -94,7 +94,7 @@ export default class TaskDescription extends Component {
                         onPress={
                             () => this.getDetailParent("VanBanDenDetailScreen", { docId: ID, docType: 1, from: "detail" })
                         }
-                        containerStyle={{backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)'}}
+                        containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
                     />
                 );
             }
@@ -121,7 +121,7 @@ export default class TaskDescription extends Component {
                         onPress={
                             () => this.getDetailParent("VanBanDiDetailScreen", { docId: ID, docType: 1, from: "detail" })
                         }
-                        containerStyle={{backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)'}}
+                        containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
                     />
                 );
             }
@@ -170,7 +170,7 @@ export default class TaskDescription extends Component {
                             }
                             subtitle={
                                 <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.NGUOIXULYCHINH ? "Không rõ" : this.props.info.NGUOIXULYCHINH}
+                                    {util.isEmpty(this.props.info.NGUOIXULYCHINH) ? "Không rõ" : this.props.info.NGUOIXULYCHINH}
                                 </Text>
                             } />
                         <ListItem style={DetailTaskStyle.listItemContainer}
@@ -194,7 +194,7 @@ export default class TaskDescription extends Component {
                             }
                             subtitle={
                                 <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.CongViec.SONGAYNHACTRUOCHAN}
+                                    {this.props.info.CongViec.SONGAYNHACTRUOCHAN || "Không thiết lập"}
                                 </Text>
                             } />
                         <ListItem style={DetailTaskStyle.listItemContainer}
@@ -246,6 +246,23 @@ export default class TaskDescription extends Component {
                                 </Text>
                             } />
 
+                        {
+                            this.props.info.CongViec.IS_HASPLAN &&
+                            <ListItem style={DetailTaskStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                        NGÀY HOÀN THÀNH THEO KẾ HOẠCH
+                                    </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                        {util.isNull(this.props.info.CongViec.NGAYKETTHUC_KEHOACH) ? "Chưa duyệt kế hoạch" : convertDateToString(this.props.info.CongViec.NGAYKETTHUC_KEHOACH)}
+                                    </Text>
+                                }
+                            />
+                        }
+
                         <ListItem style={DetailTaskStyle.listItemContainer}
                             hideChevron={true}
                             title={
@@ -280,7 +297,7 @@ export default class TaskDescription extends Component {
                             }
                             subtitle={
                                 <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    Đang thực hiện
+                                    {this.props.info.CongViec.PHANTRAMHOANTHANH === 100 ? `Đã hoàn thành vào ${convertDateTimeToTitle(this.props.info.CongViec.NGAYKETTHUC_THUCTE)}` : "Đang thực hiện"}
                                 </Text>
                             } />
 
@@ -294,6 +311,7 @@ export default class TaskDescription extends Component {
                             subtitle={
                                 <HTMLView
                                     value={this.props.info.CongViec.NOIDUNGCONGVIEC}
+                                    stylesheet={{ p: DetailTaskStyle.listItemSubTitleContainer }}
                                 />
                             } />
 

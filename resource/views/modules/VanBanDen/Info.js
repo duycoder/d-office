@@ -89,8 +89,10 @@ class MainInfoPublishDoc extends Component {
             );
         }
 
-        let trungLichHop = null;
-        if (!this.props.info.isDuplicateCalendar) {
+        let trungLichHop = (
+            <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>KHÔNG</Text>
+        );
+        if (this.props.info.isDuplicateCalendar) {
             trungLichHop = (
                 <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                     <View style={{ flex: 1 }}>
@@ -114,10 +116,6 @@ class MainInfoPublishDoc extends Component {
                         </View>
                     }
                 </View>
-            )
-        } else {
-            trungLichHop = (
-                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>KHÔNG</Text>
             )
         }
 

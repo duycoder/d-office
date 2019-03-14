@@ -13,8 +13,8 @@ import HTMLView from 'react-native-htmlview';
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //common
-import { convertDateToString } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { convertDateToString, asyncDelay, formatLongText } from '../../../common/Utilities';
+import { Colors, API_URL } from '../../../common/SystemConstant';
 
 export default class MainInfoSignDoc extends Component {
     constructor(props) {
@@ -58,7 +58,7 @@ export default class MainInfoSignDoc extends Component {
         const { info } = this.state;
         let sohieu = (
             <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                {this.state.info.SOHIEU}
+                {info.SOHIEU}
             </Text>
         );
         if (info.SOHIEU === null || info.SOHIEU === "") {
@@ -82,7 +82,7 @@ export default class MainInfoSignDoc extends Component {
                         </Text>
                     }
                     subtitle={
-                        <Text style={[DetailSignDocStyle.listItemSubTitleContainer, { color: '#262626' }]}>
+                        <Text style={[DetailSignDocStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
                             <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
                             <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
                             <Text>{`Người ký: ${NGUOIKY}`}</Text>
@@ -137,7 +137,7 @@ export default class MainInfoSignDoc extends Component {
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.props.info.TRICHYEU}
+                                    {this.state.info.TRICHYEU}
                                 </Text>
                             } />
 

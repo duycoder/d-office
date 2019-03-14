@@ -208,14 +208,24 @@ class BaseList extends Component {
             }
 
             subtitle={
-              <RnText style={[item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal, ListPublishDocStyle.abridgment]}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Trích yếu:
+              <View>
+                <RnText style={[item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal, ListPublishDocStyle.abridgment]}>
+                  <RnText style={{ fontWeight: 'bold' }}>
+                    Trích yếu:
+                  </RnText>
+                  <RnText>
+                    {' ' + formatLongText(item.TRICHYEU, 50)}
+                  </RnText>
                 </RnText>
-                <RnText>
-                  {' ' + formatLongText(item.TRICHYEU, 50)}
+                <RnText style={[item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal, ListPublishDocStyle.abridgment]}>
+                  <RnText style={{ fontWeight: 'bold' }}>
+                    Số theo sổ:
+                  </RnText>
+                  <RnText>
+                    {` ${item.SODITHEOSO} - ${item.TENSOVANBAN.replace( /^\D+/g, '')}`}
+                  </RnText>
                 </RnText>
-              </RnText>
+              </View>
             }
           />
         </TouchableOpacity>
