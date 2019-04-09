@@ -142,8 +142,6 @@ class CreateSubTask extends Component {
 				executing: false
 			});
 
-			resultJson.Status && this.props.updateExtendsNavParams({ check: true });
-
 			Toast.show({
 				text: resultJson.Status ? 'Tạo công việc con thành công' : 'Tạo công việc con không thành công',
 				type: resultJson.Status ? 'success' : 'danger',
@@ -153,6 +151,7 @@ class CreateSubTask extends Component {
 				duration: 3000,
 				onClose: () => {
 					if (resultJson.Status) {
+						this.props.updateExtendsNavParams({ check: true });
 						this.navigateBackToDetail();
 					}
 				}

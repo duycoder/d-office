@@ -253,7 +253,6 @@ class AssignTask extends Component {
 				resultJson.GroupTokens.forEach(token => {
 					pushFirebaseNotify(content, token, 'notification');
 				});
-				this.props.updateExtendsNavParams({ check: true });
 			}
 
 			Toast.show({
@@ -266,6 +265,7 @@ class AssignTask extends Component {
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {
+						this.props.updateExtendsNavParams({ check: true });
 						this.navigateBackToDetail();
 					}
 				}
@@ -280,7 +280,7 @@ class AssignTask extends Component {
 
 		if (this.state.loading) {
 			bodyContent = dataLoading(true);
-		} 
+		}
 		else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (

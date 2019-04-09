@@ -132,8 +132,6 @@ class RescheduleTask extends Component {
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, 'notification');
                 });
-
-                this.props.updateExtendsNavParams({ check: true });
             }
 
             //hiển thị kết quả xử lý
@@ -146,6 +144,7 @@ class RescheduleTask extends Component {
                 duration: 3000,
                 onClose: () => {
                     if (resultJson.Status) {
+                        this.props.updateExtendsNavParams({ check: true });
                         this.navigateBackToDetail();
                     }
                 }

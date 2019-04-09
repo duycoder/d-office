@@ -81,6 +81,7 @@ class Brief extends Component {
       docType: this.state.docType
     }
     this.props.updateCoreNavParams(pastNavParams);
+    this.props.updateExtendsNavParams({});
     this.props.navigation.goBack();
   }
   /**
@@ -176,7 +177,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

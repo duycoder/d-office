@@ -173,7 +173,7 @@ class WorkflowStreamProcess extends Component {
                     pushFirebaseNotify(content, token, "notification");
                 });
 
-                this.props.updateExtendsNavParams({ check: true });
+
             }
 
             Toast.show({
@@ -186,6 +186,7 @@ class WorkflowStreamProcess extends Component {
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
                     if (resultJson.Status) {
+                        this.props.updateExtendsNavParams({ check: true });
                         this.navigateBackToDetail();
                     }
                 }

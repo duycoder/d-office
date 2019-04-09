@@ -155,8 +155,6 @@ class WorkflowReplyReview extends Component {
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, "notification");
             });
-
-            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -169,6 +167,7 @@ class WorkflowReplyReview extends Component {
             onClose: () => {
                 this.props.resetProcessUsers();
                 if (resultJson.Status) {
+                    this.props.updateExtendsNavParams({ check: true });
                     this.navigateBack();
                 }
             }

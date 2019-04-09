@@ -138,7 +138,6 @@ class ApproveProgressTask extends Component {
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });
-            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -150,6 +149,7 @@ class ApproveProgressTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
+                    this.props.updateExtendsNavParams({ check: true });
                     this.navigateBackToDetail();
                 }
             }
@@ -172,16 +172,16 @@ class ApproveProgressTask extends Component {
                         </Title>
                     </Body>
 
-                    <Right style={NativeBaseStyle.right}/>
+                    <Right style={NativeBaseStyle.right} />
                 </Header>
 
                 <Content>
                     <Form>
-                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center'}}>
+                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
                             <Label>Nội dung phản hồi</Label>
-                            <Textarea rowSpan={5} style={{width: '100%'}} 
-                            value={this.state.content} bordered
-                            onChangeText={(content) => this.setState({ content })} />
+                            <Textarea rowSpan={5} style={{ width: '100%' }}
+                                value={this.state.content} bordered
+                                onChangeText={(content) => this.setState({ content })} />
                         </Item>
 
                         <Item stackedLabel>

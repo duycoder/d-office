@@ -13,7 +13,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-    Container, Header, Left, Right, Title,Item, Toast,
+    Container, Header, Left, Right, Title, Item, Toast,
     Button, Text, Body, Form, Label, Input, Textarea, Content
 } from 'native-base';
 
@@ -44,7 +44,7 @@ class ApproveRescheduleTask extends Component {
 
             taskId: props.coreNavParams.taskId,
             taskType: props.coreNavParams.taskType,
-            
+
             // canApprove: props.extendsNavParams.canApprove,
             deadlineRequest: props.extendsNavParams.deadline,
             deadlineApprove: props.extendsNavParams.deadline,
@@ -56,7 +56,7 @@ class ApproveRescheduleTask extends Component {
     }
 
     onSelectDate = (dateValue) => {
-        if(!util.isNull(dateValue)){
+        if (!util.isNull(dateValue)) {
             let split = dateValue.split('/');
             this.setState({
                 deadlineApprove: new Date(split[2], split[1] - 1, split[0])
@@ -97,35 +97,35 @@ class ApproveRescheduleTask extends Component {
         })
 
         if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-			const message = this.props.userInfo.Fullname + ' đã phê duyệt yêu cầu lùi hạn';
-			const content = {
-				title: 'PHÊ DUYỆT YÊU CẦU GIA HẠN CÔNG VIỆC',
-				message,
-				isTaskNotification: true,
-				targetScreen: 'DetailTaskScreen',
-				targetTaskId: this.state.taskId,
-				targetTaskType: this.state.taskType
-			}
+            const message = this.props.userInfo.Fullname + ' đã phê duyệt yêu cầu lùi hạn';
+            const content = {
+                title: 'PHÊ DUYỆT YÊU CẦU GIA HẠN CÔNG VIỆC',
+                message,
+                isTaskNotification: true,
+                targetScreen: 'DetailTaskScreen',
+                targetTaskId: this.state.taskId,
+                targetTaskType: this.state.taskType
+            }
 
-			resultJson.GroupTokens.forEach(token => {
-				pushFirebaseNotify(content, token, 'notification');
-            });			
-            this.props.updateExtendsNavParams({ check: true });
-		}
+            resultJson.GroupTokens.forEach(token => {
+                pushFirebaseNotify(content, token, 'notification');
+            });
+        }
 
-		Toast.show({
-			text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
-			type: resultJson.Status ? 'success' : 'danger',
-			buttonText: "OK",
-			buttonStyle: { backgroundColor: Colors.WHITE },
-			buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-			duration: 3000,
-			onClose: () => {
-				if (resultJson.Status) {
-					this.navigateBack();
-				}
-			}
-		});
+        Toast.show({
+            text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
+            type: resultJson.Status ? 'success' : 'danger',
+            buttonText: "OK",
+            buttonStyle: { backgroundColor: Colors.WHITE },
+            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+            duration: 3000,
+            onClose: () => {
+                if (resultJson.Status) {
+                    this.props.updateExtendsNavParams({ check: true });
+                    this.navigateBack();
+                }
+            }
+        });
     }
 
     navigateBack = () => {
@@ -182,10 +182,10 @@ class ApproveRescheduleTask extends Component {
                             />
                         </Item>
 
-                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center'}}>
+                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
                             <Label>Phản hồi</Label>
 
-                            <Textarea rowSpan={5} bordered style={{width: '100%'}}
+                            <Textarea rowSpan={5} bordered style={{ width: '100%' }}
                                 value={this.state.message}
                                 onChangeText={message => this.setState({ message })} />
                         </Item>
@@ -212,7 +212,7 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         coreNavParams: state.navState.coreNavParams,
-		extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

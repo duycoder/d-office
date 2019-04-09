@@ -96,7 +96,6 @@ class DenyRescheduleTask extends Component {
                 pushFirebaseNotify(content, token, 'notification');
             });
 
-            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -108,6 +107,7 @@ class DenyRescheduleTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
+                    this.props.updateExtendsNavParams({ check: true });
                     this.navigateBack();
                 }
             }

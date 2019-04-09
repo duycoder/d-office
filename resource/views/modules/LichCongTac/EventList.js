@@ -134,11 +134,9 @@ class Schedules extends Component {
       nav: props.nav,
       data: props.data
     }
-    this.renderItem = this.renderItem.bind(this);
-    this.navigateToDetail = this.navigateToDetail.bind(this);
   }
 
-  renderItem({ item, index }) {
+  renderItem = ({ item, index }) => {
     return (
       <View>
           <ListItem

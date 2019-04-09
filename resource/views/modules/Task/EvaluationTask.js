@@ -161,8 +161,6 @@ class EvaluationTask extends Component {
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });
-
-            this.props.updateExtendsNavParams({ check: true });
         }
 
         Toast.show({
@@ -174,6 +172,7 @@ class EvaluationTask extends Component {
             duration: 3000,
             onClose: () => {
                 if (resultJson.Status) {
+                    this.props.updateExtendsNavParams({ check: true });
                     this.navigateBackToDetail(true);
                 }
             }

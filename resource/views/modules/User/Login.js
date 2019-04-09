@@ -168,60 +168,13 @@ class Login extends Component {
 
         await asyncDelay(2000);
 
-        if (resultJson != null && resultJson.hasOwnProperty("Message")) {
-            this.setState({
-                loading: false
-            }, () => {
-                Toast.show({
-                    text: 'Lỗi máy chủ!',
-                    textStyle: { fontSize: moderateScale(12, 1.5) },
-                    buttonText: "OK",
-                    buttonStyle: { backgroundColor: "#acb7b1" },
-                    duration: 3000
-                });
-            });
-        }
-        else if (!util.isNull(resultJson)) {
-            //tạo token cho thiết bị nếu lần đầu đăng nhập
-            await FCM.getFCMToken().then(token => {
-                resultJson.Token = token;
-            });
-
-
-            //trường hợp lần đầu cài đặt thiết bị token có thể bị null;
-            if (util.isNull(resultJson.Token) || util.isEmpty(resultJson.Token)) {
-                await FCM.on(FCMEvent.RefreshToken, token => {
-                    resultJson.Token = token;
-                });
-            }
-
-            //cập nhật token vào csdl qua api
-
-            const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json; charset=utf-8',
-                },
-                body: JSON.stringify({
-                    userId: resultJson.ID,
-                    token: resultJson.Token
-                })
-            }).then(response => response.json()).then(responseJson => {
-                return responseJson;
-            });
-
-            if (activeTokenResult) {
-                AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
-                    this.props.setUserInfo(resultJson);
-                    this.props.navigation.navigate('LoadingScreen');
-                });
-            } else {
+        if (resultJson != null) {
+            if (resultJson.hasOwnProperty("Message")) {
                 this.setState({
                     loading: false
                 }, () => {
                     Toast.show({
-                        text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
+                        text: 'Lỗi máy chủ!',
                         textStyle: { fontSize: moderateScale(12, 1.5) },
                         buttonText: "OK",
                         buttonStyle: { backgroundColor: "#acb7b1" },
@@ -229,7 +182,57 @@ class Login extends Component {
                     });
                 });
             }
-        } else {
+            else {
+                //tạo token cho thiết bị nếu lần đầu đăng nhập
+                await FCM.getFCMToken().then(token => {
+                    resultJson.Token = token;
+                });
+    
+    
+                //trường hợp lần đầu cài đặt thiết bị token có thể bị null;
+                if (util.isNull(resultJson.Token) || util.isEmpty(resultJson.Token)) {
+                    await FCM.on(FCMEvent.RefreshToken, token => {
+                        resultJson.Token = token;
+                    });
+                }
+    
+                //cập nhật token vào csdl qua api
+    
+                const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json; charset=utf-8',
+                    },
+                    body: JSON.stringify({
+                        userId: resultJson.ID,
+                        token: resultJson.Token
+                    })
+                }).then(response => response.json()).then(responseJson => {
+                    return responseJson;
+                });
+    
+                if (activeTokenResult) {
+                    AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
+                        this.props.setUserInfo(resultJson);
+                        this.props.navigation.navigate('LoadingScreen');
+                    });
+                } else {
+                    this.setState({
+                        loading: false
+                    }, () => {
+                        Toast.show({
+                            text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
+                            textStyle: { fontSize: moderateScale(12, 1.5) },
+                            buttonText: "OK",
+                            buttonStyle: { backgroundColor: "#acb7b1" },
+                            duration: 3000
+                        });
+                    });
+                }
+            }
+        }
+        else {
             this.setState({
                 loading: false
             }, () => {
