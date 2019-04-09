@@ -273,7 +273,7 @@ class Login extends Component {
 
                         <Text style={[LoginStyle.formHeaderSoftwareName,
                         { display: this.state.headerComponentsDisplayStatus }]}>
-                            eBiz Office
+                            Ebiz Office
                         </Text>
                     </Animated.View>
                     <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
@@ -317,6 +317,7 @@ class Login extends Component {
                                         returnKeyType='done'
                                         returnKeyLabel='Xong'
                                         ref={ref=>this.passwordInput = ref} 
+                                        
                                     />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
                                         <Image source={(this.state.isHidePassword) ? showPasswordIcon : hidePasswordIcon}

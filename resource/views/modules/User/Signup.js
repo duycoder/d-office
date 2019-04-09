@@ -226,7 +226,7 @@ class Signup extends Component {
       return;
     }
 
-    const url = `${API_URL}/api/Account/SignUp`;
+    const url = `${API_URL}/api/account/SignUp`;
     const headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
@@ -264,7 +264,7 @@ class Signup extends Component {
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
         duration: 3000,
         onClose: () => {
-          this.props.navigation.navigate('LoginScreen');
+          this.props.navigation.goBack();
         }
       })
     }
@@ -282,7 +282,7 @@ class Signup extends Component {
   }
 
   navigateBackToLogin = () => {
-    this.props.navigation.navigate('LoginScreen');
+    this.props.navigation.goBack();
   }
 
   render() {

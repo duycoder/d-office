@@ -85,7 +85,7 @@ class Detail extends Component {
 
         this.setState({
             loading: false,
-            docInfo: resultJson,
+            docInfo: resultJson === null ? {} : resultJson,
             isUnAuthorize: util.isNull(resultJson)
         });
     }
@@ -122,8 +122,8 @@ class Detail extends Component {
             else {
                 this.props.updateExtendsNavParams({from: true});
             }
-            this.props.navigation.goBack();
         }
+        this.props.navigation.goBack();
     }
 
     navigateToDetailDoc = (screenName, targetScreenParams) => {

@@ -18,7 +18,7 @@ import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { ListItem } from 'react-native-elements';
 import {
     Container, Header, Title, Content,
-    Left, Body, Right, Text, Button
+    Left, Body, Right, Text, Button, Toast
 } from 'native-base';
 import renderIf from 'render-if';
 
@@ -61,12 +61,21 @@ class ListNotification extends Component {
                 taskType: "1"
             }
         }
-        else {
+        else if (itemType === "HSCV_VANBANDEN") {
             screenName = "VanBanDenDetailScreen";
             screenParam = {
                 docId: itemId,
                 docType: "1"
             }
+        }
+        else {
+            Toast.show({
+                text: 'Bạn không có quyền truy cập vào thông tin này!',
+                type: 'danger',
+                buttonText: "OK",
+                buttonStyle: { backgroundColor: Colors.WHITE },
+                buttonTextStyle: { color: Colors.LITE_BLUE },
+              });
         }
         this.props.updateCoreNavParams(screenParam);
         this.props.navigation.navigate(screenName);

@@ -83,7 +83,7 @@ class DetailTask extends Component {
 
         this.setState({
             loading: false,
-            taskInfo: resultJson,
+            taskInfo: resultJson === null ? {} : resultJson,
             subTaskData: resultJson.LstTask || []
         });
     }
@@ -182,8 +182,8 @@ class DetailTask extends Component {
     navigateBackToList = () => {
         if (this.state.taskInfo.hasOwnProperty("CongViec")) {
             this.props.updateExtendsNavParams({ check: this.state.check });
-            this.props.navigation.goBack();
         }
+        this.props.navigation.goBack();
     }
 
     //mở cuộc hội thoại

@@ -180,7 +180,6 @@ class AccountEditor extends Component {
         this.setState({
           loading: false
         });
-        console.log(responseJson);
         return responseJson;
       });
     if (result.Status) {

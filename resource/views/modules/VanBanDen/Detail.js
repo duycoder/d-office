@@ -101,7 +101,7 @@ class Detail extends Component {
 
         this.setState({
             loading: false,
-            docInfo: resultJson,
+            docInfo: resultJson === null ? {} : resultJson,
             isUnAuthorize: util.isNull(resultJson)
         });
     }
@@ -114,8 +114,8 @@ class Detail extends Component {
             else {
                 this.props.updateExtendsNavParams({from: "detail"});
             }
-            this.props.navigation.goBack();
         }
+        this.props.navigation.goBack();
     }
 
     navigateToBrief = () => {

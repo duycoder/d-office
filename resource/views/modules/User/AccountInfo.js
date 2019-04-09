@@ -26,7 +26,7 @@ import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
-import { authenticateLoading, dataLoading } from '../../../common/Effect';
+import { authenticateLoading, dataLoading, executeLoading } from '../../../common/Effect';
 import { convertDateToString } from '../../../common/Utilities';
 
 //redux
@@ -104,7 +104,7 @@ class AccountInfo extends Component {
   }
 
   componentDidMount = () => {
-    this.willFocusListener = this.props.navigator.addListener('didFocus', () => {
+    this.willFocusListener = this.props.navigation.addListener('didFocus', () => {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
@@ -194,7 +194,7 @@ class AccountInfo extends Component {
           </Content>
         </ImageBackground>
         {
-          dataLoading(this.state.loading)
+          executeLoading(this.state.loading)
         }
       </Container>
     );
