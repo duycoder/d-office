@@ -165,7 +165,7 @@ class WorkflowStreamProcess extends Component {
                     title: 'GỬI XỬ LÝ VĂN BẢN',
                     message,
                     isTaskNotification: false,
-                    targetScreen: resultJson.ItemType == MODULE_CONSTANT.VANBANDEN ? "VanBanDenDetailScreen" : "VanBanDiDetailScreen",
+                    targetScreen: resultJson.ItemType == MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen",
                     targetDocId: this.state.docId,
                     targetDocType: this.state.docType
                 }

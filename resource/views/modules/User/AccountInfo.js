@@ -75,6 +75,7 @@ class AccountInfo extends Component {
       dateOfBirth: this.state.dateOfBirth,
       mobilePhone: this.state.mobilePhone,
       address: this.state.address,
+      email: this.state.email
     }
     this.props.updateExtendsNavParams(targetScreenParams);
     this.props.navigation.navigate('AccountEditorScreen');

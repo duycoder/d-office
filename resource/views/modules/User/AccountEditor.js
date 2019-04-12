@@ -48,7 +48,7 @@ class AccountEditor extends Component {
   constructor(props) {
     super(props);
 
-    const { fullName, dateOfBirth, mobilePhone, address } = props.extendsNavParams;
+    const { fullName, dateOfBirth, mobilePhone, address, email } = props.extendsNavParams;
 
     this.state = {
       id: props.userInfo.ID,
@@ -58,11 +58,13 @@ class AccountEditor extends Component {
       dateOfBirth: dateOfBirth,
       mobilePhone: mobilePhone,
       address: address,
+      email: email,
       // state cũ
       TMPfullName: fullName,
       TMPdateOfBirth: dateOfBirth,
       TMPmobilePhone: mobilePhone,
       TMPaddress: address,
+      TMPemail: email,
 
       headerComponentsDisplayStatus: 'flex',
 
@@ -131,6 +133,11 @@ class AccountEditor extends Component {
         address: this.state.TMPaddress
       });
     }
+    if (this.state.email === EMPTY_STRING) {
+      this.setState({
+        email: this.state.TMPemail
+      });
+    }
 
     if (!this.state.mobilePhone.match(/^\d{8,13}$/)) {
       this.setState({
@@ -165,8 +172,6 @@ class AccountEditor extends Component {
       DIENTHOAI: this.state.mobilePhone,
       DIACHI: this.state.address
     });
-
-    console.log(new Date(this.state.dateOfBirth));
 
     await asyncDelay(2000);
 
@@ -240,6 +245,14 @@ class AccountEditor extends Component {
                   onChangeText={this._handleFieldNameChange('fullName')}
                   placeholder={this.state.fullName}
                   autoCorrect={false}
+                />
+              </Item>
+              <Item stackedLabel>
+                <Label>Email</Label>
+                <Input
+                  onChangeText={this._handleFieldNameChange('email')}
+                  placeholder={this.state.email}
+                  keyboardType="email-address"
                 />
               </Item>
               <Item stackedLabel style={{ height: verticalScale(100) }}>
