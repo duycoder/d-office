@@ -91,7 +91,7 @@ class AccountInfo extends Component {
       userName: result.TENDANGNHAP,
       fullName: result.HOTEN,
       email: result.EMAIL,
-      dateOfBirth: convertDateToString(result.NGAYSINH),
+      dateOfBirth: result.NGAYSINH,
       mobilePhone: result.DIENTHOAI,
       address: result.DIACHI,
       loading: false
@@ -128,7 +128,7 @@ class AccountInfo extends Component {
 
     const fullNameText = (fullName === EMPTY_STRING) ? '(Không có)' : fullName;
     const emailText = (email === EMPTY_STRING) ? '(Không có)' : email;
-    const dateOfBirthText = (dateOfBirth === EMPTY_STRING) ? '(Không có)' : dateOfBirth;
+    const dateOfBirthText = dateOfBirth ? convertDateToString(dateOfBirth) : '(Không có)';
     const mobilePhoneText = (mobilePhone === EMPTY_STRING) ? '(Không có)' : mobilePhone;
     const addressText = (address === EMPTY_STRING) ? '(Không có)' : address;
 

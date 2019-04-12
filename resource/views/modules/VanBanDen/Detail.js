@@ -74,7 +74,7 @@ class Detail extends Component {
     }
 
     componentDidMount = () => {
-        console.tron.log(this.props.extendsNavParams)
+        // console.tron.log(this.props.extendsNavParams)
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {

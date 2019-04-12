@@ -28,12 +28,12 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { scale, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay } from '../../../common/Utilities'
+import { asyncDelay, convertDateToString } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-
+import * as navAction from '../../../redux/modules/Nav/Action';
 //fcm
 import FCM, { FCMEvent } from 'react-native-fcm';
 
@@ -55,13 +55,13 @@ class AccountEditor extends Component {
 
       // state hiện tại
       fullName: fullName,
-      dateOfBirth: dateOfBirth,
+      dateOfBirth: dateOfBirth || new Date(),
       mobilePhone: mobilePhone,
       address: address,
       email: email,
       // state cũ
       TMPfullName: fullName,
-      TMPdateOfBirth: dateOfBirth,
+      TMPdateOfBirth: dateOfBirth || new Date(),
       TMPmobilePhone: mobilePhone,
       TMPaddress: address,
       TMPemail: email,
@@ -109,7 +109,6 @@ class AccountEditor extends Component {
   }
 
   async onSaveAccountInfo() {
-
     this.setState({
       loading: true
     });
@@ -139,12 +138,29 @@ class AccountEditor extends Component {
       });
     }
 
-    if (!this.state.mobilePhone.match(/^\d{8,13}$/)) {
+    if (this.state.mobilePhone != EMPTY_STRING && !this.state.mobilePhone.match(/^\d{8,13}$/)) {
       this.setState({
         loading: false
       }, () => {
         Toast.show({
           text: 'Hãy nhập đúng số điện thoại',
+          type: 'danger',
+          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+          buttonText: "OK",
+          buttonStyle: { backgroundColor: Colors.WHITE },
+          buttonTextStyle: { color: Colors.LITE_BLUE },
+          duration: 3000
+        });
+      });
+      return;
+    }
+
+    if (this.state.email != EMPTY_STRING && !this.state.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+      this.setState({
+        loading: false
+      }, () => {
+        Toast.show({
+          text: 'Hãy nhập đúng email',
           type: 'danger',
           textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
           buttonText: "OK",
@@ -162,15 +178,16 @@ class AccountEditor extends Component {
       'Content-Type': 'application/json; charset=utf-8',
     });
 
-    let DateFormat = this.state.dateOfBirth.split('/');
-    let ConvertDateFormat = DateFormat[1] + '/' + DateFormat[0] + '/' + DateFormat[2];
+    // let DateFormat = this.state.dateOfBirth.split('/');
+    // let ConvertDateFormat = DateFormat[1] + '/' + DateFormat[0] + '/' + DateFormat[2];
 
     const body = JSON.stringify({
       ID: this.state.id,
       HOTEN: this.state.fullName,
-      NGAYSINH: new Date(ConvertDateFormat),
+      NGAYSINH: new Date(this.state.dateOfBirth),
       DIENTHOAI: this.state.mobilePhone,
-      DIACHI: this.state.address
+      DIACHI: this.state.address,
+      EMAIL: this.state.email
     });
 
     await asyncDelay(2000);
@@ -259,10 +276,10 @@ class AccountEditor extends Component {
                 <Label>Ngày sinh</Label>
                 <DatePicker
                   style={{ width: scale(300), alignSelf: 'center', marginVertical: 30 }}
-                  date={this.state.dateOfBirth}
+                  date={(this.state.dateOfBirth)}
                   mode='date'
                   placeholder='Chọn ngày sinh'
-                  format='DD/MM/YYYY'
+                  format='YYYY/MM/DD'
                   minDate={'01/01/1900'}
                   maxDate={new Date()}
                   confirmBtnText='XÁC NHẬN'
