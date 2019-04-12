@@ -184,7 +184,7 @@ class AccountEditor extends Component {
     const body = JSON.stringify({
       ID: this.state.id,
       HOTEN: this.state.fullName,
-      NGAYSINH: new Date(this.state.dateOfBirth),
+      NGAYSINH: new Date(this.state.dateOfBirth.replace(/\//g, "-")),
       DIENTHOAI: this.state.mobilePhone,
       DIACHI: this.state.address,
       EMAIL: this.state.email
