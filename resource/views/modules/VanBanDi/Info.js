@@ -41,8 +41,6 @@ export default class MainInfoSignDoc extends Component {
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        console.tron.log(resultJson)
-
         await asyncDelay(2000);
 
         this.setState({
@@ -72,7 +70,7 @@ export default class MainInfoSignDoc extends Component {
         }
 
         let relateDoc;
-        if (this.state.docInfo && this.state.docInfo.hasOwnProperty("ID")) {
+        if (this.state.docInfo && this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
             const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
             relateDoc = (
                 <ListItem

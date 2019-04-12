@@ -74,56 +74,60 @@ export default class TaskDescription extends Component {
         let relateDoc;
         if (this.state.docInfo) {
             if (this.state.isArrivedDoc) {
-                const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
-                relateDoc = (
-                    <ListItem
-                        style={DetailTaskStyle.listItemContainer}
-                        hideChevron={true}
-                        title={
-                            <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                VĂN BẢN ĐẾN LIÊN QUAN
-                            </Text>
-                        }
-                        subtitle={
-                            <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
-                                <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
-                                <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
-                                <Text>{`Người ký: ${NGUOIKY}`}</Text>
-                            </Text>
-                        }
-                        onPress={
-                            () => this.getDetailParent("VanBanDenDetailScreen", { docId: ID, docType: 1, from: "detail" })
-                        }
-                        containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
-                    />
-                );
+                if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
+                    const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
+                    relateDoc = (
+                        <ListItem
+                            style={DetailTaskStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                    VĂN BẢN ĐẾN LIÊN QUAN
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
+                                    <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
+                                    <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
+                                    <Text>{`Người ký: ${NGUOIKY}`}</Text>
+                                </Text>
+                            }
+                            onPress={
+                                () => this.getDetailParent("VanBanDenDetailScreen", { docId: ID, docType: 1, from: "detail" })
+                            }
+                            containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
+                        />
+                    );
+                }
             }
             else {
-                const { TRICHYEU, ID } = this.state.docInfo.VanBanTrinhKy,
-                    { STR_DOKHAN, STR_NGUOIKY, STR_DOUUTIEN } = this.state.docInfo;
-                relateDoc = (
-                    <ListItem
-                        style={DetailTaskStyle.listItemContainer}
-                        hideChevron={true}
-                        title={
-                            <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                VĂN BẢN ĐI LIÊN QUAN
+                if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
+                    const { TRICHYEU, ID } = this.state.docInfo.VanBanTrinhKy,
+                        { STR_DOKHAN, STR_NGUOIKY, STR_DOUUTIEN } = this.state.docInfo;
+                    relateDoc = (
+                        <ListItem
+                            style={DetailTaskStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                    VĂN BẢN ĐI LIÊN QUAN
                             </Text>
-                        }
-                        subtitle={
-                            <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
-                                <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
-                                <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
-                                <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
-                                <Text>{`Độ khẩn: ${STR_DOKHAN}`}</Text>
-                            </Text>
-                        }
-                        onPress={
-                            () => this.getDetailParent("VanBanDiDetailScreen", { docId: ID, docType: 1, from: "detail" })
-                        }
-                        containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
-                    />
-                );
+                            }
+                            subtitle={
+                                <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
+                                    <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
+                                    <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
+                                    <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
+                                    <Text>{`Độ khẩn: ${STR_DOKHAN}`}</Text>
+                                </Text>
+                            }
+                            onPress={
+                                () => this.getDetailParent("VanBanDiDetailScreen", { docId: ID, docType: 1, from: "detail" })
+                            }
+                            containerStyle={{ backgroundColor: this.state.fromBrief ? 'transparent' : 'rgba(189,198,207, 0.6)' }}
+                        />
+                    );
+                }
             }
         }
 
