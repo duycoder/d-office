@@ -4,4 +4,4 @@ import App from './App';
 
 YellowBox.ignoreWarnings(['Warning: ...']);
 
-AppRegistry.registerComponent('VanBanDOJI', () => App);
+AppRegistry.registerComponent('EbizOffice', () => App);

@@ -127,8 +127,30 @@ class TestFCM extends Component {
                         GỬI
                     </Text>
                 </TouchableOpacity>
-            </View >
+            </View>
         )
     }
 }
-export { TestFCM, TestDownLoad }
+
+class TestNav extends Component {
+    render() {
+        // console.tron.log(this.props.navigation)
+        return (
+            <TouchableOpacity 
+                style={{
+                    width: 100,
+                    height: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: Colors.LITE_BLUE,
+                    borderRadius: 5
+                }}
+                onPress={() => this.props.navigation.navigate("VanBanDenDetailScreen", {docId: 336, docType: 1})}>
+                <Text>Navigate to Detail Task</Text>
+            </TouchableOpacity>
+        )
+    }
+}
+
+
+export { TestFCM, TestDownLoad, TestNav }

@@ -9,6 +9,7 @@ import {
     AsyncStorage, View, Text, Image,
     ImageBackground
 } from 'react-native'
+import { NavigationActions } from 'react-navigation';
 
 //util
 import { appNavigate, isObjectHasValue } from '../../common/Utilities';
@@ -37,8 +38,8 @@ registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 10,
-        duration: 8,
+        timing: 500,
+        duration: 40,
         notif: ''
     }
 
@@ -89,12 +90,32 @@ class Loading extends Component {
                     if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
                         screenName = 'ListNotificationScreen'
                     } else {
-                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
+                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
                         screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     }
+                    // const resetAction = NavigationActions.reset({
+                    //     index: 1,
+                    //     actions: [
+                    //         NavigationActions.navigate({ routeName: 'App' }),
+                    //         NavigationActions.navigate({ routeName: 'stack' }),
+                    //         NavigationActions.navigate({ routeName: screenName })
+                    //     ]
+                    // });
+                    // this.props.navigation.dispatch(resetAction);
+                    // this.props.navigation.dispatch(NavigationActions.reset({
+                    //     index: 0,
+                    //     actions: [NavigationActions.navigate({ routeName: 'App' })]
+                    // }))
+                    // this.props.navigation.popToTop();
+                    // this.props.navigation.replace(screenName)
+                    // appNavigate(this.props.navigation, 'stack');
                     appNavigate(this.props.navigation, screenName, screenParam);
                 }, this.state.timing)
             } else {
+                // this.props.navigation.dispatch(NavigationActions.reset({
+                //     index: 0,
+                //     actions: [NavigationActions.navigate({ routeName: 'Auth' })]
+                // }))
                 appNavigate(this.props.navigation, 'Auth');
             }
         }
@@ -113,10 +134,10 @@ class Loading extends Component {
                 backgroundColor: Colors.LITE_BLUE
             }}>
                 <Image source={uriLogo} style={{
-                    width:150,
-                    height:150,
+                    width: 150,
+                    height: 150,
                     marginBottom: verticalScale(20)
-                }}/>
+                }} />
                 <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.WHITE} />
             </View>
         );

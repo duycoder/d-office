@@ -1,4 +1,9 @@
 {
-  "name": "VanBanDOJI",
-  "displayName": "QLVB DoJi"
+  "name": "EbizOffice",
+  "displayName": "Ebiz Office",
+  "icon": {
+    "ios": "/resource/assets/images/AppIcon/EbizVNIO-logo-iOS.png",
+    "android": "/resource/assets/images/AppIcon/EbizVNIO-logo-Android.png",
+    "default": "/resource/assets/images/AppIcon/EbizVNIO-logo.png"
+  }
 }
