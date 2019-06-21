@@ -475,7 +475,7 @@ class DetailTask extends Component {
                     <Right style={NativeBaseStyle.right}>
                         <Button transparent onPress={this.onOpenComment}>
                             <Form style={DetailTaskStyle.commentButtonContainer}>
-                                <NbIcon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
+                                <NbIcon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
                                 {
                                     renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
                                         <Form style={DetailTaskStyle.commentCircleContainer}>

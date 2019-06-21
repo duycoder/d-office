@@ -331,7 +331,7 @@ class Detail extends Component {
                     <Right style={NativeBaseStyle.right}>
                         <Button transparent onPress={this.onOpenComment}>
                             <Form style={DetailSignDocStyle.commentButtonContainer}>
-                                <Icon name='ios-chatbubbles-outline' style={{ color: Colors.WHITE }} />
+                                <Icon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
                                 {
                                     renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.CommentCount > 0)(
                                         <Form style={DetailSignDocStyle.commentCircleContainer}>
@@ -409,7 +409,7 @@ class DetailContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-attach-outline' style={TabStyle.activeText} />
+                            <Icon name='ios-attach' style={TabStyle.activeText} />
                             <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 ĐÍNH KÈM
                             </Text>

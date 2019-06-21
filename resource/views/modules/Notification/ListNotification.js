@@ -84,7 +84,7 @@ class ListNotification extends Component {
     componentDidMount = async () => {
         const userInfo = this.state.userInfo;
         userInfo.numberUnReadMessage = 0;
-
+        await AsyncStorage.removeItem('firebaseNotification');
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
     }
 

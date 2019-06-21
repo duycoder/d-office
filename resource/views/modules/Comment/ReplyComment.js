@@ -388,7 +388,7 @@ class ReplyComment extends Component {
       attachmentContent = (
         <View style={AttachCommentStyle.commentAttachContainer}>
           <View style={AttachCommentStyle.commentAttachInfo}>
-            <RneIcon name='ios-attach-outline' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
+            <RneIcon name='ios-attach' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
             <Text style={AttachCommentStyle.commentAttachText}>
               {formatLongText(this.state.comment.ATTACH.TENTAILIEU, 30)}
             </Text>

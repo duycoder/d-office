@@ -26,19 +26,20 @@ import * as userAction from '../../redux/modules/User/Action';
 
 
 //firebase
-import FCM from 'react-native-fcm';
-import { registerAppListener, registerKilledListener } from '../../firebase/FireBaseListener';
+// import FCM from 'react-native-fcm';
+//import { registerAppListener, registerKilledListener } from '../../firebase/FireBaseListener';
 
 //style
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
 import { EMPTY_STRING, Colors } from '../../common/SystemConstant';
+import firebase, { Notification } from 'react-native-firebase';
 
-registerKilledListener();
+// registerKilledListener();
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 10,
-        duration: 8,
+        timing: 300,
+        duration: 1,
         notif: ''
     }
 
@@ -48,25 +49,135 @@ class Loading extends Component {
         });
     }
 
+    //kiểm tra permission firebase
+    async checkFirebasePermission() {
+        const enabled = await firebase.messaging().hasPermission();
+        if (!enabled) {
+            this.requestFirebasePermission();
+        }
+        // if (enabled) {
+        //     this.getFirebaseToken();
+        // } else {
+        //     this.requestFirebasePermission();
+        // }
+    }
+
+    //lấy token của firebase
+    async getFirebaseToken() {
+        // let fcmToken = await AsyncStorage.getItem('fcmToken');
+        // if (!fcmToken) {
+        //     fcmToken = await firebase.messaging().getToken();
+        //     if (fcmToken) {
+        //         // user has a device token
+        //         console.log('fcmToken:', fcmToken);
+        //         await AsyncStorage.setItem('fcmToken', fcmToken);
+        //     }
+        // }
+        // console.log('fcmToken:', fcmToken);
+    }
+
+    //yêu cầu quyền từ firebase
+    async requestFirebasePermission() {
+        try {
+            await firebase.messaging().requestPermission();
+            // // User has authorised
+            // this.getFirebaseToken();
+        } catch (error) {
+            // User has rejected permissions
+            console.log('permission rejected');
+        }
+    }
+
+    async createNotificationListeners() {
+        this.notificationInitialization = firebase.notifications()
+            .getInitialNotification().then((message) => {
+            });
+
+        this.notificationListener = firebase.notifications().onNotification((notification) => {
+            const { title, body } = notification;
+
+            this.storeNotification(title);
+
+            const localNotification = new firebase.notifications.Notification({
+                sound: 'sampleaudio',
+                show_in_foreground: true,
+            })
+                .setSound('sampleaudio.wav')
+                .setNotificationId(notification.notificationId)
+                .setTitle(notification.title)
+                .setBody(notification.body)
+                .android.setChannelId('fcm_FirebaseNotifiction_default_channel') // e.g. the id you chose above
+                //.android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
+                .android.setColor('#00AEEF') // you can set a color here
+                .android.setPriority(firebase.notifications.Android.Priority.High);
+
+            firebase.notifications()
+                .displayNotification(localNotification)
+                .catch(err => console.error(err));
+        });
+
+        const channel = new firebase.notifications.Android.Channel('fcm_FirebaseNotifiction_default_channel', 'Demo app name', firebase.notifications.Android.Importance.High)
+            .setDescription('Demo app description')
+            .setSound('sampleaudio.wav');
+        firebase.notifications().android.createChannel(channel);
+
+        /*
+        * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+        * */
+        this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+            const { title, body } = notificationOpen.notification;
+            // console.log('onNotificationOpened:');
+            // Alert.alert(title, body)
+            // alert(title);
+        });
+
+        /*
+        * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+        * */
+        const notificationOpen = await firebase.notifications().getInitialNotification();
+        if (notificationOpen) {
+            const { title, body } = notificationOpen.notification;
+            await AsyncStorage.setItem('firebaseNotification', JSON.stringify(title));
+            // await AsyncStorage.setItem('firebaseNotification', notificationOpen.notification);
+            // console.log('getInitialNotification:');
+            // appNavigate(this.props.navigation, "ListNotificationScreen", null);
+        }
+        /*
+        * Triggered for data only payload in foreground
+        * */
+        this.messageListener = firebase.messaging().onMessage((message) => {
+            //process data message
+            //console.log("JSON.stringify:", JSON.stringify(message));
+            //alert('123');
+        });
+    }
+
+    async storeNotification(title) {
+        await AsyncStorage.setItem('firebaseNotification', JSON.stringify(title));
+    }
+
     async componentDidMount() {
         let intervalId = setInterval(this.progressing.bind(this), this.state.timing);
         this.setState({
             intervalId
         });
 
-        //cấu hình nhận thông báo gửi từ server
-        registerAppListener(this.props.navigation);
+        //kiểm tra permission
+        await this.checkFirebasePermission();
+
+        await this.createNotificationListeners();
+        //registerAppListener(this.props.navigation);
 
         //request để nhận thông báo gửi từ server
-        try {
-            const requestPermissionResult = await FCM.requestPermissions({
-                badge: true,
-                sound: true,
-                alert: true
-            });
-        } catch (err) {
-            console.log('Request Permission Error', err);
-        }
+        // try {
+        //     const requestPermissionResult = await FCM.requestPermissions({
+        //         badge: true,
+        //         sound: true,
+        //         alert: true
+        //     });
+        // } catch (err) {
+        //     console.log('Request Permission Error', err);
+        // }
     }
 
     async componentDidUpdate(preveProps, prevState) {
@@ -85,13 +196,13 @@ class Loading extends Component {
                 setTimeout(() => {
                     let screenName = EMPTY_STRING;
                     let screenParam = null;
-
-                    if (isObjectHasValue(storage.notification) && isObjectHasValue(storage.notification.custom_notification)) {
+                    if (storage.notification) {
                         screenName = 'ListNotificationScreen'
                     } else {
                         //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
                         screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     }
+                    //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     appNavigate(this.props.navigation, screenName, screenParam);
                 }, this.state.timing)
             } else {
@@ -100,8 +211,10 @@ class Loading extends Component {
         }
     }
 
-    componentWillUnmount = () => {
-        AsyncStorage.removeItem('firebaseNotification');
+    componentWillUnmount = async () => {
+        this.notificationListener;
+        this.notificationOpenedListener;
+        this.notificationInitialization;
     }
 
     render() {
@@ -113,10 +226,10 @@ class Loading extends Component {
                 backgroundColor: Colors.LITE_BLUE
             }}>
                 <Image source={uriLogo} style={{
-                    width:150,
-                    height:150,
+                    width: 150,
+                    height: 150,
                     marginBottom: verticalScale(20)
-                }}/>
+                }} />
                 <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.WHITE} />
             </View>
         );

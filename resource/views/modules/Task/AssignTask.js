@@ -88,6 +88,8 @@ class AssignTask extends Component {
 		const result = await fetch(url);
 		const resultJson = await result.json();
 
+		console.log(url);
+
 		this.setState({
 			loading: false,
 			dataAssignTask: resultJson,
@@ -318,7 +320,7 @@ class AssignTask extends Component {
 					tabBarUnderlineStyle={TabStyle.underLineStyle}>
 					<Tab heading={
 						<TabHeading style={(this.state.selectedTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-							<Icon name='ios-person-outline' style={(this.state.selectedTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)} />
+							<Icon name='ios-person' style={(this.state.selectedTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)} />
 							<Text style={[(this.state.selectedTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)]}>
 								XỬ LÝ CHÍNH
 							</Text>
@@ -368,7 +370,7 @@ class AssignTask extends Component {
 
 					<Tab heading={
 						<TabHeading style={(this.state.selectedTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-							<Icon name='ios-people-outline' style={(this.state.selectedTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)} />
+							<Icon name='ios-people' style={(this.state.selectedTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)} />
 							<Text style={[(this.state.selectedTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)]}>
 								THAM GIA XỬ LÝ
 							</Text>

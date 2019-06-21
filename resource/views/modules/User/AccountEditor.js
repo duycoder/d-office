@@ -35,7 +35,7 @@ import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //fcm
-import FCM, { FCMEvent } from 'react-native-fcm';
+//import FCM, { FCMEvent } from 'react-native-fcm';
 
 //images
 const uriBackground = require('../../../assets/images/background.png');
