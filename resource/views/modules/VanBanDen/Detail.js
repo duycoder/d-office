@@ -342,7 +342,7 @@ class DetailContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-attach-outline' style={TabStyle.activeText} />
+                            <Icon name='ios-attach' style={TabStyle.activeText} />
                             <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 ĐÍNH KÈM
                             </Text>

@@ -158,7 +158,7 @@ class WorkflowStreamProcess extends Component {
             this.setState({
                 executing: false
             })
-
+            
             if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
                 const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
                 const content = {
@@ -288,7 +288,7 @@ class WorkflowStreamProcess extends Component {
                         tabBarUnderlineStyle={TabStyle.underLineStyle}>
                         <Tab heading={
                             <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+                                <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                 <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                                     TIN NHẮN
                                 </Text>
@@ -378,7 +378,7 @@ class WorkflowStreamProcess extends Component {
 
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-people-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-people' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         PHỐI HỢP
                                     </Text>
@@ -430,7 +430,7 @@ class WorkflowStreamProcess extends Component {
 
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         TIN NHẮN
                                     </Text>
@@ -505,7 +505,7 @@ class WorkflowStreamProcess extends Component {
 
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         TIN NHẮN
                                 </Text>
@@ -528,7 +528,7 @@ class WorkflowStreamProcess extends Component {
 
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-people-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-people' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         PHỐI HỢP
                                 </Text>
@@ -580,7 +580,7 @@ class WorkflowStreamProcess extends Component {
 
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         TIN NHẮN
                                 </Text>
@@ -602,7 +602,7 @@ class WorkflowStreamProcess extends Component {
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                                    <Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+                                    <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                                         TIN NHẮN
                                 </Text>

@@ -30,7 +30,10 @@ import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 
 //fcm
-import FCM, { FCMEvent } from 'react-native-fcm';
+// import FCM, { FCMEvent } from 'react-native-fcm';
+
+//react-native-firebase
+import firebase from 'react-native-firebase';
 
 //images
 const uriBackground = require('../../../assets/images/background.png');
@@ -183,21 +186,13 @@ class Login extends Component {
                 });
             }
             else {
-                //tạo token cho thiết bị nếu lần đầu đăng nhập
-                await FCM.getFCMToken().then(token => {
+                //tìm token và gán vào cho người dùng
+                await firebase.messaging().getToken().then((token) => {
+                    console.log('token: ', token);
                     resultJson.Token = token;
-                });
-    
-    
-                //trường hợp lần đầu cài đặt thiết bị token có thể bị null;
-                if (util.isNull(resultJson.Token) || util.isEmpty(resultJson.Token)) {
-                    await FCM.on(FCMEvent.RefreshToken, token => {
-                        resultJson.Token = token;
-                    });
-                }
-    
+                })
+                
                 //cập nhật token vào csdl qua api
-    
                 const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
                     method: 'POST',
                     headers: {
@@ -211,7 +206,7 @@ class Login extends Component {
                 }).then(response => response.json()).then(responseJson => {
                     return responseJson;
                 });
-    
+
                 if (activeTokenResult) {
                     AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
                         this.props.setUserInfo(resultJson);
@@ -316,11 +311,11 @@ class Login extends Component {
                                         onChangeText={(password) => this.onChangePasswordText(password)}
                                         secureTextEntry={this.state.isHidePassword}
                                         style={LoginStyle.formInputText}
-                                        underlineColorAndroid={'#f7f7f7'} 
+                                        underlineColorAndroid={'#f7f7f7'}
                                         returnKeyType='done'
                                         returnKeyLabel='Xong'
-                                        ref={ref=>this.passwordInput = ref} 
-                                        
+                                        ref={ref => this.passwordInput = ref}
+
                                     />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
                                         <Image source={(this.state.isHidePassword) ? showPasswordIcon : hidePasswordIcon}

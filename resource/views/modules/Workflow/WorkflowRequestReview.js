@@ -250,7 +250,7 @@ class WorkflowRequestReview extends Component {
 
 							<Tab heading={
 								<TabHeading style={this.state.selectedTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab}>
-									<Icon name='ios-person-outline' style={TabStyle.activeText} />
+									<Icon name='ios-person' style={TabStyle.activeText} />
 									<Text style={this.state.selectedTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText}>
 										NGƯỜI NHẬN
 									</Text>
@@ -302,7 +302,7 @@ class WorkflowRequestReview extends Component {
 
 							<Tab heading={
 								<TabHeading style={this.state.selectedTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab}>
-									<Icon name='ios-chatbubbles-outline' style={TabStyle.activeText} />
+									<Icon name='ios-chatboxes' style={TabStyle.activeText} />
 									<Text style={this.state.selectedTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText}>
 										TIN NHẮN
 									</Text>

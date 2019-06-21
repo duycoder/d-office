@@ -106,7 +106,7 @@ class SearchList extends Component {
           <ListItem button onPress={()=> this.navigateToDocDetail(item.ID)} icon>
               <Body>
                 <Text>
-                  {`SỐ HIỆU: ${formatLongText(item.SOHIEU, 15)}`} {item.HAS_FILE ? <Icon name='ios-attach-outline'/> : null}
+                  {`SỐ HIỆU: ${formatLongText(item.SOHIEU, 15)}`} {item.HAS_FILE ? <Icon name='ios-attach'/> : null}
                 </Text>
               </Body>
 

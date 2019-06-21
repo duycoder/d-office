@@ -84,7 +84,7 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 import ListNotification from '../modules/Notification/ListNotification';
 
 //test
-import { TestFCM as Test, TestNav } from '../../common/Test';
+//import { TestFCM as Test, TestNav } from '../../common/Test';
 
 //search
 import CalendarPicker from '../modules/AdvancedSearch/CalendarPicker';
@@ -101,9 +101,9 @@ import DeptUyQuyen from '../modules/UyQuyen/DeptUyQuyen';
 //#endregion
 
 const appRoutes = {
-    TestScreen: {
-        screen: TestNav,
-    },
+    // TestScreen: {
+    //     screen: TestNav,
+    // },
     VanBanDiIsNotProcessScreen: {
         screen: VanBanDiIsNotProcessList
     },

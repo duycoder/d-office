@@ -5,6 +5,7 @@ import { Alert } from 'react-native';
 const FCM_API_URL = "https://fcm.googleapis.com/fcm/send";
 
 import { API_URL } from '../common/SystemConstant';
+import firebase from 'react-native-firebase';
 
 async function pushFirebaseNotify(content, targetToken, type) {
     if (_.isNull(FireBaseConstant.SERVER_KEY) || _.isEmpty(FireBaseConstant.SERVER_KEY)) {
@@ -17,33 +18,37 @@ async function pushFirebaseNotify(content, targetToken, type) {
         )
         return;
     }
-
     //for android only
     let body = JSON.stringify({
         to: targetToken,
-        data: {
-            custom_notification: {
-                id: new Date().valueOf().toString(),
-                title: content.title,
-                body: content.message,
-                sound: 'default',
-                priority: 'high',
-                show_in_foreground: true,
-
-                //tên màn hình sẽ điều hướng
-                targetScreen: content.targetScreen,
-                isTaskNotification: content.isTaskNotification,
-
-                //màn hình văn bản
-                targetDocId: content.targetDocId,
-                targetDocType: content.targetDocType,
-                
-                //màn hình công việc
-                targetTaskId: content.targetTaskId,
-                targetTaskType: content.targetTaskType
-            }
+        notification: {
+            title: content.title,
+            body: content.message
         },
-        priority: 10
+        priority: 'high'
+        // data: {
+        //     custom_notification: {
+        //         id: new Date().valueOf().toString(),
+        //         title: content.title,
+        //         body: content.message,
+        //         sound: 'default',
+        //         priority: 'high',
+        //         show_in_foreground: true,
+
+        //         //tên màn hình sẽ điều hướng
+        //         targetScreen: content.targetScreen,
+        //         isTaskNotification: content.isTaskNotification,
+
+        //         //màn hình văn bản
+        //         targetDocId: content.targetDocId,
+        //         targetDocType: content.targetDocType,
+                
+        //         //màn hình công việc
+        //         targetTaskId: content.targetTaskId,
+        //         targetTaskType: content.targetTaskType
+        //     }
+        // },
+        // priority: 10
     });
 
     const headers = new Headers({
