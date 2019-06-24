@@ -90,7 +90,7 @@ export default class Confirm extends Component {
                         />
                         <View style={styles.content}>
                             <Text style={styles.contentText}>
-                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng Ebiz Office?
+                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng EofficeVNIO?
                             </Text>
                         </View>
 

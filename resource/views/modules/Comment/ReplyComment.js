@@ -240,7 +240,7 @@ class ReplyComment extends Component {
         {
           title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
           message:
-            'Ebiz Office muốn truy cập vào tài liệu của bạn',
+            'EofficeVNIO muốn truy cập vào tài liệu của bạn',
           buttonNeutral: 'Để sau',
           buttonNegative: 'Thoát',
           buttonPositive: 'OK',

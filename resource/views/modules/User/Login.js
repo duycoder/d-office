@@ -271,7 +271,7 @@ class Login extends Component {
 
                         <Text style={[LoginStyle.formHeaderSoftwareName,
                         { display: this.state.headerComponentsDisplayStatus }]}>
-                            Ebiz Office
+                            EofficeVNIO
                         </Text>
                     </Animated.View>
                     <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
