@@ -52,27 +52,24 @@ class Loading extends Component {
     //kiểm tra permission firebase
     async checkFirebasePermission() {
         const enabled = await firebase.messaging().hasPermission();
-        if (!enabled) {
+        if (enabled) {
+            this.getFirebaseToken();
+        } else {
             this.requestFirebasePermission();
         }
-        // if (enabled) {
-        //     this.getFirebaseToken();
-        // } else {
-        //     this.requestFirebasePermission();
-        // }
     }
 
     //lấy token của firebase
     async getFirebaseToken() {
-        // let fcmToken = await AsyncStorage.getItem('fcmToken');
-        // if (!fcmToken) {
-        //     fcmToken = await firebase.messaging().getToken();
-        //     if (fcmToken) {
-        //         // user has a device token
-        //         console.log('fcmToken:', fcmToken);
-        //         await AsyncStorage.setItem('fcmToken', fcmToken);
-        //     }
-        // }
+        let fcmToken = await AsyncStorage.getItem('deviceToken');
+        if (!fcmToken) {
+            fcmToken = await firebase.messaging().getToken();
+            if (fcmToken) {
+                // user has a device token
+                // console.log('fcmToken:', fcmToken);
+                await AsyncStorage.setItem('deviceToken', fcmToken);
+            }
+        }
         // console.log('fcmToken:', fcmToken);
     }
 
@@ -81,7 +78,7 @@ class Loading extends Component {
         try {
             await firebase.messaging().requestPermission();
             // // User has authorised
-            // this.getFirebaseToken();
+            this.getFirebaseToken();
         } catch (error) {
             // User has rejected permissions
             console.log('permission rejected');

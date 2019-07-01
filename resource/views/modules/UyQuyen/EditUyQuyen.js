@@ -31,6 +31,9 @@ import DeptUyQuyen from './DeptUyQuyen';
 
 //reducer
 import * as action from '../../../redux/modules/UyQuyen/Action';
+import VanBanDenUyQuyen from './VanBanDenUyQuyen';
+import VanBanDiUyQuyen from './VanBanDiUyQuyen';
+
 
 class EditUyQuyen extends Component {
     constructor(props) {
@@ -47,6 +50,8 @@ class EditUyQuyen extends Component {
             searchingUser: false,
             entity: {},
             users: [],
+            categoryVanBanDen: [],
+            categoryVanBanDi: [],
             executing: false
         }
     }
@@ -60,18 +65,56 @@ class EditUyQuyen extends Component {
         this.setState({
             loadingData: true
         }, () => {
-            this.fetchData().then(() => this.props.selectUser(this.state.entity.NGUOIDUOCUYQUYEN_ID || 0));
+            this.fetchData().then(() => {
+                this.props.selectUser(this.state.entity.NGUOIDUOCUYQUYEN_ID || 0);
+
+                // //độ khẩn
+                let dataVanBanDenDoKhan = this.state.categoryVanBanDen.filter(item => item.Code == 'VANBANDEN_DOKHAN');
+                this.props.setVanBanDenDoKhan(dataVanBanDenDoKhan[0].Selected || []);
+
+                //độ mật
+                let dataVanBanDenDoMat = this.state.categoryVanBanDen.filter(item => item.Code == 'VANBANDEN_DOQUANTRONG');
+                this.props.setVanBanDenDoMat(dataVanBanDenDoMat[0].Selected || []);
+
+                // //lĩnh vực văn bản
+                let dataVanBanDenLinhVucVanBan = this.state.categoryVanBanDen.filter(item => item.Code == 'VANBANDEN_LINHVUCVANBAN');
+                this.props.setVanBanDenLinhVucVanBan(dataVanBanDenLinhVucVanBan[0].Selected || []);
+
+                //loại văn bản
+                let dataVanBanDenLoaiVanBan = this.state.categoryVanBanDen.filter(item => item.Code == 'VANBANDEN_LOAIVANBAN');
+                this.props.setVanBanDenLoaiVanBan(dataVanBanDenLoaiVanBan[0].Selected || []);
+
+
+                //===========================//
+                // //độ khẩn
+                let dataVanBanDiDoUuTien = this.state.categoryVanBanDi.filter(item => item.Code == 'VANBANDI_DOUUTIEN');
+                this.props.setVanBanDiDoUuTien(dataVanBanDiDoUuTien[0].Selected || []);
+
+                //độ mật
+                let dataVanBanDiDoQuanTrong = this.state.categoryVanBanDi.filter(item => item.Code == 'VANBANDI_DOQUANTRONG');
+                this.props.setVanBanDiDoQuanTrong(dataVanBanDiDoQuanTrong[0].Selected || []);
+
+                // //lĩnh vực văn bản
+                let dataVanBanDiLinhVucVanBan = this.state.categoryVanBanDi.filter(item => item.Code == 'VANBANDI_LINHVUCVANBAN');
+                this.props.setVanBanDiLinhVucVanBan(dataVanBanDiLinhVucVanBan[0].Selected || []);
+
+                //loại văn bản
+                let dataVanBanDiLoaiVanBan = this.state.categoryVanBanDi.filter(item => item.Code == 'VANBANDI_LOAIVANBAN');
+                this.props.setVanBanDiLoaiVanBan(dataVanBanDiLoaiVanBan[0].Selected || []);
+
+            });
         })
     }
 
     fetchData = async () => {
         const url = `${API_URL}/api/QuanLyUyQuyen/EditUyQuyen/${this.state.userId}/${this.state.authorizedId}`;
-
         const result = await fetch(url).then(response => response.json());
         this.setState({
             loadingData: false,
             entity: result.Entity,
-            users: result.GroupUsers
+            users: result.GroupUsers,
+            categoryVanBanDi: result.ConfigVanBanDi,
+            categoryVanBanDen: result.ConfigVanBanDen,
         });
     }
 
@@ -103,7 +146,6 @@ class EditUyQuyen extends Component {
         });
 
         const url = `${API_URL}/api/QuanLyUyQuyen/SearchUyQuyen/${this.state.userId}/${this.state.authorizedId}/${this.state.pageIndex + 1}/${this.state.pageSize}?query=${this.state.userFilter}`;
-
         const result = await fetch(url).then(response => response.json());
         this.setState({
             loadingMoreData: false,
@@ -126,6 +168,46 @@ class EditUyQuyen extends Component {
             <DeptUyQuyen title={item.PhongBan.NAME} users={item.LstNguoiDung} selected={this.props.selectedUser} />
         );
     }
+
+    renderVanBanDenItem = ({ item }) => {
+        let selected = [];
+        if (item.Code == 'VANBANDEN_DOKHAN') {
+            selected = this.props.groupVanBanDenDoKhan
+        }
+        else if (item.Code == 'VANBANDEN_DOQUANTRONG') {
+            selected = this.props.groupVanBanDenDoMat;
+        }
+        else if (item.Code == 'VANBANDEN_LINHVUCVANBAN') {
+            selected = this.props.groupVanBanDenLinhVucVanBan
+        }
+        else {
+            selected = this.props.groupVanBanDenLoaiVanBan
+        }
+        return (
+            <VanBanDenUyQuyen title={item.Name} categories={item.GroupData} code={item.Code} selected={selected} />
+        );
+    }
+
+    renderVanBanDiItem = ({ item }) => {
+        let selected = [];
+        if (item.Code == 'VANBANDI_DOUUTIEN') {
+            selected = this.props.groupVanBanDiDoUuTien
+        }
+        else if (item.Code == 'VANBANDI_DOQUANTRONG') {
+            selected = this.props.groupVanBanDiDoQuanTrong;
+        }
+        else if (item.Code == 'VANBANDI_LINHVUCVANBAN') {
+            selected = this.props.groupVanBanDiLinhVucVanBan
+        }
+        else {
+            selected = this.props.groupVanBanDiLoaiVanBan
+        }
+
+        return (
+            <VanBanDiUyQuyen title={item.Name} categories={item.GroupData} code={item.Code} selected={selected} />
+        );
+    }
+
 
     convertDate = (date) => {
         let deadline = new Date();
@@ -193,13 +275,25 @@ class EditUyQuyen extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8'
         });
-
+        
         const body = JSON.stringify({
-            ID: this.state.entity.ID,
-            NGUOIUYQUYEN_ID: this.state.userId,
-            NGUOIDUOCUYQUYEN_ID: this.props.selectedUser,
-            NGAY_BATDAU: this.state.entity.NGAY_BATDAU,
-            NGAY_KETTHUC: this.state.entity.NGAY_KETTHUC
+            NguoiUyQuyenId: this.state.userId,
+            Entity: {
+                ID: this.state.entity.ID,
+                NGUOIUYQUYEN_ID: this.state.userId,
+                NGUOIDUOCUYQUYEN_ID: this.props.selectedUser,
+                NGAY_BATDAU: this.state.entity.NGAY_BATDAU,
+                NGAY_KETTHUC: this.state.entity.NGAY_KETTHUC
+            },
+            VanBanDenDoKhan: this.props.groupVanBanDenDoKhan.join(),
+            VanBanDenDoMat: this.props.groupVanBanDenDoMat.join(),
+            VanBanDenLinhVucVanBan: this.props.groupVanBanDenLinhVucVanBan.join(),
+            VanBanDenLoaiVanBan: this.props.groupVanBanDenLoaiVanBan.join(),
+
+            VanBanDiDoUuTien: this.props.groupVanBanDiDoUuTien.join(),
+            VanBanDiDoQuanTrong: this.props.groupVanBanDiDoQuanTrong.join(),
+            VanBanDiLinhVucVanBan: this.props.groupVanBanDiLinhVucVanBan.join(),
+            VanBanDiLoaiVanBan: this.props.groupVanBanDiLoaiVanBan.join(),
         })
 
         const result = await fetch(url, {
@@ -329,7 +423,7 @@ class EditUyQuyen extends Component {
                                         <Icon name='ios-calendar' style={TabStyle.activeText} />
                                         <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                             THỜI GIAN
-                                </Text>
+                                        </Text>
                                     </TabHeading>
                                 }>
                                     <View>
@@ -389,6 +483,47 @@ class EditUyQuyen extends Component {
                                     </View>
 
                                 </Tab>
+
+                                <Tab heading={
+                                    <TabHeading style={(this.state.currentTabIndex == 2 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                                        <Icon name='ios-person' style={TabStyle.activeText} />
+                                        <Text style={(this.state.currentTabIndex == 2 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                                            VĂN BẢN ĐẾN
+                                        </Text>
+                                    </TabHeading>
+                                }>
+                                    <Content contentContainerStyle={{ flex: 1 }}>
+                                        <FlatList
+                                            keyExtractor={(item, index) => item.Code.toString()}
+                                            data={this.state.categoryVanBanDen}
+                                            renderItem={this.renderVanBanDenItem}
+                                            ListEmptyComponent={
+                                                this.state.loadingData ? null : emptyDataPage()
+                                            }
+                                        />
+                                    </Content>
+                                </Tab>
+
+                                <Tab heading={
+                                    <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                                        <Icon name='ios-person' style={TabStyle.activeText} />
+                                        <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                                            VĂN BẢN ĐI
+                                        </Text>
+                                    </TabHeading>
+                                }>
+                                    <Content contentContainerStyle={{ flex: 1 }}>
+                                        <FlatList
+                                            keyExtractor={(item, index) => index.toString()}
+                                            data={this.state.categoryVanBanDi}
+                                            renderItem={this.renderVanBanDiItem}
+                                            ListEmptyComponent={
+                                                this.state.loadingData ? null : emptyDataPage()
+                                            }
+                                        />
+                                    </Content>
+                                </Tab>
+
                             </Tabs>
                         </Content>
                     )
@@ -405,13 +540,31 @@ class EditUyQuyen extends Component {
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        selectedUser: state.authorizeState.selectedUser
+        selectedUser: state.authorizeState.selectedUser,
+        groupVanBanDenDoKhan: state.authorizeState.groupVanBanDenDoKhan,
+        groupVanBanDenDoMat: state.authorizeState.groupVanBanDenDoMat,
+        groupVanBanDenLinhVucVanBan: state.authorizeState.groupVanBanDenLinhVucVanBan,
+        groupVanBanDenLoaiVanBan: state.authorizeState.groupVanBanDenLoaiVanBan,
+
+        groupVanBanDiDoUuTien: state.authorizeState.groupVanBanDiDoUuTien,
+        groupVanBanDiDoQuanTrong: state.authorizeState.groupVanBanDiDoQuanTrong,
+        groupVanBanDiLinhVucVanBan: state.authorizeState.groupVanBanDiLinhVucVanBan,
+        groupVanBanDiLoaiVanBan: state.authorizeState.groupVanBanDiLoaiVanBan
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        selectUser: (userId) => dispatch(action.selectUser(userId))
+        selectUser: (userId) => dispatch(action.selectUser(userId)),
+        setVanBanDenDoKhan: (data) => dispatch(action.setVanBanDenDoKhan(data)),
+        setVanBanDenDoMat: (data) => dispatch(action.setVanBanDenDoMat(data)),
+        setVanBanDenLinhVucVanBan: (data) => dispatch(action.setVanBanDenLinhVucVanBan(data)),
+        setVanBanDenLoaiVanBan: (data) => dispatch(action.setVanBanDenLoaiVanBan(data)),
+
+        setVanBanDiDoUuTien: (data) => dispatch(action.setVanBanDiDoUuTien(data)),
+        setVanBanDiDoQuanTrong: (data) => dispatch(action.setVanBanDiDoQuanTrong(data)),
+        setVanBanDiLinhVucVanBan: (data) => dispatch(action.setVanBanDiLinhVucVanBan(data)),
+        setVanBanDiLoaiVanBan: (data) => dispatch(action.setVanBanDiLoaiVanBan(data))
     }
 }
 
