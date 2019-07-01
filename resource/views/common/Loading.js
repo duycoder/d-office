@@ -9,6 +9,7 @@ import {
     AsyncStorage, View, Text, Image,
     ImageBackground
 } from 'react-native'
+import { NavigationActions } from 'react-navigation';
 
 //util
 import { appNavigate, isObjectHasValue } from '../../common/Utilities';
@@ -196,13 +197,17 @@ class Loading extends Component {
                     if (storage.notification) {
                         screenName = 'ListNotificationScreen'
                     } else {
-                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen
+                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
                         screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     }
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     appNavigate(this.props.navigation, screenName, screenParam);
                 }, this.state.timing)
             } else {
+                // this.props.navigation.dispatch(NavigationActions.reset({
+                //     index: 0,
+                //     actions: [NavigationActions.navigate({ routeName: 'Auth' })]
+                // }))
                 appNavigate(this.props.navigation, 'Auth');
             }
         }

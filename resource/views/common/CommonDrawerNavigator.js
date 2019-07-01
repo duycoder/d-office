@@ -269,8 +269,33 @@ const appConfig = {
 }
 const stack = StackNavigator(appRoutes, appConfig);
 
+// const VanBanDiStack = StackNavigator({
+//     VanBanDiIsNotProcessScreen: {
+//         screen: VanBanDiIsNotProcessList
+//     },
+//     VanBanDiIsProcessScreen: {
+//         screen: VanBanDiIsProcessList
+//     },
+//     VanBanDiJoinProcessScreen: {
+//         screen: VanBanDiJoinProcessList
+//     },
+//     VanBanDiIsPublishScreen: {
+//         screen: VanBanDiIsPublishList
+//     },
+//     VanBanDiSearchScreen: {
+//         screen: VanBanDiSearchList
+//     },
+//     VanBanDiDetailScreen: {
+//         screen: VanBanDiDetail
+//     }
+// }, {
+//     headerMode: 'none',
+//     initialRouteName: 'VanBanDiIsNotProcessScreen'
+// });
+
 const AppStack = DrawerNavigator({
-    stack: {screen: stack}
+    stack: {screen: stack},
+    // VanBanDiFlow: {screen: VanBanDiStack}
 }, {
     drawerWidth: width * 0.8,
     contentComponent: props => <SideBar {...props} />
