@@ -78,7 +78,7 @@ class BaseList extends Component {
           this.props.updateExtendsNavParams({ check: false });
         }
       }
-    })
+    });
   }
 
   componentWillUnmount = () => {
