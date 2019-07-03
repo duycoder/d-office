@@ -104,10 +104,9 @@ class ApproveRescheduleTask extends Component {
                 message,
                 isTaskNotification: true,
                 targetScreen: 'DetailTaskScreen',
-                targetTaskId: this.state.taskId,
+                objId: this.state.taskId,
                 targetTaskType: this.state.taskType
             }
-            import { formatMessage } from '../../../common/Utilities';
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });

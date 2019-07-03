@@ -23,7 +23,11 @@ async function pushFirebaseNotify(content, targetToken, type) {
         to: targetToken,
         notification: {
             title: content.title,
-            body: content.message
+            body: content.message,
+        },
+        data: {
+            targetScreen: content.targetScreen,
+            objId: content.objId
         },
         priority: 'high'
         // data: {

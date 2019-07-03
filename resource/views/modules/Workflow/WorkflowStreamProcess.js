@@ -171,11 +171,11 @@ class WorkflowStreamProcess extends Component {
                     message,
                     isTaskNotification: false,
                     targetScreen: resultJson.ItemType == MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen",
-                    targetDocId: this.state.docId,
+                    objId: this.state.docId,
                     targetDocType: this.state.docType
                 }
 
-                content.message = formatMessage(content.message, MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen", 0, this.state.docType, this.state.docId);
+                //content.message = formatMessage(content.message, MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen", 0, this.state.docType, this.state.docId);
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, "notification");
                 });
