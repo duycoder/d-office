@@ -35,6 +35,9 @@ import * as userAction from '../../../redux/modules/User/Action';
 //react-native-firebase
 import firebase from 'react-native-firebase';
 
+//debug
+import Reactotron from 'reactotron-react-native'
+
 //images
 const uriBackground = require('../../../assets/images/background.png');
 const uriRibbonBackground = require('../../../assets/images/ribbon-background.png');
@@ -145,48 +148,109 @@ class Login extends Component {
     }
 
     async onLogin() {
-        //lấy fcm token
-        let deviceToken = await AsyncStorage.getItem('deviceToken');
-        if (!deviceToken) {
-            deviceToken = await firebase.messaging().getToken();
+        try {
+            //lấy fcm token
+            let deviceToken = await AsyncStorage.getItem('deviceToken');
+            //Reactotron.log('========> Device từ Async Storage', deviceToken);
 
-            if (deviceToken) {
-                await AsyncStorage.setItem('deviceToken', deviceToken);
+            if (!deviceToken) {
+                deviceToken = await firebase.messaging().getToken();
+                
+                //Reactotron.log('========> Device từ firebase.messaging().getToken()', deviceToken);
+                
+                if (deviceToken) {
+                    await AsyncStorage.setItem('deviceToken', deviceToken);
+                }
             }
-        }
-        this.setState({
-            loading: true
-        });
+            this.setState({
+                loading: true
+            });
 
-        const url = `${API_URL}/api/Account/Login`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8',
-        });
+            const url = `${API_URL}/api/Account/Login`;
+            const headers = new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json; charset=utf-8',
+            });
 
-        const body = JSON.stringify({
-            UserName: this.state.userName,
-            Password: this.state.password,
-            DeviceToken: deviceToken
-        });
+            const body = JSON.stringify({
+                UserName: this.state.userName,
+                Password: this.state.password,
+                DeviceToken: deviceToken
+            });
 
-        const result = await fetch(url, {
-            method: 'POST',
-            headers,
-            body
-        });
+            const result = await fetch(url, {
+                method: 'POST',
+                headers,
+                body
+            });
 
-        const resultJson = await result.json();
+            const resultJson = await result.json();
 
-        await asyncDelay(2000);
+            await asyncDelay(2000);
 
-        if (resultJson != null) {
-            if (resultJson.hasOwnProperty("Message")) {
+            if (resultJson != null) {
+                if (resultJson.hasOwnProperty("Message")) {
+                    this.setState({
+                        loading: false
+                    }, () => {
+                        Toast.show({
+                            text: 'Lỗi máy chủ!',
+                            textStyle: { fontSize: moderateScale(12, 1.5) },
+                            buttonText: "OK",
+                            buttonStyle: { backgroundColor: "#acb7b1" },
+                            duration: 3000
+                        });
+                    });
+                }
+                else {
+                    AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
+                        this.props.setUserInfo(resultJson);
+                        this.props.navigation.navigate('LoadingScreen');
+                    });
+
+                    //tìm token và gán vào cho người dùng
+                    // await firebase.messaging().getToken().then((token) => {
+                    //     resultJson.Token = token;
+                    // })
+
+                    // //cập nhật token vào csdl qua api
+                    // const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
+                    //     method: 'POST',
+                    //     headers: {
+                    //         'Accept': 'application/json',
+                    //         'Content-Type': 'application/json; charset=utf-8',
+                    //     },
+                    //     body: JSON.stringify({
+                    //         userId: resultJson.ID,
+                    //         token: resultJson.Token
+                    //     })
+                    // }).then(response => response.json()).then(responseJson => {
+                    //     return responseJson;
+                    // });
+
+                    // if (activeTokenResult) {
+
+                    // } else {
+                    //     this.setState({
+                    //         loading: false
+                    //     }, () => {
+                    //         Toast.show({
+                    //             text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
+                    //             textStyle: { fontSize: moderateScale(12, 1.5) },
+                    //             buttonText: "OK",
+                    //             buttonStyle: { backgroundColor: "#acb7b1" },
+                    //             duration: 3000
+                    //         });
+                    //     });
+                    // }
+                }
+            }
+            else {
                 this.setState({
                     loading: false
                 }, () => {
                     Toast.show({
-                        text: 'Lỗi máy chủ!',
+                        text: 'Thông tin đăng nhập không chính xác!',
                         textStyle: { fontSize: moderateScale(12, 1.5) },
                         buttonText: "OK",
                         buttonStyle: { backgroundColor: "#acb7b1" },
@@ -194,62 +258,10 @@ class Login extends Component {
                     });
                 });
             }
-            else {
-                AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
-                    this.props.setUserInfo(resultJson);
-                    this.props.navigation.navigate('LoadingScreen');
-                });
-
-                //tìm token và gán vào cho người dùng
-                // await firebase.messaging().getToken().then((token) => {
-                //     resultJson.Token = token;
-                // })
-
-                // //cập nhật token vào csdl qua api
-                // const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
-                //     method: 'POST',
-                //     headers: {
-                //         'Accept': 'application/json',
-                //         'Content-Type': 'application/json; charset=utf-8',
-                //     },
-                //     body: JSON.stringify({
-                //         userId: resultJson.ID,
-                //         token: resultJson.Token
-                //     })
-                // }).then(response => response.json()).then(responseJson => {
-                //     return responseJson;
-                // });
-
-                // if (activeTokenResult) {
-
-                // } else {
-                //     this.setState({
-                //         loading: false
-                //     }, () => {
-                //         Toast.show({
-                //             text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
-                //             textStyle: { fontSize: moderateScale(12, 1.5) },
-                //             buttonText: "OK",
-                //             buttonStyle: { backgroundColor: "#acb7b1" },
-                //             duration: 3000
-                //         });
-                //     });
-                // }
-            }
+        } catch (error) {
+            //Reactotron.log('========> Lỗi ở đâu đó', error);
         }
-        else {
-            this.setState({
-                loading: false
-            }, () => {
-                Toast.show({
-                    text: 'Thông tin đăng nhập không chính xác!',
-                    textStyle: { fontSize: moderateScale(12, 1.5) },
-                    buttonText: "OK",
-                    buttonStyle: { backgroundColor: "#acb7b1" },
-                    duration: 3000
-                });
-            });
-        }
+
     }
 
     onSignupPress = () => {

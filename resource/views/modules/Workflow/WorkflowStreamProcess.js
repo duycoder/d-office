@@ -26,6 +26,8 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 import * as navAction from '../../../redux/modules/Nav/Action'; 
 
+import { formatMessage } from '../../../common/Utilities';
+
 //lib
 import {
     Container, Header, Left, Button, Content, Title,
@@ -145,6 +147,9 @@ class WorkflowStreamProcess extends Component {
                 LogID: this.state.logId
             });
 
+            // console.log(body);
+            // return;
+
             const result = await fetch(url, {
                 method: 'POST',
                 headers,
@@ -169,11 +174,11 @@ class WorkflowStreamProcess extends Component {
                     targetDocId: this.state.docId,
                     targetDocType: this.state.docType
                 }
+
+                content.message = formatMessage(content.message, MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen", 0, this.state.docType, this.state.docId);
                 resultJson.GroupTokens.forEach(token => {
                     pushFirebaseNotify(content, token, "notification");
                 });
-
-
             }
 
             Toast.show({

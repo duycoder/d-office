@@ -104,13 +104,17 @@ android {
 
     defaultConfig {
         applicationId "com.ebizoffice"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 28
-        versionCode 5
-        versionName "5.0"
+        versionCode 9
+        versionName "9"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     signingConfigs {

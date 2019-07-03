@@ -365,3 +365,17 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
         })
     }
 }
+
+export function formatMessage(message, screenName, isTaskNotification, itemType, itemId){
+    if(util.isNull(message)){
+        message = "";
+    }
+    message += "-HINETVNIO-";
+    message += "-"+screenName;
+    message += "-" + (isTaskNotification) ? "1": "0";
+    message += "-" + (isTaskNotification) ? "0": itemId.toString();
+    message += "-" + (isTaskNotification) ? "0": itemType.toString();
+    message += "-" + (isTaskNotification) ? itemId.toString(): "0";
+    return message;
+
+}
