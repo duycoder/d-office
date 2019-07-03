@@ -36,6 +36,7 @@ FIRLoggerService kFIRLoggerDynamicLinks = @"[Firebase/DynamicLinks]";
 FIRLoggerService kFIRLoggerFirestore = @"[Firebase/Firestore]";
 FIRLoggerService kFIRLoggerInstanceID = @"[Firebase/InstanceID]";
 FIRLoggerService kFIRLoggerInvites = @"[Firebase/Invites]";
+FIRLoggerService kFIRLoggerMLKit = @"[Firebase/MLKit]";
 FIRLoggerService kFIRLoggerMessaging = @"[Firebase/Messaging]";
 FIRLoggerService kFIRLoggerPerf = @"[Firebase/Performance]";
 FIRLoggerService kFIRLoggerRemoteConfig = @"[Firebase/RemoteConfig]";
@@ -173,7 +174,14 @@ void FIRSetLoggerLevel(FIRLoggerLevel loggerLevel) {
   });
 }
 
-BOOL FIRIsLoggableLevel(FIRLoggerLevel loggerLevel, BOOL analyticsComponent) {
+/**
+ * Check if the level is high enough to be loggable.
+ *
+ * Analytics can override the log level with an intentional race condition.
+ * Add the attribute to get a clean thread sanitizer run.
+ */
+__attribute__((no_sanitize("thread"))) BOOL FIRIsLoggableLevel(FIRLoggerLevel loggerLevel,
+                                                               BOOL analyticsComponent) {
   FIRLoggerInitializeASL();
   if (sFIRLoggerDebugMode) {
     return YES;
@@ -227,8 +235,8 @@ void FIRLogBasic(FIRLoggerLevel level,
   NSCAssert(numberOfMatches == 1, @"Incorrect message code format.");
 #endif
   NSString *logMsg = [[NSString alloc] initWithFormat:message arguments:args_ptr];
-  logMsg = [NSString
-      stringWithFormat:@"%s - %@[%@] %@", FirebaseVersionString, service, messageCode, logMsg];
+  logMsg =
+      [NSString stringWithFormat:@"%s - %@[%@] %@", FIRVersionString, service, messageCode, logMsg];
   dispatch_async(sFIRClientQueue, ^{
     asl_log(sFIRLoggerClient, NULL, level, "%s", logMsg.UTF8String);
   });
