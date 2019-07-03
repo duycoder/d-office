@@ -24,7 +24,7 @@ const uriBackground = require('../../assets/images/background.png');
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../redux/modules/User/Action';
-
+import * as navAction from '../../redux/modules/Nav/Action';
 
 //firebase
 // import FCM from 'react-native-fcm';
@@ -87,17 +87,13 @@ class Loading extends Component {
     }
 
     async createNotificationListeners() {
-        let secondHalfBody = '';
         this.notificationInitialization = firebase.notifications()
             .getInitialNotification().then((message) => {
             });
 
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body } = notification;
-            console.tron.log("Listen, this is data to set")
-            console.tron.log(notification)
-            let firstHalfBody = body.split(SEPERATOR_STRING)[0];
-            secondHalfBody = body.split(SEPERATOR_STRING)[1];
+
             this.storeNotification(title);
 
             const localNotification = new firebase.notifications.Notification({
@@ -107,7 +103,7 @@ class Loading extends Component {
                 .setSound('sampleaudio.wav')
                 .setNotificationId(notification.notificationId)
                 .setTitle(notification.title)
-                .setBody(firstHalfBody)
+                .setBody(notification.body)
                 .setData(notification.data)
                 .android.setChannelId('fcm_FirebaseNotifiction_default_channel') // e.g. the id you chose above
                 //.android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
@@ -130,32 +126,14 @@ class Loading extends Component {
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             const { title, body, data } = notificationOpen.notification;
             console.tron.log("Listen, this is data when opened")
-            if (title) {
-                console.tron.log(secondHalfBody)
-                let bodyResult = secondHalfBody.split(SEPERATOR_UNDERSCORE);
-                if (bodyResult.length > 0) {
-                    let screenName = EMPTY_STRING,
-                        screenParam = {};
-                    if (bodyResult[0] === 1) {
-                        screenName = "DetailTaskScreen";
-                        screenParam = {
-                            taskId: urlArr[3],
-                            taskType: "1"
-                        };
-                    }
-                    else {
-                        screenName = bodyResult[1] === "HSCV_VANBANDEN" ? "VanBanDenDetailScreen" : "VanBanDiDetailScreen";
-                        screenParam = {
-                            docId: bodyResult[2],
-                            docType: "1"
-                        };
-                    }
-                    this.props.updateCoreNavParams(screenParam);
-                    this.props.navigation.navigate(screenName);
-                }
-                else {
-                    appNavigate(this.props.navigation, 'ListNotificationScreen', null);
-                }
+            if (data.targetScreen && data.objId) {
+                
+                this.props.updateCoreNavParams(screenParam);
+                this.props.navigation.navigate(data.targetScreen);
+                
+            }
+            else {
+                appNavigate(this.props.navigation, 'ListNotificationScreen', null);
             }
             // console.log('onNotificationOpened:');
             // Alert.alert(title, body)

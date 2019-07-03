@@ -13,7 +13,7 @@ import {
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
     MODULE_CONSTANT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate,formatMessage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -26,7 +26,6 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 import * as navAction from '../../../redux/modules/Nav/Action'; 
 
-import { formatMessage } from '../../../common/Utilities';
 
 //lib
 import {

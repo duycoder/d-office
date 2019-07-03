@@ -22,7 +22,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
@@ -32,8 +32,6 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-
-import { formatMessage } from '../../../common/Utilities';
 
 class ApproveProgressTask extends Component {
     constructor(props) {

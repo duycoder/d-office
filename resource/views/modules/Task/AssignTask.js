@@ -30,7 +30,7 @@ import {
 	EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
 	TASK_PROCESS_TYPE, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -43,7 +43,6 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 
-import { formatMessage } from '../../../common/Utilities';
 
 class AssignTask extends Component {
 	constructor(props) {

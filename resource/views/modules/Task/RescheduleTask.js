@@ -24,7 +24,7 @@ import DatePicker from 'react-native-datepicker';
 
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -34,7 +34,6 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-import { formatMessage } from '../../../common/Utilities';
 
 class RescheduleTask extends Component {
     constructor(props) {

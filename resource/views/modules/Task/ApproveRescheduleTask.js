@@ -28,14 +28,13 @@ import * as util from 'lodash';
 import { executeLoading } from '../../../common/Effect';
 import { API_URL, Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { asyncDelay, convertDateToString, convertDateTimeToString } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, convertDateTimeToString, formatMessage } from '../../../common/Utilities';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
-import { formatMessage } from '../../../common/Utilities';
 
 class ApproveRescheduleTask extends Component {
     constructor(props) {
@@ -107,7 +106,6 @@ class ApproveRescheduleTask extends Component {
                 targetTaskId: this.state.taskId,
                 targetTaskType: this.state.taskType
             }
-            import { formatMessage } from '../../../common/Utilities';
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });

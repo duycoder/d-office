@@ -23,7 +23,7 @@ import * as util from 'lodash';
 import {
     API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate,formatMessage } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -33,7 +33,6 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-import { formatMessage } from '../../../common/Utilities';
 
 
 

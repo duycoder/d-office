@@ -7,7 +7,7 @@ if (__DEV__) {
   scriptHostname = scriptURL.split('://')[1].split(':')[0];
 }
 Reactotron
-  .configure({ host: '192.168.1.96' }) // controls connection & communication settings
+  .configure({ host: scriptHostname }) // controls connection & communication settings '192.168.1.96'
   .useReactNative() // add all built-in react native plugins
   // .use(reactotronRedux()) // subscription to redux
   .connect() // let's connect!
