@@ -45,6 +45,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { formatMessage } from '../../../common/Utilities';
 
 const android = RNFetchBlob.android;
 
@@ -204,6 +205,7 @@ class ReplyComment extends Component {
           targetTaskType: this.state.taskType
         }
 
+        content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
         resultJson.GroupTokens.forEach(token => {
           pushFirebaseNotify(content, token, 'notification');
         })

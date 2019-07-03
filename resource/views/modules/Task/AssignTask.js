@@ -43,6 +43,8 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 
+import { formatMessage } from '../../../common/Utilities';
+
 class AssignTask extends Component {
 	constructor(props) {
 		super(props);
@@ -252,6 +254,7 @@ class AssignTask extends Component {
 					targetTaskType: this.state.taskType
 				}
 
+				content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
 				resultJson.GroupTokens.forEach(token => {
 					pushFirebaseNotify(content, token, 'notification');
 				});

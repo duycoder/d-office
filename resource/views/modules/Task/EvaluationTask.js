@@ -35,6 +35,8 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
+import { formatMessage } from '../../../common/Utilities';
+
 class EvaluationTask extends Component {
     constructor(props) {
         super(props);
@@ -158,6 +160,7 @@ class EvaluationTask extends Component {
                 targetTaskType: this.state.taskType
             }
 
+            content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });

@@ -35,6 +35,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { formatMessage } from '../../../common/Utilities';
 
 class ApproveRescheduleTask extends Component {
     constructor(props) {
@@ -106,7 +107,7 @@ class ApproveRescheduleTask extends Component {
                 targetTaskId: this.state.taskId,
                 targetTaskType: this.state.taskType
             }
-
+            import { formatMessage } from '../../../common/Utilities';
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });

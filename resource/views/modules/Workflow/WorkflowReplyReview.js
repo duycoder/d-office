@@ -152,6 +152,8 @@ class WorkflowReplyReview extends Component {
                 targetDocId: this.state.docId,
                 targetDocType: this.state.docType
             }
+            content.message = formatMessage(content.message, "VanBanDiDetailScreen", 0, this.state.docType, this.state.docId);
+
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, "notification");
             });

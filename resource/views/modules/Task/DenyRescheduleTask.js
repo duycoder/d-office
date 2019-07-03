@@ -33,6 +33,8 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
+import { formatMessage } from '../../../common/Utilities';
+
 class DenyRescheduleTask extends Component {
     constructor(props) {
         super(props);
@@ -91,7 +93,7 @@ class DenyRescheduleTask extends Component {
                 targetTaskId: this.state.taskId,
                 targetTaskType: this.state.taskType
             }
-
+            content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, 'notification');
             });

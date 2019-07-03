@@ -108,6 +108,7 @@ class EditUyQuyen extends Component {
 
     fetchData = async () => {
         const url = `${API_URL}/api/QuanLyUyQuyen/EditUyQuyen/${this.state.userId}/${this.state.authorizedId}`;
+        console.log(url);
         const result = await fetch(url).then(response => response.json());
         this.setState({
             loadingData: false,

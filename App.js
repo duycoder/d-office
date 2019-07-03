@@ -18,7 +18,7 @@ import NetworkStatus from './resource/views/common/NetworkStatus';
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
-
+  
 export default class App extends Component {
   render() {
     return (
