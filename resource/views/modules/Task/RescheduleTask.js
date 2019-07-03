@@ -163,7 +163,7 @@ class RescheduleTask extends Component {
                         </Item>
 
                         <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
-                            <Label>Xin lùi tới ngày</Label>
+                            <Label>Xin lùi tới ngày <Text style={{color:'#f00'}}>*</Text></Label>
                             <DatePicker
                                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
                                 date={this.state.chosenDate}
@@ -189,7 +189,7 @@ class RescheduleTask extends Component {
                         </Item>
 
                         <Item stackedLabel>
-                            <Label>Nguyên nhân xin lùi</Label>
+                            <Label>Nguyên nhân xin lùi <Text style={{color:'#f00'}}>*</Text></Label>
                             <Input value={this.state.reason}
                                 onChangeText={(reason) => this.setState({ reason })} />
                         </Item>

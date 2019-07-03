@@ -230,7 +230,7 @@ class UpdateProgressTask extends Component {
                         </Item>
 
                         <Item stackedLabel>
-                            <Label>Nội dung</Label>
+                            <Label>Nội dung <Text style={{color:'#f00'}}>*</Text></Label>
                             <Input value={this.state.comment} onChangeText={(comment) => this.setState({ comment })} />
                         </Item>
 

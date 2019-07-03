@@ -184,7 +184,7 @@ class CreateSubTask extends Component {
 					<Form>
 						<Item stackedLabel>
 							<Label>
-								Nội dung công việc
+								Nội dung công việc <Text style={{color:'#f00'}}>*</Text>
 							</Label>
 
 							<Input value={this.state.content} onChangeText={(content) => this.setState({ content })} />
@@ -239,7 +239,7 @@ class CreateSubTask extends Component {
 						</Item>
 
 						<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
-							<Label>Hạn hoàn thành</Label>
+							<Label>Hạn hoàn thành <Text style={{color:'#f00'}}>*</Text></Label>
 							<DatePicker
 								style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
 								date={this.state.chosenDate}

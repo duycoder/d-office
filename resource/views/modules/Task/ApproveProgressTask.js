@@ -162,7 +162,7 @@ class ApproveProgressTask extends Component {
                 <Content>
                     <Form>
                         <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
-                            <Label>Nội dung phản hồi</Label>
+                            <Label>Nội dung phản hồi <Text style={{color:'#f00'}}>*</Text></Label>
                             <Textarea rowSpan={5} style={{ width: '100%' }}
                                 value={this.state.content} bordered
                                 onChangeText={(content) => this.setState({ content })} />
