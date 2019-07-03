@@ -193,23 +193,6 @@ class ReplyComment extends Component {
       });
 
       const resultJson = await result.json();
-      if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-        const message = this.props.userInfo.Fullname + ' đã đăng trao đổi nội dung công việc #Công việc ' + this.state.taskId;
-        const content = {
-          title: 'TRAO ĐỔI CÔNG VIỆC',
-          message,
-          isTaskNotification: true,
-          targetScreen: 'DetailTaskScreen',
-          objId: this.state.taskId,
-          targetTaskType: this.state.taskType
-        }
-
-        //content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
-        resultJson.GroupTokens.forEach(token => {
-          pushFirebaseNotify(content, token, 'notification');
-        })
-      }
-
       this.setState({
         executing: false,
         commentContent: EMPTY_STRING

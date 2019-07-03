@@ -124,22 +124,6 @@ class ApproveProgressTask extends Component {
             executing: false
         });
 
-        if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-            const message = this.props.userInfo.Fullname + ' đã phê duyệt tiến độ hoàn thành công việc';
-            const content = {
-                title: 'PHÊ DUYỆT TIẾN ĐỘ HOÀN THÀNH CÔNG VIỆC',
-                message,
-                isTaskNotification: true,
-                targetScreen: 'DetailTaskScreen',
-                objId: this.state.taskId,
-                targetTaskType: this.state.taskType
-            }
-            //content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
-            resultJson.GroupTokens.forEach(token => {
-                pushFirebaseNotify(content, token, 'notification');
-            });
-        }
-
         Toast.show({
             text: resultJson.Status ? 'Phản hồi tiến độ công việc thành công' : resultJson.Message,
             type: resultJson.Status ? 'success' : 'danger',

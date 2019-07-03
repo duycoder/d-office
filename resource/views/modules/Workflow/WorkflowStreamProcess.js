@@ -163,23 +163,6 @@ class WorkflowStreamProcess extends Component {
                 executing: false
             })
             
-            if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-                const message = this.props.userInfo.Fullname + " đã gửi bạn xử lý văn bản mới";
-                const content = {
-                    title: 'GỬI XỬ LÝ VĂN BẢN',
-                    message,
-                    isTaskNotification: false,
-                    targetScreen: resultJson.ItemType == MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen",
-                    objId: this.state.docId,
-                    targetDocType: this.state.docType
-                }
-
-                //content.message = formatMessage(content.message, MODULE_CONSTANT.MD_VANBANTRINHKY ? "VanBanDiDetailScreen" : "VanBanDenDetailScreen", 0, this.state.docType, this.state.docId);
-                resultJson.GroupTokens.forEach(token => {
-                    pushFirebaseNotify(content, token, "notification");
-                });
-            }
-
             Toast.show({
                 text: this.state.stepName + (resultJson.Status ? ' thành công' : ' không thành công'),
                 type: resultJson.Status ? 'success' : 'danger',

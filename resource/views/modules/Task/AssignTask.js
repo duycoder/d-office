@@ -242,23 +242,6 @@ class AssignTask extends Component {
 				executing: false
 			});
 
-			if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-				const message = this.props.userInfo.Fullname + ' đã giao bạn xử lý một công việc';
-				const content = {
-					title: 'THÔNG BÁO GIAO VIỆC',
-					message,
-					isTaskNotification: true,
-					targetScreen: 'DetailTaskScreen',
-					objId: this.state.taskId,
-					targetTaskType: this.state.taskType
-				}
-
-				//content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
-				resultJson.GroupTokens.forEach(token => {
-					pushFirebaseNotify(content, token, 'notification');
-				});
-			}
-
 			Toast.show({
 				text: resultJson.Status ? 'Giao việc thành công' : 'Giao việc không thành công',
 				type: resultJson.Status ? 'success' : 'danger',

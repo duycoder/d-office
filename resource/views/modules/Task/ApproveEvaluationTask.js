@@ -147,24 +147,6 @@ class ApproveEvaluationTask extends Component {
             executing: false
         });
 
-        if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-            const message = this.props.userInfo.Fullname + ' đã phê duyệt bản đánh giá công việc';
-            const content = {
-                title: 'PHÊ DUYỆT ĐÁNH GIÁ CÔNG VIỆC',
-                message,
-                isTaskNotification: true,
-                targetScreen: 'DetailTaskScreen',
-                objId: this.state.taskId,
-                targetTaskType: this.state.taskType
-            }
-            //content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
-
-            resultJson.GroupTokens.forEach(token => {
-                pushFirebaseNotify(content, token, 'notification');
-            })
-            this.props.updateExtendsNavParams({check: true});
-        }
-
         Toast.show({
             text: resultJson.Status ? 'Phê duyệt đánh giá công việc thành công' : 'Phê duyệt đánh giá công việc không thành công',
             type: resultJson.Status ? 'success' : 'danger',

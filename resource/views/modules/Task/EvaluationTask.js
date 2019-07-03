@@ -140,30 +140,12 @@ class EvaluationTask extends Component {
         });
 
         const resultJson = await result.json();
-
-
+        
         await asyncDelay(2000);
 
         this.setState({
             executing: false
         });
-
-        if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
-            const message = this.props.userInfo.Fullname + ' đã đánh giá một công việc';
-            const content = {
-                title: 'GỬI ĐÁNH GIÁ CÔNG VIỆC',
-                message,
-                isTaskNotification: true,
-                targetScreen: 'DetailTaskScreen',
-                objId: this.state.taskId,
-                targetTaskType: this.state.taskType
-            }
-
-            //content.message = formatMessage(content.message, "DetailTaskScreen", 1, this.state.taskType, this.state.taskId);
-            resultJson.GroupTokens.forEach(token => {
-                pushFirebaseNotify(content, token, 'notification');
-            });
-        }
 
         Toast.show({
             text: resultJson.Status ? 'Tự đánh giá công việc thành công' : 'Tự đánh giá công việc không thành công',
