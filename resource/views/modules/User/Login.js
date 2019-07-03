@@ -145,7 +145,15 @@ class Login extends Component {
     }
 
     async onLogin() {
+        //lấy fcm token
+        let deviceToken = await AsyncStorage.getItem('deviceToken');
+        if (!deviceToken) {
+            deviceToken = await firebase.messaging().getToken();
 
+            if (deviceToken) {
+                await AsyncStorage.setItem('deviceToken', deviceToken);
+            }
+        }
         this.setState({
             loading: true
         });
@@ -158,7 +166,8 @@ class Login extends Component {
 
         const body = JSON.stringify({
             UserName: this.state.userName,
-            Password: this.state.password
+            Password: this.state.password,
+            DeviceToken: deviceToken
         });
 
         const result = await fetch(url, {
@@ -186,45 +195,46 @@ class Login extends Component {
                 });
             }
             else {
-                //tìm token và gán vào cho người dùng
-                await firebase.messaging().getToken().then((token) => {
-                    console.log('token: ', token);
-                    resultJson.Token = token;
-                })
-                
-                //cập nhật token vào csdl qua api
-                const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json; charset=utf-8',
-                    },
-                    body: JSON.stringify({
-                        userId: resultJson.ID,
-                        token: resultJson.Token
-                    })
-                }).then(response => response.json()).then(responseJson => {
-                    return responseJson;
+                AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
+                    this.props.setUserInfo(resultJson);
+                    this.props.navigation.navigate('LoadingScreen');
                 });
 
-                if (activeTokenResult) {
-                    AsyncStorage.setItem('userInfo', JSON.stringify(resultJson)).then(() => {
-                        this.props.setUserInfo(resultJson);
-                        this.props.navigation.navigate('LoadingScreen');
-                    });
-                } else {
-                    this.setState({
-                        loading: false
-                    }, () => {
-                        Toast.show({
-                            text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
-                            textStyle: { fontSize: moderateScale(12, 1.5) },
-                            buttonText: "OK",
-                            buttonStyle: { backgroundColor: "#acb7b1" },
-                            duration: 3000
-                        });
-                    });
-                }
+                //tìm token và gán vào cho người dùng
+                // await firebase.messaging().getToken().then((token) => {
+                //     resultJson.Token = token;
+                // })
+
+                // //cập nhật token vào csdl qua api
+                // const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
+                //     method: 'POST',
+                //     headers: {
+                //         'Accept': 'application/json',
+                //         'Content-Type': 'application/json; charset=utf-8',
+                //     },
+                //     body: JSON.stringify({
+                //         userId: resultJson.ID,
+                //         token: resultJson.Token
+                //     })
+                // }).then(response => response.json()).then(responseJson => {
+                //     return responseJson;
+                // });
+
+                // if (activeTokenResult) {
+
+                // } else {
+                //     this.setState({
+                //         loading: false
+                //     }, () => {
+                //         Toast.show({
+                //             text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
+                //             textStyle: { fontSize: moderateScale(12, 1.5) },
+                //             buttonText: "OK",
+                //             buttonStyle: { backgroundColor: "#acb7b1" },
+                //             duration: 3000
+                //         });
+                //     });
+                // }
             }
         }
         else {
