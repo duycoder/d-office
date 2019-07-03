@@ -27,7 +27,8 @@ async function pushFirebaseNotify(content, targetToken, type) {
         },
         data: {
             targetScreen: content.targetScreen,
-            objId: content.objId
+            objId: content.objId,
+            isTaskNotification: content.isTaskNotification
         },
         priority: 'high'
         // data: {
