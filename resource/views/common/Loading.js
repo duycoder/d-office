@@ -92,9 +92,9 @@ class Loading extends Component {
             });
 
         this.notificationListener = firebase.notifications().onNotification((notification) => {
-            const { title, body } = notification;
+            const { title, body, data } = notification;
 
-            this.storeNotification(title);
+            // this.storeNotification(data);
 
             const localNotification = new firebase.notifications.Notification({
                 sound: 'sampleaudio',
@@ -126,11 +126,23 @@ class Loading extends Component {
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             const { title, body, data } = notificationOpen.notification;
             console.tron.log("Listen, this is data when opened")
+            console.tron.log(notificationOpen.notification);
             if (data.targetScreen && data.objId) {
-                
+                let screenParam = {};
+                if (data.isTaskNotification == "false") {
+                    screenParam = {
+                        docId: data.objId,
+                        docType: "1"
+                    }
+                }
+                else {
+                    screenParam = {
+                        taskId: data.objId,
+                        taskType: "1"
+                    }
+                }
                 this.props.updateCoreNavParams(screenParam);
                 this.props.navigation.navigate(data.targetScreen);
-                
             }
             else {
                 appNavigate(this.props.navigation, 'ListNotificationScreen', null);
@@ -145,8 +157,32 @@ class Loading extends Component {
         * */
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-            const { title, body } = notificationOpen.notification;
-            await AsyncStorage.setItem('firebaseNotification', JSON.stringify(title));
+            const { title, body, data } = notificationOpen.notification;
+            const { objId, isTaskNotification, targetScreen } = data;
+            // screenName = targetScreen;
+            let screenParam = {};
+            if (isTaskNotification == "false") {
+                screenParam = {
+                    docId: objId,
+                    docType: "1"
+                }
+            }
+            else {
+                screenParam = {
+                    taskId: objId,
+                    taskType: "1"
+                }
+            }
+            const storage = await AsyncStorage.getItem('userInfo').then((rs) => {
+                return {
+                    user: JSON.parse(rs),
+                    // notification: JSON.parse(rs[1][1])
+                }
+            });
+            this.props.setUserInfo(storage.user);
+            this.props.updateCoreNavParams(screenParam);
+            this.props.navigation.navigate(targetScreen);
+            // await AsyncStorage.setItem('firebaseNotification', JSON.stringify(data));
             // await AsyncStorage.setItem('firebaseNotification', notificationOpen.notification);
             // console.log('getInitialNotification:');
             // appNavigate(this.props.navigation, "ListNotificationScreen", null);
@@ -193,26 +229,28 @@ class Loading extends Component {
         if (this.state.progress >= 1) {
             clearInterval(this.state.intervalId);
 
-            const storage = await AsyncStorage.multiGet(['userInfo', 'firebaseNotification']).then((rs) => {
+            const storage = await AsyncStorage.getItem('userInfo').then((rs) => {
                 return {
-                    user: JSON.parse(rs[0][1]),
-                    notification: JSON.parse(rs[1][1])
+                    user: JSON.parse(rs),
+                    // notification: JSON.parse(rs[1][1])
                 }
             });
+
+            console.tron.log(storage)
 
             if (storage.user) {
                 this.props.setUserInfo(storage.user);
                 setTimeout(() => {
                     let screenName = EMPTY_STRING;
                     let screenParam = null;
-                    if (storage.notification) {
-                        screenName = 'ListNotificationScreen'
-                    } else {
-                        //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
-                        screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
-                    }
-                    //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
+                    // if (storage.notification) {
+                        
+                    // } else {
+                    //     //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
+                    // }
+                    screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     appNavigate(this.props.navigation, screenName, screenParam);
+                    //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
             } else {
                 // this.props.navigation.dispatch(NavigationActions.reset({
