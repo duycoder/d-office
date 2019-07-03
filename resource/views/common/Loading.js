@@ -107,6 +107,7 @@ class Loading extends Component {
                 .setNotificationId(notification.notificationId)
                 .setTitle(notification.title)
                 .setBody(notification.body)
+                .setData(notification.data)
                 .android.setChannelId('fcm_FirebaseNotifiction_default_channel') // e.g. the id you chose above
                 //.android.setSmallIcon('@drawable/ic_launcher') // create this icon in Android Studio
                 .android.setColor('#00AEEF') // you can set a color here
@@ -123,10 +124,13 @@ class Loading extends Component {
         firebase.notifications().android.createChannel(channel);
 
         /*
-        * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+        * If your app is in background or foreground, you can listen for when a notification is clicked / tapped / opened as follows:
         * */
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-            const { title, body } = notificationOpen.notification;
+            const { title, body, data } = notificationOpen.notification;
+            if (title) {
+                appNavigate(this.props.navigation, 'ListNotificationScreen', null);
+            }
             // console.log('onNotificationOpened:');
             // Alert.alert(title, body)
             // alert(title);
