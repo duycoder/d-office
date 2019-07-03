@@ -125,8 +125,8 @@ class Loading extends Component {
         * */
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             const { title, body, data } = notificationOpen.notification;
-            console.tron.log("Listen, this is data when opened")
-            console.tron.log(notificationOpen.notification);
+            // console.tron.log("Listen, this is data when opened")
+            // console.tron.log(notificationOpen.notification);
             if (data.targetScreen && data.objId) {
                 let screenParam = {};
                 if (data.isTaskNotification == "false") {
@@ -236,7 +236,7 @@ class Loading extends Component {
                 }
             });
 
-            console.tron.log(storage)
+            // console.tron.log(storage)
 
             if (storage.user) {
                 this.props.setUserInfo(storage.user);
