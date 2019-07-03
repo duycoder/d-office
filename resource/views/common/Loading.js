@@ -24,7 +24,7 @@ const uriBackground = require('../../assets/images/background.png');
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../redux/modules/User/Action';
-
+import * as navAction from '../../redux/modules/Nav/Action';
 
 //firebase
 // import FCM from 'react-native-fcm';
@@ -32,7 +32,7 @@ import * as userAction from '../../redux/modules/User/Action';
 
 //style
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
-import { EMPTY_STRING, Colors } from '../../common/SystemConstant';
+import { EMPTY_STRING, Colors, SEPERATOR_STRING, SEPERATOR_UNDERSCORE } from '../../common/SystemConstant';
 import firebase, { Notification } from 'react-native-firebase';
 
 // registerKilledListener();
@@ -41,7 +41,7 @@ class Loading extends Component {
         progress: 0,
         timing: 300,
         duration: 1,
-        notif: ''
+        notif: '',
     }
 
     progressing() {
@@ -125,7 +125,14 @@ class Loading extends Component {
         * */
         this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
             const { title, body, data } = notificationOpen.notification;
-            if (title) {
+            console.tron.log("Listen, this is data when opened")
+            if (data.targetScreen && data.objId) {
+                
+                this.props.updateCoreNavParams(screenParam);
+                this.props.navigation.navigate(data.targetScreen);
+                
+            }
+            else {
                 appNavigate(this.props.navigation, 'ListNotificationScreen', null);
             }
             // console.log('onNotificationOpened:');
@@ -242,10 +249,17 @@ class Loading extends Component {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
     return {
-        setUserInfo: (data) => dispatch(userAction.setUserInfo(data))
+        coreNavParams: state.navState.coreNavParams
     }
 }
 
-export default connect(null, mapDispatchToProps)(Loading);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUserInfo: (data) => dispatch(userAction.setUserInfo(data)),
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Loading);

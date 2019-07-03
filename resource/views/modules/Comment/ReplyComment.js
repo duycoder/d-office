@@ -16,7 +16,7 @@ import {
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage
+  asyncDelay, formatLongText, isImage, formatMessage
 } from '../../../common/Utilities';
 
 //lib
@@ -45,7 +45,6 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
-import { formatMessage } from '../../../common/Utilities';
 
 const android = RNFetchBlob.android;
 

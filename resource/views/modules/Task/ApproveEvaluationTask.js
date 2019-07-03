@@ -25,7 +25,7 @@ import * as util from 'lodash';
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage} from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
@@ -33,7 +33,6 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { formatMessage } from '../../../common/Utilities';
 
 class ApproveEvaluationTask extends Component {
     constructor(props) {

@@ -267,3 +267,6 @@ export const BRIEF_CONSTANT = {
 export const MODULE_CONSTANT = {
 	MD_VANBANTRINHKY: 'MD_VANBANTRINHKY',
 }
+
+export const SEPERATOR_STRING = '-HINETVNIO-';
+export const SEPERATOR_UNDERSCORE = '-';
