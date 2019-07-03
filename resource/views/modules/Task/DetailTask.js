@@ -558,7 +558,7 @@ class TaskContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.selectedTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                            <NbIcon name='ios-create-outline' style={TabStyle.activeText} />
+                            <NbIcon name='ios-create' style={TabStyle.activeText} />
                             <Text style={(this.state.selectedTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
                                 ĐÁNH GIÁ
                             </Text>
