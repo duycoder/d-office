@@ -5,7 +5,7 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { Alert } from 'react-native'
+import { Alert, Platform } from 'react-native'
 //lib
 import {
     Container, Header, Left, Body, Right,
@@ -22,7 +22,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
@@ -176,7 +176,7 @@ class ApproveProgressTask extends Component {
                             <Picker
                                 iosHeader='Chọn kết quả đánh giá'
                                 iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                style={{ width: undefined }}
+                                style={{ width: pickerFormat() }}
                                 selectedValue={this.state.selectedValue}
                                 onValueChange={this.onValueChange.bind(this)}
                                 mode='dropdown'>

@@ -31,7 +31,7 @@ import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyl
 import { TabStyle } from '../../../assets/styles/TabStyle';
 
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString , pickerFormat} from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
@@ -210,7 +210,7 @@ class WorkflowReplyReview extends Component {
                             <Picker mode='dropdown'
                                 iosHeader='Chọn kết quả đánh giá'
                                 iosIcon={<NBIcon name='ios-arrow-down-outline' />}
-                                style={{ width: '100%' }}
+                                style={{ width: pickerFormat() }}
                                 selectedValue={this.state.selected}
                                 onValueChange={this.onValueChange.bind(this)}>
                                 <Picker.Item label='Đồng ý' value='1' />

@@ -25,7 +25,7 @@ import * as util from 'lodash';
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage} from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat} from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
@@ -242,7 +242,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.TUCHU_CAO || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'TUCHU_CAO')}
                                         mode='dropdown'>
@@ -278,7 +278,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.TRACHNHIEM_LON || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'TRACHNHIEM_LON')}
                                         mode='dropdown'>
@@ -314,7 +314,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.TUONGTAC_TOT || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'TUONGTAC_TOT')}
                                         mode='dropdown'>
@@ -350,7 +350,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.TOCDO_NHANH || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'TOCDO_NHANH')}
                                         mode='dropdown'>
@@ -386,7 +386,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.TIENBO_NHIEU || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'TIENBO_NHIEU')}
                                         mode='dropdown'>
@@ -422,7 +422,7 @@ class ApproveEvaluationTask extends Component {
                                     <Picker
                                         iosHeader='Chọn điểm tự chủ cao'
                                         iosIcon={<Icon name='ios-arrow-down-outline' />}
-                                        style={{ width: '100%' }}
+                                        style={{ width: pickerFormat() }}
                                         selectedValue={(this.state.THANHTICH_VUOT || 0)}
                                         onValueChange={(value) => this.onValueChange(value, 'THANHTICH_VUOT')}
                                         mode='dropdown'>

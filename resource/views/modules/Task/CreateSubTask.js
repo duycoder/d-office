@@ -19,7 +19,7 @@ import DatePicker from 'react-native-datepicker';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -213,7 +213,7 @@ class CreateSubTask extends Component {
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
 								iosIcon={<Icon name='ios-arrow-down-outline' />}
-								style={pickerStyle}
+								style={{ width: pickerFormat() }}
 								selectedValue={this.state.urgencyValue}
 								onValueChange={this.onUrgencyValueChange.bind(this)}>
 								{
@@ -230,7 +230,7 @@ class CreateSubTask extends Component {
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
 								iosIcon={<Icon name='ios-arrow-down-outline' />}
-								style={pickerStyle}
+								style={{ width: pickerFormat() }}
 								selectedValue={this.state.planValue}
 								onValueChange={this.onPlanValueChange.bind(this)}>
 								<Picker.Item value="1" label="Có" />

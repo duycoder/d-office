@@ -379,3 +379,7 @@ export function formatMessage(message, screenName, isTaskNotification, itemType,
     return message;
 
 }
+
+export function pickerFormat(){
+    return Platform.OS === "ios" ? undefined : '100%'
+}
