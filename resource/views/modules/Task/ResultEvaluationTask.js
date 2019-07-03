@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
         padding: 0
     },
     label: {
-        marginVertical: verticalScale(10),
+        marginVertical: verticalScale(5),
         fontWeight: 'bold',
         color: '#000',
     }, info: {
