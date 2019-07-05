@@ -222,7 +222,7 @@ class BaseList extends Component {
                     Số theo sổ:
                   </RnText>
                   <RnText>
-                    {` ${item.SODITHEOSO} - ${item.TENSOVANBAN.replace( /^\D+/g, '')}`}
+                    {` ${item.SODITHEOSO || "N/A"} - ${item.TENSOVANBAN ? item.TENSOVANBAN.replace(/^\D+/g, '') : "N/A"}`}
                   </RnText>
                 </RnText>
               </View>
