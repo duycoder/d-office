@@ -15,6 +15,8 @@ import * as util from 'lodash';
 //lib
 import { Button, Icon, Text as NBText } from 'native-base'
 import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL } from './SystemConstant'
+import AlertMessage from '../views/common/AlertMessage';
+import AlertMessageStyle from '../assets/styles/AlertMessageStyle';
 
 //style
 import { verticalScale, moderateScale } from '../assets/styles/ScaleIndicator';
@@ -64,13 +66,13 @@ export function convertDateTimeToString(date) {
     return 'N/A';
 }
 
-export function convertDateTimeToTitle(date, isExperiment = false ) {
+export function convertDateTimeToTitle(date, isExperiment = false) {
     // if (isExperiment) {
     //     if (isObjectHasValue(date) && !util.isEmpty(date)) {
     //         let jsDateArr = date.split("T");
     //         let dateArr = jsDateArr[0].split("-"), 
     //             timeArr = jsDateArr[1].split(":");
-            
+
     //         let datePart = dateArr[2] + '/' + dateArr[1] + '/' + dateArr[0];
     //         let timePart = timeArr[0] + ':' + timeArr[1];
 
@@ -366,20 +368,24 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
     }
 }
 
-export function formatMessage(message, screenName, isTaskNotification, itemType, itemId){
-    if(util.isNull(message)){
+export function formatMessage(message, screenName, isTaskNotification, itemType, itemId) {
+    if (util.isNull(message)) {
         message = "";
     }
     message += "-HINETVNIO-";
-    message += "-"+screenName;
-    message += "-" + (isTaskNotification) ? "1": "0";
-    message += "-" + (isTaskNotification) ? "0": itemId.toString();
-    message += "-" + (isTaskNotification) ? "0": itemType.toString();
-    message += "-" + (isTaskNotification) ? itemId.toString(): "0";
+    message += "-" + screenName;
+    message += "-" + (isTaskNotification) ? "1" : "0";
+    message += "-" + (isTaskNotification) ? "0" : itemId.toString();
+    message += "-" + (isTaskNotification) ? "0" : itemType.toString();
+    message += "-" + (isTaskNotification) ? itemId.toString() : "0";
     return message;
 
 }
-
-export function pickerFormat(){
+/**
+ * Style width cho Picker, mặc định: 
+ * - `undefined` cho ios
+ * - `100%` cho android
+ */
+export function pickerFormat() {
     return Platform.OS === "ios" ? undefined : '100%'
 }

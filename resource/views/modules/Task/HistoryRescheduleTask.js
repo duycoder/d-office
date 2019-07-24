@@ -8,7 +8,8 @@ import React, { Component } from 'react';
 import { View as RnView, Text as RnText } from 'react-native';
 import {
 	ActivityIndicator, Alert, FlatList,
-	RefreshControl, StyleSheet, Dimensions, Platform
+	RefreshControl, StyleSheet, Dimensions, Platform,
+	TouchableOpacity
 } from 'react-native';
 //lib
 import {
@@ -36,6 +37,8 @@ import {
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -59,8 +62,12 @@ class HistoryRescheduleTask extends Component {
 			rescheduleInfo: {},
 
 			pageIndex: DEFAULT_PAGE_INDEX,
-			pageSize: DEFAULT_PAGE_SIZE
-		}
+			pageSize: DEFAULT_PAGE_SIZE,
+
+			listRowId: [],
+		};
+
+		this.myRef = [];
 	}
 
 	componentWillMount() {
@@ -102,6 +109,13 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	onShowRescheduleInfo = (item) => {
+		// if (this.state.listRowId.length>0){
+		// 	for(let rowId of this.state.listRowId){
+		// 		this.refs[rowId]._root.closeRow();
+		// 	}
+		// }
+		// console.tron.log(this.state.listRowId)
+		// console.tron.log(this.myRef["rowId__34"]);
 		this.setState({
 			rescheduleInfo: item
 		}, () => {
@@ -113,23 +127,25 @@ class HistoryRescheduleTask extends Component {
 		this.setState({
 			rescheduleInfo: item
 		}, () => {
-			Alert.alert(
-				'PHẢN HỒI YÊU CẦU LÙI HẠN',
-				'Phản hồi yêu cầu lùi hạn của \n' + item.FullName,
-				[
-					{
-						'text': 'ĐỒNG Ý', onPress: () => { this.onApproveReschedule(true, item.ID, item.HANKETHUC) }
-					}, {
-						'text': 'KHÔNG ĐỒNG Ý', onPress: () => { this.onApproveReschedule(false, item.ID, item.HANKETHUC) }
-					}, {
-						'text': 'THOÁT', onPress: () => { }
-					}
-				]
-			)
+			this.refs.confirm.showModal();
+			// Alert.alert(
+			// 	'PHẢN HỒI YÊU CẦU LÙI HẠN',
+			// 	'Phản hồi yêu cầu lùi hạn của \n' + item.FullName,
+			// 	[
+			// 		{
+			// 			'text': 'ĐỒNG Ý', onPress: () => { this.onApproveReschedule(true, item.ID, item.HANKETHUC) }
+			// 		}, {
+			// 			'text': 'KHÔNG ĐỒNG Ý', onPress: () => { this.onApproveReschedule(false, item.ID, item.HANKETHUC) }
+			// 		}, {
+			// 			'text': 'THOÁT', onPress: () => { }
+			// 		}
+			// 	]
+			// )
 		})
 	}
 
 	onApproveReschedule = async (isApprove, extendId, deadline) => {
+		this.refs.confirm.closeModal();
 		const screenName = isApprove ? 'ApproveRescheduleTaskScreen' : 'DenyRescheduleTaskScreen';
 		const targetParams = {
 			canApprove: this.state.canApprove,
@@ -143,6 +159,8 @@ class HistoryRescheduleTask extends Component {
 	renderItem = ({ item }) => {
 		return (
 			<SwipeRow
+				// ref={ref => this.myRef[`rowId__${item.ID}`] = ref}
+				// onRowOpen={()=>this.setState({listRowId: [...this.state.listRowId, `rowId__${item.ID}`]})}
 				leftOpenValue={75}
 				rightOpenValue={-75}
 				disableLeftSwipe={!util.isNull(item.IS_APPROVED) || this.state.canApprove == false}
@@ -186,10 +204,10 @@ class HistoryRescheduleTask extends Component {
 						</RnView>
 						{
 							item.IS_APPROVED &&
-							<RnView style={[styles.rowContainer, {marginTop: 5}]}>
+							<RnView style={[styles.rowContainer, { marginTop: 5 }]}>
 								<RnText>
 									<RnText style={styles.rowStatusLabel}>
-									{`Đồng ý phê duyệt tới: `}
+										{`Đồng ý phê duyệt tới: `}
 									</RnText>
 									<RnText style={[styles.approveText, styles.rowStatus]}>
 										{convertDateToString(item.HANKETTHUC_LANHDAODUYET)}
@@ -214,7 +232,12 @@ class HistoryRescheduleTask extends Component {
 		this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
 			if (this.props.extendsNavParams.hasOwnProperty("check")) {
 				if (this.props.extendsNavParams.check === true) {
-					this.fetchData();
+					this.setState({
+						loading: true
+					}, () => {
+						this.fetchData();
+					});
+					this.updateExtendsNavParams({ check: false });
 				}
 			}
 		});
@@ -413,6 +436,28 @@ class HistoryRescheduleTask extends Component {
 						</Item>
 					</Form>
 				</PopupDialog>
+
+				<AlertMessage
+					ref="confirm"
+					title="PHẢN HỒI YÊU CẦU LÙI HẠN"
+					bodyText={`Phản hồi yêu cầu lùi hạn của \n ${this.state.rescheduleInfo.FullName}`}
+					exitText="THOÁT"
+				>
+					<RnView style={AlertMessageStyle.leftFooter}>
+						<TouchableOpacity onPress={() => this.onApproveReschedule(true, this.state.rescheduleInfo.ID, this.state.rescheduleInfo.HANKETHUC)} style={AlertMessageStyle.footerButton}>
+							<RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+								ĐỒNG Ý
+							</RnText>
+						</TouchableOpacity>
+					</RnView>
+					<RnView style={AlertMessageStyle.leftFooter}>
+						<TouchableOpacity onPress={() => this.onApproveReschedule(false, this.state.rescheduleInfo.ID, this.state.rescheduleInfo.HANKETHUC)} style={AlertMessageStyle.footerButton}>
+							<RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+								KHÔNG ĐỒNG Ý
+							</RnText>
+						</TouchableOpacity>
+					</RnView>
+				</AlertMessage>
 			</Container>
 		);
 	}
@@ -453,6 +498,19 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: '#000',
 		fontSize: moderateScale(14, 1.3)
+	}, leftFooter: {
+		flex: 1,
+		borderRightWidth: scale(2),
+		borderRightColor: '#ececec'
+	}, rightFooter: {
+		flex: 1,
+	}, footerText: {
+		color: '#000',
+		flexWrap: 'wrap',
+	}, footerButton: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	}
 });
 

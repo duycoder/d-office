@@ -5,7 +5,10 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { Alert, Platform } from 'react-native'
+import {
+    Alert, Platform,
+    View as RnView, Text as RnText
+} from 'react-native'
 //lib
 import {
     Container, Header, Left, Body, Right,
@@ -32,6 +35,8 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 
 class ApproveProgressTask extends Component {
     constructor(props) {
@@ -80,18 +85,20 @@ class ApproveProgressTask extends Component {
                 buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         } else {
-            Alert.alert(
-                'XÁC NHẬN PHẢN HỒI',
-                'Bạn có chắc chắn muốn thực hiện việc này?',
-                [
-                    { text: 'Đồng ý', onPress: () => this.onApproveCompleteTask() },
-                    { text: 'Hủy bỏ', onPress: () => { } },
-                ]);
+            this.refs.confirm.showModal();
+            // Alert.alert(
+            //     'XÁC NHẬN PHẢN HỒI',
+            //     'Bạn có chắc chắn muốn thực hiện việc này?',
+            //     [
+            //         { text: 'Đồng ý', onPress: () => this.onApproveCompleteTask() },
+            //         { text: 'Hủy bỏ', onPress: () => { } },
+            //     ]);
         }
     }
 
     //phản hồi tiến độ công việc
     onApproveCompleteTask = async () => {
+        this.refs.confirm.closeModal();
         this.setState({
             executing: true
         })
@@ -162,7 +169,7 @@ class ApproveProgressTask extends Component {
                 <Content>
                     <Form>
                         <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
-                            <Label>Nội dung phản hồi <Text style={{color:'#f00'}}>*</Text></Label>
+                            <Label>Nội dung phản hồi <Text style={{ color: '#f00' }}>*</Text></Label>
                             <Textarea rowSpan={5} style={{ width: '100%' }}
                                 value={this.state.content} bordered
                                 onChangeText={(content) => this.setState({ content })} />
@@ -194,6 +201,21 @@ class ApproveProgressTask extends Component {
                         </Button>
                     </Form>
                 </Content>
+
+                <AlertMessage
+                    ref="confirm"
+                    title="XÁC NHẬN PHẢN HỒI"
+                    bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
+                    exitText="Hủy bỏ"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onApproveCompleteTask()} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                Đồng ý
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
 
                 {
                     executeLoading(this.state.executing)

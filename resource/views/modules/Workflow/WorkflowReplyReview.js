@@ -47,6 +47,9 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+
 class WorkflowReplyReview extends Component {
     constructor(props) {
         super(props);
@@ -91,27 +94,29 @@ class WorkflowReplyReview extends Component {
                 buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         } else {
-            Alert.alert(
-                'XÁC NHẬN PHẢN HỒI',
-                'Bạn có chắc chắn muốn thực hiện việc này?',
-                [
-                    {
-                        text: 'Đồng ý', onPress: () => {
-                            this.saveReplyReview();
-                        }
-                    },
+            this.refs.confirm.showModal();
+            // Alert.alert(
+            //     'XÁC NHẬN PHẢN HỒI',
+            //     'Bạn có chắc chắn muốn thực hiện việc này?',
+            //     [
+            //         {
+            //             text: 'Đồng ý', onPress: () => {
+            //                 this.saveReplyReview();
+            //             }
+            //         },
 
-                    {
-                        text: 'Hủy bỏ', onPress: () => {
+            //         {
+            //             text: 'Hủy bỏ', onPress: () => {
 
-                        }
-                    }
-                ]
-            )
+            //             }
+            //         }
+            //     ]
+            // )
         }
     }
 
     async saveReplyReview() {
+        this.refs.confirm.closeModal();
         this.setState({
             executing: true
         });
@@ -229,6 +234,21 @@ class WorkflowReplyReview extends Component {
                 {
                     executeLoading(this.state.executing)
                 }
+
+                <AlertMessage
+                    ref="confirm"
+                    title="XÁC NHẬN PHẢN HỒI"
+                    bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
+                    exitText="Huỷ bỏ"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.saveReplyReview()} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                Đồng ý
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
             </Container>
         );
     }

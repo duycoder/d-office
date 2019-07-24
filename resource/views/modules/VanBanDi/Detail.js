@@ -42,6 +42,9 @@ import TimelineSignDoc from './History';
 import AttachSignDoc from './Attachment';
 import UnitSignDoc from './UnitSignDoc';
 
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+
 class Detail extends Component {
     constructor(props) {
         super(props);
@@ -104,6 +107,7 @@ class Detail extends Component {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
                     this.setState({check: true}, () => this.fetchData());
+                    this.props.updateExtendsNavParams({check: false});
                 }
             }
         })
@@ -192,25 +196,27 @@ class Detail extends Component {
     }
 
     onConfirmSignDoc = () => {
-        Alert.alert(
-            'XÁC NHẬN KÝ DUYỆT',
-            'Bạn có chắc chắn ký duyệt văn bản',
-            [
-                {
-                    text: 'CÓ',
-                    onPress: async () => {
-                        this.onSignDoc();
-                    }
-                },
-                {
-                    text: 'KHÔNG',
-                    onPress: () => { }
-                }
-            ]
-        )
+        this.refs.confirm.showModal();
+        // Alert.alert(
+        //     'XÁC NHẬN KÝ DUYỆT',
+        //     'Bạn có chắc chắn ký duyệt văn bản',
+        //     [
+        //         {
+        //             text: 'CÓ',
+        //             onPress: async () => {
+        //                 this.onSignDoc();
+        //             }
+        //         },
+        //         {
+        //             text: 'KHÔNG',
+        //             onPress: () => { }
+        //         }
+        //     ]
+        // )
     }
 
     onSignDoc = async () => {
+        this.refs.confirm.closeModal();
         const url = `${API_URL}/api/WorkFlow/SaveSignDoc/`;
         this.setState({
             executing: true
@@ -352,6 +358,21 @@ class Detail extends Component {
                 {
                     executeLoading(this.state.executing)
                 }
+
+                <AlertMessage
+                    ref="confirm"
+                    title="XÁC NHẬN KÝ DUYỆT"
+                    bodyText="Bạn có chắc chắn ký duyệt văn bản"
+                    exitText="KHÔNG"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                CÓ
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
             </Container>
         );
     }

@@ -50,7 +50,8 @@ export const SideBarStyle = StyleSheet.create({
         backgroundColor: '#fff'
     }, listItemTitle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        // fontSize: moderateScale(16,1.2),
     }, listItemContainer: {
         height: verticalScale(60),
         justifyContent: 'center',

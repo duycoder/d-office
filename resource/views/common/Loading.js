@@ -87,9 +87,9 @@ class Loading extends Component {
     }
 
     async createNotificationListeners() {
-        this.notificationInitialization = firebase.notifications()
-            .getInitialNotification().then((message) => {
-            });
+        // this.notificationInitialization = firebase.notifications()
+        //     .getInitialNotification().then((message) => {
+        //     });
 
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body, data } = notification;
@@ -265,7 +265,7 @@ class Loading extends Component {
     componentWillUnmount = async () => {
         this.notificationListener;
         this.notificationOpenedListener;
-        this.notificationInitialization;
+        // this.notificationInitialization;
     }
 
     render() {

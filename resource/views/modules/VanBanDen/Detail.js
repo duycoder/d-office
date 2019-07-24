@@ -79,6 +79,7 @@ class Detail extends Component {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
                     this.setState({check: true}, () => this.fetchData());
+                    this.props.updateExtendsNavParams({check: false});
                 }
             }
         })

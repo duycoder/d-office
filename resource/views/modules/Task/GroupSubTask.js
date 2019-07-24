@@ -7,7 +7,8 @@
 import React, { Component } from 'react';
 import {
     Alert, ActivityIndicator, StyleSheet, RefreshControl,
-    View as RnView, Text as RnText, FlatList, Platform
+    View as RnView, Text as RnText, FlatList, Platform,
+    TouchableOpacity
 } from 'react-native';
 
 //redux
@@ -40,6 +41,9 @@ import {
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
+import AlertMessage from "../../common/AlertMessage";
+import { AlertMessageStyle } from "../../../assets/styles/index";
+
 class GroupSubTask extends Component {
     constructor(props) {
         super(props);
@@ -58,7 +62,10 @@ class GroupSubTask extends Component {
             executing: false,
 
             canFinishTask: props.extendsNavParams.canFinishTask,
-            canAssignTask: props.extendsNavParams.canAssignTask
+            canAssignTask: props.extendsNavParams.canAssignTask,
+
+            editSubTaskType: 0,
+            alertIdHolder: 0,
         }
     }
 
@@ -109,33 +116,51 @@ class GroupSubTask extends Component {
         let canFinish = this.state.canFinishTask && item.DAGIAOVIEC != true;
 
         if (canAssign && canFinish) {
-            Alert.alert(
-                'XỬ LÝ CÔNG VIỆC CON',
-                `Xử lý công việc #${item.ID}`,
-                [
-                    { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
-                    { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) }
-                ]
-            )
+            this.setState({
+                editSubTaskType: 1,
+                alertIdHolder: item.ID
+            }, () => {
+                this.refs.confirm_1.showModal();
+            });
+            // Alert.alert(
+            //     'XỬ LÝ CÔNG VIỆC CON',
+            //     `Xử lý công việc #${item.ID}`,
+            //     [
+            //         { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
+            //         { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) }
+            //     ]
+            // )
         }
         else if (canAssign && !canFinish) {
-            Alert.alert(
-                'XỬ LÝ CÔNG VIỆC CON',
-                `Xử lý công việc #${item.ID}`,
-                [
-                    { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) },
-                    { 'text': 'THOÁT', onPress: () => { } },
-                ]
-            )
+            this.setState({
+                editSubTaskType: 2,
+                alertIdHolder: item.ID
+            }, () => {
+                this.refs.confirm_2.showModal();
+            });
+            // Alert.alert(
+            //     'XỬ LÝ CÔNG VIỆC CON',
+            //     `Xử lý công việc #${item.ID}`,
+            //     [
+            //         { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) },
+            //         { 'text': 'THOÁT', onPress: () => { } },
+            //     ]
+            // )
         } else {
-            Alert.alert(
-                'XỬ LÝ CÔNG VIỆC CON',
-                `Xử lý công việc #${item.ID}`,
-                [
-                    { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
-                    { 'text': 'THOÁT', onPress: () => { } },
-                ]
-            )
+            this.setState({
+                editSubTaskType: 3,
+                alertIdHolder: item.ID
+            }, () => {
+                this.refs.confirm_3.showModal();
+            });
+            // Alert.alert(
+            //     'XỬ LÝ CÔNG VIỆC CON',
+            //     `Xử lý công việc #${item.ID}`,
+            //     [
+            //         { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
+            //         { 'text': 'THOÁT', onPress: () => { } },
+            //     ]
+            // )
         }
     }
 
@@ -149,6 +174,14 @@ class GroupSubTask extends Component {
     }
 
     onNavigateToAssignTask(id) {
+        switch (this.state.editSubTaskType) {
+            case 1:
+                this.refs.confirm_1.closeModal();
+                break;
+            case 3:
+                this.refs.confirm_3.closeModal();
+                break;
+        }
         this.props.navigation.navigate('AssignTaskScreen', {
             taskId: this.state.taskId,
             taskType: this.state.taskType,
@@ -157,17 +190,32 @@ class GroupSubTask extends Component {
     }
 
     onConfirmCompleteTask(id) {
-        Alert.alert(
-            'XÁC NHẬN HOÀN THÀNH',
-            'Bạn có chắc chắn đã hoàn thành công việc này?',
-            [
-                { 'text': 'Đồng ý', onPress: () => this.onCompleteSubTask(id) },
-                { 'text': 'Hủy bỏ', onPress: () => { } }
-            ]
-        )
+        switch (this.state.editSubTaskType) {
+            case 1:
+                this.refs.confirm_1.closeModal();
+                break;
+            case 2:
+                this.refs.confirm_2.closeModal();
+                break;
+        }
+        this.setState({
+            editSubTaskType: 4,
+            alertIdHolder: id
+        }, () => {
+            this.refs.confirm_4.showModal();
+        })
+        // Alert.alert(
+        //     'XÁC NHẬN HOÀN THÀNH',
+        //     'Bạn có chắc chắn đã hoàn thành công việc này?',
+        //     [
+        //         { 'text': 'Đồng ý', onPress: () => this.onCompleteSubTask(id) },
+        //         { 'text': 'Hủy bỏ', onPress: () => { } }
+        //     ]
+        // )
     }
 
     onCompleteSubTask = async (id) => {
+        this.refs.confirm_4.closeModal();
         this.setState({
             executing: true
         });
@@ -447,6 +495,74 @@ class GroupSubTask extends Component {
                         </Item>
                     </Form>
                 </PopupDialog>
+
+                <AlertMessage
+                    ref="confirm_1"
+                    title="XỬ LÝ CÔNG VIỆC CON"
+                    bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
+                    exitText="THOÁT"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onConfirmCompleteTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                HOÀN THÀNH
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onNavigateToAssignTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                GIAO VIỆC
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
+
+                <AlertMessage
+                    ref="confirm_2"
+                    title="XỬ LÝ CÔNG VIỆC CON"
+                    bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
+                    exitText="THOÁT"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onNavigateToAssignTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                GIAO VIỆC
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
+
+                <AlertMessage
+                    ref="confirm_3"
+                    title="XỬ LÝ CÔNG VIỆC CON"
+                    bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
+                    exitText="THOÁT"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onConfirmCompleteTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                HOÀN THÀNH
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
+
+                <AlertMessage
+                    ref="confirm_4"
+                    title="XÁC NHẬN HOÀN THÀNH"
+                    bodyText="Bạn có chắc chắn đã hoàn thành công việc này?"
+                    exitText="Huỷ bỏ"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onCompleteSubTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                Đồng ý
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
             </Container>
         );
     }
@@ -478,7 +594,7 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         coreNavParams: state.navState.coreNavParams,
-            extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

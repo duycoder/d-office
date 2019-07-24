@@ -71,7 +71,7 @@ async function pushFirebaseNotify(content, targetToken, type) {
     });
 
     if(fcmResult && fcmResult.success){
-        console.tron.log('FCM result', 'GỬI THÔNG BÁO THÀNH CÔNG');
+        console.log('FCM result', 'GỬI THÔNG BÁO THÀNH CÔNG');
     }else{
         saveFirebaseMessageToDb(content);
     }

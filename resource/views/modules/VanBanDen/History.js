@@ -103,7 +103,7 @@ export default class TimelinePublishDoc extends Component {
 
                                         <View style={TimeLineStyle.infoDetailValue}>
                                             <Text style={TimeLineStyle.infoDetailValueText}>
-                                                {item.TenNguoiNhan} {renderIf(item.IsDaNhan)(<Text style={TimeLineStyle.infoDetailValueNote}>(Đã nhận)</Text>)}
+                                                {item.TenNguoiNhan} {renderIf(item.IsDaNhan)(<Text style={TimeLineStyle.infoDetailValueNote}>{"\n"}(Đã nhận)</Text>)}
                                             </Text>
                                         </View>
                                     </View>

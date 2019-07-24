@@ -64,7 +64,12 @@ class Brief extends Component {
     this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
-          this.fetchData();
+          this.setState({
+            loading: true
+          }, ()=>{
+            this.fetchData();
+          });
+this.props.updateExtendsNavParams({check: false});
         }
       }
     })
