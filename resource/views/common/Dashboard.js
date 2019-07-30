@@ -27,6 +27,7 @@ import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import * as SBIcons from '../../assets/styles/SideBarIcons';
 
 import Panel from './Panel';
+import GridPanel from './GridPanel';
 import Confirm from './Confirm';
 import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 import Images from '../../common/Images';
@@ -85,11 +86,12 @@ class Dashboard extends Component {
       this.props.updateAuthorization(0);
     }
     // Reset Route
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: screenName })] // navigate
-    });
-    this.props.navigation.dispatch(resetAction);
+    // const resetAction = NavigationActions.reset({
+    //   index: 0,
+    //   actions: [NavigationActions.navigate({ routeName: screenName })] // navigate
+    // });
+    // this.props.navigation.dispatch(resetAction);
+    this.props.navigation.navigate(screenName);
   }
 
   generateTitle(maThaotac) {
@@ -198,118 +200,78 @@ class Dashboard extends Component {
           </ImageBackground>
         </View>
 
+        <View style={SideBarStyle.shortcutBoxContainer}>
+          <View style={SideBarStyle.shortcutBoxStyle}>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")}>
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến chưa xử lý</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={SideBarStyle.shortcutBoxStyle}>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")}>
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi chưa xử lý</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={SideBarStyle.shortcutBoxStyle}>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("ListAssignedTaskScreen")}>
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc được giao</Text>
+            </TouchableOpacity>
+          </View>
+          {/*<View style={[SideBarStyle.shortcutBoxStyle, { marginLeft: 5, marginRight: 10 }]}>
+                <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")}>
+                  <Text style={SideBarStyle.shortcutBoxTextStyle}>Lịch công tác</Text>
+                </TouchableOpacity>
+    </View>*/}
+        </View>
+
         <View style={SideBarStyle.body}>
           <ScrollView>
-            <TouchableOpacity
-              onPress={() => this.setCurrentFocus('ListNotificationScreen', '0')}
-              style={onFocusNow === '0' && SideBarStyle.listItemFocus}>
-              <ListItem
-                leftIcon={
-                  <SideBarIcon actionCode={THONGBAO.code} status={onFocusNow === '0'} isParent={true} />
-                }
-                rightIcon={
-                  notificationIcon
-                }
-                containerStyle={SideBarStyle.subItemContainer}
-                title={'THÔNG BÁO'}
-                titleStyle={onFocusNow === '0' ? SideBarStyle.listItemFocus : SideBarStyle.listItemTitle}
-              />
-            </TouchableOpacity>
-
             {
               // Lấy chức năng của người dùng
-              userFunctions && userFunctions.map((item, index) =>
-                <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
+              userFunctions && userFunctions.map((item, index) => {
+                let count = 0;
+                return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
                   {
-                    item.ListThaoTac.map((sItem, sIndex) =>
-                      sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE
-                        ? <TouchableOpacity
-                          key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
-                          style={onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
-                          <ListItem
-                            leftIcon={
-                              <SideBarIcon actionCode={sItem.MA_THAOTAC} status={onFocusNow === sItem.DM_THAOTAC_ID} />
-                            }
-                            rightIcon={
-                              onFocusNow !== sItem.DM_THAOTAC_ID ? mainItemIcon : subItemIcon
-                            }
-                            containerStyle={SideBarStyle.subItemContainer}
-                            title={this.generateTitle(sItem.MA_THAOTAC)}
-                            titleStyle={[SideBarStyle.listItemSubTitleContainer, onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemSubTitleContainerFocus]}
-                            contentContainerStyle={SideBarStyle.subItemContainer} />
-                        </TouchableOpacity>
-                        : null
-                    )
+                    item.ListThaoTac.map((sItem, sIndex) => {
+                      const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
+                      let elementStyle = SideBarStyle.normalBoxStyle;
+                      if (renderCondition) {
+                        if (count % 3 === 1) {
+                          elementStyle = [SideBarStyle.normalBoxStyle, { marginHorizontal: '5%' }];
+                        }
+                        count++;
+                        return <View style={elementStyle} key={sItem.DM_THAOTAC_ID.toString()}>
+                          <TouchableOpacity onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}>
+                            <SideBarIcon actionCode={sItem.MA_THAOTAC} />
+                            <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
+                          </TouchableOpacity>
+                        </View>;
+                        // return <TouchableOpacity
+                        //   key={sItem.DM_THAOTAC_ID.toString()}
+                        //   onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
+                        //   style={onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemFocus}>
+                        //   <ListItem
+                        //     hideChevron={true}
+                        //     leftIcon={
+                        //       <SideBarIcon actionCode={sItem.MA_THAOTAC} status={onFocusNow === sItem.DM_THAOTAC_ID} />
+                        //     }
+                        //     containerStyle={[SideBarStyle.subItemContainer, { flexBasis: '33%' }]}
+                        //     title={this.generateTitle(sItem.MA_THAOTAC)}
+                        //     titleStyle={[SideBarStyle.listItemSubTitleContainer, onFocusNow === sItem.DM_THAOTAC_ID && SideBarStyle.listItemSubTitleContainerFocus]}
+                        //     contentContainerStyle={SideBarStyle.subItemContainer} />
+                        // </TouchableOpacity>
+                      }
+                      else {
+                        return null;
+                      }
+                    })
                   }
-                </Panel>
+                </GridPanel>
+              }
               )
             }
-
-            {/*Truy vấn thông tin tài khoản người dùng*/}
-            <Panel title='TÀI KHOẢN' actionCode={TAIKHOAN.code} isParent={true}>
-              <TouchableOpacity onPress={() => this.setCurrentFocus('AccountInfoScreen', '10')} style={onFocusNow === '10' && SideBarStyle.listItemFocus}>
-                <ListItem
-                  leftIcon={
-                    <SideBarIcon actionCode={TAIKHOAN.actionCodes[0]} status={onFocusNow === '10'} />
-                  }
-                  rightIcon={
-                    onFocusNow !== '10' ? mainItemIcon : subItemIcon
-                  }
-                  title={'THÔNG TIN TÀI KHOẢN'}
-                  containerStyle={SideBarStyle.subItemContainer}
-                  titleStyle={[SideBarStyle.listItemSubTitleContainer, onFocusNow === '10' && SideBarStyle.listItemSubTitleContainerFocus]}
-                  style={SideBarStyle.subItemContainer} />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => this.setCurrentFocus('AccountChangePasswordScreen', '11')} style={onFocusNow === '11' && SideBarStyle.listItemFocus}>
-                <ListItem
-                  leftIcon={
-                    <SideBarIcon actionCode={TAIKHOAN.actionCodes[1]} status={onFocusNow === '11'} />
-                  }
-                  rightIcon={
-                    onFocusNow !== '11' ? mainItemIcon : subItemIcon
-                  }
-                  title={'ĐỔI MẬT KHẨU'}
-                  containerStyle={SideBarStyle.subItemContainer}
-                  titleStyle={[SideBarStyle.listItemSubTitleContainer, onFocusNow === '11' && SideBarStyle.listItemSubTitleContainerFocus]}
-                  style={SideBarStyle.subItemContainer} />
-              </TouchableOpacity>
-            </Panel>
-
-            <TouchableOpacity onPress={() => this.onLogOut()}>
-              <ListItem
-                leftIcon={
-                  <SideBarIcon actionCode={DANGXUAT.code} isParent={true} />
-                }
-                hideChevron={true}
-                containerStyle={SideBarStyle.listItemContainer}
-                title={'ĐĂNG XUẤT'}
-                titleStyle={SideBarStyle.listItemTitle}
-              />
-            </TouchableOpacity>
           </ScrollView>
         </View>
 
-        {/*<Footer>
-          <FooterTab>
-            <Button badge vertical>
-              <Badge><Text>2</Text></Badge>
-              <NBIcon name="apps" />
-              <Text>Thông báo</Text>
-            </Button>
-            <Button active vertical>
-              <NBIcon active name="navigate" />
-              <Text>Dashboard</Text>
-            </Button>
-            <Button vertical>
-              <NBIcon name="person" />
-              <Text>Tài khoản</Text>
-            </Button>
-          </FooterTab>
-        </Footer>*/}
-
-        <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
       </View>
     );
   }
