@@ -497,14 +497,14 @@ const AppStack = TabNavigator(
                 const { routeName } = navigation.state;
                 let iconName;
                 switch (routeName) {
-                    case 'Dashboard': iconName = "ios-home"; break;
-                    case 'Notification': iconName = "ios-notifications"; break;
-                    case 'Account': iconName = "ios-person"; break;
+                    case 'Dashboard': iconName = `home${focused ? '' : '-outline'}`; break;
+                    case 'Notification': iconName = `bell${focused ? '' : '-outline'}`; break;
+                    case 'Account': iconName = `shield-account${focused ? '' : '-outline'}`; break;
                 }
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Icon name={iconName} size={25} color={tintColor} type="ionicon" />;
+                return <Icon name={iconName} size={25} color={tintColor} type="material-community" />;
             },
             tabBarLabel: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
