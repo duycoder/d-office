@@ -20,7 +20,7 @@ import {
   Content, Badge, Left, Right, Button
 } from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
 import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
@@ -224,7 +224,13 @@ class BaseList extends Component {
     return (
       <Container>
         <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Left style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => this.props.navigator.goBack()}>
+              <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+            </TouchableOpacity>
+          </Left>
+
+          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Mã hiệu, trích yếu'
               value={this.state.filterValue}

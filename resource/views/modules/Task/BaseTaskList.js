@@ -19,7 +19,7 @@ import {
     Container, Header, Left, Input,
     Item, Icon, Button, Text, Content
 } from 'native-base';
-import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
+import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 import renderIf from 'render-if';
 
 //constant
@@ -285,7 +285,13 @@ class BaseTaskList extends Component {
         return (
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Item style={{ backgroundColor: Colors.WHITE }}>
+                    <Left style={{ flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.props.navigator.goBack()}>
+                            <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+                        </TouchableOpacity>
+                    </Left>
+
+                    <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên công việc'
                             value={this.state.filterValue}

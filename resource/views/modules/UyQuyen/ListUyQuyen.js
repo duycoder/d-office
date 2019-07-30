@@ -196,7 +196,12 @@ class ListUyQuyen extends Component {
         return (
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Item style={{ backgroundColor: Colors.WHITE }}>
+                    <Left style={{ flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                            <RneIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+                        </TouchableOpacity>
+                    </Left>
+                    <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên người được ủy quyền'
                             value={this.state.filterValue}
