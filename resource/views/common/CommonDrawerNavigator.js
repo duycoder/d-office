@@ -6,7 +6,11 @@
 'use strict'
 import React, { Component } from 'react';
 import { width } from '../../common/SystemConstant';
-import { DrawerNavigator, SwitchNavigator, StackNavigator } from 'react-navigation';
+import { DrawerNavigator, SwitchNavigator, StackNavigator, TabBarBottom, TabNavigator } from 'react-navigation';
+
+import { View, Text } from 'react-native';
+import { Icon } from 'react-native-elements';
+import { Colors } from '../../common/SystemConstant';
 //#region màn hình văn bản đi
 import VanBanDiIsNotProcessList from '../modules/VanBanDi/IsNotProcessList';
 import VanBanDiIsProcessList from '../modules/VanBanDi/IsProcessList';
@@ -62,6 +66,7 @@ import AccountChangePassword from '../modules/User/AccountChangePassword';
 import Loading from '../common/Loading';
 //sidebar
 import SideBar from './SideBar';
+import Dashboard from './Dashboard';
 
 //#region màn hình luồng xử lý công việc
 import WorkflowReplyReview from '../modules/Workflow/WorkflowReplyReview';
@@ -227,13 +232,7 @@ const appRoutes = {
     }, DenyRescheduleTaskScreen: {
         screen: DenyRescheduleTask
     },
-    AccountInfoScreen: {
-        screen: AccountInfo
-    }, AccountEditorScreen: {
-        screen: AccountEditor
-    }, AccountChangePasswordScreen: {
-        screen: AccountChangePassword
-    },
+
     ListChatterScreen: {
         screen: ListChatter
     }, ChatterScreen: {
@@ -242,9 +241,7 @@ const appRoutes = {
     DetailChatterScreen: {
         screen: DetailChatter
     },
-    ListNotificationScreen: {
-        screen: ListNotification
-    },
+
     BaseCalendarScreen: {
         screen: BaseCalendar
     },
@@ -259,15 +256,177 @@ const appRoutes = {
     },
     EditUyQuyenScreen: {
         screen: EditUyQuyen
-    },DeptUyQuyenScreen: {
+    }, DeptUyQuyenScreen: {
         screen: DeptUyQuyen
-    }
+    },
+    ListNotificationScreen: {
+        screen: ListNotification
+    },
 }
 const appConfig = {
     headerMode: 'none',
-    initialRouteName: 'VanBanDenIsNotProcessScreen'
+    initialRouteName: 'ListNotificationScreen'
 }
 const stack = StackNavigator(appRoutes, appConfig);
+
+const newStack = {
+    // TestScreen: {
+    //     screen: TestNav,
+    // },
+    VanBanDiIsNotProcessScreen: {
+        screen: VanBanDiIsNotProcessList
+    },
+    VanBanDiIsProcessScreen: {
+        screen: VanBanDiIsProcessList
+    },
+    VanBanDiJoinProcessScreen: {
+        screen: VanBanDiJoinProcessList
+    },
+    VanBanDiIsPublishScreen: {
+        screen: VanBanDiIsPublishList
+    },
+    VanBanDiSearchScreen: {
+        screen: VanBanDiSearchList
+    },
+    VanBanDiDetailScreen: {
+        screen: VanBanDiDetail
+    },
+    VanBanDenIsNotProcessScreen: {
+        screen: VanBanDenIsNotProcessList
+    },
+    VanBanDenIsProcessScreen: {
+        screen: VanBanDenIsProcessList
+    },
+    VanBanDenJoinProcessScreen: {
+        screen: VanBanDenJoinProcessList
+    },
+    VanBanDenInternalIsNotProcessScreen: {
+        screen: VanBanDenInternalNotProcessList
+    },
+    VanBanDenInternalIsProcessScreen: {
+        screen: VanBanDenInternalProcessList
+    },
+    VanBanDenSearchScreen: {
+        screen: VanBanDenSearchList
+    },
+    VanBanDenDetailScreen: {
+        screen: VanBanDenDetail
+    },
+    VanBanDenBriefScreen: {
+        screen: VanBanDenBrief
+    },
+    WorkflowStreamProcessScreen: {
+        screen: WorkflowStreamProcess
+    },
+    ListAssignedTaskScreen: {
+        screen: ListAssignedTask
+    },
+    ListCombinationTaskScreen: {
+        screen: ListCombinationTask
+    },
+    ListPersonalTaskScreen: {
+        screen: ListPersonalTask
+    },
+    ListProcessedTaskScreen: {
+        screen: ListProcessedTask
+    },
+    ListPendingConfirmTaskScreen: {
+        screen: ListPendingConfirmTask
+    },
+    ListFilterTaskScreen: {
+        screen: ListFilterTask
+    },
+    DetailTaskScreen: {
+        screen: DetailTask
+    },
+    AssignTaskScreen: {
+        screen: AssignTask
+    }, AssignTaskUsersScreen: {
+        screen: AssignTaskUsers
+    },
+    RescheduleTaskScreen: {
+        screen: RescheduleTask
+    },
+    UpdateProgressTaskScreen: {
+        screen: UpdateProgressTask
+    },
+    ApproveProgressTaskScreen: {
+        screen: ApproveProgressTask
+    },
+    EvaluationTaskScreen: {
+        screen: EvaluationTask
+    },
+    HistoryEvaluateTaskScreen: {
+        screen: HistoryEvaluateTask
+    },
+    ApproveEvaluationTaskScreen: {
+        screen: ApproveEvaluationTask
+    },
+    HistoryRescheduleTaskScreen: {
+        screen: HistoryRescheduleTask
+    },
+    HistoryProgressTaskScreen: {
+        screen: HistoryProgressTask
+    },
+    GroupSubTaskScreen: {
+        screen: GroupSubTask
+    },
+    CreateSubTaskScreen: {
+        screen: CreateSubTask
+    },
+    WorkflowReplyReviewScreen: {
+        screen: WorkflowReplyReview
+    },
+    WorkflowRequestReviewScreen: {
+        screen: WorkflowRequestReview
+    },
+    WorkflowRequestReviewUsersScreen: {
+        screen: WorkflowRequestReviewUsers
+    },
+    WorkflowStreamProcessUsersScreen: {
+        screen: WorkflowStreamProcessUsers
+    },
+    ListCommentScreen: {
+        screen: ListComment
+    },
+    ReplyCommentScreen: {
+        screen: ReplyComment
+    }, ApproveRescheduleTaskScreen: {
+        screen: ApproveRescheduleTask
+    }, DenyRescheduleTaskScreen: {
+        screen: DenyRescheduleTask
+    },
+
+    ListChatterScreen: {
+        screen: ListChatter
+    }, ChatterScreen: {
+        screen: Chatter
+    },
+    DetailChatterScreen: {
+        screen: DetailChatter
+    },
+
+    BaseCalendarScreen: {
+        screen: BaseCalendar
+    },
+    EventListScreen: {
+        screen: EventList
+    },
+    DetailEventScreen: {
+        screen: DetailEvent
+    },
+    ListUyQuyenScreen: {
+        screen: ListUyQuyen
+    },
+    EditUyQuyenScreen: {
+        screen: EditUyQuyen
+    }, DeptUyQuyenScreen: {
+        screen: DeptUyQuyen
+    },
+    DashboardScreen: {
+        screen: Dashboard
+    },
+}
 
 // const VanBanDiStack = StackNavigator({
 //     VanBanDiIsNotProcessScreen: {
@@ -293,13 +452,83 @@ const stack = StackNavigator(appRoutes, appConfig);
 //     initialRouteName: 'VanBanDiIsNotProcessScreen'
 // });
 
-const AppStack = DrawerNavigator({
-    stack: {screen: stack},
-    // VanBanDiFlow: {screen: VanBanDiStack}
-}, {
-    drawerWidth: width * 0.8,
-    contentComponent: props => <SideBar {...props} />
-})
+// const AppStack = DrawerNavigator({
+//     stack: { screen: stack },
+//     // VanBanDiFlow: {screen: VanBanDiStack}
+// }, {
+//         drawerWidth: width * 0.8,
+//         contentComponent: props => <SideBar {...props} />
+//     })
+
+const AccountStack = StackNavigator(
+    {
+        AccountInfoScreen: {
+            screen: AccountInfo
+        }, AccountEditorScreen: {
+            screen: AccountEditor
+        }, AccountChangePasswordScreen: {
+            screen: AccountChangePassword
+        },
+    },
+    {
+        headerMode: 'none',
+        initialRouteName: 'AccountInfoScreen'
+    }
+);
+
+const AppStack = TabNavigator(
+    {
+        Dashboard: {
+            screen: StackNavigator(newStack, {
+                headerMode: 'none',
+                initialRouteName: 'DashboardScreen'
+            })
+        },
+        Notification: {
+            screen: stack
+        },
+        Account: {
+            screen: AccountStack
+        }
+    },
+    {
+        navigationOptions: ({ navigation }) => ({
+            tabBarIcon: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                let iconName;
+                switch (routeName) {
+                    case 'Dashboard': iconName = "ios-home"; break;
+                    case 'Notification': iconName = "ios-notifications"; break;
+                    case 'Account': iconName = "ios-person"; break;
+                }
+
+                // You can return any component that you like here! We usually use an
+                // icon component from react-native-vector-icons
+                return <Icon name={iconName} size={25} color={tintColor} type="ionicon" />;
+            },
+            tabBarLabel: ({ focused, tintColor }) => {
+                const { routeName } = navigation.state;
+                let routeLabel = "MH Chính";
+                switch (routeName) {
+                    case 'Dashboard': routeLabel = "MH Chính"; break;
+                    case 'Notification': routeLabel = "Thông báo"; break;
+                    case 'Account': routeLabel = "Tài khoản"; break;
+                }
+                return <Text style={{ color: tintColor }}>{routeLabel}</Text>;
+            }
+        }),
+        tabBarComponent: TabBarBottom,
+        tabBarPosition: 'bottom',
+        tabBarOptions: {
+            activeTintColor: Colors.WHITE,
+            inactiveTintColor: Colors.LITE_BLUE,
+            allowFontScaling: false,
+            activeBackgroundColor: Colors.LITE_BLUE,
+        },
+        animationEnabled: false,
+        swipeEnabled: false,
+    }
+);
 
 const authRoutes = {
     LoginScreen: {
