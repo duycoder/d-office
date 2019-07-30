@@ -30,5 +30,4 @@ android/.gradle/4.4/fileHashes/fileHashes.bin
 response.test.md
 test.json
 test2.json
-ios copy.zip
-new-ios-copy.zip
+*.zip

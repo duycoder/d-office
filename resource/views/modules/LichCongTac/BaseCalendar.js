@@ -10,6 +10,7 @@ import {
 
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
+import {Icon as RNEIcon} from 'react-native-elements';
 
 import { Colors, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -143,6 +144,9 @@ class BaseCalendar extends Component {
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+              <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+            </TouchableOpacity>
           </Left>
           <Body style={NativeBaseStyle.body}>
             <TouchableOpacity onPress={this.togglePicker}>

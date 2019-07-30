@@ -15,6 +15,7 @@ import SideBarStyle from "./SideBarStyle";
 import SignDocStyle from "./SignDocStyle";
 import TabStyle from "./TabStyle";
 import TaskStyle from "./TaskStyle";
+import GridPanelStyle from "./GridPanelStyle";
 
 export {
   AlertMessageStyle,
@@ -33,5 +34,6 @@ export {
   SideBarStyle,
   SignDocStyle,
   TabStyle,
-  TaskStyle
+  TaskStyle,
+  GridPanelStyle
 }
