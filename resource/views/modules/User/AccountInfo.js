@@ -35,6 +35,7 @@ import * as userAction from '../../../redux/modules/User/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
+import Confirm from '../../common/Confirm';
 
 //images
 const uriBackground = require('../../../assets/images/background.png');
@@ -123,6 +124,10 @@ class AccountInfo extends Component {
     this.willFocusListener.remove();
   }
 
+  onLogOut() {
+    this.refs.confirm.showModal();
+  }
+
   render() {
     const { fullName, email, dateOfBirth, mobilePhone, address } = this.state;
 
@@ -144,6 +149,9 @@ class AccountInfo extends Component {
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
+            <TouchableOpacity onPress={()=>this.onLogOut()} style={{marginRight: 20}}>
+              <Icon name="ios-power" size={moderateScale(16, 1.4)} color={Colors.WHITE} type="ionicon" />
+            </TouchableOpacity>
           </Right>
         </Header>
         <ImageBackground style={{ flex: 1 }}>
@@ -197,6 +205,8 @@ class AccountInfo extends Component {
         {
           executeLoading(this.state.loading)
         }
+
+        <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
       </Container>
     );
   }

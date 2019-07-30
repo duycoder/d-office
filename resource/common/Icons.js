@@ -10,9 +10,6 @@ const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFuncti
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 
 export default class SideBarIcon extends Component {
-  // static propTypes = {
-
-  // }
   static defaultProps = {
     actionCode: VanBanDenFunction.code,
     status: false,
