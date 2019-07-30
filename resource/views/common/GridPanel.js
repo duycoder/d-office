@@ -42,7 +42,7 @@ export default class GridPanel extends Component {
         <View style={GridPanelStyle.titleContainer}>
           <ListItem
             containerStyle={GridPanelStyle.listItemContainer}
-            hidechevron={true}
+            hideChevron={true}
             title={this.state.title}
             titleStyle={GridPanelStyle.listItemTitle}
             leftIcon={
