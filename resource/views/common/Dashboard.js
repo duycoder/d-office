@@ -201,21 +201,15 @@ class Dashboard extends Component {
         </View>
 
         <View style={SideBarStyle.shortcutBoxContainer}>
-          <View style={SideBarStyle.shortcutBoxStyle}>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")}>
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến chưa xử lý</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={SideBarStyle.shortcutBoxStyle}>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")}>
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi chưa xử lý</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={SideBarStyle.shortcutBoxStyle}>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("ListAssignedTaskScreen")}>
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc được giao</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={SideBarStyle.shortcutBoxStyle}>
+            <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến chưa xử lý</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={SideBarStyle.shortcutBoxStyle}>
+            <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi chưa xử lý</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("ListAssignedTaskScreen")} style={SideBarStyle.shortcutBoxStyle}>
+            <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc được giao</Text>
+          </TouchableOpacity>
           {/*<View style={[SideBarStyle.shortcutBoxStyle, { marginLeft: 5, marginRight: 10 }]}>
                 <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")}>
                   <Text style={SideBarStyle.shortcutBoxTextStyle}>Lịch công tác</Text>
@@ -239,12 +233,14 @@ class Dashboard extends Component {
                           elementStyle = [SideBarStyle.normalBoxStyle, { marginHorizontal: '5%' }];
                         }
                         count++;
-                        return <View style={elementStyle} key={sItem.DM_THAOTAC_ID.toString()}>
-                          <TouchableOpacity onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}>
-                            <SideBarIcon actionCode={sItem.MA_THAOTAC} />
-                            <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
-                          </TouchableOpacity>
-                        </View>;
+                        return <TouchableOpacity
+                          style={elementStyle}
+                          key={sItem.DM_THAOTAC_ID.toString()}
+                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
+                        >
+                          <SideBarIcon actionCode={sItem.MA_THAOTAC} />
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
+                        </TouchableOpacity>;
                         // return <TouchableOpacity
                         //   key={sItem.DM_THAOTAC_ID.toString()}
                         //   onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}

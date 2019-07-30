@@ -5,6 +5,8 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
+import { verticalScale } from './ScaleIndicator';
+import { Colors } from '../../common/SystemConstant';
 
 
 export const GridPanelStyle = StyleSheet.create({
@@ -19,5 +21,14 @@ export const GridPanelStyle = StyleSheet.create({
     // alignItems: 'center',
     flexWrap: 'wrap',
     // flex: 1,
+  },
+  listItemContainer: {
+    height: verticalScale(40),
+    justifyContent: 'center',
+    borderBottomColor: '#cccccc',
+    backgroundColor: '#fff'
+  }, listItemTitle: {
+    fontWeight: 'bold',
+    color: Colors.GRAY,
   }
 });

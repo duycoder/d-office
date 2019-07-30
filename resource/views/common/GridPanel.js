@@ -20,6 +20,7 @@ import { verticalScale } from '../../assets/styles/ScaleIndicator';
 
 import SideBar from './SideBar';
 import SideBarIcon from '../../common/Icons';
+import { Colors } from '../../common/SystemConstant';
 
 export default class GridPanel extends Component {
   constructor(props) {
@@ -40,12 +41,12 @@ export default class GridPanel extends Component {
       <View style={GridPanelStyle.container}>
         <View style={GridPanelStyle.titleContainer}>
           <ListItem
-            containerStyle={SideBarStyle.listItemContainer}
+            containerStyle={GridPanelStyle.listItemContainer}
             hidechevron={true}
             title={this.state.title}
-            titleStyle={SideBarStyle.listItemTitle}
+            titleStyle={GridPanelStyle.listItemTitle}
             leftIcon={
-              <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} />
+              <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} iconSize={22} iconColor={Colors.GRAY} />
             }
           />
         </View>
