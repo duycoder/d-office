@@ -106,14 +106,16 @@ export default class SideBarIcon extends Component {
       //#endregion
 
       case LichCongTacFunction.actionCodes[0]:
-      case LichCongTacFunction.code:
         iconName = 'calendar'
+        iconColor = "#64DD17";
         break;
-      case LichCongTacFunction.actionCodes[0]:
       case LichCongTacFunction.code:
         iconName = 'calendar'
         break;
       case UyQuyenFunction.actionCodes[0]:
+        iconName = 'account-convert'
+        iconColor = "#00C853";
+        break;
       case UyQuyenFunction.code:
         iconName = 'account-convert'
         break;

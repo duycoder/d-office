@@ -52,15 +52,15 @@ const appStack = TabNavigator(
                     case 'Account': routeLabel = "Tài khoản"; break;
                 }
                 return <Text style={{ color: tintColor }}>{routeLabel}</Text>;
-            }
+            },
         }),
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
         tabBarOptions: {
             activeTintColor: Colors.WHITE,
-            inactiveTintColor: Colors.LITE_BLUE,
+            inactiveTintColor: Colors.DANK_BLUE,
             allowFontScaling: false,
-            activeBackgroundColor: Colors.LITE_BLUE,
+            activeBackgroundColor: Colors.DANK_BLUE,
         },
         animationEnabled: false,
         swipeEnabled: false,
