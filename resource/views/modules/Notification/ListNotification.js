@@ -149,6 +149,8 @@ class ListNotification extends Component {
             noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
             noidungMessage = item.NOIDUNG.slice(noidungArchor);
 
+        let checkReadFont = item.IS_READ ? 'normal' : 'bold';
+
         return (
             <ListItem
                 leftIcon={
@@ -170,7 +172,7 @@ class ListNotification extends Component {
                 // }}
                 hideChevron={true}
                 title={
-                    <RNText style={styles.title}>
+                    <RNText style={[styles.title, {fontWeight: checkReadFont}]}>
                         <RNText style={{fontWeight:'bold'}}>{noidungSender}</RNText> {noidungMessage}
                     </RNText>
                 }
@@ -186,6 +188,7 @@ class ListNotification extends Component {
                     color: Colors.DARK_GRAY,
                     fontSize: moderateScale(12, 0.9),
                     fontStyle: 'italic',
+                    fontWeight: checkReadFont,
                 }}
                 rightTitleContainerStyle={{
                     flex: 0
