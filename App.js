@@ -5,7 +5,8 @@
  */
 
 import React, { Component } from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { Root } from 'native-base';
 import { CommonDrawerNavigator } from './resource/views/common/CommonDrawerNavigator';
 import { Colors } from './resource/common/SystemConstant';
@@ -25,9 +26,8 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={globalStore}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.DANK_BLUE, }}>
-        <StatusBar barStyle={"light-content"} />
-        <Root>
+        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.DANK_BLUE, padding: 0 }} forceInset={{bottom: 'never', top: 'never'}}>
+          <Root>
             <CommonDrawerNavigator />
             <NetworkStatus />
           </Root>

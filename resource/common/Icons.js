@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
@@ -16,11 +16,11 @@ export default class SideBarIcon extends Component {
     isParent: false,
     iconSize: 35,
     iconColor: Colors.BLACK,
+    customIconContainerStyle: {},
   }
   render() {
-    const { actionCode, status, isParent, iconSize } = this.props;
-    let iconName = "file-download", iconColor = this.props.iconColor,
-      iconMarginLeft = 10;
+    const { actionCode, status, isParent, iconSize, customIconContainerStyle } = this.props;
+    let iconName = "file-download", iconColor = this.props.iconColor;
 
     switch (actionCode) {
       //#region VanbanDen
@@ -105,6 +105,7 @@ export default class SideBarIcon extends Component {
         break;
       //#endregion
 
+      //#region Lichcongtac
       case LichCongTacFunction.actionCodes[0]:
         iconName = 'calendar'
         iconColor = "#64DD17";
@@ -112,6 +113,9 @@ export default class SideBarIcon extends Component {
       case LichCongTacFunction.code:
         iconName = 'calendar'
         break;
+      //#endregion
+
+      //#region Uyquyen
       case UyQuyenFunction.actionCodes[0]:
         iconName = 'account-convert'
         iconColor = "#00C853";
@@ -119,6 +123,8 @@ export default class SideBarIcon extends Component {
       case UyQuyenFunction.code:
         iconName = 'account-convert'
         break;
+      //#endregion
+
       case THONGBAO.code:
         iconName = "message-alert";
         break;
@@ -134,15 +140,17 @@ export default class SideBarIcon extends Component {
       iconColor = Colors.WHITE;
     }
 
-    if (isParent) {
-      iconMarginLeft = 0;
-
-    }
-
     return (
-      <View style={{ marginLeft: iconMarginLeft, minWidth: moderateScale(45, 0.9) }}>
+      <View style={[baseStyle.iconContainer, customIconContainerStyle]}>
         <Icon name={iconName} color={iconColor} type="material-community" size={moderateScale(iconSize, 0.9)} />
       </View>
     )
   }
 }
+
+const baseStyle = StyleSheet.create({
+  iconContainer: {
+    minWidth: moderateScale(45, 0.9),
+    maxHeight: moderateScale(35, 0.9)
+  }
+})

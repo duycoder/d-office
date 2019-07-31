@@ -143,7 +143,7 @@ export const SYSTEM_FUNCTION = {
 	UyQuyenFunction:{
 		code: 'QUANLY_UYQUYEN',
 		actionCodes: [
-			'QL_UYQUYEN_LD',
+			'DANHSACH_UYQUYEN',
 		]
 	}
 }

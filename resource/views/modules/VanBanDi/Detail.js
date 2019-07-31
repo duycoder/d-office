@@ -365,13 +365,13 @@ class Detail extends Component {
                     bodyText="Bạn có chắc chắn ký duyệt văn bản"
                     exitText="KHÔNG"
                 >
-                    <RnView style={AlertMessageStyle.leftFooter}>
-                        <TouchableOpacity onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
-                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                    <View style={AlertMessageStyle.leftFooter}>
+                        <RNButton onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
+                            <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 CÓ
-                            </RnText>
-                        </TouchableOpacity>
-                    </RnView>
+                            </RNText>
+                        </RNButton>
+                    </View>
                 </AlertMessage>
             </Container>
         );

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import {
   View, Text,
   Image, ImageBackground,
-  TouchableOpacity
+  TouchableOpacity, StatusBar
 } from 'react-native';
 
 //lib
@@ -107,6 +107,7 @@ class AccountInfo extends Component {
 
   componentDidMount = () => {
     this.willFocusListener = this.props.navigation.addListener('didFocus', () => {
+      // StatusBar.setBarStyle('light-content');
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
@@ -150,7 +151,7 @@ class AccountInfo extends Component {
           </Body>
           <Right style={NativeBaseStyle.right}>
             <TouchableOpacity onPress={()=>this.onLogOut()} style={{marginRight: 20}}>
-              <Icon name="ios-power" size={moderateScale(16, 1.4)} color={Colors.WHITE} type="ionicon" />
+              <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
             </TouchableOpacity>
           </Right>
         </Header>
