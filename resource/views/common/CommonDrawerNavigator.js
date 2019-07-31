@@ -15,6 +15,7 @@ import Loading from '../common/Loading';
 
 // các stack điều hướng
 import { accountStack, notificationStack, dashboardStack, authStack } from "./ModuleNav";
+import { moderateScale } from '../../assets/styles/ScaleIndicator';
 
 const appStack = TabNavigator(
     {
@@ -41,7 +42,7 @@ const appStack = TabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Icon name={iconName} size={25} color={tintColor} type="material-community" />;
+                return <Icon name={iconName} size={moderateScale(25, 1.3)} color={tintColor} type="material-community" />;
             },
             tabBarLabel: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
@@ -51,16 +52,19 @@ const appStack = TabNavigator(
                     case 'Notification': routeLabel = "Thông báo"; break;
                     case 'Account': routeLabel = "Tài khoản"; break;
                 }
-                return <Text style={{ color: tintColor }}>{routeLabel}</Text>;
+                return <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8) }}>{routeLabel}</Text>;
             },
         }),
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
         tabBarOptions: {
-            activeTintColor: Colors.WHITE,
-            inactiveTintColor: Colors.DANK_BLUE,
+            // activeTintColor: Colors.WHITE,
+            // inactiveTintColor: Colors.DANK_BLUE,
+            // activeBackgroundColor: Colors.DANK_BLUE,
             allowFontScaling: false,
-            activeBackgroundColor: Colors.DANK_BLUE,
+            // showLabel: false,
+            activeTintColor: Colors.DANK_BLUE,
+            inactiveTintColor: Colors.DARK_GRAY,
         },
         animationEnabled: false,
         swipeEnabled: false,

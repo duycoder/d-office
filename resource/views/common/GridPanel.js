@@ -45,9 +45,9 @@ export default class GridPanel extends Component {
             hideChevron={true}
             title={this.state.title}
             titleStyle={GridPanelStyle.listItemTitle}
-            leftIcon={
-              <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} iconSize={22} iconColor={Colors.GRAY} />
-            }
+            // leftIcon={
+            //   <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} iconSize={22} iconColor={Colors.GRAY} />
+            // }
           />
         </View>
         <View style={SideBarStyle.normalBoxContainer}>

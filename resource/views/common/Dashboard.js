@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import {
   AsyncStorage, View, Text, ScrollView, Image,
   ImageBackground, Modal,
-  TouchableOpacity
+  TouchableOpacity, StatusBar
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
@@ -29,7 +29,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 import Panel from './Panel';
 import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -41,6 +41,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
+const { LichCongTacFunction } = SYSTEM_FUNCTION;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -64,6 +65,17 @@ class Dashboard extends Component {
       userFunctions: userInfo.GroupUserFunctions
     });
   }
+
+  // componentDidMount() {
+  //   this._navListener = this.props.navigation.addListener('didFocus', () => {
+  //     StatusBar.setBarStyle('dark-content');
+  //     // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
+  //   });
+  // }
+
+  // componentWillUnmount() {
+  //   this._navListener.remove();
+  // }
 
   navigate(screenName) {
     this.props.navigation.push(screenName);
@@ -150,7 +162,7 @@ class Dashboard extends Component {
       default:
         break;
     }
-    return tenThaotac;
+    return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
   }
 
   render() {
@@ -179,12 +191,13 @@ class Dashboard extends Component {
 
     return (
       <View style={SideBarStyle.container}>
+        <StatusBar barStyle="dark-content" />
         <View style={SideBarStyle.header}>
           <ImageBackground source={Images.background} style={SideBarStyle.headerBackground}>
             <View style={SideBarStyle.headerAvatarContainer}>
               <Image source={Images.userAvatar} style={SideBarStyle.headerAvatar} />
             </View>
-            <View style={[SideBarStyle.headerUserInfoContainer, { flex: 1 }]}>
+            <View style={[SideBarStyle.headerUserInfoContainer, { flex: 3 }]}>
               <View style={{ flexDirection: 'row' }}>
                 <Text style={[SideBarStyle.headerUserName, { flex: 1, flexWrap: 'wrap' }]}>
                   {this.state.userInfo.Fullname}
@@ -197,24 +210,31 @@ class Dashboard extends Component {
                 </Text>
               </View>
             </View>
+            <View style={SideBarStyle.headerSignoutIcon}>
+              <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
+                <Icon name="power" size={moderateScale(35, 0.9)} color={Colors.LITE_BLUE} type="material-community" />
+              </TouchableOpacity>
+            </View>
           </ImageBackground>
         </View>
 
         <View style={SideBarStyle.shortcutBoxContainer}>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={SideBarStyle.shortcutBoxStyle}>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#5C6BC0'}]}>
             <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến chưa xử lý</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={SideBarStyle.shortcutBoxStyle}>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#4FC3F7'}]}>
             <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi chưa xử lý</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("ListAssignedTaskScreen")} style={SideBarStyle.shortcutBoxStyle}>
-            <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc được giao</Text>
+          <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#4DB6AC'}]}>
+            <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc cá nhân</Text>
           </TouchableOpacity>
-          {/*<View style={[SideBarStyle.shortcutBoxStyle, { marginLeft: 5, marginRight: 10 }]}>
-                <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")}>
-                  <Text style={SideBarStyle.shortcutBoxTextStyle}>Lịch công tác</Text>
-                </TouchableOpacity>
-    </View>*/}
+          {
+            userFunctions && userFunctions.filter(item => item.MA_CHUCNANG === LichCongTacFunction.code).length
+              ? <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#64DD17'}]}>
+                <Text style={SideBarStyle.shortcutBoxTextStyle}>Lịch công tác</Text>
+              </TouchableOpacity>
+              : null
+          }
         </View>
 
         <View style={SideBarStyle.body}>
@@ -238,7 +258,7 @@ class Dashboard extends Component {
                           key={sItem.DM_THAOTAC_ID.toString()}
                           onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
                         >
-                          <SideBarIcon actionCode={sItem.MA_THAOTAC} />
+                          <SideBarIcon actionCode={sItem.MA_THAOTAC} customIconContainerStyle={{ flex: 1, marginBottom: '10%' }} />
                           <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                         // return <TouchableOpacity
@@ -268,6 +288,7 @@ class Dashboard extends Component {
           </ScrollView>
         </View>
 
+        <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
       </View>
     );
   }
