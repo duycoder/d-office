@@ -66,7 +66,7 @@ export function convertDateTimeToString(date) {
     return 'N/A';
 }
 
-export function convertDateTimeToTitle(date, isExperiment = false) {
+export function convertDateTimeToTitle(date, isShort = false) {
     // if (isExperiment) {
     //     if (isObjectHasValue(date) && !util.isEmpty(date)) {
     //         let jsDateArr = date.split("T");
@@ -86,7 +86,7 @@ export function convertDateTimeToTitle(date, isExperiment = false) {
         let datePart = _readableFormat(jsDate.getUTCDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
         let timePart = _readableFormat(jsDate.getUTCHours()) + ':' + _readableFormat(jsDate.getUTCMinutes());
 
-        result = `${datePart} lúc ${timePart}`;
+        result = isShort ? `${datePart}\n${timePart}` : `${datePart} lúc ${timePart}`;
         return result;
     }
     return 'N/A'

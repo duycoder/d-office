@@ -12,7 +12,7 @@ import { Colors } from '../../common/SystemConstant';
 
 export const SideBarStyle = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     header: {
         flex: 1,
@@ -21,32 +21,48 @@ export const SideBarStyle = StyleSheet.create({
         borderBottomColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
+        alignItems: 'flex-end',
     }, headerAvatarContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: scale(20),
+        marginBottom: verticalScale(10)
     }, headerUserInfoContainer: {
         justifyContent: 'center',
         paddingLeft: scale(20),
-        alignItems: 'flex-start'
+        alignItems: 'center',
+        marginBottom: verticalScale(15)
     }, headerAvatar: {
-        width: moderateScale(60),
-        height: moderateScale(60),
-        borderRadius: moderateScale(60 / 2), // to create cirlce, width == height && borderRadius == width/2
+        width: moderateScale(50),
+        height: moderateScale(50),
+        borderRadius: moderateScale(25), // to create cirlce, width == height && borderRadius == width/2
         resizeMode: 'stretch',
         backgroundColor: Colors.WHITE, // make sure your avatar not seen through
     }, headerUserName: {
         justifyContent: 'center',
         textAlign: 'left', // Change from 'center' to 'left'
         fontWeight: 'bold',
-        color: '#000',
-        fontSize: moderateScale(16, 1.2)
+        color: Colors.BLACK,
+        fontSize: moderateScale(15, 1.2)
     }, headerUserJob: {
         fontSize: moderateScale(11, 1.7),
         fontWeight: 'normal'
+    }, headerSignoutIcon: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+        
+        elevation: 10,
+        marginBottom: verticalScale(10)
     },
     body: {
-        flex: 5,
+        flex: 4,
         backgroundColor: '#fff'
     }, listItemTitle: {
         fontWeight: 'bold',
@@ -96,28 +112,34 @@ export const SideBarStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginVertical: verticalScale(13),
-        flexWrap: 'wrap',
-        marginHorizontal: '5%',
+        // flexWrap: 'wrap',
+        marginHorizontal: '2.5%',
     }, shortcutBoxStyle: {
         backgroundColor: Colors.LITE_BLUE,
         // borderWidth: 1,
         borderColor: Colors.DANK_BLUE,
-        shadowOpacity: 0.3,
+        shadowColor: Colors.DANK_BLUE,
         shadowOffset: {
-            width: 3,
-            height: 3
+            width: 0,
+            height: 2,
         },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
         padding: moderateScale(11),
-        // flex: 1,
+        flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        flexBasis: '30%',
+        marginHorizontal: '2.5%',
+        // flexBasis: '30%',
         // width: ''
     }, shortcutBoxTextStyle: {
         color: Colors.WHITE,
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: moderateScale(13, 1.2),
+        flexWrap: 'wrap'
     },
     normalBoxContainer: {
         flexDirection: 'row',
@@ -129,22 +151,27 @@ export const SideBarStyle = StyleSheet.create({
         // borderWidth: 1,
         // borderRadius: 5,
         borderColor: Colors.BLACK,
-        shadowOpacity: 0.3,
+        shadowColor: Colors.BLACK,
         shadowOffset: {
-            width: 3,
-            height: 3
+            width: 0,
+            height: 2,
         },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+
         padding: moderateScale(11),
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         flexBasis: '30%',
-        marginVertical: verticalScale(4)
+        marginVertical: '2.5%'
     }, normalBoxTextStyle: {
         color: Colors.BLACK,
         textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: moderateScale(13, 1.2),
+        // fontWeight: 'bold',
+        fontSize: moderateScale(12, 0.9),
+        flex: 1,
     }
 
 });
