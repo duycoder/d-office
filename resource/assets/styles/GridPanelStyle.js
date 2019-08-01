@@ -11,8 +11,9 @@ import { Colors } from '../../common/SystemConstant';
 
 export const GridPanelStyle = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.WHITE,
     overflow: 'scroll',
+    marginVertical: verticalScale(5)
   }, titleContainer: {
 
   }, body: {
@@ -26,9 +27,9 @@ export const GridPanelStyle = StyleSheet.create({
     height: verticalScale(40),
     justifyContent: 'center',
     borderBottomColor: '#cccccc',
-    backgroundColor: '#fff'
+    backgroundColor: Colors.LIGHT_GRAY_PASTEL
   }, listItemTitle: {
     fontWeight: 'bold',
-    color: Colors.GRAY,
+    color: '#595959'
   }
 });

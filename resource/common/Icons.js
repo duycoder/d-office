@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
@@ -8,6 +8,9 @@ import { moderateScale } from '../assets/styles/ScaleIndicator';
 
 const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction, UyQuyenFunction } = SYSTEM_FUNCTION;
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
+import VectorIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import IconImages from '../common/Images';
+const { vanbandenIcons, vanbandiIcons, congviecIcons, otherIcons } = IconImages;
 
 export default class SideBarIcon extends Component {
   static defaultProps = {
@@ -17,78 +20,79 @@ export default class SideBarIcon extends Component {
     iconSize: 35,
     iconColor: Colors.BLACK,
     customIconContainerStyle: {},
+    customIconImageStyle: {}
   }
   render() {
-    const { actionCode, status, isParent, iconSize, customIconContainerStyle } = this.props;
+    const { actionCode, status, isParent, iconSize, customIconContainerStyle, customIconImageStyle } = this.props;
     let iconName = "file-download", iconColor = this.props.iconColor;
 
     switch (actionCode) {
       //#region VanbanDen
-      case VanBanDenFunction.code:
-        iconName = "file-download";
-        break;
+      // case VanBanDenFunction.code:
+      //   iconName = vanbanIcons;
+      //   break;
       case VanBanDenFunction.actionCodes[0]:
-        iconName = "close-circle-outline";
+        iconName = vanbandenIcons.chua_xuly;
         iconColor = "#5C6BC0";
         break;
       case VanBanDenFunction.actionCodes[1]:
-        iconName = "close-circle";
+        iconName = vanbandenIcons.noibo_chua_xuly;
         iconColor = "#3F51B5";
         break;
       case VanBanDenFunction.actionCodes[2]:
-        iconName = "account-group";
+        iconName = vanbandenIcons.thamgia_xuly;
         iconColor = "#3949AB";
         break;
       case VanBanDenFunction.actionCodes[3]:
-        iconName = "check-circle-outline";
+        iconName = vanbandenIcons.da_xuly;
         iconColor = "#303F9F";
         break;
       case VanBanDenFunction.actionCodes[4]:
-        iconName = "check-circle";
+        iconName = vanbandenIcons.noibo_da_xuly;
         iconColor = "#1A237E";
         break;
       //#endregion
 
       //#region VanbanDi
-      case VanBanDiFunction.code:
-        iconName = "file-upload";
-        break;
+      // case VanBanDiFunction.code:
+      //   iconName = "file-upload";
+      //   break;
       case VanBanDiFunction.actionCodes[0]:
-        iconName = "close-circle-outline";
+        iconName = vanbandiIcons.chua_xuly;
         iconColor = "#4FC3F7";
         break;
       case VanBanDiFunction.actionCodes[1]:
-        iconName = "account-group";
+        iconName = vanbandiIcons.thamgia_xuly;
         iconColor = "#03A9F4";
         break;
       case VanBanDiFunction.actionCodes[2]:
-        iconName = "check-circle-outline";
+        iconName = vanbandiIcons.da_xuly;
         iconColor = "#0288D1";
         break;
       case VanBanDiFunction.actionCodes[3]:
-        iconName = "arrow-up-bold";
+        iconName = vanbandiIcons.ban_hanh;
         iconColor = "#01579B";
         break;
       //#endregion
 
       //#region Congviec
-      case CongViecFunction.code:
-        iconName = "account-tie";
-        break;
+      // case CongViecFunction.code:
+      //   iconName = "account-tie";
+      //   break;
       case CongViecFunction.actionCodes[0]:
-        iconName = "book";
+        iconName = congviecIcons.ca_nhan;
         iconColor = "#4DB6AC";
         break;
       case CongViecFunction.actionCodes[1]:
-        iconName = "briefcase";
+        iconName = congviecIcons.duoc_giao;
         iconColor = "#009688";
         break;
       case CongViecFunction.actionCodes[2]:
-        iconName = "briefcase-account"
+        iconName = congviecIcons.phoi_hop_xu_ly;
         iconColor = "#00796B";
         break;
       case CongViecFunction.actionCodes[3]:
-        iconName = "briefcase-edit";
+        iconName = congviecIcons.cho_xac_nhan;
         iconColor = "#004D40";
         break;
       //#endregion
@@ -107,22 +111,22 @@ export default class SideBarIcon extends Component {
 
       //#region Lichcongtac
       case LichCongTacFunction.actionCodes[0]:
-        iconName = 'calendar'
+        iconName = otherIcons.lich_cong_tac;
         iconColor = "#64DD17";
         break;
-      case LichCongTacFunction.code:
-        iconName = 'calendar'
-        break;
+      // case LichCongTacFunction.code:
+      //   iconName = 'calendar'
+      //   break;
       //#endregion
 
       //#region Uyquyen
       case UyQuyenFunction.actionCodes[0]:
-        iconName = 'account-convert'
+        iconName = otherIcons.uy_quyen;
         iconColor = "#00C853";
         break;
-      case UyQuyenFunction.code:
-        iconName = 'account-convert'
-        break;
+      // case UyQuyenFunction.code:
+      //   iconName = 'account-convert'
+      //   break;
       //#endregion
 
       case THONGBAO.code:
@@ -142,7 +146,10 @@ export default class SideBarIcon extends Component {
 
     return (
       <View style={[baseStyle.iconContainer, customIconContainerStyle]}>
-        <Icon name={iconName} color={iconColor} type="material-community" size={moderateScale(iconSize, 0.9)} />
+        {
+          // <Icon name={iconName} color={iconColor} type="material-community" size={moderateScale(iconSize, 0.9)} />
+        }
+        <Image source={iconName} style={[baseStyle.iconImage, customIconImageStyle]} />
       </View>
     )
   }
@@ -150,7 +157,14 @@ export default class SideBarIcon extends Component {
 
 const baseStyle = StyleSheet.create({
   iconContainer: {
-    minWidth: moderateScale(45, 0.9),
-    maxHeight: moderateScale(35, 0.9)
+    // minWidth: moderateScale(45, 0.9),
+    // maxHeight: moderateScale(35, 0.9)
+    flex: 1, 
+    marginBottom: '10%'
+  },
+  iconImage: {
+    width: moderateScale(40),
+    height: moderateScale(40),
+    resizeMode: 'stretch',
   }
 })

@@ -17,13 +17,15 @@ import * as navAction from '../../redux/modules/Nav/Action';
 //native-base
 import {
   Container, Header, Content,
-  Left, Right, Body, Title, Footer, FooterTab, Badge, Button, Icon as NBIcon
+  Left, Right, Body, Title, Footer, FooterTab, Badge, Button, Icon as NBIcon, Subtitle
 } from 'native-base';
 
 import { ListItem, Icon } from 'react-native-elements';
 import renderIf from 'render-if';
 
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
+import { NativeBaseStyle } from '../../assets/styles/NativeBaseStyle';
+
 import * as SBIcons from '../../assets/styles/SideBarIcons';
 
 import Panel from './Panel';
@@ -192,73 +194,119 @@ class Dashboard extends Component {
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="dark-content" />
-        <View style={SideBarStyle.header}>
-          <ImageBackground source={Images.background} style={SideBarStyle.headerBackground}>
-            <View style={SideBarStyle.headerAvatarContainer}>
-              <Image source={Images.userAvatar} style={SideBarStyle.headerAvatar} />
-            </View>
-            <View style={[SideBarStyle.headerUserInfoContainer, { flex: 3 }]}>
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={[SideBarStyle.headerUserName, { flex: 1, flexWrap: 'wrap' }]}>
-                  {this.state.userInfo.Fullname}
-                </Text>
-              </View>
+        <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0 }}>
+          <Left style={[NativeBaseStyle.left, SideBarStyle.headerAvatarContainer, { flex: 1, paddingLeft: 0 }]}>
+            <Image source={Images.logo} style={SideBarStyle.headerAvatar} />
+          </Left>
 
-              <View style={{ flexDirection: 'row' }}>
-                <Text style={[SideBarStyle.headerUserJob, { flex: 1, flexWrap: 'wrap' }]}>
-                  {this.state.userInfo.Position}
-                </Text>
-              </View>
-            </View>
-            <View style={SideBarStyle.headerSignoutIcon}>
-              <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-                <Icon name="power" size={moderateScale(35, 0.9)} color={Colors.LITE_BLUE} type="material-community" />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-        </View>
+          <Body style={[NativeBaseStyle.body, { flex: 4 }]}>
+            <Title style={SideBarStyle.headerUserName}>
+              {this.state.userInfo.Fullname}
+            </Title>
+            <Subtitle style={SideBarStyle.headerUserJob}>
+              {this.state.userInfo.Position}
+            </Subtitle>
+          </Body>
+          <Right style={NativeBaseStyle.right}>
+            <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
+              <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+            </TouchableOpacity>
+          </Right>
+        </Header>
+        {
+          // <View style={SideBarStyle.header}>
+          //   <ImageBackground source={Images.background} style={SideBarStyle.headerBackground}>
+          //     <View style={SideBarStyle.headerAvatarContainer}>
+          //       <Image source={Images.userAvatar} style={SideBarStyle.headerAvatar} />
+          //     </View>
+          //     <View style={[SideBarStyle.headerUserInfoContainer, { flex: 3 }]}>
+          //       <View style={{ flexDirection: 'row' }}>
+          //         <Text style={[SideBarStyle.headerUserName, { flex: 1, flexWrap: 'wrap' }]}>
+          //           {this.state.userInfo.Fullname}
+          //         </Text>
+          //       </View>
 
-        <View style={SideBarStyle.shortcutBoxContainer}>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#5C6BC0'}]}>
-            <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến chưa xử lý</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#4FC3F7'}]}>
-            <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi chưa xử lý</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#4DB6AC'}]}>
-            <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc cá nhân</Text>
-          </TouchableOpacity>
-          {
-            userFunctions && userFunctions.filter(item => item.MA_CHUCNANG === LichCongTacFunction.code).length
-              ? <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")} style={[SideBarStyle.shortcutBoxStyle, {backgroundColor: '#64DD17'}]}>
-                <Text style={SideBarStyle.shortcutBoxTextStyle}>Lịch công tác</Text>
-              </TouchableOpacity>
-              : null
-          }
-        </View>
+          //       <View style={{ flexDirection: 'row' }}>
+          //         <Text style={[SideBarStyle.headerUserJob, { flex: 1, flexWrap: 'wrap' }]}>
+          //           {this.state.userInfo.Position}
+          //         </Text>
+          //       </View>
+          //     </View>
+          //     <View style={SideBarStyle.headerSignoutIcon}>
+          //       <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
+          //         <Icon name="power" size={moderateScale(35, 0.9)} color={Colors.LITE_BLUE} type="material-community" />
+          //       </TouchableOpacity>
+          //     </View>
+          //   </ImageBackground>
+          // </View>
+        }
+        <ImageBackground source={Images.banner_top} style={{ flex: 1 }}>
+          <View style={SideBarStyle.shortcutBoxContainer}>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+              <SideBarIcon
+                actionCode={VANBANDEN._CHUAXULY.NAME}
+                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
+                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+              />
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>VĂN BẢN ĐẾN CHƯA XỬ LÝ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+              <SideBarIcon
+                actionCode={VANBANDI._CHUAXULY.NAME}
+                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
+                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+              />
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>VĂN BẢN ĐI CHƯA XỬ LÝ</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+              <SideBarIcon
+                actionCode={CONGVIEC._CANHAN.NAME}
+                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
+                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+              />
+              <Text style={SideBarStyle.shortcutBoxTextStyle}>CÔNG VIỆC CÁ NHÂN</Text>
+            </TouchableOpacity>
+            {
+              userFunctions && userFunctions.filter(item => item.MA_CHUCNANG === LichCongTacFunction.code).length
+                ? <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+                  <SideBarIcon
+                    actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
+                    customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
+                    customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+                  />
+                  <Text style={SideBarStyle.shortcutBoxTextStyle}>LỊCH CÔNG TÁC</Text>
+                </TouchableOpacity>
+                : null
+            }
+          </View>
+        </ImageBackground>
+
 
         <View style={SideBarStyle.body}>
           <ScrollView>
             {
               // Lấy chức năng của người dùng
               userFunctions && userFunctions.map((item, index) => {
-                let count = 0;
+                // let count = 0;
                 return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
                   {
                     item.ListThaoTac.map((sItem, sIndex) => {
                       const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
                       let elementStyle = SideBarStyle.normalBoxStyle;
                       if (renderCondition) {
-                        if (count % 3 === 1) {
-                          elementStyle = [SideBarStyle.normalBoxStyle, { marginHorizontal: '5%' }];
-                        }
-                        count++;
+                        // if (count % 3 === 1) {
+                        //   elementStyle = [SideBarStyle.normalBoxStyle, { marginHorizontal: '5%' }];
+                        // }
+                        // count++;
                         return <TouchableOpacity
                           style={elementStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}
                           onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
                         >
-                          <SideBarIcon actionCode={sItem.MA_THAOTAC} customIconContainerStyle={{ flex: 1, marginBottom: '10%' }} />
+                          <SideBarIcon
+                            actionCode={sItem.MA_THAOTAC}
+                          // customIconContainerStyle={{ flex: 1, marginBottom: '10%' }}
+                          />
                           <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                         // return <TouchableOpacity

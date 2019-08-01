@@ -28,7 +28,7 @@ export default class GridPanel extends Component {
     this.icon = require('../../assets/images/arrow.png');
 
     this.state = {
-      title: props.title ? props.title.toUpperCase() : "",
+      title: props.title ? props.title.capitalize() : "",
       expanded: props.title === 'CÔNG VIỆC' ? true : false,
 
       actionCode: props.actionCode,

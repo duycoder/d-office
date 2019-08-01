@@ -52,7 +52,9 @@ const appStack = TabNavigator(
                     case 'Notification': routeLabel = "Thông báo"; break;
                     case 'Account': routeLabel = "Tài khoản"; break;
                 }
-                return <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8) }}>{routeLabel}</Text>;
+                return focused 
+                    ? <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8) }}>{routeLabel}</Text>
+                    : null;
             },
         }),
         tabBarComponent: TabBarBottom,
@@ -63,7 +65,7 @@ const appStack = TabNavigator(
             // activeBackgroundColor: Colors.DANK_BLUE,
             allowFontScaling: false,
             // showLabel: false,
-            activeTintColor: Colors.DANK_BLUE,
+            activeTintColor: Colors.LITE_BLUE,
             inactiveTintColor: Colors.DARK_GRAY,
         },
         animationEnabled: false,
