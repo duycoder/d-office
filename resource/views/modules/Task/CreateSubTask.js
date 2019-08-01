@@ -195,7 +195,7 @@ class CreateSubTask extends Component {
 							<Picker
 								iosHeader='Chọn độ ưu tiên'
 								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down-outline' />}
+								iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
 								style={pickerStyle}
 								selectedValue={this.state.priorityValue} //sai chinh ta @@
 								onValueChange={this.onPriorityValueChange.bind(this)}>
@@ -212,7 +212,7 @@ class CreateSubTask extends Component {
 							<Picker
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down-outline' />}
+								iosIcon={<Icon name='ios-arrow-down' type="Ionicons"/>}
 								style={{ width: pickerFormat() }}
 								selectedValue={this.state.urgencyValue}
 								onValueChange={this.onUrgencyValueChange.bind(this)}>
@@ -229,7 +229,7 @@ class CreateSubTask extends Component {
 							<Picker
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down-outline' />}
+								iosIcon={<Icon name='ios-arrow-down' type="Ionicons"/>}
 								style={{ width: pickerFormat() }}
 								selectedValue={this.state.planValue}
 								onValueChange={this.onPlanValueChange.bind(this)}>

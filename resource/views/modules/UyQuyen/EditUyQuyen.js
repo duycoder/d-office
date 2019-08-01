@@ -57,8 +57,9 @@ class EditUyQuyen extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'EditUyQuyenScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'EditUyQuyenScreen');
+        // return true;
+        this.props.navigation.goBack();
     }
 
     componentDidMount() {
