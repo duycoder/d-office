@@ -132,16 +132,20 @@ class ListNotification extends Component {
 
     renderItem = ({ item }) => {
         let itemType = item.URL.split('/')[2],
-            badgeBackgroundColor = Colors.GRAY;
+            badgeBackgroundColor = Colors.GRAY,
+            leftTitle = "CV";
         switch (itemType) {
             case "HSVanBanDi":
-                badgeBackgroundColor = '#00B0FF';
+                badgeBackgroundColor = '#4FC3F7';
+                leftTitle = "VBTK"
                 break;
             case "QuanLyCongViec":
-                badgeBackgroundColor = '#1DE9B6';
+                badgeBackgroundColor = '#4DB6AC';
+                leftTitle = "CV";
                 break;
             case "HSCV_VANBANDEN":
-                badgeBackgroundColor = '#3D5AFE';
+                badgeBackgroundColor = '#5C6BC0';
+                leftTitle = "VBĐ";
                 break;
         }
 
@@ -156,7 +160,10 @@ class ListNotification extends Component {
                 leftIcon={
                     <View style={[styles.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
                         <RNText style={styles.leftTitleText}>
-                            {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"}
+                            {
+                                // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
+                                leftTitle
+                            }
                         </RNText>
                     </View>
                 }
