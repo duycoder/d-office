@@ -33,6 +33,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 
 class RescheduleTask extends Component {
@@ -142,9 +143,7 @@ class RescheduleTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }} hasTabs>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -163,7 +162,7 @@ class RescheduleTask extends Component {
                         </Item>
 
                         <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
-                            <Label>Xin lùi tới ngày <Text style={{color:'#f00'}}>*</Text></Label>
+                            <Label>Xin lùi tới ngày <Text style={{ color: '#f00' }}>*</Text></Label>
                             <DatePicker
                                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
                                 date={this.state.chosenDate}
@@ -189,7 +188,7 @@ class RescheduleTask extends Component {
                         </Item>
 
                         <Item stackedLabel>
-                            <Label>Nguyên nhân xin lùi <Text style={{color:'#f00'}}>*</Text></Label>
+                            <Label>Nguyên nhân xin lùi <Text style={{ color: '#f00' }}>*</Text></Label>
                             <Input value={this.state.reason}
                                 onChangeText={(reason) => this.setState({ reason })} />
                         </Item>

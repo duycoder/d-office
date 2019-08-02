@@ -44,6 +44,7 @@ import UnitSignDoc from './UnitSignDoc';
 
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class Detail extends Component {
     constructor(props) {
@@ -67,7 +68,7 @@ class Detail extends Component {
             check: false,
             from: props.from || "list"
         };
-        this.onNavigate=this.onNavigate.bind(this);
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentWillMount() {
@@ -80,7 +81,7 @@ class Detail extends Component {
         });
 
         const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
-        
+
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -106,8 +107,8 @@ class Detail extends Component {
             }
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
-                    this.setState({check: true}, () => this.fetchData());
-                    this.props.updateExtendsNavParams({check: false});
+                    this.setState({ check: true }, () => this.fetchData());
+                    this.props.updateExtendsNavParams({ check: false });
                 }
             }
         })
@@ -121,10 +122,10 @@ class Detail extends Component {
     navigateBack = () => {
         if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
             if (this.state.from === "list") {
-                this.props.updateExtendsNavParams({check: this.state.check});
+                this.props.updateExtendsNavParams({ check: this.state.check });
             }
             else {
-                this.props.updateExtendsNavParams({from: true});
+                this.props.updateExtendsNavParams({ from: true });
             }
         }
         this.props.navigation.goBack();
@@ -323,9 +324,7 @@ class Detail extends Component {
             <Container>
                 <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBack()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBack()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

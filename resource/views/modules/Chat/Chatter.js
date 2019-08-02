@@ -47,6 +47,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { ListChatterStyle } from '../../../assets/styles/ChatStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 //default avatar
 const default_Avatar = require('../../../assets/images/avatar.png');
@@ -317,9 +318,7 @@ class Chatter extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={this.navigateBackToListChatter}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={()=>this.navigateBackToListChatter()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

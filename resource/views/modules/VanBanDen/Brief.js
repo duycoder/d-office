@@ -38,6 +38,7 @@ import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 class Brief extends Component {
   constructor(props) {
@@ -147,9 +148,7 @@ this.props.updateExtendsNavParams({check: false});
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToDetailVanbanDen()}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.navigateBackToDetailVanbanDen()}/>
           </Left>
 
           <Body style={NativeBaseStyle.body}>

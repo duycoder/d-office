@@ -23,7 +23,7 @@ import * as util from 'lodash';
 import {
     API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors
 } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate,formatMessage } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -32,6 +32,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 
 
@@ -170,9 +171,7 @@ class UpdateProgressTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -230,7 +229,7 @@ class UpdateProgressTask extends Component {
                         </Item>
 
                         <Item stackedLabel>
-                            <Label>Nội dung <Text style={{color:'#f00'}}>*</Text></Label>
+                            <Label>Nội dung <Text style={{ color: '#f00' }}>*</Text></Label>
                             <Input value={this.state.comment} onChangeText={(comment) => this.setState({ comment })} />
                         </Item>
 

@@ -35,6 +35,7 @@ import { asyncDelay, convertDateToString, convertStringToDate } from '../../../c
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
 
@@ -256,9 +257,7 @@ class AccountEditor extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToAccountInfo()}>
-              <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.navigateBackToAccountInfo()}/>
           </Left>
 
           <Body style={NativeBaseStyle.body}>

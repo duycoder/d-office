@@ -29,6 +29,8 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //style
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import AccountStyle from '../../../assets/styles/AccountStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class CreateSubTask extends Component {
 	constructor(props) {
@@ -166,9 +168,7 @@ class CreateSubTask extends Component {
 			<Container>
 				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
-						<Button transparent onPress={() => this.navigateBackToDetail()}>
-							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<GoBackButton onPress={() => this.navigateBackToDetail()} />
 					</Left>
 
 					<Body style={NativeBaseStyle.body}>
@@ -180,11 +180,11 @@ class CreateSubTask extends Component {
 					<Right style={NativeBaseStyle.right} />
 				</Header>
 
-				<Content>
+				<Content contentContainerStyle={AccountStyle.mainContainer}>
 					<Form>
 						<Item stackedLabel>
 							<Label>
-								Nội dung công việc <Text style={{color:'#f00'}}>*</Text>
+								Nội dung công việc <Text style={{ color: '#f00' }}>*</Text>
 							</Label>
 
 							<Input value={this.state.content} onChangeText={(content) => this.setState({ content })} />
@@ -196,7 +196,7 @@ class CreateSubTask extends Component {
 								iosHeader='Chọn độ ưu tiên'
 								mode='dropdown'
 								iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-								style={pickerStyle}
+								style={{ width: pickerFormat() }}
 								selectedValue={this.state.priorityValue} //sai chinh ta @@
 								onValueChange={this.onPriorityValueChange.bind(this)}>
 								{
@@ -212,7 +212,7 @@ class CreateSubTask extends Component {
 							<Picker
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down' type="Ionicons"/>}
+								iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
 								style={{ width: pickerFormat() }}
 								selectedValue={this.state.urgencyValue}
 								onValueChange={this.onUrgencyValueChange.bind(this)}>
@@ -229,7 +229,7 @@ class CreateSubTask extends Component {
 							<Picker
 								iosHeader='Chọn mức quan trọng'
 								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down' type="Ionicons"/>}
+								iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
 								style={{ width: pickerFormat() }}
 								selectedValue={this.state.planValue}
 								onValueChange={this.onPlanValueChange.bind(this)}>
@@ -239,7 +239,7 @@ class CreateSubTask extends Component {
 						</Item>
 
 						<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
-							<Label>Hạn hoàn thành <Text style={{color:'#f00'}}>*</Text></Label>
+							<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
 							<DatePicker
 								style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
 								date={this.state.chosenDate}

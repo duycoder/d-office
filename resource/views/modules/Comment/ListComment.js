@@ -47,6 +47,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 const android = RNFetchBlob.android;
 
@@ -463,9 +464,7 @@ class ListComment extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateToDetail()}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.navigateToDetail()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

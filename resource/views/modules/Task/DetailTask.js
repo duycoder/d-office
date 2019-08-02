@@ -47,6 +47,7 @@ import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { HeaderMenuStyle } from '../../../assets/styles/index';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 class DetailTask extends Component {
     constructor(props) {
@@ -480,9 +481,7 @@ class DetailTask extends Component {
                 <Container>
                     <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                         <Left style={NativeBaseStyle.left}>
-                            <Button transparent onPress={() => this.navigateBackToList()}>
-                                <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                            </Button>
+                            <GoBackButton onPress={() => this.navigateBackToList()} />
                         </Left>
 
                         <Body style={NativeBaseStyle.body}>
@@ -528,6 +527,7 @@ class DetailTask extends Component {
                         menuActions.length > 0 &&
                         <ButtonGroup
                             containerStyle={ButtonGroupStyle.container}
+                            // buttonStyle={{padding:}}
                             buttons={menuActions}
                         />
                         // <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>

@@ -16,7 +16,7 @@ import {
   Container, Content, Form, Item, Input, Label,
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
-import { Icon } from 'react-native-elements';
+import { Icon, Button as RNEButton } from 'react-native-elements';
 // import ImagePicker from 'react-native-image-picker';
 import * as util from 'lodash';
 //constants

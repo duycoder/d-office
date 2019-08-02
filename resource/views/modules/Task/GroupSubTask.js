@@ -45,6 +45,7 @@ import AlertMessage from "../../common/AlertMessage";
 import { AlertMessageStyle } from "../../../assets/styles/index";
 
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 class GroupSubTask extends Component {
     constructor(props) {
@@ -346,9 +347,7 @@ class GroupSubTask extends Component {
             <Container>
                 <Header searchBar style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -619,9 +618,9 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
-	}
+    return {
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupSubTask);

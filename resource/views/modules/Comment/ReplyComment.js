@@ -45,6 +45,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import GoBackButton from '../../common/GoBackButton';
 
 const android = RNFetchBlob.android;
 
@@ -389,9 +390,7 @@ class ReplyComment extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={this.navigateToListComment}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={()=>this.navigateToListComment()}/>
           </Left>
 
           <Body style={NativeBaseStyle.body}>

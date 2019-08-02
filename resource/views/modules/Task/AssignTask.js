@@ -42,6 +42,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
+import GoBackButton from '../../common/GoBackButton';
 
 
 class AssignTask extends Component {
@@ -410,9 +411,7 @@ class AssignTask extends Component {
 			<Container>
 				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
-						<Button transparent onPress={() => this.navigateBackToDetail()}>
-							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<GoBackButton onPress={() => this.navigateBackToDetail()} />
 					</Left>
 
 					<Body style={NativeBaseStyle.body}>

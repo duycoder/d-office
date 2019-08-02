@@ -13,7 +13,7 @@ import {
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
     MODULE_CONSTANT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate,formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -24,7 +24,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 //redux
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
-import * as navAction from '../../../redux/modules/Nav/Action'; 
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 
 //lib
@@ -44,6 +44,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import WorkflowStreamMainProcessUsers from './WorkflowStreamMainProcessUsers';
 import WorkflowStreamJoinProcessUsers from './WorkflowStreamJoinProcessUsers';
+import GoBackButton from '../../common/GoBackButton';
 
 class WorkflowStreamProcess extends Component {
 
@@ -162,7 +163,7 @@ class WorkflowStreamProcess extends Component {
             this.setState({
                 executing: false
             })
-            
+
             Toast.show({
                 text: this.state.stepName + (resultJson.Status ? ' thành công' : ' không thành công'),
                 type: resultJson.Status ? 'success' : 'danger',
@@ -611,9 +612,7 @@ class WorkflowStreamProcess extends Component {
             <Container>
                 <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

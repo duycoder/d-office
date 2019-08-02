@@ -34,6 +34,7 @@ import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
@@ -276,9 +277,7 @@ class AccountChangePassword extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.props.navigation.goBack()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

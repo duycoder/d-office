@@ -10,7 +10,7 @@ import {
 
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
-import {Icon as RNEIcon} from 'react-native-elements';
+import { Icon as RNEIcon } from 'react-native-elements';
 
 import { Colors, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -21,6 +21,7 @@ import { executeLoading, dataLoading } from '../../../common/Effect';
 import { _readableFormat } from '../../../common/Utilities';
 import * as util from 'lodash';
 import { connect } from 'react-redux';
+import GoBackButton from '../../common/GoBackButton';
 
 LocaleConfig.locales['vn'] = {
   monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
@@ -144,9 +145,7 @@ class BaseCalendar extends Component {
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-              <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
-            </TouchableOpacity>
+            <GoBackButton onPress={() => this.props.navigation.goBack()} />
           </Left>
           <Body style={NativeBaseStyle.body}>
             <TouchableOpacity onPress={this.togglePicker}>

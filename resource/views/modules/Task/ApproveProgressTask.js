@@ -37,6 +37,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class ApproveProgressTask extends Component {
     constructor(props) {
@@ -152,9 +153,7 @@ class ApproveProgressTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -220,7 +219,7 @@ class ApproveProgressTask extends Component {
                 {
                     executeLoading(this.state.executing)
                 }
-            </Container>
+            </Container >
         );
     }
 }

@@ -37,6 +37,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import WorkflowRequestReviewUsers from './WorkflowRequestReviewUsers';
+import GoBackButton from '../../common/GoBackButton';
 
 class WorkflowRequestReview extends Component {
 	constructor(props) {
@@ -216,9 +217,7 @@ class WorkflowRequestReview extends Component {
 			<Container>
 				<Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
-						<Button transparent onPress={() => this.navigateBackToDetail()}>
-							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<GoBackButton onPress={() => this.navigateBackToDetail()} />
 					</Left>
 
 					<Body style={NativeBaseStyle.body}>
