@@ -7,7 +7,7 @@
 import React from 'react';
 import { SwitchNavigator, TabBarBottom, TabNavigator } from 'react-navigation';
 
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { Colors } from '../../common/SystemConstant';
 
@@ -16,6 +16,7 @@ import Loading from '../common/Loading';
 // các stack điều hướng
 import { accountStack, notificationStack, dashboardStack, authStack } from "./ModuleNav";
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
+import NotiTabBarIcon from './NotiTabBarIcon';
 
 const appStack = TabNavigator(
     {
@@ -42,7 +43,12 @@ const appStack = TabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <Icon name={iconName} size={moderateScale(25, 1.3)} color={tintColor} type="material-community" />;
+                return <View>
+                    <Icon name={iconName} size={moderateScale(25, 1.3)} color={tintColor} type="material-community" />
+                    {
+                        routeName === "Notification" && <NotiTabBarIcon />
+                    }
+                </View>;
             },
             tabBarLabel: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
@@ -52,7 +58,7 @@ const appStack = TabNavigator(
                     case 'Notification': routeLabel = "Thông báo"; break;
                     case 'Account': routeLabel = "Tài khoản"; break;
                 }
-                return focused 
+                return focused
                     ? <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8) }}>{routeLabel}</Text>
                     : null;
             },
