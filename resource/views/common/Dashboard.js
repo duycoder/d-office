@@ -193,7 +193,7 @@ class Dashboard extends Component {
 
     return (
       <View style={SideBarStyle.container}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar barStyle="light-content" />
         <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0 }}>
           <Left style={[NativeBaseStyle.left, SideBarStyle.headerAvatarContainer, { flex: 1, paddingLeft: 0 }]}>
             <Image source={Images.logo} style={SideBarStyle.headerAvatar} />
@@ -240,29 +240,33 @@ class Dashboard extends Component {
           //   </ImageBackground>
           // </View>
         }
-        <ImageBackground source={Images.banner_top} style={{ flex: 1 }}>
+        <ImageBackground
+          style={{ flex: 1, backgroundColor: Colors.LITE_BLUE }}
+          // source={Images.banner_top} 
+          imageStyle={{ resizeMode: 'cover', opacity: 0.7 }}
+        >
           <View style={SideBarStyle.shortcutBoxContainer}>
             <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
               <SideBarIcon
                 actionCode={VANBANDEN._CHUAXULY.NAME}
-                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
-                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                customIconImageStyle={SideBarStyle.customIconImageStyle}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>VĂN BẢN ĐẾN CHƯA XỬ LÝ</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
               <SideBarIcon
                 actionCode={VANBANDI._CHUAXULY.NAME}
-                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
-                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                customIconImageStyle={SideBarStyle.customIconImageStyle}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>VĂN BẢN ĐI CHƯA XỬ LÝ</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
               <SideBarIcon
                 actionCode={CONGVIEC._CANHAN.NAME}
-                customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
-                customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                customIconImageStyle={SideBarStyle.customIconImageStyle}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>CÔNG VIỆC CÁ NHÂN</Text>
             </TouchableOpacity>
@@ -271,8 +275,8 @@ class Dashboard extends Component {
                 ? <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
                   <SideBarIcon
                     actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
-                    customIconContainerStyle={{ padding: moderateScale(10), backgroundColor: '#fff', borderRadius: 15, justifyContent: 'center', alignItems: 'center' }}
-                    customIconImageStyle={{ width: moderateScale(30), height: moderateScale(30) }}
+                    customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                    customIconImageStyle={SideBarStyle.customIconImageStyle}
                   />
                   <Text style={SideBarStyle.shortcutBoxTextStyle}>LỊCH CÔNG TÁC</Text>
                 </TouchableOpacity>

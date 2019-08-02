@@ -389,3 +389,10 @@ export function formatMessage(message, screenName, isTaskNotification, itemType,
 export function pickerFormat() {
     return Platform.OS === "ios" ? undefined : '100%'
 }
+/**
+ * Chuyển dạng DD/MM/YYYY thành YYYY/MM/DD
+ * @param {string} dateString 
+ */
+export function convertStringToDate(dateString) {
+    return dateString.split("/").reverse().join("-");
+}

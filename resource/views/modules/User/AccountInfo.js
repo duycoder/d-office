@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
   View, Text,
-  Image, ImageBackground,
+  Image, ImageBackground, StyleSheet,
   TouchableOpacity, StatusBar
 } from 'react-native';
 
@@ -17,6 +17,7 @@ import {
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
 import { Icon } from 'react-native-elements';
+// import ImagePicker from 'react-native-image-picker';
 import * as util from 'lodash';
 //constants
 import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
@@ -24,6 +25,7 @@ import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading, dataLoading, executeLoading } from '../../../common/Effect';
@@ -43,6 +45,8 @@ const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
 const showPasswordIcon = require('../../../assets/images/visible-eye.png');
 const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
 const userAvatar = require('../../../assets/images/avatar.png');
+
+import Images from '../../../common/Images';
 
 class AccountInfo extends Component {
   constructor(props) {
@@ -89,12 +93,12 @@ class AccountInfo extends Component {
       .then(responseJson => responseJson);
 
     this.setState({
-      userName: result.TENDANGNHAP,
-      fullName: result.HOTEN,
-      email: result.EMAIL,
+      userName: result.TENDANGNHAP || '(Không có)',
+      fullName: result.HOTEN || '(Không có)',
+      email: result.EMAIL || '(Không có)',
       dateOfBirth: result.NGAYSINH,
-      mobilePhone: result.DIENTHOAI,
-      address: result.DIACHI,
+      mobilePhone: result.DIENTHOAI || '(Không có)',
+      address: result.DIACHI || '(Không có)',
       loading: false
     });
   }
@@ -132,11 +136,7 @@ class AccountInfo extends Component {
   render() {
     const { fullName, email, dateOfBirth, mobilePhone, address } = this.state;
 
-    const fullNameText = (fullName === EMPTY_STRING) ? '(Không có)' : fullName;
-    const emailText = (email === EMPTY_STRING) ? '(Không có)' : email;
     const dateOfBirthText = dateOfBirth ? convertDateToString(dateOfBirth) : '(Không có)';
-    const mobilePhoneText = (mobilePhone === EMPTY_STRING) ? '(Không có)' : mobilePhone;
-    const addressText = (address === EMPTY_STRING) ? '(Không có)' : address;
 
     return (
       <Container>
@@ -150,56 +150,72 @@ class AccountInfo extends Component {
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={()=>this.onLogOut()} style={{marginRight: 20}}>
+            <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
               <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
             </TouchableOpacity>
           </Right>
         </Header>
-        <ImageBackground style={{ flex: 1 }}>
+        {
+          //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 20, backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+          //   <TouchableOpacity>
+          //     <Image source={Images.userAvatar} style={{ width: moderateScale(80), height: moderateScale(80), borderRadius: moderateScale(30), backgroundColor: Colors.LITE_BLUE }} />
+          //   </TouchableOpacity>
+          // </View>
+        }
+        <ImageBackground style={AccountStyle.mainContainer}>
           <Content>
             <Form>
-              <Item stackedLabel>
-                <Label>Tên đăng nhập</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK }}>
-                  {this.state.userName}
+              {
+                // <Item stackedLabel style={AccountStyle.labelContainer}>
+                //   <Label>Tên đăng nhập</Label>
+                //   <Label style={AccountStyle.labelResult}>
+                //     {this.state.userName}
+                //   </Label>
+                // </Item>
+              }
+              <Item stackedLabel style={AccountStyle.labelContainer}>
+                <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
+                <Label style={AccountStyle.labelResult}>
+                  {fullName}
                 </Label>
               </Item>
-              <Item stackedLabel>
-                <Label>Họ và tên</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK }}>
-                  {fullNameText}
+              <Item stackedLabel style={AccountStyle.labelContainer}>
+                <Label style={AccountStyle.labelTitle}>Email</Label>
+                <Label style={AccountStyle.labelResult}>
+                  {email}
                 </Label>
               </Item>
-              <Item stackedLabel>
-                <Label>Email</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK }}>
-                  {emailText}
-                </Label>
-              </Item>
-              <Item stackedLabel>
-                <Label>Ngày sinh</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK }}>
+              <Item stackedLabel style={AccountStyle.labelContainer}>
+                <Label style={AccountStyle.labelTitle}>Ngày sinh</Label>
+                <Label style={AccountStyle.labelResult}>
                   {dateOfBirthText}
                 </Label>
               </Item>
-              <Item stackedLabel>
-                <Label>Điện thoại</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK }}>
-                  {mobilePhoneText}
+              <Item stackedLabel style={AccountStyle.labelContainer}>
+                <Label style={AccountStyle.labelTitle}>Điện thoại</Label>
+                <Label style={AccountStyle.labelResult}>
+                  {mobilePhone}
                 </Label>
               </Item>
-              <Item stackedLabel style={{ height: 'auto' }}>
-                <Label>Địa chỉ</Label>
-                <Label style={{ fontSize: moderateScale(16, 1.3), color: Colors.BLACK, marginBottom: verticalScale(15) }}>
-                  {addressText}
+              <Item stackedLabel style={AccountStyle.labelContainer}>
+                <Label style={AccountStyle.labelTitle}>Địa chỉ</Label>
+                <Label style={[AccountStyle.labelResult, { marginBottom: verticalScale(15) }]}>
+                  {address}
                 </Label>
               </Item>
             </Form>
             <TouchableOpacity
               onPress={() => this.navigateToEditAccount()}
-              style={[LoginStyle.formButtonLogin, { backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20), borderRadius: 0 }]}
+              style={[LoginStyle.formButtonLogin, AccountStyle.submitButton]}
             >
-              <Text style={[LoginStyle.formButtonText, { color: Colors.WHITE }]}>SỬA THÔNG TIN</Text>
+              <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>SỬA THÔNG TIN</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate("AccountChangePasswordScreen")}
+              style={[LoginStyle.formButtonLogin, AccountStyle.submitButton, { backgroundColor: Colors.RED_PANTONE_186C }]}
+            >
+              <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>ĐỔI MẬT KHẨU</Text>
             </TouchableOpacity>
           </Content>
         </ImageBackground>

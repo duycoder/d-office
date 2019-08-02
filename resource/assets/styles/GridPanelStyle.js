@@ -13,7 +13,7 @@ export const GridPanelStyle = StyleSheet.create({
   container: {
     backgroundColor: Colors.WHITE,
     overflow: 'scroll',
-    marginVertical: verticalScale(5)
+    marginTop: verticalScale(5)
   }, titleContainer: {
 
   }, body: {

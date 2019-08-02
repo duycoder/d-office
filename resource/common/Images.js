@@ -27,6 +27,7 @@ const images = {
     uy_quyen: require('../assets/images/FeatureIcon/Others/transferring.png'),
   },
   banner_top: require('../assets/images/banner_top.png'),
+  banner_top_2: require('../assets/images/banner_top_2.jpeg'),
   
 }
 

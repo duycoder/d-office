@@ -112,7 +112,7 @@ export const SideBarStyle = StyleSheet.create({
     shortcutBoxContainer: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         // marginVertical: verticalScale(13),
         // flexWrap: 'wrap',
         marginHorizontal: '0.5%',
@@ -129,10 +129,11 @@ export const SideBarStyle = StyleSheet.create({
         // shadowRadius: 3.84,
 
         // elevation: 5,
-        padding: moderateScale(11),
+        paddingVertical: moderateScale(10, 0.7),
         flex: 1,
+        flexDirection: 'column',
         alignItems: 'center',
-        // justifyContent: 'space-between',
+        justifyContent: 'space-between',
         marginHorizontal: '1%',
         // flexBasis: '30%',
         // width: ''
@@ -140,14 +141,23 @@ export const SideBarStyle = StyleSheet.create({
         color: Colors.WHITE,
         textAlign: 'center',
         fontWeight: 'bold',
-        fontSize: moderateScale(12, 0.9),
-        flexWrap: 'wrap',
-        // flex: 1,
+        fontSize: moderateScale(12, 0.8),
+        // flexWrap: 'wrap',
+        flex: 1,
+    }, customIconContainerStyle: {
+        padding: moderateScale(10),
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }, customIconImageStyle: {
+        width: moderateScale(30),
+        height: moderateScale(30)
     },
     normalBoxContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginHorizontal: '0.5%',
+        marginTop: '0.5%',
         // marginVertical: verticalScale(4),
     }, normalBoxStyle: {
         backgroundColor: Colors.WHITE,
@@ -175,6 +185,6 @@ export const SideBarStyle = StyleSheet.create({
         // fontWeight: 'bold',
         fontSize: moderateScale(12, 0.8),
         flex: 1,
-    }
+    },
 
 });

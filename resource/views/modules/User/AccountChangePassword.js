@@ -25,6 +25,7 @@ import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
@@ -63,6 +64,8 @@ class AccountChangePassword extends Component {
 
       loading: false,
       logoMargin: 40,
+
+      focusId: EMPTY_STRING,
     }
 
     this._keyboardDidShow = this._keyboardDidShow.bind(this);
@@ -258,25 +261,39 @@ class AccountChangePassword extends Component {
   }
 
   render() {
+    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+      blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
+      {
+        password, TMPpassword,
+        focusId
+      } = this.state,
+      nothingChangeStatus = !password && !TMPpassword,
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+
+
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+            </Button>
           </Left>
 
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
-              TÀI KHOẢN
+              ĐỔI MẬT KHẨU
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
           </Right>
         </Header>
-        <ImageBackground style={{ flex: 1 }}>
+        <ImageBackground style={AccountStyle.mainContainer}>
           <Content>
             <Form>
-              <Item stackedLabel>
-                <Label>Điền mật khẩu mới</Label>
+              <Item stackedLabel style={focusId === 'newPassword' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Điền mật khẩu mới</Label>
                 <Input
                   onChangeText={this._handleChangePassword('password')}
                   value={this.state.password}
@@ -284,10 +301,12 @@ class AccountChangePassword extends Component {
                   autoCorrect={false}
                   returnKeyType={'done'}
                   onSubmitEditing={this.onCheckPassword}
+                  onFocus={() => this.setState({ focusId: 'newPassword' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel>
-                <Label>Xác nhận mật khẩu</Label>
+              <Item stackedLabel style={focusId === 'confirmPassword' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Xác nhận mật khẩu</Label>
                 <Input
                   onChangeText={this._handleChangePassword('TMPpassword')}
                   value={this.state.TMPpassword}
@@ -295,14 +314,17 @@ class AccountChangePassword extends Component {
                   autoCorrect={false}
                   returnKeyType={'done'}
                   onSubmitEditing={this.onCheckValidate}
+                  onFocus={() => this.setState({ focusId: 'confirmPassword' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
             </Form>
             <TouchableOpacity
               onPress={() => this.onSaveChange()}
-              style={[LoginStyle.formButtonLogin, { backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20), borderRadius: 0 }]}
+              style={[AccountStyle.submitButton, submitableButtonBackground]}
+              disabled={nothingChangeStatus}
             >
-              <Text style={[LoginStyle.formButtonText, { color: Colors.WHITE }]}>LƯU MẬT KHẨU</Text>
+              <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU MẬT KHẨU</Text>
             </TouchableOpacity>
           </Content>
         </ImageBackground>

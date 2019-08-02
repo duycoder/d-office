@@ -25,10 +25,11 @@ import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 import { scale, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString } from '../../../common/Utilities'
+import { asyncDelay, convertDateToString, convertStringToDate } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
@@ -54,11 +55,11 @@ class AccountEditor extends Component {
       id: props.userInfo.ID,
 
       // state hiện tại
-      fullName: fullName,
-      dateOfBirth: dateOfBirth || new Date(),
-      mobilePhone: mobilePhone,
-      address: address,
-      email: email,
+      fullName: EMPTY_STRING,
+      dateOfBirth: EMPTY_STRING,
+      mobilePhone: EMPTY_STRING,
+      address: EMPTY_STRING,
+      email: EMPTY_STRING,
       // state cũ
       TMPfullName: fullName,
       TMPdateOfBirth: dateOfBirth || new Date(),
@@ -75,6 +76,8 @@ class AccountEditor extends Component {
 
       loading: false,
       logoMargin: 40,
+
+      focusId: EMPTY_STRING,
     }
 
     this._keyboardDidShow = this._keyboardDidShow.bind(this);
@@ -112,11 +115,17 @@ class AccountEditor extends Component {
     this.setState({
       loading: true
     });
-    if (this.state.fullName === EMPTY_STRING) {
-      this.setState({
-        fullName: this.state.TMPfullName
-      });
-    }
+
+    const {
+      fullName, email, dateOfBirth, mobilePhone, address,
+      TMPfullName, TMPemail, TMPdateOfBirth, TMPmobilePhone, TMPaddress
+    } = this.state;
+    let savedFullname = fullName || TMPfullName,
+      savedEmail = email || TMPemail,
+      savedDateOfBirth = dateOfBirth ? convertStringToDate(dateOfBirth) : TMPdateOfBirth,
+      savedMobilePhone = mobilePhone || TMPmobilePhone,
+      savedAddress = address || TMPaddress;
+
     if (this.state.dateOfBirth === EMPTY_STRING) {
       this.setState({
         dateOfBirth: this.state.TMPdateOfBirth
@@ -183,11 +192,11 @@ class AccountEditor extends Component {
 
     const body = JSON.stringify({
       ID: this.state.id,
-      HOTEN: this.state.fullName,
-      NGAYSINH: new Date(this.state.dateOfBirth.replace(/\//g, "-")),
-      DIENTHOAI: this.state.mobilePhone,
-      DIACHI: this.state.address,
-      EMAIL: this.state.email
+      HOTEN: savedFullname,
+      NGAYSINH: savedDateOfBirth,
+      DIENTHOAI: savedMobilePhone,
+      DIACHI: savedAddress,
+      EMAIL: savedEmail,
     });
 
     await asyncDelay(2000);
@@ -233,6 +242,16 @@ class AccountEditor extends Component {
   }
 
   render() {
+    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+      blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
+      {
+        fullName, email, dateOfBirth, mobilePhone, address,
+        TMPfullName, TMPemail, TMPdateOfBirth, TMPmobilePhone, TMPaddress,
+      } = this.state,
+      nothingChangeStatus = !fullName && !email && !dateOfBirth && !mobilePhone && !address,
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
@@ -253,74 +272,96 @@ class AccountEditor extends Component {
             </Button> */}
           </Right>
         </Header>
-        <ImageBackground style={{ flex: 1 }}>
+        <ImageBackground style={AccountStyle.mainContainer}>
           <Content>
             <Form>
-              <Item stackedLabel>
-                <Label>Họ và tên</Label>
+              <Item stackedLabel style={this.state.focusId === 'fullName' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
                 <Input
                   onChangeText={this._handleFieldNameChange('fullName')}
-                  placeholder={this.state.fullName}
+                  placeholder={TMPfullName}
                   autoCorrect={false}
+                  onFocus={() => this.setState({ focusId: 'fullName' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel>
-                <Label>Email</Label>
+              <Item stackedLabel style={this.state.focusId === 'email' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Email</Label>
                 <Input
                   onChangeText={this._handleFieldNameChange('email')}
-                  placeholder={this.state.email}
+                  placeholder={TMPemail}
                   keyboardType="email-address"
+                  onFocus={() => this.setState({ focusId: 'email' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel style={{ height: verticalScale(100) }}>
-                <Label>Ngày sinh</Label>
+              <Item stackedLabel style={[{ alignItems: 'flex-start' }, this.state.focusId === 'dateOfBirth' ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+                <Label style={AccountStyle.labelTitle}>Ngày sinh</Label>
                 <DatePicker
-                  style={{ width: scale(300), alignSelf: 'center', marginVertical: 30 }}
-                  date={(this.state.dateOfBirth)}
+                  // style={{ width: scale(300), alignSelf: 'center', marginVertical: 30 }}
+                  style={{ width: '100%' }}
+                  date={(dateOfBirth ? dateOfBirth : convertDateToString(TMPdateOfBirth))}
                   mode='date'
-                  placeholder='Chọn ngày sinh'
-                  format='YYYY/MM/DD'
+                  placeholder={TMPdateOfBirth ? convertDateToString(TMPdateOfBirth) : 'Chọn ngày sinh'}
+                  format='DD/MM/YYYY'
                   minDate={'01/01/1900'}
                   maxDate={new Date()}
                   confirmBtnText='XÁC NHẬN'
                   cancelBtnText='HUỶ'
+                  showIcon={false}
                   customStyles={{
-                    dateIcon: {
-                      position: 'absolute',
-                      left: 0,
-                      top: 4,
-                      marginLeft: 0
-                    },
                     dateInput: {
-                      marginLeft: scale(36),
-                    }
+                      // marginLeft: scale(36),
+                      borderWidth: 0,
+                      alignItems: 'flex-start',
+                      flex: 1,
+                    }, dateText: {
+                      fontSize: 17
+                    },
+                    placeholderText: {
+                      fontSize: 17,
+                      color: Colors.BLACK
+                    },
+                    // datePicker: {
+                    //   marginVertical: 0
+                    // },
+                    // datePickerCon: {
+                    //   marginVertical: 0
+                    // }
                   }}
                   onDateChange={this._handleFieldNameChange('dateOfBirth')}
+                  onOpenModal={() => this.setState({ focusId: 'dateOfBirth' })}
+                  onCloseModal={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel>
-                <Label>Điện thoại</Label>
+              <Item stackedLabel style={this.state.focusId === 'mobilePhone' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Điện thoại</Label>
                 <Input
                   onChangeText={this._handleFieldNameChange('mobilePhone')}
-                  placeholder={this.state.mobilePhone}
+                  placeholder={TMPmobilePhone}
                   autoCorrect={false}
                   keyboardType="phone-pad"
+                  onFocus={() => this.setState({ focusId: 'mobilePhone' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel>
-                <Label>Địa chỉ</Label>
+              <Item stackedLabel style={this.state.focusId === 'address' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
+                <Label style={AccountStyle.labelTitle}>Địa chỉ</Label>
                 <Input
                   onChangeText={this._handleFieldNameChange('address')}
-                  placeholder={this.state.address}
+                  placeholder={TMPaddress}
                   autoCorrect={false}
+                  onFocus={() => this.setState({ focusId: 'address' })}
+                  onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
             </Form>
             <TouchableOpacity
               onPress={() => this.onSaveAccountInfo()}
-              style={[LoginStyle.formButtonLogin, { backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20), borderRadius: 0 }]}
+              style={[AccountStyle.submitButton, submitableButtonBackground]}
+              disabled={nothingChangeStatus}
             >
-              <Text style={[LoginStyle.formButtonText, { color: Colors.WHITE }]}>LƯU THÔNG TIN</Text>
+              <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU THÔNG TIN</Text>
             </TouchableOpacity>
           </Content>
         </ImageBackground>
