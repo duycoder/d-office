@@ -44,6 +44,8 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AlertMessage from "../../common/AlertMessage";
 import { AlertMessageStyle } from "../../../assets/styles/index";
 
+import * as navAction from '../../../redux/modules/Nav/Action';
+
 class GroupSubTask extends Component {
     constructor(props) {
         super(props);
@@ -66,6 +68,7 @@ class GroupSubTask extends Component {
 
             editSubTaskType: 0,
             alertIdHolder: 0,
+            check: false,
         }
     }
 
@@ -182,11 +185,13 @@ class GroupSubTask extends Component {
                 this.refs.confirm_3.closeModal();
                 break;
         }
-        this.props.navigation.navigate('AssignTaskScreen', {
+        const targetScreenParam = {
             taskId: this.state.taskId,
             taskType: this.state.taskType,
             subTaskId: id
-        });
+        }
+        this.props.updateExtendsNavParams(targetScreenParam);
+        this.props.navigation.navigate('AssignTaskScreen');
     }
 
     onConfirmCompleteTask(id) {
@@ -196,6 +201,9 @@ class GroupSubTask extends Component {
                 break;
             case 2:
                 this.refs.confirm_2.closeModal();
+                break;
+            case 3:
+                this.refs.confirm_3.closeModal();
                 break;
         }
         this.setState({
@@ -264,6 +272,7 @@ class GroupSubTask extends Component {
                 leftOpenValue={75}
                 rightOpenValue={-75}
                 disableLeftSwipe={(!canAssign && !canFinish) || item.TRANGTHAI_ID > 0}
+                // disableRightSwipe={item.DAGIAOVIEC === true}
                 left={
                     <Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowSubTaskInfo(item)}>
                         <RneIcon name='info' type='foundation' size={verticalScale(30)} color={Colors.WHITE} />
@@ -308,10 +317,21 @@ class GroupSubTask extends Component {
 
     componentDidMount = () => {
         // backHandlerConfig(true, this.navigateBackToDetail);
+        this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+            if (this.props.extendsNavParams) {
+                if (this.props.extendsNavParams.hasOwnProperty("check")) {
+                    if (this.props.extendsNavParams.check === true) {
+                        this.setState({ check: true }, () => this.searchData());
+                        this.props.updateExtendsNavParams({ check: false });
+                    }
+                }
+            }
+        });
     }
 
     componentWillUnmount = () => {
         // backHandlerConfig(false, this.navigateBackToDetail);
+        this.willFocusListener.remove();
     }
 
     navigateBackToDetail = () => {
@@ -598,4 +618,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(GroupSubTask);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupSubTask);
