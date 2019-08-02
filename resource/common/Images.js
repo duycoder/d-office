@@ -21,6 +21,7 @@ const images = {
     duoc_giao: require('../assets/images/FeatureIcon/Congviec/awaken.png'),
     cho_xac_nhan: require('../assets/images/FeatureIcon/Congviec/needcheck.png'),
     phoi_hop_xu_ly: require('../assets/images/FeatureIcon/Congviec/corporate.png'),
+    them_moi: require('../assets/images/FeatureIcon/Congviec/new-product.png'),
   },
   otherIcons: {
     lich_cong_tac: require('../assets/images/FeatureIcon/Others/calendar.png'),

@@ -316,7 +316,7 @@ class WorkflowStreamProcess extends Component {
                                 </TabHeading>
                             }>
                                 <Item>
-                                    <Icon name='ios-search' />
+                                    <Icon name='ios-search' style={{ marginLeft: 5 }} />
                                     <Input placeholder='Họ tên'
                                         value={this.state.mainProcessFilterValue}
                                         onSubmitEditing={() => this.onFilter(true)}
@@ -373,7 +373,7 @@ class WorkflowStreamProcess extends Component {
                                 </TabHeading>
                             }>
                                 <Item>
-                                    <Icon name='ios-search' />
+                                    <Icon name='ios-search' style={{ marginLeft: 5 }} />
                                     <Input placeholder='Họ tên'
                                         value={this.state.joinProcessFilterValue}
                                         onSubmitEditing={() => this.onFilter(false)}
@@ -447,7 +447,7 @@ class WorkflowStreamProcess extends Component {
                                 </TabHeading>
                             }>
                                 <Item>
-                                    <Icon name='ios-search' />
+                                    <Icon name='ios-search' style={{ marginLeft: 5 }} />
                                     <Input placeholder='Họ tên'
                                         value={this.state.mainProcessFilterValue}
                                         onSubmitEditing={() => this.onFilter(true)}
@@ -523,7 +523,7 @@ class WorkflowStreamProcess extends Component {
                                 </TabHeading>
                             }>
                                 <Item>
-                                    <Icon name='ios-search' />
+                                    <Icon name='ios-search' style={{ marginLeft: 5 }} />
                                     <Input placeholder='Họ tên'
                                         value={this.state.joinProcessFilterValue}
                                         onSubmitEditing={() => this.onFilter(false)}

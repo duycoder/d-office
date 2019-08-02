@@ -28,7 +28,8 @@ import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
-  VANBANDI_CONSTANT
+  VANBANDI_CONSTANT,
+  EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
@@ -138,6 +139,16 @@ class BaseList extends Component {
     })
   }
 
+  onClearFilter = () => {
+    this.setState({
+      loadingData: true,
+      pageIndex: DEFAULT_PAGE_INDEX,
+      filterValue: EMPTY_STRING
+    }, () => {
+      this.fetchData()
+    })
+  }
+
   loadingMore() {
     this.setState({
       loadingMoreData: true,
@@ -225,8 +236,8 @@ class BaseList extends Component {
       <Container>
         <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={{ flex: 1 }}>
-            <TouchableOpacity onPress={() => this.props.navigator.goBack()}>
-              <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+            <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
+              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
             </TouchableOpacity>
           </Left>
 
@@ -236,7 +247,11 @@ class BaseList extends Component {
               value={this.state.filterValue}
               onChangeText={(filterValue) => this.setState({ filterValue })}
               onSubmitEditing={() => this.onFilter()} />
-            <Icon name='ios-document' />
+            {
+              this.state.filterValue !== EMPTY_STRING
+                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                : null
+            }
           </Item>
         </Header>
 

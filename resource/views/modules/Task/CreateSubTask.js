@@ -163,7 +163,6 @@ class CreateSubTask extends Component {
 	}
 
 	render() {
-		const pickerStyle = Platform.OS === 'ios' ? { justifyContent: 'center' } : { width: '100%' };
 		return (
 			<Container>
 				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>

@@ -38,6 +38,7 @@ import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
+import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 class BaseList extends Component {
   constructor(props) {
@@ -237,12 +238,12 @@ class BaseList extends Component {
     return (
       <Container>
         <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-          <Left style={{flex: 1}}>
-            <TouchableOpacity onPress={()=>this.props.navigator.goBack()}>
-              <RNEIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+          <Left style={NativeBaseStyle.left}>
+            <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
+              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
             </TouchableOpacity>
           </Left>
-          
+
           <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Mã hiệu, trích yếu'
@@ -252,7 +253,7 @@ class BaseList extends Component {
             {
               this.state.filterValue !== EMPTY_STRING
                 ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
-                : <Icon name='ios-document' />
+                : null
             }
           </Item>
         </Header>

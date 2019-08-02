@@ -308,6 +308,19 @@ class DetailTask extends Component {
         // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryEvaluateTaskScreen", targetScreenParam);
     }
 
+    //tạo kế hoạch
+    onCreatePlan = () => {
+        this.onNavigate("CreateTaskPlanScreen");
+    }
+    //trình kế hoạch
+    onSubmitPlan = () => {
+
+    }
+    //phê duyệt kế hoạch
+    onConfirmPlan = () => {
+
+    }
+
     onNavigate(targetScreenName, targetScreenParam) {
         if (!util.isNull(targetScreenParam)) {
             this.props.updateExtendsNavParams(targetScreenParam);
@@ -418,27 +431,30 @@ class DetailTask extends Component {
                     // menuActions.push(
                     //     <InteractiveButton title={'THEO DÕI'} key={11} />
                     // )
-                    // if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
-                    //     menuActions.push(
-                    //         <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
-                    //     )
-                    // }
+                    if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
+                        menuActions.push(
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmPlan()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT KẾ HOẠCH</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
+                        )
+                    }
                 } else {
                     if (task.CongViec.IS_HASPLAN == true) {
                         // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
-                        // if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
-                        //     // nếu chưa trình kế hoạch và là người xử lý chính thì
-                        //     if (task.IsNguoiThucHienChinh) {
-                        //         menuActions.push(
-                        //             <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
-                        //         )
-                        //     }
-                        // }
-                        // else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
-                        // menuActions.push(
-                        //     <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
-                        // )
-                        // }
+                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
+                            // nếu chưa trình kế hoạch và là người xử lý chính thì
+                            if (task.IsNguoiThucHienChinh) {
+                                menuActions.push(
+                                    { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onSubmitPlan()}><RnText style={ButtonGroupStyle.buttonText}>TRÌNH KẾ HOẠCH</RnText></TouchableOpacity> }
+                                    // <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
+                                )
+                            }
+                        }
+                        else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
+                            menuActions.push(
+                                { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreatePlan()}><RnText style={ButtonGroupStyle.buttonText}>LẬP KẾ HOẠCH</RnText></TouchableOpacity> }
+                                // <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
+                            )
+                        }
                         if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
                             if (task.IsNguoiThucHienChinh) {
                                 menuActions.push(

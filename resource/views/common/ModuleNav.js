@@ -48,6 +48,8 @@ import HistoryEvaluateTask from '../modules/Task/HistoryEvaluateTask';
 import GroupSubTask from '../modules/Task/GroupSubTask';
 import ApproveRescheduleTask from '../modules/Task/ApproveRescheduleTask';
 import DenyRescheduleTask from '../modules/Task/DenyRescheduleTask';
+import CreateTask from '../modules/Task/CreateTask';
+import CreateTaskPlan from '../modules/Task/CreateTaskPlan';
 //#endregion
 
 //#region đăng nhập + đăng ký + truy vấn tài khoản
@@ -167,6 +169,12 @@ const notificationStack = StackNavigator(
     },
     DetailTaskScreen: {
       screen: DetailTask
+    },
+    CreateTaskScreen: {
+      screen: CreateTask
+    },
+    CreateTaskPlanScreen: {
+      screen: CreateTaskPlan
     },
     AssignTaskScreen: {
       screen: AssignTask
@@ -326,6 +334,12 @@ const dashboardStack = StackNavigator(
     },
     ListFilterTaskScreen: {
       screen: ListFilterTask
+    },
+    CreateTaskScreen: {
+      screen: CreateTask
+    },
+    CreateTaskPlanScreen: {
+      screen: CreateTaskPlan
     },
     DetailTaskScreen: {
       screen: DetailTask

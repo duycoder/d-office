@@ -20,7 +20,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.LITE_BLUE,
     marginTop: verticalScale(20),
     borderRadius: 4,
-    marginHorizontal: verticalScale(22),
+    marginHorizontal: verticalScale(18),
     // position: 'relative',
     alignSelf: 'stretch',
     justifyContent: 'center',
