@@ -42,6 +42,7 @@ import ApproveProgressTask from '../modules/Task/ApproveProgressTask';
 import EvaluationTask from '../modules/Task/EvaluationTask';
 import HistoryRescheduleTask from '../modules/Task/HistoryRescheduleTask';
 import HistoryProgressTask from '../modules/Task/HistoryProgressTask';
+import HistoryPlanTask from '../modules/Task/HistoryPlanTask';
 import ApproveEvaluationTask from '../modules/Task/ApproveEvaluationTask';
 import CreateSubTask from '../modules/Task/CreateSubTask';
 import HistoryEvaluateTask from '../modules/Task/HistoryEvaluateTask';
@@ -50,6 +51,7 @@ import ApproveRescheduleTask from '../modules/Task/ApproveRescheduleTask';
 import DenyRescheduleTask from '../modules/Task/DenyRescheduleTask';
 import CreateTask from '../modules/Task/CreateTask';
 import CreateTaskPlan from '../modules/Task/CreateTaskPlan';
+import ConfirmTaskPlan from '../modules/Task/ConfirmTaskPlan';
 //#endregion
 
 //#region đăng nhập + đăng ký + truy vấn tài khoản
@@ -176,6 +178,9 @@ const notificationStack = StackNavigator(
     CreateTaskPlanScreen: {
       screen: CreateTaskPlan
     },
+    ConfirmTaskPlanScreen:{
+      screen: ConfirmTaskPlan
+    },
     AssignTaskScreen: {
       screen: AssignTask
     }, AssignTaskUsersScreen: {
@@ -204,6 +209,9 @@ const notificationStack = StackNavigator(
     },
     HistoryProgressTaskScreen: {
       screen: HistoryProgressTask
+    },
+    HistoryPlanTaskScreen: {
+      screen: HistoryPlanTask
     },
     GroupSubTaskScreen: {
       screen: GroupSubTask
@@ -341,6 +349,9 @@ const dashboardStack = StackNavigator(
     CreateTaskPlanScreen: {
       screen: CreateTaskPlan
     },
+    ConfirmTaskPlanScreen:{
+      screen: ConfirmTaskPlan
+    },
     DetailTaskScreen: {
       screen: DetailTask
     },
@@ -372,6 +383,9 @@ const dashboardStack = StackNavigator(
     },
     HistoryProgressTaskScreen: {
       screen: HistoryProgressTask
+    },
+    HistoryPlanTaskScreen: {
+      screen: HistoryPlanTask
     },
     GroupSubTaskScreen: {
       screen: GroupSubTask

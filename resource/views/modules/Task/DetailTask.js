@@ -313,12 +313,63 @@ class DetailTask extends Component {
         this.onNavigate("CreateTaskPlanScreen");
     }
     //trình kế hoạch
-    onSubmitPlan = () => {
+    onConfirmSubmitPlan = () => {
+        this.refs.confirmPlan.showModal();
+    }
+    onSubmitPlan = async () => {
+        this.refs.confirmPlan.closeModal();
 
+        this.setState({
+            executing: true
+        });
+
+        const url = `${API_URL}/api/HscvCongViec/`;
+
+        const headers = new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        });
+
+        const body = JSON.stringify({
+            userId: this.state.userId,
+            taskId: this.state.taskId
+        });
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers,
+            body
+        });
+
+        const resultJson = await result.json();
+
+        await asyncDelay(2000);
+
+        this.setState({
+            executing: false
+        });
+
+        Toast.show({
+            text: resultJson.Status ? 'Trình kế hoạch thành công' : resultJson.Message,
+            type: resultJson.Status ? 'success' : 'danger',
+            buttonText: "OK",
+            buttonStyle: { backgroundColor: Colors.WHITE },
+            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+            duration: 3000,
+            onClose: () => {
+                if (resultJson.Status) {
+                    this.fetchData();
+                }
+            }
+        });
     }
     //phê duyệt kế hoạch
     onConfirmPlan = () => {
-
+        this.onNavigate("ConfirmTaskPlanScreen");
+    }
+    //lịch sử phê duyệt kế hoạch
+    onGetPlanHistory = () => {
+        this.onNavigate("HistoryPlanTaskScreen");
     }
 
     onNavigate(targetScreenName, targetScreenParam) {
@@ -332,6 +383,8 @@ class DetailTask extends Component {
         this.props.updateCoreNavParams(targetScreenParams)
         this.props.navigation.navigate(screenName);
     }
+
+    
 
     render() {
         const totalComments = this.state.taskInfo.COMMENT_COUNT > 0 ? `(${this.state.taskInfo.COMMENT_COUNT})` : "";
@@ -511,6 +564,9 @@ class DetailTask extends Component {
                                 <MenuTrigger children={<Icon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
                                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                                     <MenuOption onSelect={() => this.onOpenComment()} text={`Bình luận ${totalComments}`} customStyles={HeaderMenuStyle.optionStyles} />
+                                    {
+                                        this.state.taskInfo.task.CongViec.IS_HASPLAN && <MenuOption onSelect={() => this.onGetPlanHistory()} text="Kế hoạch thực hiện" customStyles={HeaderMenuStyle.optionStyles} />
+                                    }
                                     <MenuOption onSelect={() => this.onGetGroupSubTask()} text="Các công việc con" customStyles={HeaderMenuStyle.optionStyles} />
                                     <MenuOption onSelect={() => this.onGetProgressHistory()} text="Theo dõi tiến độ" customStyles={HeaderMenuStyle.optionStyles} />
                                     <MenuOption onSelect={() => this.onGetRescheduleHistory()} text="Lịch sử lùi hạn" customStyles={HeaderMenuStyle.optionStyles} />
@@ -566,6 +622,21 @@ class DetailTask extends Component {
                     >
                         <RnView style={AlertMessageStyle.leftFooter}>
                             <TouchableOpacity onPress={() => this.onStartTask()} style={AlertMessageStyle.footerButton}>
+                                <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                    Đồng ý
+                            </RnText>
+                            </TouchableOpacity>
+                        </RnView>
+                    </AlertMessage>
+
+                    <AlertMessage
+                        ref="confirmPlan"
+                        title="TRÌNH KẾ HOẠCh"
+                        bodyText="Bạn có chắc chắn muốn trình kế hoạch thực hiện công việc này?"
+                        exitText="Hủy bỏ"
+                    >
+                        <RnView style={AlertMessageStyle.leftFooter}>
+                            <TouchableOpacity onPress={() => this.onSubmitPlan()} style={AlertMessageStyle.footerButton}>
                                 <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                     Đồng ý
                             </RnText>
