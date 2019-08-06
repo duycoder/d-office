@@ -52,6 +52,7 @@ import DenyRescheduleTask from '../modules/Task/DenyRescheduleTask';
 import CreateTask from '../modules/Task/CreateTask';
 import CreateTaskPlan from '../modules/Task/CreateTaskPlan';
 import ConfirmTaskPlan from '../modules/Task/ConfirmTaskPlan';
+import PickTaskAssigner from '../modules/Task/PickTaskAssigner';
 //#endregion
 
 //#region đăng nhập + đăng ký + truy vấn tài khoản
@@ -178,8 +179,11 @@ const notificationStack = StackNavigator(
     CreateTaskPlanScreen: {
       screen: CreateTaskPlan
     },
-    ConfirmTaskPlanScreen:{
+    ConfirmTaskPlanScreen: {
       screen: ConfirmTaskPlan
+    },
+    PickTaskAssignerScreen: {
+      screen: PickTaskAssigner
     },
     AssignTaskScreen: {
       screen: AssignTask
@@ -349,8 +353,11 @@ const dashboardStack = StackNavigator(
     CreateTaskPlanScreen: {
       screen: CreateTaskPlan
     },
-    ConfirmTaskPlanScreen:{
+    ConfirmTaskPlanScreen: {
       screen: ConfirmTaskPlan
+    },
+    PickTaskAssignerScreen: {
+      screen: PickTaskAssigner
     },
     DetailTaskScreen: {
       screen: DetailTask

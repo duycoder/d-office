@@ -384,7 +384,7 @@ class DetailTask extends Component {
         this.props.navigation.navigate(screenName);
     }
 
-    
+
 
     render() {
         const totalComments = this.state.taskInfo.COMMENT_COUNT > 0 ? `(${this.state.taskInfo.COMMENT_COUNT})` : "";
@@ -491,38 +491,38 @@ class DetailTask extends Component {
                         )
                     }
                 } else {
-                    if (task.CongViec.IS_HASPLAN == true) {
-                        // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
-                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
-                            // nếu chưa trình kế hoạch và là người xử lý chính thì
-                            if (task.IsNguoiThucHienChinh) {
-                                menuActions.push(
-                                    { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onSubmitPlan()}><RnText style={ButtonGroupStyle.buttonText}>TRÌNH KẾ HOẠCH</RnText></TouchableOpacity> }
-                                    // <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
-                                )
-                            }
-                        }
-                        else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
-                            menuActions.push(
-                                { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreatePlan()}><RnText style={ButtonGroupStyle.buttonText}>LẬP KẾ HOẠCH</RnText></TouchableOpacity> }
-                                // <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
-                            )
-                        }
-                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
-                            if (task.IsNguoiThucHienChinh) {
-                                menuActions.push(
-                                    { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
-                                    // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
-                                )
-                            }
-                        }
-                    } else {
-                        //Bắt đầu xử lý
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
-                        )
-                    }
+                    // if (task.CongViec.IS_HASPLAN == true) {
+                    //     // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
+                    //     if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
+                    //         // nếu chưa trình kế hoạch và là người xử lý chính thì
+                    //         if (task.IsNguoiThucHienChinh) {
+                    //             menuActions.push(
+                    //                 { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onSubmitPlan()}><RnText style={ButtonGroupStyle.buttonText}>TRÌNH KẾ HOẠCH</RnText></TouchableOpacity> }
+                    //                 // <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
+                    //             )
+                    //         }
+                    //     }
+                    //     else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
+                    //         menuActions.push(
+                    //             { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreatePlan()}><RnText style={ButtonGroupStyle.buttonText}>LẬP KẾ HOẠCH</RnText></TouchableOpacity> }
+                    //             // <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
+                    //         )
+                    //     }
+                    //     if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
+                    //         if (task.IsNguoiThucHienChinh) {
+                    //             menuActions.push(
+                    //                 { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
+                    //                 // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
+                    //             )
+                    //         }
+                    //     }
+                    // } else {
+                    //Bắt đầu xử lý
+                    menuActions.push(
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
+                    )
+                    // }
                 }
             }
         }
@@ -565,7 +565,7 @@ class DetailTask extends Component {
                                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                                     <MenuOption onSelect={() => this.onOpenComment()} text={`Bình luận ${totalComments}`} customStyles={HeaderMenuStyle.optionStyles} />
                                     {
-                                        this.state.taskInfo.task.CongViec.IS_HASPLAN && <MenuOption onSelect={() => this.onGetPlanHistory()} text="Kế hoạch thực hiện" customStyles={HeaderMenuStyle.optionStyles} />
+                                        // this.state.taskInfo.task.CongViec.IS_HASPLAN && <MenuOption onSelect={() => this.onGetPlanHistory()} text="Kế hoạch thực hiện" customStyles={HeaderMenuStyle.optionStyles} />
                                     }
                                     <MenuOption onSelect={() => this.onGetGroupSubTask()} text="Các công việc con" customStyles={HeaderMenuStyle.optionStyles} />
                                     <MenuOption onSelect={() => this.onGetProgressHistory()} text="Theo dõi tiến độ" customStyles={HeaderMenuStyle.optionStyles} />
@@ -624,7 +624,7 @@ class DetailTask extends Component {
                             <TouchableOpacity onPress={() => this.onStartTask()} style={AlertMessageStyle.footerButton}>
                                 <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                     Đồng ý
-                            </RnText>
+                                </RnText>
                             </TouchableOpacity>
                         </RnView>
                     </AlertMessage>

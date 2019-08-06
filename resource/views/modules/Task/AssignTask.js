@@ -278,10 +278,10 @@ class AssignTask extends Component {
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 0) ? Colors.LITE_BLUE : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								{
-									this.state.dataAssignTask.IsCapPhongBan ? 'CÁN BỘ TRONG PHÒNG' : 'PHÒNG BAN TRONG ĐƠN VỊ'
+									this.state.dataAssignTask.IsCapPhongBan ? 'TRONG PHÒNG' : 'TRONG ĐƠN VỊ'
 								}
 							</Text>
 						</Button>
@@ -291,9 +291,9 @@ class AssignTask extends Component {
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 1) ? Colors.LITE_BLUE : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : Colors.WHITE
 							}}>
-								CHÉO
+								TOÀN BỆNH VIỆN
 							</Text>
 						</Button>
 					</Segment>
