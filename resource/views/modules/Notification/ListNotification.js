@@ -41,6 +41,24 @@ class ListNotification extends Component {
     }
 
     onPressNotificationItem = async (item) => {
+        //update read state for unread noti
+        if (!item.IS_READ) {
+            const url = `${API_URL}/api/account/UpdateReadStateOfMessage`;
+            const headers = new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            });
+            const body = JSON.stringify({
+                item
+            });
+            const result = await fetch(url, {
+                method: 'POST',
+                headers,
+                body
+            });
+        }
+
+        //navigate to detail
         let screenName = EMPTY_STRING;
         let screenParam = {};
 
