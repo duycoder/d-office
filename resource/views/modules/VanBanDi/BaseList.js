@@ -20,7 +20,7 @@ import {
   Content, Badge, Left, Right, Button
 } from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
 import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
@@ -28,7 +28,8 @@ import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
-  VANBANDI_CONSTANT
+  VANBANDI_CONSTANT,
+  EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
@@ -138,6 +139,16 @@ class BaseList extends Component {
     })
   }
 
+  onClearFilter = () => {
+    this.setState({
+      loadingData: true,
+      pageIndex: DEFAULT_PAGE_INDEX,
+      filterValue: EMPTY_STRING
+    }, () => {
+      this.fetchData()
+    })
+  }
+
   loadingMore() {
     this.setState({
       loadingMoreData: true,
@@ -224,13 +235,23 @@ class BaseList extends Component {
     return (
       <Container>
         <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Left style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
+              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
+            </TouchableOpacity>
+          </Left>
+
+          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Mã hiệu, trích yếu'
               value={this.state.filterValue}
               onChangeText={(filterValue) => this.setState({ filterValue })}
               onSubmitEditing={() => this.onFilter()} />
-            <Icon name='ios-document' />
+            {
+              this.state.filterValue !== EMPTY_STRING
+                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                : null
+            }
           </Item>
         </Header>
 

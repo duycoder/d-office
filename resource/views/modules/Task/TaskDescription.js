@@ -117,7 +117,6 @@ export default class TaskDescription extends Component {
                                 <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
                                     <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
                                     <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
-                                    <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
                                     <Text>{`Độ khẩn: ${STR_DOKHAN}`}</Text>
                                 </Text>
                             }

@@ -21,7 +21,7 @@ import {
   Content, Badge, Left, Right, Button
 } from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
 import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
@@ -38,6 +38,7 @@ import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
+import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 class BaseList extends Component {
   constructor(props) {
@@ -222,7 +223,7 @@ class BaseList extends Component {
                     Số theo sổ:
                   </RnText>
                   <RnText>
-                    {` ${item.SODITHEOSO} - ${item.TENSOVANBAN.replace( /^\D+/g, '')}`}
+                    {` ${item.SODITHEOSO || "N/A"} - ${item.TENSOVANBAN ? item.TENSOVANBAN.replace(/^\D+/g, '') : "N/A"}`}
                   </RnText>
                 </RnText>
               </View>
@@ -237,7 +238,13 @@ class BaseList extends Component {
     return (
       <Container>
         <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Left style={NativeBaseStyle.left}>
+            <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
+              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
+            </TouchableOpacity>
+          </Left>
+
+          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Mã hiệu, trích yếu'
               value={this.state.filterValue}
@@ -246,7 +253,7 @@ class BaseList extends Component {
             {
               this.state.filterValue !== EMPTY_STRING
                 ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
-                : <Icon name='ios-document' />
+                : null
             }
           </Item>
         </Header>

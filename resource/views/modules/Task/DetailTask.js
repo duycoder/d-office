@@ -10,14 +10,14 @@ import { AsyncStorage, Alert, View as RnView, Text as RnText, FlatList, StyleShe
 import { connect } from 'react-redux';
 
 //lib
-// import {Menu, MenuTrigger, MenuOptions, MenuOption, } from 'react-native-popup-menu';
+import { Menu, MenuTrigger, MenuOptions, MenuOption, MenuProvider, renderers } from 'react-native-popup-menu';
 import {
     Container, Header, Left, Button, Body,
     Title, Right, Toast, Tabs, Tab, TabHeading, ScrollableTab,
     Icon as NbIcon, Text, SwipeRow, Item, Input,
     Content, Form,
 } from 'native-base';
-import { Icon } from 'react-native-elements';
+import { Icon, ButtonGroup } from 'react-native-elements';
 import renderIf from 'render-if';
 import * as util from 'lodash'
 
@@ -42,8 +42,12 @@ import GroupSubTask from './GroupSubTask';
 import ResultEvaluationTask from './ResultEvaluationTask'
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import { HeaderMenuStyle } from '../../../assets/styles/index';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 class DetailTask extends Component {
     constructor(props) {
@@ -90,24 +94,26 @@ class DetailTask extends Component {
 
     //xác nhận bắt đầu công việc
     onConfirmToStartTask = () => {
-        Alert.alert(
-            'XÁC NHẬN XỬ LÝ',
-            'Bạn có chắc chắn muốn bắt đầu thực hiện công việc này?',
-            [
-                {
-                    text: 'Đồng ý', onPress: () => { this.onStartTask() }
-                },
+        this.refs.confirm.showModal();
+        // Alert.alert(
+        //     'XÁC NHẬN XỬ LÝ',
+        //     'Bạn có chắc chắn muốn bắt đầu thực hiện công việc này?',
+        //     [
+        //         {
+        //             text: 'Đồng ý', onPress: () => { this.onStartTask() }
+        //         },
 
-                {
-                    text: 'Hủy bỏ', onPress: () => { }
-                }
-            ]
-        )
+        //         {
+        //             text: 'Hủy bỏ', onPress: () => { }
+        //         }
+        //     ]
+        // )
     }
 
     //bắt đầu công việc
 
     onStartTask = async () => {
+        this.refs.confirm.closeModal();
         this.setState({
             executing: true
         });
@@ -167,7 +173,8 @@ class DetailTask extends Component {
                 }
                 if (this.props.extendsNavParams.hasOwnProperty("check")) {
                     if (this.props.extendsNavParams.check === true) {
-                        this.setState({ check: true }, () => this.fetchData())
+                        this.setState({ check: true }, () => this.fetchData());
+                        this.props.updateExtendsNavParams({ check: false });
                     }
                 }
             }
@@ -301,6 +308,70 @@ class DetailTask extends Component {
         // appStoreDataAndNavigate(this.props.navigation, "DetailTaskScreen", this.state.screenParam, "HistoryEvaluateTaskScreen", targetScreenParam);
     }
 
+    //tạo kế hoạch
+    onCreatePlan = () => {
+        this.onNavigate("CreateTaskPlanScreen");
+    }
+    //trình kế hoạch
+    onConfirmSubmitPlan = () => {
+        this.refs.confirmPlan.showModal();
+    }
+    onSubmitPlan = async () => {
+        this.refs.confirmPlan.closeModal();
+
+        this.setState({
+            executing: true
+        });
+
+        const url = `${API_URL}/api/HscvCongViec/`;
+
+        const headers = new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        });
+
+        const body = JSON.stringify({
+            userId: this.state.userId,
+            taskId: this.state.taskId
+        });
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers,
+            body
+        });
+
+        const resultJson = await result.json();
+
+        await asyncDelay(2000);
+
+        this.setState({
+            executing: false
+        });
+
+        Toast.show({
+            text: resultJson.Status ? 'Trình kế hoạch thành công' : resultJson.Message,
+            type: resultJson.Status ? 'success' : 'danger',
+            buttonText: "OK",
+            buttonStyle: { backgroundColor: Colors.WHITE },
+            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+            duration: 3000,
+            onClose: () => {
+                if (resultJson.Status) {
+                    this.fetchData();
+                }
+            }
+        });
+    }
+    //phê duyệt kế hoạch
+    onConfirmPlan = () => {
+        this.onNavigate("ConfirmTaskPlanScreen");
+    }
+    //lịch sử phê duyệt kế hoạch
+    onGetPlanHistory = () => {
+        this.onNavigate("HistoryPlanTaskScreen");
+    }
+
     onNavigate(targetScreenName, targetScreenParam) {
         if (!util.isNull(targetScreenParam)) {
             this.props.updateExtendsNavParams(targetScreenParam);
@@ -313,7 +384,10 @@ class DetailTask extends Component {
         this.props.navigation.navigate(screenName);
     }
 
+
+
     render() {
+        const totalComments = this.state.taskInfo.COMMENT_COUNT > 0 ? `(${this.state.taskInfo.COMMENT_COUNT})` : "";
         const bodyContent = this.state.loading ? dataLoading(true) : <TaskContent userInfo={this.props.userInfo} info={this.state.taskInfo} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />;
         const menuActions = [];
         if (!this.state.loading) {
@@ -321,19 +395,22 @@ class DetailTask extends Component {
             if (task.CongViec.IS_BATDAU == true) {
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec == true && task.CongViec.IS_SUBTASK != true) || task.IsNguoiThucHienChinh) && (task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} key={1} />
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onUpdateTaskProgress()}><RnText style={ButtonGroupStyle.buttonText}>Cập nhật tiến độ</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} key={1} />
                     )
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                            <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} key={2} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRescheduleTask()}><RnText style={ButtonGroupStyle.buttonText}>Lùi hạn công việc</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} key={2} />
                         )
                     }
                 }
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
                     menuActions.push(
-                        <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} key={3} />
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveProgressTask()}><RnText style={ButtonGroupStyle.buttonText}>Phản hồi công việc</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} key={3} />
                     )
                 }
 
@@ -341,7 +418,8 @@ class DetailTask extends Component {
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} key={4} />
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateSubTask()}><RnText style={ButtonGroupStyle.buttonText}>Tạo công việc con</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} key={4} />
                     )
                 }
 
@@ -349,7 +427,8 @@ class DetailTask extends Component {
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
                     menuActions.push(
-                        <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} key={5} />
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>Giao việc</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} key={5} />
                     )
                 }
 
@@ -368,13 +447,15 @@ class DetailTask extends Component {
                         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
                         menuActions.push(
-                            <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>Duyệt đánh giá công việc</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
                         )
                     }
 
                     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
                         menuActions.push(
-                            <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>Tự đánh giá công việc</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
                         )
                     }
                 }
@@ -389,11 +470,13 @@ class DetailTask extends Component {
                         && task.CongViec.DAGIAOVIEC != true) {
 
                         menuActions.push(
-                            <InteractiveButton title={'GIAO VIỆC'} onPress={() => this.onAssignTask()} key={9} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>Giao việc</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'GIAO VIỆC'} onPress={() => this.onAssignTask()} key={9} />
                         )
 
                         menuActions.push(
-                            <InteractiveButton title={'BẮT ĐẦU XỬ LÝ'} onPress={() => this.onConfirmToStartTask()} key={10} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>Bắt đầu xử lý</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'BẮT ĐẦU XỬ LÝ'} onPress={() => this.onConfirmToStartTask()} key={10} />
                         )
                     }
                 }
@@ -401,114 +484,167 @@ class DetailTask extends Component {
                     // menuActions.push(
                     //     <InteractiveButton title={'THEO DÕI'} key={11} />
                     // )
-                    // if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
-                    //     menuActions.push(
-                    //         <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
-                    //     )
-                    // }
-                } else {
-                    if (task.CongViec.IS_HASPLAN == true) {
-                        // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
-                        // if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
-                        //     // nếu chưa trình kế hoạch và là người xử lý chính thì
-                        //     if (task.IsNguoiThucHienChinh) {
-                        //         menuActions.push(
-                        //             <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
-                        //         )
-                        //     }
-                        // }
-                        // else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
-                            // menuActions.push(
-                            //     <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
-                            // )
-                        // }
-                        if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
-                            if (task.IsNguoiThucHienChinh) {
-                                menuActions.push(
-                                    <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
-                                )
-                            }
-                        }
-                    } else {
-                        //Bắt đầu xử lý
+                    if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
                         menuActions.push(
-                            <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmPlan()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT KẾ HOẠCH</RnText></TouchableOpacity> }
+                            // <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
                         )
                     }
+                } else {
+                    // if (task.CongViec.IS_HASPLAN == true) {
+                    //     // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
+                    //     if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
+                    //         // nếu chưa trình kế hoạch và là người xử lý chính thì
+                    //         if (task.IsNguoiThucHienChinh) {
+                    //             menuActions.push(
+                    //                 { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onSubmitPlan()}><RnText style={ButtonGroupStyle.buttonText}>TRÌNH KẾ HOẠCH</RnText></TouchableOpacity> }
+                    //                 // <InteractiveButton title={'TRÌNH KẾ HOẠCH'} key={13} />
+                    //             )
+                    //         }
+                    //     }
+                    //     else if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUALAPKEHOACH || task.TrangThaiKeHoach == PLANJOB_CONSTANT.LAPLAIKEHOACH) {
+                    //         menuActions.push(
+                    //             { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreatePlan()}><RnText style={ButtonGroupStyle.buttonText}>LẬP KẾ HOẠCH</RnText></TouchableOpacity> }
+                    //             // <InteractiveButton title={'LẬP KẾ HOẠCH'} key={14} />
+                    //         )
+                    //     }
+                    //     if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.DAPHEDUYETKEHOACH) {
+                    //         if (task.IsNguoiThucHienChinh) {
+                    //             menuActions.push(
+                    //                 { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
+                    //                 // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={15} />
+                    //             )
+                    //         }
+                    //     }
+                    // } else {
+                    //Bắt đầu xử lý
+                    menuActions.push(
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
+                        // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
+                    )
+                    // }
                 }
             }
         }
 
         //menu thông tin về công việc
 
-        menuActions.push(
-            <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} key={17} />
-        );
+        // menuActions.push(
+        //     <InteractiveButton title={'Các công việc con'} onPress={() => this.onGetGroupSubTask()} key={17} />
+        // );
 
-        menuActions.push(
-            <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} key={18} />
-        );
+        // menuActions.push(
+        //     <InteractiveButton title={'Theo dõi tiến độ'} onPress={() => this.onGetProgressHistory()} key={18} />
+        // );
 
-        menuActions.push(
-            <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} key={19} />
-        );
+        // menuActions.push(
+        //     <InteractiveButton title={'Lịch sử lùi hạn'} onPress={() => this.onGetRescheduleHistory()} key={19} />
+        // );
 
-        menuActions.push(
-            <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} key={20} />
-        );
+        // menuActions.push(
+        //     <InteractiveButton title={'Lịch sử phản hồi'} onPress={() => this.onGetEvaluationHistory()} key={20} />
+        // );
 
         return (
-            <Container>
-                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToList()}>
-                            <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
-                    </Left>
+            <MenuProvider backHandler={true}>
+                <Container>
+                    <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+                        <Left style={NativeBaseStyle.left}>
+                            <GoBackButton onPress={() => this.navigateBackToList()} />
+                        </Left>
 
-                    <Body style={NativeBaseStyle.body}>
-                        <Title style={NativeBaseStyle.bodyTitle}>
-                            THÔNG TIN CÔNG VIỆC
+                        <Body style={NativeBaseStyle.body}>
+                            <Title style={NativeBaseStyle.bodyTitle}>
+                                THÔNG TIN CÔNG VIỆC
                             </Title>
-                    </Body>
+                        </Body>
 
-                    <Right style={NativeBaseStyle.right}>
-                        <Button transparent onPress={this.onOpenComment}>
-                            <Form style={DetailTaskStyle.commentButtonContainer}>
-                                <NbIcon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
-                                {
-                                    renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
-                                        <Form style={DetailTaskStyle.commentCircleContainer}>
-                                            <Text style={DetailTaskStyle.commentCountText}>
-                                                {this.state.taskInfo.COMMENT_COUNT}
-                                            </Text>
-                                        </Form>
-                                    )
-                                }
-                            </Form>
-                        </Button>
-                    </Right>
-                </Header>
+                        <Right style={NativeBaseStyle.right}>
+                            <Menu>
+                                <MenuTrigger children={<Icon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                                <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                                    <MenuOption onSelect={() => this.onOpenComment()} text={`Bình luận ${totalComments}`} customStyles={HeaderMenuStyle.optionStyles} />
+                                    {
+                                        // this.state.taskInfo.task.CongViec.IS_HASPLAN && <MenuOption onSelect={() => this.onGetPlanHistory()} text="Kế hoạch thực hiện" customStyles={HeaderMenuStyle.optionStyles} />
+                                    }
+                                    <MenuOption onSelect={() => this.onGetGroupSubTask()} text="Các công việc con" customStyles={HeaderMenuStyle.optionStyles} />
+                                    <MenuOption onSelect={() => this.onGetProgressHistory()} text="Theo dõi tiến độ" customStyles={HeaderMenuStyle.optionStyles} />
+                                    <MenuOption onSelect={() => this.onGetRescheduleHistory()} text="Lịch sử lùi hạn" customStyles={HeaderMenuStyle.optionStyles} />
+                                    <MenuOption onSelect={() => this.onGetEvaluationHistory()} text="Lịch sử phản hồi" />
+                                </MenuOptions>
+                            </Menu>
+                            {/*<Button transparent onPress={this.onOpenComment}>
+                                <Form style={DetailTaskStyle.commentButtonContainer}>
+                                    <NbIcon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
+                                    {
+                                        renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
+                                            <Form style={DetailTaskStyle.commentCircleContainer}>
+                                                <Text style={DetailTaskStyle.commentCountText}>
+                                                    {this.state.taskInfo.COMMENT_COUNT}
+                                                </Text>
+                                            </Form>
+                                        )
+                                    }
+                                </Form>
+                                </Button>*/}
+                        </Right>
+                    </Header>
 
-                {
-                    bodyContent
-                }
+                    {
+                        bodyContent
+                    }
 
-                {/* hiệu ứng xử lý */}
-                {
-                    menuActions.length > 0 &&
-                    <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>
-                        <ScrollView
-                            horizontal
-                        >
-                            {menuActions}
-                        </ScrollView>
-                    </RnView>
-                }
-                {
-                    executeLoading(this.state.executing)
-                }
-            </Container>
+                    {/* hiệu ứng xử lý */}
+                    {
+                        menuActions.length > 0 &&
+                        <ButtonGroup
+                            containerStyle={ButtonGroupStyle.container}
+                            // buttonStyle={{padding:}}
+                            buttons={menuActions}
+                        />
+                        // <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>
+                        //     <ScrollView
+                        //         horizontal
+                        //     >
+                        //         {menuActions}
+                        //     </ScrollView>
+                        // </RnView>
+                    }
+                    {
+                        executeLoading(this.state.executing)
+                    }
+
+                    <AlertMessage
+                        ref="confirm"
+                        title="XÁC NHẬN XỬ LÝ"
+                        bodyText="Bạn có chắc chắn muốn bắt đầu thực hiện công việc này?"
+                        exitText="Hủy bỏ"
+                    >
+                        <RnView style={AlertMessageStyle.leftFooter}>
+                            <TouchableOpacity onPress={() => this.onStartTask()} style={AlertMessageStyle.footerButton}>
+                                <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                    Đồng ý
+                                </RnText>
+                            </TouchableOpacity>
+                        </RnView>
+                    </AlertMessage>
+
+                    <AlertMessage
+                        ref="confirmPlan"
+                        title="TRÌNH KẾ HOẠCh"
+                        bodyText="Bạn có chắc chắn muốn trình kế hoạch thực hiện công việc này?"
+                        exitText="Hủy bỏ"
+                    >
+                        <RnView style={AlertMessageStyle.leftFooter}>
+                            <TouchableOpacity onPress={() => this.onSubmitPlan()} style={AlertMessageStyle.footerButton}>
+                                <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                    Đồng ý
+                            </RnText>
+                            </TouchableOpacity>
+                        </RnView>
+                    </AlertMessage>
+                </Container>
+            </MenuProvider>
         );
     }
 }

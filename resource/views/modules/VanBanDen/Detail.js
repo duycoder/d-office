@@ -40,6 +40,9 @@ import TimelinePublishDoc from './History';
 import AttachPublishDoc from './Attachment';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
+import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
+import { HeaderMenuStyle } from '../../../assets/styles';
 
 class Detail extends Component {
     constructor(props) {
@@ -78,7 +81,8 @@ class Detail extends Component {
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
-                    this.setState({check: true}, () => this.fetchData());
+                    this.setState({ check: true }, () => this.fetchData());
+                    this.props.updateExtendsNavParams({ check: false });
                 }
             }
         })
@@ -110,10 +114,10 @@ class Detail extends Component {
     navigateBack = () => {
         if (this.state.docInfo.hasOwnProperty("entityVanBanDen")) { // done loading
             if (this.state.from === "list") {
-                this.props.updateExtendsNavParams({check: this.state.check})
+                this.props.updateExtendsNavParams({ check: this.state.check })
             }
             else {
-                this.props.updateExtendsNavParams({from: "detail"});
+                this.props.updateExtendsNavParams({ from: "detail" });
             }
         }
         this.props.navigation.goBack();
@@ -124,10 +128,10 @@ class Detail extends Component {
             this.props.navigation.navigate("VanBanDenBriefScreen");
         }
     }
-    
+
     navigateToEvent = (eventId) => {
         if (eventId > 0) {
-            this.props.navigation.navigate("DetailEventScreen", {id: eventId});
+            this.props.navigation.navigate("DetailEventScreen", { id: eventId });
         }
         else {
             Toast.show({
@@ -206,6 +210,14 @@ class Detail extends Component {
         // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
+    onCreateTask = () => {
+        const targetScreenParam = {
+            docId: this.state.docId,
+            docType: this.state.docType,
+        };
+        this.onNavigate("CreateTaskScreen", targetScreenParam);
+    }
+
     onSelectWorkFlowStep(item, isStepBack) {
         if (item.REQUIRED_REVIEW != true || this.state.docInfo.WorkFlow.Process.IS_PENDING == false) {
             this.onProcessDoc(item, isStepBack);
@@ -261,33 +273,42 @@ class Detail extends Component {
         }
 
         return (
-            <Container>
-                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBack()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
-                    </Left>
+            <MenuProvider backHandler>
+                <Container>
+                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+                        <Left style={NativeBaseStyle.left}>
+                            <GoBackButton onPress={() => this.navigateBack()} />
+                        </Left>
 
-                    <Body style={NativeBaseStyle.body}>
-                        <Title style={NativeBaseStyle.bodyTitle} >
-                            THÔNG TIN VĂN BẢN
+                        <Body style={NativeBaseStyle.body}>
+                            <Title style={NativeBaseStyle.bodyTitle} >
+                                THÔNG TIN VĂN BẢN
                     </Title>
-                    </Body>
+                        </Body>
 
-                    <Right style={NativeBaseStyle.right}>
-                        <Button transparent onPress={() => this.navigateToBrief()}>
-                            <RneIcon name='ios-paper' size={moderateScale(35)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
-                    </Right>
-                </Header>
-                {
-                    bodyContent
-                }
-                {
-                    executeLoading(this.state.executing)
-                }
-            </Container>
+                        <Right style={NativeBaseStyle.right}>
+                            <Menu>
+                                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                                <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                                    <MenuOption onSelect={() => this.navigateToBrief()} text="Hồ sơ văn bản" customStyles={HeaderMenuStyle.optionStyles} />
+                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" />
+                                </MenuOptions>
+                            </Menu>
+                            {
+                                // <Button transparent onPress={() => this.navigateToBrief()}>
+                                //     <RneIcon name='ios-paper' size={moderateScale(35)} color={Colors.WHITE} type='ionicon' />
+                                // </Button>
+                            }
+                        </Right>
+                    </Header>
+                    {
+                        bodyContent
+                    }
+                    {
+                        executeLoading(this.state.executing)
+                    }
+                </Container>
+            </MenuProvider>
         );
     }
 }

@@ -34,6 +34,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 import { formatMessage } from '../../../common/Utilities';
+import GoBackButton from '../../common/GoBackButton';
 
 class DenyRescheduleTask extends Component {
     constructor(props) {
@@ -108,9 +109,7 @@ class DenyRescheduleTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBack()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+						<GoBackButton onPress={() => this.navigateBack()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

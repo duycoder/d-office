@@ -31,7 +31,7 @@ import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyl
 import { TabStyle } from '../../../assets/styles/TabStyle';
 
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString , pickerFormat} from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString, pickerFormat } from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
@@ -46,6 +46,10 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class WorkflowReplyReview extends Component {
     constructor(props) {
@@ -91,27 +95,29 @@ class WorkflowReplyReview extends Component {
                 buttonTextStyle: { color: Colors.LITE_BLUE },
             });
         } else {
-            Alert.alert(
-                'XÁC NHẬN PHẢN HỒI',
-                'Bạn có chắc chắn muốn thực hiện việc này?',
-                [
-                    {
-                        text: 'Đồng ý', onPress: () => {
-                            this.saveReplyReview();
-                        }
-                    },
+            this.refs.confirm.showModal();
+            // Alert.alert(
+            //     'XÁC NHẬN PHẢN HỒI',
+            //     'Bạn có chắc chắn muốn thực hiện việc này?',
+            //     [
+            //         {
+            //             text: 'Đồng ý', onPress: () => {
+            //                 this.saveReplyReview();
+            //             }
+            //         },
 
-                    {
-                        text: 'Hủy bỏ', onPress: () => {
+            //         {
+            //             text: 'Hủy bỏ', onPress: () => {
 
-                        }
-                    }
-                ]
-            )
+            //             }
+            //         }
+            //     ]
+            // )
         }
     }
 
     async saveReplyReview() {
+        this.refs.confirm.closeModal();
         this.setState({
             executing: true
         });
@@ -181,9 +187,7 @@ class WorkflowReplyReview extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBack()}>
-                            <Icon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type="ionicon" />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBack()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -229,6 +233,21 @@ class WorkflowReplyReview extends Component {
                 {
                     executeLoading(this.state.executing)
                 }
+
+                <AlertMessage
+                    ref="confirm"
+                    title="XÁC NHẬN PHẢN HỒI"
+                    bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
+                    exitText="Huỷ bỏ"
+                >
+                    <RnView style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.saveReplyReview()} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                Đồng ý
+                            </RnText>
+                        </TouchableOpacity>
+                    </RnView>
+                </AlertMessage>
             </Container>
         );
     }

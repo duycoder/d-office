@@ -16,6 +16,7 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { appGetDataAndNavigate, _readableFormat, convertDateToString } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
+import GoBackButton from '../../common/GoBackButton';
 
 export default class DetailEvent extends Component {
   constructor(props) {
@@ -57,9 +58,7 @@ export default class DetailEvent extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBack()}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.navigateBack()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

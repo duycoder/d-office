@@ -5,6 +5,7 @@ import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 export const ListCommentStyle = StyleSheet.create({
   commentContainer: {
     padding: moderateScale(10),
+    
   },
   userAvatar: {
   },

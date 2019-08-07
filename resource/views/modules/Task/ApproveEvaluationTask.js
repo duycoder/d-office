@@ -25,7 +25,7 @@ import * as util from 'lodash';
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat} from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
@@ -33,6 +33,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class ApproveEvaluationTask extends Component {
     constructor(props) {
@@ -171,7 +172,7 @@ class ApproveEvaluationTask extends Component {
     }
 
     navigateBackToDetail = () => {
-       this.props.navigation.goBack();
+        this.props.navigation.goBack();
     }
 
 
@@ -180,9 +181,7 @@ class ApproveEvaluationTask extends Component {
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToDetail()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>
@@ -506,7 +505,7 @@ const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
         coreNavParams: state.navState.coreNavParams,
-            extendsNavParams: state.navState.extendsNavParams
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 

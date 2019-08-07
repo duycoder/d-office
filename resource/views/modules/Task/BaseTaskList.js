@@ -17,9 +17,9 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
     Container, Header, Left, Input,
-    Item, Icon, Button, Text, Content
+    Item, Icon, Button, Text, Content, Fab
 } from 'native-base';
-import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
+import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 import renderIf from 'render-if';
 
 //constant
@@ -126,6 +126,16 @@ class BaseTaskList extends Component {
         })
     }
 
+    onClearFilter = () => {
+        this.setState({
+            loadingData: true,
+            pageIndex: DEFAULT_PAGE_INDEX,
+            filterValue: EMPTY_STRING
+        }, () => {
+            this.fetchData()
+        })
+    }
+
     onLoadingMore() {
         this.setState({
             loadingMoreData: true,
@@ -145,24 +155,35 @@ class BaseTaskList extends Component {
     }
 
     navigateToDetail = async (taskId) => {
-        let { navigation } = this.props;
-        let currentScreenName = "ListPersonalTaskScreen";
+        // let { navigation } = this.props;
+        // let currentScreenName = "ListPersonalTaskScreen";
 
-        if (this.state.taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
-            currentScreenName = "ListAssignedTaskScreen"
-        } else if (this.state.taskType == CONGVIEC_CONSTANT.PHOIHOP_XULY) {
-            currentScreenName = "ListCombinationTaskScreen"
-        } else if (this.state.taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
-            currentScreenName = "ListProcessedTaskScreen"
+        // if (this.state.taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
+        //     currentScreenName = "ListAssignedTaskScreen"
+        // } else if (this.state.taskType == CONGVIEC_CONSTANT.PHOIHOP_XULY) {
+        //     currentScreenName = "ListCombinationTaskScreen"
+        // } else if (this.state.taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
+        //     currentScreenName = "ListProcessedTaskScreen"
+        // }
+
+        if (taskId > 0) {
+            let targetScreenParam = {
+                taskId,
+                taskType: this.state.taskType
+            }
+
+            this.props.updateCoreNavParams(targetScreenParam);
+            this.props.navigator.navigate("DetailTaskScreen");
+        }
+        else {
+            let targetScreenParam = {
+                fromScreen: "ListPersonalTaskScreen",
+                
+            }
+            this.props.updateExtendsNavParams(targetScreenParam);
+            this.props.navigator.navigate("CreateTaskScreen");
         }
 
-        let targetScreenParam = {
-            taskId,
-            taskType: this.state.taskType
-        }
-
-        this.props.updateCoreNavParams(targetScreenParam);
-        this.props.navigator.navigate("DetailTaskScreen");
     }
 
     async getListSubTasks(index, isExpand, taskId, parentIds) {
@@ -285,13 +306,24 @@ class BaseTaskList extends Component {
         return (
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Item style={{ backgroundColor: Colors.WHITE }}>
+                    <Left style={{ flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
+                            <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
+                        </TouchableOpacity>
+                    </Left>
+
+                    <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên công việc'
                             value={this.state.filterValue}
                             onChangeText={(filterValue) => this.setState({ filterValue })}
                             onSubmitEditing={() => this.onFilter()}
                         />
+                        {
+                            this.state.filterValue !== EMPTY_STRING
+                                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
+                                : null
+                        }
                     </Item>
                 </Header>
 
@@ -337,6 +369,19 @@ class BaseTaskList extends Component {
                                 ListEmptyComponent={() => emptyDataPage()}
                             />
                         )
+                    }
+
+                    {
+                        this.state.taskType === CONGVIEC_CONSTANT.CA_NHAN &&
+                        <Fab
+                            active={true}
+                            direction="up"
+                            containerStyle={{}}
+                            style={{ backgroundColor: Colors.LITE_BLUE }}
+                            position="bottomRight"
+                            onPress={() => this.navigateToDetail(0)}>
+                            <Icon name="add" />
+                        </Fab>
                     }
 
                     {

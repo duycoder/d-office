@@ -32,6 +32,9 @@ import {
 import { indicatorResponsive, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+
 class ListUyQuyen extends Component {
     constructor(props) {
         super(props);
@@ -45,7 +48,9 @@ class ListUyQuyen extends Component {
             loadingMoreData: false,
             refreshingData: false,
             executing: false,
-            data: []
+            data: [],
+
+            tmpItemId: '',
         }
     }
 
@@ -108,23 +113,30 @@ class ListUyQuyen extends Component {
     }
 
     onConfirmDelete = (itemId) => {
-        Alert.alert(
-            'XÓA ỦY QUYỀN',
-            'Bạn có chắc chắn xóa bản ghi này',
-            [
-                {
-                    text: 'CÓ',
-                    onPress: () => this.onDelete(itemId)
-                },
-                {
-                    text: 'KHÔNG',
-                    onPress: () => { }
-                }
-            ]
-        )
+        this.setState({
+            tmpItemId: itemId
+        }, () => {
+            this.refs.confirm.showModal();
+        })
+
+        // Alert.alert(
+        //     'XÓA ỦY QUYỀN',
+        //     'Bạn có chắc chắn xóa bản ghi này',
+        //     [
+        //         {
+        //             text: 'CÓ',
+        //             onPress: () => this.onDelete(itemId)
+        //         },
+        //         {
+        //             text: 'KHÔNG',
+        //             onPress: () => { }
+        //         }
+        //     ]
+        // )
     }
 
     onDelete = async (itemId) => {
+        this.refs.confirm.closeModal();
         this.setState({
             executing: true
         })
@@ -165,7 +177,7 @@ class ListUyQuyen extends Component {
                         <Body>
                             <Text>{item.TenNguoiDuocUyQuyen}</Text>
                             <Text note>
-                                {convertDateToString(item.NGAY_BATDAU) + " - " + convertDateToString(item.NGAY_KETTHUC) }
+                                {convertDateToString(item.NGAY_BATDAU) + " - " + convertDateToString(item.NGAY_KETTHUC)}
                             </Text>
                         </Body>
                     </View>
@@ -184,7 +196,12 @@ class ListUyQuyen extends Component {
         return (
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Item style={{ backgroundColor: Colors.WHITE }}>
+                    <Left style={{ flex: 1 }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+                            <RneIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
+                        </TouchableOpacity>
+                    </Left>
+                    <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
                         <Icon name='ios-search' />
                         <Input placeholder='Tên người được ủy quyền'
                             value={this.state.filterValue}
@@ -254,6 +271,21 @@ class ListUyQuyen extends Component {
                         executeLoading(this.state.executing)
                     }
                 </Content>
+
+                <AlertMessage
+                    ref="confirm"
+                    title="XÓA ỦY QUYỀN"
+                    bodyText="Bạn có chắc chắn xóa bản ghi này"
+                    exitText="KHÔNG"
+                >
+                    <View style={AlertMessageStyle.leftFooter}>
+                        <TouchableOpacity onPress={() => this.onDelete(this.state.tmpItemId)} style={AlertMessageStyle.footerButton}>
+                            <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                CÓ
+                            </RnText>
+                        </TouchableOpacity>
+                    </View>
+                </AlertMessage>
             </Container>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     View, Text as RNText, ActivityIndicator, StyleSheet,
-    TouchableOpacity, FlatList, RefreshControl, AsyncStorage
+    TouchableOpacity, FlatList, RefreshControl, AsyncStorage, StatusBar
 } from 'react-native'
 
 //constant
@@ -12,7 +12,7 @@ import {
 } from '../../../common/SystemConstant';
 import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
-import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //lib
 import { ListItem } from 'react-native-elements';
@@ -41,6 +41,24 @@ class ListNotification extends Component {
     }
 
     onPressNotificationItem = async (item) => {
+        //update read state for unread noti
+        if (!item.IS_READ) {
+            const url = `${API_URL}/api/account/UpdateReadStateOfMessage`;
+            const headers = new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            });
+            const body = JSON.stringify({
+                item
+            });
+            const result = await fetch(url, {
+                method: 'POST',
+                headers,
+                body
+            });
+        }
+
+        //navigate to detail
         let screenName = EMPTY_STRING;
         let screenParam = {};
 
@@ -75,7 +93,7 @@ class ListNotification extends Component {
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
                 buttonTextStyle: { color: Colors.LITE_BLUE },
-              });
+            });
         }
         this.props.updateCoreNavParams(screenParam);
         this.props.navigation.navigate(screenName);
@@ -86,13 +104,21 @@ class ListNotification extends Component {
         userInfo.numberUnReadMessage = 0;
         await AsyncStorage.removeItem('firebaseNotification');
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        // this._navListener = this.props.navigation.addListener('didFocus', () => {
+        //     StatusBar.setBarStyle('light-content');
+        //     // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
+        // });
     }
 
     componentWillMount = () => {
         this.setState({
             loading: true
-        }, () => this.fetchData())
+        }, () => this.fetchData());
     }
+
+    // componentWillUnmount = () => {
+    //     this._navListener.remove();
+    // }
 
     onLoadingMore = () => {
         this.setState({
@@ -123,20 +149,76 @@ class ListNotification extends Component {
     }
 
     renderItem = ({ item }) => {
+        let itemType = item.URL.split('/')[2],
+            badgeBackgroundColor = Colors.GRAY,
+            leftTitle = "CV";
+        switch (itemType) {
+            case "HSVanBanDi":
+                badgeBackgroundColor = '#4FC3F7';
+                leftTitle = "VBTK"
+                break;
+            case "QuanLyCongViec":
+                badgeBackgroundColor = '#4DB6AC';
+                leftTitle = "CV";
+                break;
+            case "HSCV_VANBANDEN":
+                badgeBackgroundColor = '#5C6BC0';
+                leftTitle = "VBĐ";
+                break;
+        }
+
+        let noidungArchor = item.NOIDUNG.indexOf("đã"),
+            noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
+            noidungMessage = item.NOIDUNG.slice(noidungArchor);
+
+        let checkReadFont = item.IS_READ ? 'normal' : 'bold';
+
         return (
             <ListItem
                 leftIcon={
-                    <View style={styles.leftTitleCircle}>
+                    <View style={[styles.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
                         <RNText style={styles.leftTitleText}>
-                            {item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"}
+                            {
+                                // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
+                                leftTitle
+                            }
                         </RNText>
                     </View>
                 }
+                // badge={{
+                //     value: convertDateTimeToTitle(item.NGAYTAO, true),
+                //     textStyle: {
+                //         textAlign: 'center',
+                //         fontSize: moderateScale(11, 0.9)
+                //     },
+                //     containerStyle: {
+                //         backgroundColor: Colors.GRAY,
+                //     }
+                // }}
                 hideChevron={true}
-                title={item.NOIDUNG}
+                title={
+                    <RNText style={[styles.title, {fontWeight: checkReadFont}]}>
+                        <RNText style={{fontWeight:'bold'}}>{noidungSender}</RNText> {noidungMessage}
+                    </RNText>
+                }
                 titleStyle={styles.title}
+                titleContainerStyle={{
+                    marginHorizontal: '3%',
+                }}
                 titleNumberOfLines={3}
-                subtitle={convertDateTimeToTitle(item.NGAYTAO)}
+                rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                rightTitleNumberOfLines={2}
+                rightTitleStyle={{
+                    textAlign: 'center',
+                    color: Colors.DARK_GRAY,
+                    fontSize: moderateScale(12, 0.9),
+                    fontStyle: 'italic',
+                    fontWeight: checkReadFont,
+                }}
+                rightTitleContainerStyle={{
+                    flex: 0
+                }}
+                // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
                 onPress={() => this.onPressNotificationItem(item)}
             />
         );
@@ -211,14 +293,15 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 10
+        marginRight: 10,
     },
     leftTitleText: {
         fontWeight: 'bold',
         color: Colors.WHITE
     },
     title: {
-        color: Colors.BLACK
+        color: Colors.BLACK,
+        fontSize: moderateScale(12, 1.2)
     }
 });
 

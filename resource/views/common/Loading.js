@@ -87,9 +87,9 @@ class Loading extends Component {
     }
 
     async createNotificationListeners() {
-        this.notificationInitialization = firebase.notifications()
-            .getInitialNotification().then((message) => {
-            });
+        // this.notificationInitialization = firebase.notifications()
+        //     .getInitialNotification().then((message) => {
+        //     });
 
         this.notificationListener = firebase.notifications().onNotification((notification) => {
             const { title, body, data } = notification;
@@ -143,9 +143,11 @@ class Loading extends Component {
                 }
                 this.props.updateCoreNavParams(screenParam);
                 this.props.navigation.navigate(data.targetScreen);
+                // this.props.navigation.navigate("DashboardScreen");
             }
             else {
                 appNavigate(this.props.navigation, 'ListNotificationScreen', null);
+                // this.props.navigation.navigate("DashboardScreen");
             }
             // console.log('onNotificationOpened:');
             // Alert.alert(title, body)
@@ -182,6 +184,8 @@ class Loading extends Component {
             this.props.setUserInfo(storage.user);
             this.props.updateCoreNavParams(screenParam);
             this.props.navigation.navigate(targetScreen);
+            // this.props.navigation.navigate("DashboardScreen");
+
             // await AsyncStorage.setItem('firebaseNotification', JSON.stringify(data));
             // await AsyncStorage.setItem('firebaseNotification', notificationOpen.notification);
             // console.log('getInitialNotification:');
@@ -244,12 +248,13 @@ class Loading extends Component {
                     let screenName = EMPTY_STRING;
                     let screenParam = null;
                     // if (storage.notification) {
-                        
+
                     // } else {
                     //     //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
                     // }
-                    screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
-                    appNavigate(this.props.navigation, screenName, screenParam);
+                    // screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
+                    // appNavigate(this.props.navigation, screenName, screenParam);
+                    this.props.navigation.navigate("DashboardScreen");
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
             } else {
@@ -265,7 +270,7 @@ class Loading extends Component {
     componentWillUnmount = async () => {
         this.notificationListener;
         this.notificationOpenedListener;
-        this.notificationInitialization;
+        // this.notificationInitialization;
     }
 
     render() {

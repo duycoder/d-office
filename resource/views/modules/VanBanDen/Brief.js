@@ -38,6 +38,7 @@ import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
+import GoBackButton from '../../common/GoBackButton';
 
 class Brief extends Component {
   constructor(props) {
@@ -64,7 +65,12 @@ class Brief extends Component {
     this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
-          this.fetchData();
+          this.setState({
+            loading: true
+          }, ()=>{
+            this.fetchData();
+          });
+this.props.updateExtendsNavParams({check: false});
         }
       }
     })
@@ -142,9 +148,7 @@ class Brief extends Component {
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBackToDetailVanbanDen()}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={() => this.navigateBackToDetailVanbanDen()}/>
           </Left>
 
           <Body style={NativeBaseStyle.body}>

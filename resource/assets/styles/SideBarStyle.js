@@ -12,7 +12,8 @@ import { Colors } from '../../common/SystemConstant';
 
 export const SideBarStyle = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: Colors.LIGHT_GRAY_PASTEL
     },
     header: {
         flex: 1,
@@ -21,41 +22,59 @@ export const SideBarStyle = StyleSheet.create({
         borderBottomColor: '#d4d4d4',
         borderBottomWidth: 1,
         flexDirection: 'row',
+        alignItems: 'flex-end',
     }, headerAvatarContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         paddingLeft: scale(20),
+        // marginBottom: verticalScale(10)
     }, headerUserInfoContainer: {
         justifyContent: 'center',
         paddingLeft: scale(20),
-        alignItems: 'flex-start'
+        alignItems: 'center',
+        // marginBottom: verticalScale(15)
     }, headerAvatar: {
-        width: moderateScale(80),
-        height: moderateScale(80),
-        borderRadius: moderateScale(80 / 2), // to create cirlce, width == height && borderRadius == width/2
+        width: moderateScale(30),
+        height: moderateScale(30),
+        // borderRadius: moderateScale(25), // to create cirlce, width == height && borderRadius == width/2
         resizeMode: 'stretch',
-        backgroundColor: Colors.WHITE, // make sure your avatar not seen through
+        // backgroundColor: Colors.WHITE, // make sure your avatar not seen through
     }, headerUserName: {
         justifyContent: 'center',
         textAlign: 'left', // Change from 'center' to 'left'
         fontWeight: 'bold',
-        color: '#000',
-        fontSize: moderateScale(16, 1.2)
+        color: Colors.WHITE,
+        fontSize: moderateScale(14, 1.2)
     }, headerUserJob: {
-        fontSize: moderateScale(11, 1.7),
-        fontWeight: 'normal'
+        fontSize: moderateScale(11, 1.3),
+        fontStyle: 'italic',
+        color: Colors.WHITE
+    }, headerSignoutIcon: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
+        shadowOpacity: 0.34,
+        shadowRadius: 6.27,
+
+        elevation: 10,
+        marginBottom: verticalScale(10)
     },
     body: {
-        flex: 3,
-        backgroundColor: '#fff'
+        flex: 4,
+        backgroundColor: Colors.LIGHT_GRAY_PASTEL
     }, listItemTitle: {
         fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        // fontSize: moderateScale(16,1.2),
     }, listItemContainer: {
         height: verticalScale(60),
         justifyContent: 'center',
         borderBottomColor: '#cccccc',
-        backgroundColor: '#fff'
+        backgroundColor: Colors.LIGHT_GRAY_PASTEL
     }, subItemContainer: {
         height: verticalScale(60),
         justifyContent: 'center',
@@ -89,5 +108,83 @@ export const SideBarStyle = StyleSheet.create({
         fontSize: moderateScale(10),
         color: Colors.WHITE,
         fontWeight: 'bold'
-    }
+    },
+    shortcutBoxContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        // justifyContent: 'space-between',
+        // marginVertical: verticalScale(13),
+        // flexWrap: 'wrap',
+        marginHorizontal: '0.5%',
+    }, shortcutBoxStyle: {
+        // backgroundColor: Colors.LITE_BLUE,
+        // borderWidth: 1,
+        borderColor: Colors.DANK_BLUE,
+        // shadowColor: Colors.DANK_BLUE,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 3.84,
+
+        // elevation: 5,
+        paddingVertical: moderateScale(10, 0.7),
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginHorizontal: '1%',
+        // flexBasis: '30%',
+        // width: ''
+    }, shortcutBoxTextStyle: {
+        color: Colors.WHITE,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: moderateScale(12, 0.8),
+        // flexWrap: 'wrap',
+        flex: 1,
+    }, customIconContainerStyle: {
+        padding: moderateScale(10),
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }, customIconImageStyle: {
+        width: moderateScale(30),
+        height: moderateScale(30)
+    },
+    normalBoxContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginTop: '0.5%',
+        // marginVertical: verticalScale(4),
+    }, normalBoxStyle: {
+        backgroundColor: Colors.WHITE,
+        // borderWidth: 1,
+        // borderRadius: 5,
+        // borderColor: Colors.BLACK,
+        // shadowColor: Colors.BLACK,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 3.84,
+        // elevation: 5,
+
+        padding: moderateScale(11),
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexBasis: '33.3%',
+        // marginVertical: '2.5%'
+    }, normalBoxTextStyle: {
+        color: Colors.BLACK,
+        textAlign: 'center',
+        // fontWeight: 'bold',
+        fontSize: moderateScale(12, 0.8),
+        flex: 1,
+    },
+
 });

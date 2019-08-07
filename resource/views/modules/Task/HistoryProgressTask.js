@@ -39,6 +39,7 @@ import {
 //styles
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class HistoryProgressTask extends Component {
 	constructor(props) {
@@ -159,9 +160,7 @@ class HistoryProgressTask extends Component {
 			<Container>
 				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
-						<Button transparent onPress={() => this.navigateBackToDetail()}>
-							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<GoBackButton onPress={() => this.navigateBackToDetail()} />
 					</Left>
 					<Body style={NativeBaseStyle.body}>
 						<Title style={NativeBaseStyle.bodyTitle}>
@@ -340,7 +339,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-			updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+		updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
 	}
 }
 

@@ -159,6 +159,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-linear-gradient')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-firebase')
     implementation project(':rn-fetch-blob')

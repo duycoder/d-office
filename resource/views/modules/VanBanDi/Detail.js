@@ -30,7 +30,7 @@ import {
     Tabs, Tab, TabHeading, ScrollableTab,
     Text, Right, Toast
 } from 'native-base';
-import { MenuProvider } from 'react-native-popup-menu'
+import { MenuProvider, MenuTrigger, Menu, MenuOption, MenuOptions } from 'react-native-popup-menu'
 import {
     Icon as RneIcon, ButtonGroup
 } from 'react-native-elements';
@@ -41,6 +41,11 @@ import MainInfoSignDoc from './Info';
 import TimelineSignDoc from './History';
 import AttachSignDoc from './Attachment';
 import UnitSignDoc from './UnitSignDoc';
+
+import AlertMessage from '../../common/AlertMessage';
+import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import GoBackButton from '../../common/GoBackButton';
+import { HeaderMenuStyle } from '../../../assets/styles';
 
 class Detail extends Component {
     constructor(props) {
@@ -64,7 +69,7 @@ class Detail extends Component {
             check: false,
             from: props.from || "list"
         };
-        this.onNavigate=this.onNavigate.bind(this);
+        this.onNavigate = this.onNavigate.bind(this);
     }
 
     componentWillMount() {
@@ -77,7 +82,7 @@ class Detail extends Component {
         });
 
         const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
-        
+
         const result = await fetch(url);
         const resultJson = await result.json();
 
@@ -103,7 +108,8 @@ class Detail extends Component {
             }
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
-                    this.setState({check: true}, () => this.fetchData());
+                    this.setState({ check: true }, () => this.fetchData());
+                    this.props.updateExtendsNavParams({ check: false });
                 }
             }
         })
@@ -117,10 +123,10 @@ class Detail extends Component {
     navigateBack = () => {
         if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
             if (this.state.from === "list") {
-                this.props.updateExtendsNavParams({check: this.state.check});
+                this.props.updateExtendsNavParams({ check: this.state.check });
             }
             else {
-                this.props.updateExtendsNavParams({from: true});
+                this.props.updateExtendsNavParams({ from: true });
             }
         }
         this.props.navigation.goBack();
@@ -192,25 +198,27 @@ class Detail extends Component {
     }
 
     onConfirmSignDoc = () => {
-        Alert.alert(
-            'XÁC NHẬN KÝ DUYỆT',
-            'Bạn có chắc chắn ký duyệt văn bản',
-            [
-                {
-                    text: 'CÓ',
-                    onPress: async () => {
-                        this.onSignDoc();
-                    }
-                },
-                {
-                    text: 'KHÔNG',
-                    onPress: () => { }
-                }
-            ]
-        )
+        this.refs.confirm.showModal();
+        // Alert.alert(
+        //     'XÁC NHẬN KÝ DUYỆT',
+        //     'Bạn có chắc chắn ký duyệt văn bản',
+        //     [
+        //         {
+        //             text: 'CÓ',
+        //             onPress: async () => {
+        //                 this.onSignDoc();
+        //             }
+        //         },
+        //         {
+        //             text: 'KHÔNG',
+        //             onPress: () => { }
+        //         }
+        //     ]
+        // )
     }
 
     onSignDoc = async () => {
+        this.refs.confirm.closeModal();
         const url = `${API_URL}/api/WorkFlow/SaveSignDoc/`;
         this.setState({
             executing: true
@@ -256,6 +264,14 @@ class Detail extends Component {
         this.onNavigate("ListCommentScreen", targetScreenParam);
 
         // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
+    }
+
+    onCreateTask = () => {
+        const targetScreenParam = {
+            docId: this.state.docId,
+            docType: 2
+        }
+        this.onNavigate("CreateTaskScreen", targetScreenParam);
     }
 
     onNavigate(targetScreenName, targetScreenParam) {
@@ -314,45 +330,69 @@ class Detail extends Component {
             bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
         }
         return (
-            <Container>
-                <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
-                    <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBack()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
-                    </Left>
+            <MenuProvider backHandler>
+                <Container>
+                    <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+                        <Left style={NativeBaseStyle.left}>
+                            <GoBackButton onPress={() => this.navigateBack()} />
+                        </Left>
 
-                    <Body style={NativeBaseStyle.body}>
-                        <Title style={NativeBaseStyle.bodyTitle} >
-                            THÔNG TIN VĂN BẢN
+                        <Body style={NativeBaseStyle.body}>
+                            <Title style={NativeBaseStyle.bodyTitle} >
+                                THÔNG TIN VĂN BẢN
                             </Title>
-                    </Body>
+                        </Body>
 
-                    <Right style={NativeBaseStyle.right}>
-                        <Button transparent onPress={this.onOpenComment}>
-                            <Form style={DetailSignDocStyle.commentButtonContainer}>
-                                <Icon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
-                                {
-                                    renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.CommentCount > 0)(
-                                        <Form style={DetailSignDocStyle.commentCircleContainer}>
-                                            <Text style={DetailSignDocStyle.commentCountText}>
-                                                {this.state.docInfo.CommentCount}
-                                            </Text>
-                                        </Form>
-                                    )
-                                }
-                            </Form>
-                        </Button>
-                    </Right>
-                </Header>
-                {
-                    bodyContent
-                }
+                        <Right style={NativeBaseStyle.right}>
+                            <Menu>
+                                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                                <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                                    <MenuOption onSelect={() => this.onOpenComment()} text="Bình luận" customStyles={HeaderMenuStyle.optionStyles} />
+                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" />
+                                </MenuOptions>
+                            </Menu>
+                            {
+                                // <Button transparent onPress={this.onOpenComment}>
+                                //     <Form style={DetailSignDocStyle.commentButtonContainer}>
+                                //         <Icon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
+                                //         {
+                                //             renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.CommentCount > 0)(
+                                //                 <Form style={DetailSignDocStyle.commentCircleContainer}>
+                                //                     <Text style={DetailSignDocStyle.commentCountText}>
+                                //                         {this.state.docInfo.CommentCount}
+                                //                     </Text>
+                                //                 </Form>
+                                //             )
+                                //         }
+                                //     </Form>
+                                // </Button>
+                            }
+                        </Right>
+                    </Header>
+                    {
+                        bodyContent
+                    }
 
-                {
-                    executeLoading(this.state.executing)
-                }
-            </Container>
+                    {
+                        executeLoading(this.state.executing)
+                    }
+
+                    <AlertMessage
+                        ref="confirm"
+                        title="XÁC NHẬN KÝ DUYỆT"
+                        bodyText="Bạn có chắc chắn ký duyệt văn bản"
+                        exitText="KHÔNG"
+                    >
+                        <View style={AlertMessageStyle.leftFooter}>
+                            <RNButton onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
+                                <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                    CÓ
+                                </RNText>
+                            </RNButton>
+                        </View>
+                    </AlertMessage>
+                </Container>
+            </MenuProvider>
         );
     }
 }

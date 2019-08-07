@@ -23,6 +23,7 @@ import {
   formatLongText, _readableFormat,emptyDataPage
 } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
+import GoBackButton from '../../common/GoBackButton';
 
 class EventList extends Component {
   constructor(props) {
@@ -75,9 +76,7 @@ class EventList extends Component {
       <Container>
         <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <Button transparent onPress={() => this.navigateBack()}>
-              <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <GoBackButton onPress={()=>this.navigateBack()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

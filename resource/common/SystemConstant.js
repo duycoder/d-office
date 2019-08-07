@@ -93,7 +93,8 @@ export const Colors = {
 	RED_PANTONE_186C: '#FF0033',
 	RED_PANTONE_021C: '#FF6600',
 	DANK_BLUE: '#007cc2',
-	LITE_BLUE: '#00aeef'
+	LITE_BLUE: '#00aeef',
+	LIGHT_GRAY_PASTEL: '#f4f3f3',
 }
 
 export const BASEDOCSEARCH_CONSTANT = {
@@ -143,7 +144,7 @@ export const SYSTEM_FUNCTION = {
 	UyQuyenFunction:{
 		code: 'QUANLY_UYQUYEN',
 		actionCodes: [
-			'QL_UYQUYEN_LD',
+			'DANHSACH_UYQUYEN',
 		]
 	}
 }

@@ -33,6 +33,7 @@ import DeptUyQuyen from './DeptUyQuyen';
 import * as action from '../../../redux/modules/UyQuyen/Action';
 import VanBanDenUyQuyen from './VanBanDenUyQuyen';
 import VanBanDiUyQuyen from './VanBanDiUyQuyen';
+import GoBackButton from '../../common/GoBackButton';
 
 
 class EditUyQuyen extends Component {
@@ -57,8 +58,9 @@ class EditUyQuyen extends Component {
     }
 
     navigateBackToList = () => {
-        appGetDataAndNavigate(this.props.navigation, 'EditUyQuyenScreen');
-        return true;
+        // appGetDataAndNavigate(this.props.navigation, 'EditUyQuyenScreen');
+        // return true;
+        this.props.navigation.goBack();
     }
 
     componentDidMount() {
@@ -276,7 +278,7 @@ class EditUyQuyen extends Component {
             'Accept': 'application/json',
             'Content-Type': 'application/json; charset=utf-8'
         });
-        
+
         const body = JSON.stringify({
             NguoiUyQuyenId: this.state.userId,
             Entity: {
@@ -332,9 +334,7 @@ class EditUyQuyen extends Component {
             <Container>
                 <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={NativeBaseStyle.left}>
-                        <Button transparent onPress={() => this.navigateBackToList()}>
-                            <RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <GoBackButton onPress={() => this.navigateBackToList()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

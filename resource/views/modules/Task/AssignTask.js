@@ -42,6 +42,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
+import GoBackButton from '../../common/GoBackButton';
 
 
 class AssignTask extends Component {
@@ -277,10 +278,10 @@ class AssignTask extends Component {
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 0) ? Colors.LITE_BLUE : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								{
-									this.state.dataAssignTask.IsCapPhongBan ? 'CÁN BỘ TRONG PHÒNG' : 'PHÒNG BAN TRONG ĐƠN VỊ'
+									this.state.dataAssignTask.IsCapPhongBan ? 'TRONG PHÒNG' : 'TRONG ĐƠN VỊ'
 								}
 							</Text>
 						</Button>
@@ -290,9 +291,9 @@ class AssignTask extends Component {
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
 								fontSize: moderateScale(13, 1.3),
-								color: (this.state.selectedSegmentIndex == 1) ? Colors.LITE_BLUE : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : Colors.WHITE
 							}}>
-								CHÉO
+								TOÀN BỆNH VIỆN
 							</Text>
 						</Button>
 					</Segment>
@@ -410,9 +411,7 @@ class AssignTask extends Component {
 			<Container>
 				<Header style={{ backgroundColor: Colors.LITE_BLUE }}>
 					<Left style={NativeBaseStyle.left}>
-						<Button transparent onPress={() => this.navigateBackToDetail()}>
-							<RneIcon name='ios-arrow-round-back' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<GoBackButton onPress={() => this.navigateBackToDetail()} />
 					</Left>
 
 					<Body style={NativeBaseStyle.body}>
