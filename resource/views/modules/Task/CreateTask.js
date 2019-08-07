@@ -150,7 +150,7 @@ class CreateTask extends Component {
       listUrgency: resultJson.ListDoKhan,
       priorityValue: resultJson.ListDoUuTien[0].Value,
       urgencyValue: resultJson.ListDoKhan[0].Value,
-      isGiamdoc: resultJson.isGiamdoc,
+      isGiamdoc: resultJson.IsGiamdoc,
       listRole: resultJson.ListRole,
       vanbanDenLienquan: resultJson.VanbanDenLienquan,
       vanbanDiLienquan: resultJson.VanbanDiLienquan,
