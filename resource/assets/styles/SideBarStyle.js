@@ -135,6 +135,7 @@ export const SideBarStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginHorizontal: '1%',
+        // minHeight:
         // flexBasis: '30%',
         // width: ''
     }, shortcutBoxTextStyle: {
@@ -143,7 +144,7 @@ export const SideBarStyle = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: moderateScale(12, 0.8),
         // flexWrap: 'wrap',
-        flex: 1,
+        // flex: 1,
     }, customIconContainerStyle: {
         padding: moderateScale(10),
         backgroundColor: '#fff',
@@ -177,7 +178,8 @@ export const SideBarStyle = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
-        flexBasis: '33.3%',
+        width: '33.3%',
+        // flexBasis: '30%',
         // marginVertical: '2.5%'
     }, normalBoxTextStyle: {
         color: Colors.BLACK,

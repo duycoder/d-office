@@ -59,7 +59,7 @@ const appStack = TabNavigator(
                     case 'Account': routeLabel = "Tài khoản"; break;
                 }
                 return focused
-                    ? <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8) }}>{routeLabel}</Text>
+                    ? <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8), textAlign: 'center' }}>{routeLabel}</Text>
                     : null;
             },
         }),
