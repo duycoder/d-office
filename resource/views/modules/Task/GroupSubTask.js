@@ -572,12 +572,12 @@ class GroupSubTask extends Component {
                     ref="confirm_4"
                     title="XÁC NHẬN HOÀN THÀNH"
                     bodyText="Bạn có chắc chắn đã hoàn thành công việc này?"
-                    exitText="Huỷ bỏ"
+                    exitText="HUỶ BỎ"
                 >
                     <RnView style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onCompleteSubTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                                Đồng ý
+                                ĐỒNG Ý
                             </RnText>
                         </TouchableOpacity>
                     </RnView>

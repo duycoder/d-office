@@ -395,13 +395,13 @@ class DetailTask extends Component {
             if (task.CongViec.IS_BATDAU == true) {
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec == true && task.CongViec.IS_SUBTASK != true) || task.IsNguoiThucHienChinh) && (task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onUpdateTaskProgress()}><RnText style={ButtonGroupStyle.buttonText}>Cập nhật tiến độ</RnText></TouchableOpacity> }
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onUpdateTaskProgress()}><RnText style={ButtonGroupStyle.buttonText}>CẬP NHẬT TIẾN ĐỘ</RnText></TouchableOpacity> }
                         // <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} key={1} />
                     )
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
                         menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRescheduleTask()}><RnText style={ButtonGroupStyle.buttonText}>Lùi hạn công việc</RnText></TouchableOpacity> }
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRescheduleTask()}><RnText style={ButtonGroupStyle.buttonText}>LÙI HẠN CÔNG VIỆC</RnText></TouchableOpacity> }
                             // <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} key={2} />
                         )
                     }
@@ -409,7 +409,7 @@ class DetailTask extends Component {
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
                     menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveProgressTask()}><RnText style={ButtonGroupStyle.buttonText}>Phản hồi công việc</RnText></TouchableOpacity> }
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveProgressTask()}><RnText style={ButtonGroupStyle.buttonText}>PHẢN HỒI CÔNG VIỆC</RnText></TouchableOpacity> }
                         // <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} key={3} />
                     )
                 }
@@ -418,7 +418,7 @@ class DetailTask extends Component {
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
                     menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateSubTask()}><RnText style={ButtonGroupStyle.buttonText}>Tạo công việc con</RnText></TouchableOpacity> }
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateSubTask()}><RnText style={ButtonGroupStyle.buttonText}>TẠO CÔNG VIỆC CON</RnText></TouchableOpacity> }
                         // <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} key={4} />
                     )
                 }
@@ -427,7 +427,7 @@ class DetailTask extends Component {
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
                     menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>Giao việc</RnText></TouchableOpacity> }
+                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>GIAO VIỆC</RnText></TouchableOpacity> }
                         // <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} key={5} />
                     )
                 }
@@ -447,14 +447,14 @@ class DetailTask extends Component {
                         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
                         menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>Duyệt đánh giá công việc</RnText></TouchableOpacity> }
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
                             // <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
                         )
                     }
 
                     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
                         menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>Tự đánh giá công việc</RnText></TouchableOpacity> }
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>TỰ ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
                             // <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
                         )
                     }
@@ -470,12 +470,12 @@ class DetailTask extends Component {
                         && task.CongViec.DAGIAOVIEC != true) {
 
                         menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>Giao việc</RnText></TouchableOpacity> }
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>GIAO VIỆC</RnText></TouchableOpacity> }
                             // <InteractiveButton title={'GIAO VIỆC'} onPress={() => this.onAssignTask()} key={9} />
                         )
 
                         menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>Bắt đầu xử lý</RnText></TouchableOpacity> }
+                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
                             // <InteractiveButton title={'BẮT ĐẦU XỬ LÝ'} onPress={() => this.onConfirmToStartTask()} key={10} />
                         )
                     }

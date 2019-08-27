@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
     Alert, Platform,
-    View as RnView, Text as RnText
+    View as RnView, Text as RnText, TouchableOpacity
 } from 'react-native'
 //lib
 import {
@@ -38,6 +38,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import GoBackButton from '../../common/GoBackButton';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 
 class ApproveProgressTask extends Component {
     constructor(props) {
@@ -52,7 +53,8 @@ class ApproveProgressTask extends Component {
             content: EMPTY_STRING,
             selectedValue: '1',
 
-            executing: false
+            executing: false,
+            focusId: EMPTY_STRING,
         }
     }
 
@@ -149,6 +151,7 @@ class ApproveProgressTask extends Component {
     }
 
     render() {
+
         return (
             <Container>
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
@@ -165,13 +168,19 @@ class ApproveProgressTask extends Component {
                     <Right style={NativeBaseStyle.right} />
                 </Header>
 
-                <Content>
+                <Content contentContainerStyle={AccountStyle.mainContainer}>
                     <Form>
-                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
+                        <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
                             <Label>Nội dung phản hồi <Text style={{ color: '#f00' }}>*</Text></Label>
-                            <Textarea rowSpan={5} style={{ width: '100%' }}
-                                value={this.state.content} bordered
-                                onChangeText={(content) => this.setState({ content })} />
+                            <Textarea
+                                rowSpan={5}
+                                style={{ width: '100%', marginTop: 20 }}
+                                value={this.state.content}
+                                bordered
+                                onChangeText={(content) => this.setState({ content })}
+                                onFocus={() => this.setState({ focusId: "content" })}
+                                onBlur={() => this.setState({ focusId: EMPTY_STRING })}
+                            />
                         </Item>
 
                         <Item stackedLabel>
@@ -181,7 +190,7 @@ class ApproveProgressTask extends Component {
 
                             <Picker
                                 iosHeader='Chọn kết quả đánh giá'
-                                iosIcon={<Icon name='ios-arrow-down-outline' />}
+                                iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
                                 style={{ width: pickerFormat() }}
                                 selectedValue={this.state.selectedValue}
                                 onValueChange={this.onValueChange.bind(this)}
@@ -205,12 +214,12 @@ class ApproveProgressTask extends Component {
                     ref="confirm"
                     title="XÁC NHẬN PHẢN HỒI"
                     bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
-                    exitText="Hủy bỏ"
+                    exitText="HỦY BỎ"
                 >
                     <RnView style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onApproveCompleteTask()} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                                Đồng ý
+                                ĐỒNG Ý
                             </RnText>
                         </TouchableOpacity>
                     </RnView>
@@ -219,7 +228,7 @@ class ApproveProgressTask extends Component {
                 {
                     executeLoading(this.state.executing)
                 }
-            </Container >
+            </Container>
         );
     }
 }

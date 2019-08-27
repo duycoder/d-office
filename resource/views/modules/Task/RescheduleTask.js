@@ -34,6 +34,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 
 
 class RescheduleTask extends Component {
@@ -154,7 +155,7 @@ class RescheduleTask extends Component {
                     <Right style={NativeBaseStyle.right} />
                 </Header>
 
-                <Content>
+                <Content contentContainerStyle={AccountStyle.mainContainer}>
                     <Form>
                         <Item stackedLabel>
                             <Label>Ngày hoàn thành mong muốn</Label>

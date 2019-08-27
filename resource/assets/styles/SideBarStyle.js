@@ -5,7 +5,7 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 import { Colors } from '../../common/SystemConstant';

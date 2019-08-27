@@ -21,6 +21,7 @@ import { verticalScale } from '../../assets/styles/ScaleIndicator';
 import SideBar from './SideBar';
 import SideBarIcon from '../../common/Icons';
 import { Colors } from '../../common/SystemConstant';
+import * as util from 'lodash';
 
 export default class GridPanel extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class GridPanel extends Component {
     this.icon = require('../../assets/images/arrow.png');
 
     this.state = {
-      title: props.title ? props.title.capitalize() : "",
+      title: props.title ? util.capitalize(props.title) : "",
       expanded: props.title === 'CÔNG VIỆC' ? true : false,
 
       actionCode: props.actionCode,

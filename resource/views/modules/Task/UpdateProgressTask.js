@@ -33,6 +33,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 
 
 
@@ -184,7 +185,7 @@ class UpdateProgressTask extends Component {
                     </Right>
                 </Header>
 
-                <Content>
+                <Content contentContainerStyle={AccountStyle.mainContainer}>
                     <Slider
                         step={1}
                         minimumValue={0}

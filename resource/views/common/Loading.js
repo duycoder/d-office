@@ -112,7 +112,7 @@ class Loading extends Component {
 
             firebase.notifications()
                 .displayNotification(localNotification)
-                .catch(err => console.error(err));
+                .catch(err => console.log(err));
         });
 
         const channel = new firebase.notifications.Android.Channel('fcm_FirebaseNotifiction_default_channel', 'Demo app name', firebase.notifications.Android.Importance.High)
@@ -254,7 +254,7 @@ class Loading extends Component {
                     // }
                     // screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     // appNavigate(this.props.navigation, screenName, screenParam);
-                    this.props.navigation.navigate("DashboardScreen");
+                    this.props.navigation.navigate("DashboardScreen");//AccountInfoScreen DashboardScreen
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
             } else {
