@@ -41,15 +41,18 @@ export default class GridPanel extends Component {
     return (
       <View style={GridPanelStyle.container}>
         <View style={GridPanelStyle.titleContainer}>
-          <ListItem
-            containerStyle={GridPanelStyle.listItemContainer}
-            hideChevron={true}
-            title={this.state.title}
-            titleStyle={GridPanelStyle.listItemTitle}
-            // leftIcon={
-            //   <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} iconSize={22} iconColor={Colors.GRAY} />
-            // }
-          />
+        <Text style={GridPanelStyle.listItemTitle}>{this.state.title}</Text>
+          {
+            // <ListItem
+            //   containerStyle={GridPanelStyle.listItemContainer}
+            //   hideChevron={true}
+            //   title={this.state.title}
+            //   titleStyle={GridPanelStyle.listItemTitle}
+            // // leftIcon={
+            // //   <SideBarIcon actionCode={this.state.actionCode} isParent={this.state.isParent} iconSize={22} iconColor={Colors.GRAY} />
+            // // }
+            // />
+          }
         </View>
         <View style={SideBarStyle.normalBoxContainer}>
           {this.props.children}

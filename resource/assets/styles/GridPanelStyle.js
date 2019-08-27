@@ -5,7 +5,7 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { verticalScale } from './ScaleIndicator';
+import { verticalScale, moderateScale } from './ScaleIndicator';
 import { Colors } from '../../common/SystemConstant';
 
 
@@ -13,9 +13,12 @@ export const GridPanelStyle = StyleSheet.create({
   container: {
     backgroundColor: Colors.WHITE,
     overflow: 'scroll',
-    marginTop: verticalScale(5)
+    marginHorizontal: moderateScale(12, 1.2),
+    marginVertical: moderateScale(6, 1.2),
+    borderRadius: 5,
+    padding: moderateScale(12, 1.5)
   }, titleContainer: {
-
+    marginBottom: moderateScale(10, 1.1)
   }, body: {
     flexDirection: 'row',
     // justifyContent: 'center',
@@ -30,6 +33,6 @@ export const GridPanelStyle = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GRAY_PASTEL
   }, listItemTitle: {
     fontWeight: 'bold',
-    color: '#595959'
+    // color: '#595959'
   }
 });

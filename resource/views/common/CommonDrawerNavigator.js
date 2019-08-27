@@ -14,7 +14,7 @@ import { Colors } from '../../common/SystemConstant';
 import Loading from '../common/Loading';
 
 // các stack điều hướng
-import { accountStack, notificationStack, dashboardStack, authStack } from "./ModuleNav";
+import { accountStack, notificationStack, dashboardStack, keyFunctionStack, authStack } from "./ModuleNav";
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
 import NotiTabBarIcon from './NotiTabBarIcon';
 
@@ -28,17 +28,21 @@ const appStack = TabNavigator(
         },
         Account: {
             screen: accountStack
+        },
+        KeyFunction: {
+            screen: keyFunctionStack
         }
     },
     {
         navigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, tintColor }) => {
                 const { routeName } = navigation.state;
-                let iconName;
+                let iconName = "home";
                 switch (routeName) {
                     case 'Dashboard': iconName = `home${focused ? '' : '-outline'}`; break;
                     case 'Notification': iconName = `bell${focused ? '' : '-outline'}`; break;
                     case 'Account': iconName = `shield-account${focused ? '' : '-outline'}`; break;
+                    case 'KeyFunction': iconName = 'menu'; break;
                 }
 
                 // You can return any component that you like here! We usually use an
@@ -57,6 +61,7 @@ const appStack = TabNavigator(
                     case 'Dashboard': routeLabel = "MH Chính"; break;
                     case 'Notification': routeLabel = "Thông báo"; break;
                     case 'Account': routeLabel = "Tài khoản"; break;
+                    case 'KeyFunction': routeLabel = "Chức năng"; break;
                 }
                 return focused
                     ? <Text style={{ color: tintColor, fontSize: moderateScale(12, 0.8), textAlign: 'center' }}>{routeLabel}</Text>

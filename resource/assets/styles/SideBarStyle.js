@@ -65,7 +65,7 @@ export const SideBarStyle = StyleSheet.create({
     },
     body: {
         flex: 4,
-        backgroundColor: Colors.LIGHT_GRAY_PASTEL
+        backgroundColor: "#f1f1f1", //Colors.LIGHT_GRAY_PASTEL
     }, listItemTitle: {
         fontWeight: 'bold',
         color: 'black',

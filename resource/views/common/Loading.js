@@ -254,7 +254,7 @@ class Loading extends Component {
                     // }
                     // screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     // appNavigate(this.props.navigation, screenName, screenParam);
-                    this.props.navigation.navigate("DashboardScreen");//AccountInfoScreen DashboardScreen
+                    this.props.navigation.navigate("KeyFunctionScreen");//AccountInfoScreen DashboardScreen KeyFunctionScreen
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
             } else {

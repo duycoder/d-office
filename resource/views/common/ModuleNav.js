@@ -67,6 +67,7 @@ import Loading from '../common/Loading';
 //sidebar
 import SideBar from './SideBar';
 import Dashboard from './Dashboard';
+import KeyFunction from './KeyFunction';
 
 //#region màn hình luồng xử lý công việc
 import WorkflowReplyReview from '../modules/Workflow/WorkflowReplyReview';
@@ -459,6 +460,183 @@ const dashboardStack = StackNavigator(
   }
 );
 
+const keyFunctionStack = StackNavigator(
+  {
+    VanBanDiIsNotProcessScreen: {
+      screen: VanBanDiIsNotProcessList
+    },
+    VanBanDiIsProcessScreen: {
+      screen: VanBanDiIsProcessList
+    },
+    VanBanDiJoinProcessScreen: {
+      screen: VanBanDiJoinProcessList
+    },
+    VanBanDiIsPublishScreen: {
+      screen: VanBanDiIsPublishList
+    },
+    VanBanDiSearchScreen: {
+      screen: VanBanDiSearchList
+    },
+    VanBanDiDetailScreen: {
+      screen: VanBanDiDetail
+    },
+    VanBanDenIsNotProcessScreen: {
+      screen: VanBanDenIsNotProcessList
+    },
+    VanBanDenIsProcessScreen: {
+      screen: VanBanDenIsProcessList
+    },
+    VanBanDenJoinProcessScreen: {
+      screen: VanBanDenJoinProcessList
+    },
+    VanBanDenInternalIsNotProcessScreen: {
+      screen: VanBanDenInternalNotProcessList
+    },
+    VanBanDenInternalIsProcessScreen: {
+      screen: VanBanDenInternalProcessList
+    },
+    VanBanDenSearchScreen: {
+      screen: VanBanDenSearchList
+    },
+    VanBanDenDetailScreen: {
+      screen: VanBanDenDetail
+    },
+    VanBanDenBriefScreen: {
+      screen: VanBanDenBrief
+    },
+    WorkflowStreamProcessScreen: {
+      screen: WorkflowStreamProcess
+    },
+    ListAssignedTaskScreen: {
+      screen: ListAssignedTask
+    },
+    ListCombinationTaskScreen: {
+      screen: ListCombinationTask
+    },
+    ListPersonalTaskScreen: {
+      screen: ListPersonalTask
+    },
+    ListProcessedTaskScreen: {
+      screen: ListProcessedTask
+    },
+    ListPendingConfirmTaskScreen: {
+      screen: ListPendingConfirmTask
+    },
+    ListFilterTaskScreen: {
+      screen: ListFilterTask
+    },
+    CreateTaskScreen: {
+      screen: CreateTask
+    },
+    CreateTaskPlanScreen: {
+      screen: CreateTaskPlan
+    },
+    ConfirmTaskPlanScreen: {
+      screen: ConfirmTaskPlan
+    },
+    PickTaskAssignerScreen: {
+      screen: PickTaskAssigner
+    },
+    DetailTaskScreen: {
+      screen: DetailTask
+    },
+    AssignTaskScreen: {
+      screen: AssignTask
+    }, AssignTaskUsersScreen: {
+      screen: AssignTaskUsers
+    },
+    RescheduleTaskScreen: {
+      screen: RescheduleTask
+    },
+    UpdateProgressTaskScreen: {
+      screen: UpdateProgressTask
+    },
+    ApproveProgressTaskScreen: {
+      screen: ApproveProgressTask
+    },
+    EvaluationTaskScreen: {
+      screen: EvaluationTask
+    },
+    HistoryEvaluateTaskScreen: {
+      screen: HistoryEvaluateTask
+    },
+    ApproveEvaluationTaskScreen: {
+      screen: ApproveEvaluationTask
+    },
+    HistoryRescheduleTaskScreen: {
+      screen: HistoryRescheduleTask
+    },
+    HistoryProgressTaskScreen: {
+      screen: HistoryProgressTask
+    },
+    HistoryPlanTaskScreen: {
+      screen: HistoryPlanTask
+    },
+    GroupSubTaskScreen: {
+      screen: GroupSubTask
+    },
+    CreateSubTaskScreen: {
+      screen: CreateSubTask
+    },
+    WorkflowReplyReviewScreen: {
+      screen: WorkflowReplyReview
+    },
+    WorkflowRequestReviewScreen: {
+      screen: WorkflowRequestReview
+    },
+    WorkflowRequestReviewUsersScreen: {
+      screen: WorkflowRequestReviewUsers
+    },
+    WorkflowStreamProcessUsersScreen: {
+      screen: WorkflowStreamProcessUsers
+    },
+    ListCommentScreen: {
+      screen: ListComment
+    },
+    ReplyCommentScreen: {
+      screen: ReplyComment
+    }, ApproveRescheduleTaskScreen: {
+      screen: ApproveRescheduleTask
+    }, DenyRescheduleTaskScreen: {
+      screen: DenyRescheduleTask
+    },
+
+    ListChatterScreen: {
+      screen: ListChatter
+    }, ChatterScreen: {
+      screen: Chatter
+    },
+    DetailChatterScreen: {
+      screen: DetailChatter
+    },
+
+    BaseCalendarScreen: {
+      screen: BaseCalendar
+    },
+    EventListScreen: {
+      screen: EventList
+    },
+    DetailEventScreen: {
+      screen: DetailEvent
+    },
+    ListUyQuyenScreen: {
+      screen: ListUyQuyen
+    },
+    EditUyQuyenScreen: {
+      screen: EditUyQuyen
+    }, DeptUyQuyenScreen: {
+      screen: DeptUyQuyen
+    },
+    KeyFunctionScreen: {
+      screen: KeyFunction
+    },
+  },
+  {
+    headerMode: 'none',
+    initialRouteName: 'KeyFunctionScreen'
+  }
+);
+
 const accountStack = StackNavigator(
   {
     AccountInfoScreen: {
@@ -493,6 +671,7 @@ const authStack = StackNavigator(
 export {
   notificationStack,
   dashboardStack,
+  keyFunctionStack,
   accountStack,
   authStack
 }
