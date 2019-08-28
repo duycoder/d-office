@@ -139,10 +139,10 @@ export const SideBarStyle = StyleSheet.create({
         // flexBasis: '30%',
         // width: ''
     }, shortcutBoxTextStyle: {
-        color: Colors.WHITE,
+        color: Colors.BLACK,
         textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: moderateScale(12, 0.8),
+        // fontWeight: 'bold',
+        fontSize: moderateScale(10, 0.8),
         // flexWrap: 'wrap',
         // flex: 1,
     }, customIconContainerStyle: {

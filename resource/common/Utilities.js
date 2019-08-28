@@ -86,7 +86,7 @@ export function convertDateTimeToTitle(date, isShort = false) {
         let datePart = _readableFormat(jsDate.getUTCDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
         let timePart = _readableFormat(jsDate.getUTCHours()) + ':' + _readableFormat(jsDate.getUTCMinutes());
 
-        result = isShort ? `${datePart}\n${timePart}` : `${datePart} lúc ${timePart}`;
+        result = isShort ? `${timePart}\n${datePart}` : `${datePart} lúc ${timePart}`;
         return result;
     }
     return 'N/A'

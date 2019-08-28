@@ -29,6 +29,12 @@ const images = {
     lich_truc: require('../assets/images/Dashboard_icon/tien_ich/lich_truc.png'),
     uy_quyen: require('../assets/images/Dashboard_icon/tien_ich/uy_quyen.png'),
   },
+  hotPickIcons: {
+    van_ban_den: require('../assets/images/Dashboard_icon/hot_pick/van_ban_den_chua_xu_ly.png'),
+    van_ban_di: require('../assets/images/Dashboard_icon/hot_pick/van_ban_di_chua_xu_ly.png'),
+    cong_viec_ca_nhan: require('../assets/images/Dashboard_icon/hot_pick/cong_viec_ca_nhan.png'),
+    tien_ich: require('../assets/images/Dashboard_icon/hot_pick/tien_ich.png'),
+  },
   banner_top: require('../assets/images/banner_top.png'),
   banner_top_2: require('../assets/images/banner_top_2.jpeg'),
   
