@@ -39,10 +39,21 @@ const appStack = TabNavigator(
                 const { routeName } = navigation.state;
                 let iconName = "home";
                 switch (routeName) {
-                    case 'Dashboard': iconName = `home${focused ? '' : '-outline'}`; break;
-                    case 'Notification': iconName = `bell${focused ? '' : '-outline'}`; break;
-                    case 'Account': iconName = `shield-account${focused ? '' : '-outline'}`; break;
-                    case 'KeyFunction': iconName = 'menu'; break;
+                    case 'Dashboard':
+                        // iconName = `home${focused ? '' : '-outline'}`;
+                        iconName = "home";
+                        break;
+                    case 'Notification':
+                        // iconName = `bell${focused ? '' : '-outline'}`;
+                        iconName = "bell";
+                        break;
+                    case 'Account':
+                        // iconName = `shield-account${focused ? '' : '-outline'}`;
+                        iconName = "shield-account";
+                        break;
+                    case 'KeyFunction':
+                        iconName = 'menu';
+                        break;
                 }
 
                 // You can return any component that you like here! We usually use an
@@ -75,12 +86,16 @@ const appStack = TabNavigator(
             // inactiveTintColor: Colors.DANK_BLUE,
             // activeBackgroundColor: Colors.DANK_BLUE,
             allowFontScaling: false,
-            // showLabel: false,
-            activeTintColor: Colors.LITE_BLUE,
+            showLabel: false,
+            activeTintColor: Colors.MENU_BLUE,
             inactiveTintColor: Colors.DARK_GRAY,
+            style: {
+                backgroundColor: Colors.WHITE
+            }
         },
         animationEnabled: false,
         swipeEnabled: false,
+        
     }
 );
 
