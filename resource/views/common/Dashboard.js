@@ -7,10 +7,12 @@ import React, { Component } from 'react';
 import {
   AsyncStorage, View, Text, ScrollView, Image,
   ImageBackground, Modal,
-  TouchableOpacity, StatusBar
+  TouchableOpacity, StatusBar, FlatList, RefreshControl, ActivityIndicator
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Agenda } from 'react-native-calendars';
+import CalendarStrip from 'react-native-calendar-strip';
+import 'moment/locale/vi';
 
 //redux
 import { connect } from 'react-redux';
@@ -35,7 +37,7 @@ import Confirm from './Confirm';
 import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
-import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale, indicatorResponsive } from '../../assets/styles/ScaleIndicator';
 
 const headerBackground = require('../../assets/images/background.png');
 const userAvatar = require('../../assets/images/avatar.png');
@@ -43,7 +45,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import { GridPanelStyle } from '../../assets/styles/GridPanelStyle';
-import { convertDateTimeToTitle } from '../../common/Utilities';
+import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat } from '../../common/Utilities';
 import { ListNotificationStyle } from '../../assets/styles/ListNotificationStyle';
 import { DashboardStyle } from '../../assets/styles/DashboardStyle';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
@@ -60,6 +62,9 @@ class Dashboard extends Component {
       notifyCount: 0,
       userFunctions: [],
       notiData: [],
+      calendarData: [],
+      calendarDate: "",
+      calendarLoading: false,
     }
   }
 
@@ -71,7 +76,44 @@ class Dashboard extends Component {
       onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
       notifyCount: userInfo.numberUnReadMessage,
       userFunctions: userInfo.GroupUserFunctions
-    }, () => this.fetchRecentNoti());
+    }, () => {
+      this.fetchRecentNoti();
+      this.fetchCalendarData(new Date());
+    });
+  }
+
+  fetchCalendarData = async (selectedDate) => {
+    this.setState({
+      calendarLoading: true
+    });
+
+    const date = convertDateToString(selectedDate);
+    const day = date.split('/')[0];
+    const month = date.split('/')[1];
+    const year = date.split('/')[2];
+
+    const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.state.userInfo.ID}/${month}/${year}/${day}`;
+
+    const result = await fetch(url)
+      .then((response) => response.json());
+    this.setState({
+      calendarLoading: false,
+      calendarData: result
+    });
+  }
+  onPressCalendar = (eventId = 0) => {
+    if (eventId > 0) {
+      this.props.navigation.navigate("DetailEventScreen", { id: eventId });
+    }
+    else {
+      Toast.show({
+        text: 'Không tìm thấy lịch công tác yêu cầu',
+        type: 'danger',
+        buttonText: "OK",
+        buttonStyle: { backgroundColor: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
+      });
+    }
   }
 
   fetchRecentNoti = async () => {
@@ -301,10 +343,10 @@ class Dashboard extends Component {
           }
         </Header>
 
-        <ImageBackground
-          style={{ flex: 1, backgroundColor: Colors.WHITE, borderRadius: 10, marginHorizontal: moderateScale(8, 1.2), marginTop: -50 }}
-          // source={Images.banner_top} 
-          imageStyle={{ resizeMode: 'cover', opacity: 0.7 }}
+        <View
+          style={{ flex: 1, backgroundColor: Colors.WHITE, borderRadius: 10, marginHorizontal: moderateScale(8, 1.2), marginTop: -50, borderColor: '#ccc', borderWidth: .7 }}
+        // source={Images.banner_top} 
+        // imageStyle={{ resizeMode: 'cover', opacity: 0.7 }}
         >
           <View style={SideBarStyle.shortcutBoxContainer}>
             <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
@@ -312,7 +354,7 @@ class Dashboard extends Component {
                 actionCode={VANBANDEN._CHUAXULY.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-              // customIconImageStyle={{height: "100%"}}
+              // customIconImageStyle={{height: "50%"}}
               // customIconImageStyle={SideBarStyle.customIconImageStyle}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến</Text>
@@ -336,7 +378,7 @@ class Dashboard extends Component {
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("BaseCalendarScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("KeyFunction")} style={[SideBarStyle.shortcutBoxStyle]}>
               <SideBarIcon
                 actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
@@ -347,113 +389,171 @@ class Dashboard extends Component {
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Tiện ích</Text>
             </TouchableOpacity>
           </View>
-        </ImageBackground>
+        </View>
 
-        <View style={SideBarStyle.body}>
-          <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(12, 1.2) }}>
-            <View style={{ backgroundColor: Colors.WHITE }}>
+        <View style={[SideBarStyle.body, { paddingBottom: moderateScale(12, 1.2) }]}>
+          <ScrollView
+          contentContainerStyle={{ paddingTop: moderateScale(12, 1.2)}}
+          >
+            <View style={{ backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <View style={{ backgroundColor: Colors.LITE_BLUE, padding: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: 15 }}>
-                  <Text style={{ textAlign: "center", color: Colors.WHITE, fontWeight: "bold" }}>Thông báo</Text>
+                <View style={{ backgroundColor: Colors.NOT_READ, padding: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: 15 }}>
+                  <Text style={{ textAlign: "center", color: Colors.WHITE, fontWeight: "bold", fontSize: moderateScale(12, 1.16) }}>Thông báo</Text>
                 </View>
               </View>
               {
-                this.state.notiData.length > 0 && this.state.notiData.map((item, index) => {
-                  let thisBGColor = Colors.WHITE;
-                  let itemType = item.URL.split('/')[2],
-                    badgeBackgroundColor = Colors.GRAY,
-                    leftTitle = "CV";
-                  //TODO: Replace itemType with userRole (shortname)
-                  switch (itemType) {
-                    case "HSVanBanDi":
-                      badgeBackgroundColor = '#4FC3F7';
-                      leftTitle = "VBTK"
-                      break;
-                    case "QuanLyCongViec":
-                      badgeBackgroundColor = '#4DB6AC';
+                this.state.notiData.length > 0
+                  ? this.state.notiData.map((item, index) => {
+                    let thisBGColor = Colors.WHITE;
+                    let itemType = item.URL.split('/')[2],
+                      badgeBackgroundColor = Colors.GRAY,
                       leftTitle = "CV";
-                      break;
-                    case "HSCV_VANBANDEN":
-                      badgeBackgroundColor = '#5C6BC0';
-                      leftTitle = "VBĐ";
-                      break;
-                  }
+                    //TODO: Replace itemType with userRole (shortname)
+                    switch (itemType) {
+                      case "HSVanBanDi":
+                        badgeBackgroundColor = '#4FC3F7';
+                        leftTitle = "VBTK"
+                        break;
+                      case "QuanLyCongViec":
+                        badgeBackgroundColor = '#4DB6AC';
+                        leftTitle = "CV";
+                        break;
+                      case "HSCV_VANBANDEN":
+                        badgeBackgroundColor = '#5C6BC0';
+                        leftTitle = "VBĐ";
+                        break;
+                    }
 
-                  let noidungArchor = item.NOIDUNG.indexOf("đã"),
-                    noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
-                    noidungMessage = item.NOIDUNG.slice(noidungArchor);
+                    let noidungArchor = item.NOIDUNG.indexOf("đã"),
+                      noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
+                      noidungMessage = item.NOIDUNG.slice(noidungArchor);
 
-                  let checkReadFont = item.IS_READ ? 'normal' : 'bold';
-                  if (index % 2 !== 0) {
-                    thisBGColor = Colors.LIGHT_GRAY_PASTEL;
-                  }
-                  return (
-                    <ListItem
-                      containerStyle={{ backgroundColor: thisBGColor, borderBottomColor: "#ccc" }}
-                      leftIcon={
-                        <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
-                          <Text style={ListNotificationStyle.leftTitleText}>
-                            {
-                              // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
-                              leftTitle
-                            }
+                    let checkReadFont = item.IS_READ ? 'normal' : 'bold',
+                    checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
+
+                    if (index % 2 !== 0) {
+                      thisBGColor = Colors.LIGHT_GRAY_PASTEL;
+                    }
+                    return (
+                      <ListItem
+                        key={index.toString()}
+                        containerStyle={{ backgroundColor: thisBGColor, borderBottomColor: "#ccc" }}
+                        leftIcon={
+                          <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
+                            <Text style={ListNotificationStyle.leftTitleText}>
+                              {
+                                // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
+                                leftTitle
+                              }
+                            </Text>
+                          </View>
+                        }
+                        hideChevron={true}
+                        title={
+                          <Text style={[ListNotificationStyle.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
+                            <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</Text> {noidungMessage}
                           </Text>
-                        </View>
-                      }
-                      hideChevron={true}
-                      title={
-                        <Text style={[ListNotificationStyle.title, { fontWeight: checkReadFont }]}>
-                          <Text style={{ fontWeight: 'bold' }}>{noidungSender}</Text> {noidungMessage}
-                        </Text>
-                      }
-                      titleStyle={ListNotificationStyle.title}
-                      titleContainerStyle={{
-                        marginHorizontal: '3%',
-                      }}
-                      titleNumberOfLines={3}
-                      rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
-                      rightTitleNumberOfLines={2}
-                      rightTitleStyle={{
-                        textAlign: 'center',
-                        color: Colors.DARK_GRAY,
-                        fontSize: moderateScale(12, 0.9),
-                        fontStyle: 'italic',
-                        fontWeight: checkReadFont,
-                      }}
-                      rightTitleContainerStyle={{
-                        flex: 0
-                      }}
-                      // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
-                      onPress={() => this.onPressNotificationItem(item)}
-                    />
-                  );
-                })
+                        }
+                        titleStyle={ListNotificationStyle.title}
+                        titleContainerStyle={{
+                          marginHorizontal: '3%',
+                        }}
+                        titleNumberOfLines={3}
+                        rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                        rightTitleNumberOfLines={2}
+                        rightTitleStyle={{
+                          textAlign: 'center',
+                          color: Colors.DARK_GRAY,
+                          fontSize: moderateScale(12, 0.9),
+                          fontStyle: 'italic',
+                          fontWeight: checkReadFont,
+                        }}
+                        rightTitleContainerStyle={{
+                          flex: 0
+                        }}
+                        // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
+                        onPress={() => this.onPressNotificationItem(item)}
+                      />
+                    );
+                  })
+                  : emptyDataPage()
               }
 
             </View>
 
-            
+            <View style={{ marginTop: moderateScale(10, 1.2), backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
+              <CalendarStrip
+                // locale={{name: "vi"}}
+                calendarAnimation={{ type: 'sequence', duration: 30 }}
+                // daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
+                style={{ height: 100, paddingTop: 20, paddingBottom: 10, borderBottomColor: '#ccc', borderBottomWidth: 0.7 }}
+                calendarHeaderStyle={{ color: Colors.DARK_GRAY, fontSize: moderateScale(12, 1.01) }}
+                calendarColor={Colors.WHITE}
+                dateNumberStyle={{ color: Colors.BLACK, fontSize: moderateScale(14, 1.2) }}
+                dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
+                highlightDateNumberStyle={{ color: '#c21421', fontSize: moderateScale(14, 1.2) }}
+                highlightDateNameStyle={{ color: '#c21421', fontSize: moderateScale(13, 1.1) }}
+                // disabledDateNameStyle={{ color: 'grey' }}
+                // disabledDateNumberStyle={{ color: 'grey' }}
+                // datesWhitelist={datesWhitelist}
+                // datesBlacklist={datesBlacklist}
+                // iconLeft={require('./img/left-arrow.png')}
+                // iconRight={require('./img/right-arrow.png')}
+                iconContainer={{ flex: 0.1 }}
+                // showDayNumber={false}
+                onDateSelected={(date) => this.fetchCalendarData(date)}
+                shouldAllowFontScaling={false}
+              />
+              {
+                this.state.calendarData.length > 0
+                  ? this.state.calendarData.map((item, index) => {
+                    const {
+                      ID, NOIDUNG, TEN_NGUOI_CHUTRI, TEN_VAITRO_CHUTRI, TEN_PHONGBAN_CHUTRI,
+                      GIO_CONGTAC, PHUT_CONGTAC, DIADIEM
+                    } = item;
+                    let ChutriString = "", ChutriArr = [],
+                      ThoigianDiadiemString = `${_readableFormat(GIO_CONGTAC)}h${_readableFormat(PHUT_CONGTAC)}${DIADIEM ? ` - ${DIADIEM}` : ""}`;
+                    if (TEN_NGUOI_CHUTRI) {
+                      ChutriArr.push(TEN_NGUOI_CHUTRI);
+                    }
+                    if (TEN_VAITRO_CHUTRI) {
+                      ChutriArr.push(TEN_VAITRO_CHUTRI);
+                    }
+                    if (TEN_PHONGBAN_CHUTRI) {
+                      ChutriArr.push(TEN_PHONGBAN_CHUTRI);
+                    }
+                    if (ChutriArr.length > 0) {
+                      ChutriString = ChutriArr.join(", ");
+                    }
+
+                    return (
+                      <ListItem
+                        key={index.toString()}
+                        containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
+                        hideChevron
+                        title={
+                          <Text style={[ListNotificationStyle.title]}>
+                            <Text style={{ fontWeight: 'bold', color: Colors.GRAY }}>{ThoigianDiadiemString} / Chủ trì: {ChutriString}</Text>
+                          </Text>
+                        }
+                        subtitle={
+                          <Text style={[ListNotificationStyle.title, { marginTop: 8 }]}>
+                            <Text>{NOIDUNG}</Text>
+                          </Text>
+                        }
+                        onPress={() => this.onPressCalendar(ID)}
+                      />
+                    );
+                  })
+                  : emptyDataPage()
+              }
+              {
+                this.state.calendarLoading && <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+              }
+            </View>
           </ScrollView>
         </View>
 
-        <View style={{flex:3}}>
-              <Agenda
-                items={{
-                  '2019-08-26': [{ text: 'item 1 - any js object' }],
-                  '2019-08-27': [{ text: 'item 2 - any js object' }],
-                  '2019-08-28': [],
-                  '2019-08-29': [{ text: 'item 3 - any js object' }, { text: 'any js object' }]
-                }}
-                // loadItemsForMonth={this.loadItems.bind(this)}
-                selected={'2019-08-28'}
-                renderItem={(item, firstItemInDay) => {return (<View />);}}
-                renderEmptyDate={() => {return (<View />);}}
-
-                // renderItem={(item) => <View style={[DashboardStyle.item, { height: item.height }]}><Text>{item.name}</Text></View>}
-                // renderEmptyDate={() => <View style={DashboardStyle.emptyDate}><Text>This is empty date!</Text></View>}
-                rowHasChanged={(r1, r2) => {return r1.text !== r2.text}}
-              />
-            </View>
         <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
       </View>
     );
