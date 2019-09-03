@@ -19,5 +19,11 @@ export const ListNotificationStyle = StyleSheet.create({
   title: {
     color: Colors.BLACK,
     fontSize: moderateScale(12, 1.2)
+  },
+  rightTitleText: {
+    textAlign: 'center',
+    color: Colors.DANK_GRAY,
+    fontSize: moderateScale(12, 0.9),
+    fontStyle: 'italic',
   }
 });

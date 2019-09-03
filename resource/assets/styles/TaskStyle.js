@@ -26,13 +26,13 @@ export const DetailTaskStyle = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#e5e5e5'
     }, listItemTitleContainer: {
-        fontWeight: 'bold',
-        color: 'black',
-        fontSize: moderateScale(12, 1.2)
-    }, listItemSubTitleContainer: {
-        fontSize: moderateScale(11, 0.9),
+        // fontWeight: 'bold',
         color: '#777',
-        fontWeight: 'normal'
+        fontSize: moderateScale(11, 0.9)
+    }, listItemSubTitleContainer: {
+        fontSize: moderateScale(12, 1.3),
+        color: 'black',
+        fontWeight: 'normal',
     }, timelineContainer: {
         paddingTop: verticalScale(20),
         flex: 1,
@@ -103,6 +103,10 @@ export const ListTaskStyle = StyleSheet.create({
     }, loadMoreButtonText: {
         color: '#fff',
         fontWeight: 'bold',
+    },
+    progressBars: {
+        height: moderateScale(5, .8),
+        width: "9.5%"
     }
 });
 

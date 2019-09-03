@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../common/SystemConstant'
-import {scale, verticalScale, moderateScale} from './ScaleIndicator';
+import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const ListPublishDocStyle = StyleSheet.create({
     emtpyContainer: {
@@ -22,7 +22,7 @@ export const ListPublishDocStyle = StyleSheet.create({
     },
     emptyMessage: {
         color: '#ccc',
-        fontSize: moderateScale(16,1.6),
+        fontSize: moderateScale(16, 1.6),
         fontWeight: 'bold',
         textAlign: 'center'
     },
@@ -33,11 +33,13 @@ export const ListPublishDocStyle = StyleSheet.create({
         width: scale(30)
     },
     leftIcon: {
-        
+
     },
     abridgment: {
-        fontSize: moderateScale(12,1.2),
+        fontSize: moderateScale(11, 1.1),
         flexWrap: 'wrap'
+    }, abridgmentSub: {
+        fontSize: moderateScale(10, 0.8)
     },
     textNormal: {
         color: '#000'
@@ -50,13 +52,13 @@ export const ListPublishDocStyle = StyleSheet.create({
 export const DetailPublishDocStyle = StyleSheet.create({
     container: {
         flex: 1,
-    }, 
+    },
     listContainer: {
         marginTop: 0,
         borderTopWidth: 0,
         borderBottomWidth: 0,
         borderBottomColor: '#cbd2d9'
-    }, 
+    },
     listItemContainer: {
         paddingTop: verticalScale(10),
         paddingRight: scale(10),
@@ -65,11 +67,11 @@ export const DetailPublishDocStyle = StyleSheet.create({
         borderBottomColor: '#e5e5e5'
     }, listItemTitleContainer: {
         fontWeight: 'bold',
-        color: Colors.BLACK,
-        fontSize: moderateScale(12, 1.3)
+        color: "#777",
+        fontSize: moderateScale(11, 0.9)
     }, listItemSubTitleContainer: {
         fontSize: moderateScale(12, 1.3),
-        color: '#777',
+        color: 'black',
         fontWeight: 'normal'
     }, timelineContainer: {
         paddingTop: verticalScale(20),
@@ -77,8 +79,8 @@ export const DetailPublishDocStyle = StyleSheet.create({
     }, timeContainer: {
 
     }, time: {
-        
-    },commentButtonContainer: {
+
+    }, commentButtonContainer: {
         justifyContent: 'center',
         flexDirection: 'row'
     }, commentCircleContainer: {

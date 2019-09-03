@@ -64,7 +64,7 @@ export const SideBarStyle = StyleSheet.create({
         marginBottom: verticalScale(10)
     },
     body: {
-        flex: 4,
+        flex: 5,
         backgroundColor: "#f1f1f1", //Colors.LIGHT_GRAY_PASTEL
     }, listItemTitle: {
         fontWeight: 'bold',
@@ -115,7 +115,7 @@ export const SideBarStyle = StyleSheet.create({
         // justifyContent: 'space-between',
         // marginVertical: verticalScale(13),
         // flexWrap: 'wrap',
-        marginHorizontal: '0.5%',
+        // marginHorizontal: '0.5%',
     }, shortcutBoxStyle: {
         // backgroundColor: Colors.LITE_BLUE,
         // borderWidth: 1,
@@ -129,11 +129,11 @@ export const SideBarStyle = StyleSheet.create({
         // shadowRadius: 3.84,
 
         // elevation: 5,
-        paddingVertical: moderateScale(10, 0.7),
+        paddingVertical: moderateScale(12, 0.8),
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         marginHorizontal: '1%',
         // minHeight:
         // flexBasis: '30%',
@@ -146,11 +146,13 @@ export const SideBarStyle = StyleSheet.create({
         // flexWrap: 'wrap',
         // flex: 1,
     }, customIconContainerStyle: {
-        padding: moderateScale(10),
+        // padding: moderateScale(10),
+        flex: 0,
         backgroundColor: '#fff',
-        borderRadius: 15,
+        // borderRadius: 15,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: '5%'
     }, customIconImageStyle: {
         width: moderateScale(30),
         height: moderateScale(30)

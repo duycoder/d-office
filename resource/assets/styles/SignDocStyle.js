@@ -5,18 +5,18 @@
  */
 import { Dimensions, StyleSheet } from 'react-native';
 import { Colors } from '../../common/SystemConstant'
-import {scale, verticalScale, moderateScale} from './ScaleIndicator';
+import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const DetailSignDocStyle = StyleSheet.create({
     container: {
         flex: 1,
-    }, 
+    },
     listContainer: {
         marginTop: 0,
         borderTopWidth: 0,
         borderBottomWidth: 0,
         borderBottomColor: '#cbd2d9'
-    }, 
+    },
     listItemContainer: {
         paddingTop: verticalScale(10),
         paddingRight: scale(10),
@@ -25,11 +25,11 @@ export const DetailSignDocStyle = StyleSheet.create({
         borderBottomColor: '#e5e5e5'
     }, listItemTitleContainer: {
         fontWeight: 'bold',
-        color: 'black',
-        fontSize: moderateScale(12,1.3)
-    }, listItemSubTitleContainer: {
-        fontSize: moderateScale(12,1.3),
         color: '#777',
+        fontSize: moderateScale(11, 0.9)
+    }, listItemSubTitleContainer: {
+        fontSize: moderateScale(12, 1.3),
+        color: 'black',
         fontWeight: 'normal'
     }, timelineContainer: {
         paddingTop: verticalScale(20),
@@ -37,7 +37,7 @@ export const DetailSignDocStyle = StyleSheet.create({
     }, timeContainer: {
 
     }, time: {
-        
+
     }, commentButtonContainer: {
         justifyContent: 'center',
         flexDirection: 'row'
@@ -69,7 +69,7 @@ export const ListSignDocStyle = StyleSheet.create({
     },
     emptyMessage: {
         color: '#ccc',
-        fontSize: moderateScale(16,1.5),
+        fontSize: moderateScale(16, 1.5),
         fontWeight: 'bold',
         textAlign: 'center'
     },
@@ -80,10 +80,10 @@ export const ListSignDocStyle = StyleSheet.create({
         width: scale(30)
     },
     leftIcon: {
-        
+
     },
     abridgment: {
-        fontSize: moderateScale(12,1.2),
+        fontSize: moderateScale(12, 1.2),
         flexWrap: 'wrap'
     },
     textNormal: {
@@ -93,8 +93,8 @@ export const ListSignDocStyle = StyleSheet.create({
         color: '#888'
     },
     loadMoreButton: {
-        flex: 1, 
-        flexDirection: 'row', 
+        flex: 1,
+        flexDirection: 'row',
         justifyContent: 'center',
         padding: moderateScale(10),
         backgroundColor: 'red',

@@ -15,7 +15,8 @@ export const ButtonGroupStyle = StyleSheet.create({
         height:50,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: Colors.LITE_BLUE
+        backgroundColor: Colors.LITE_BLUE,
+        borderRadius: 25
     },
     buttonText: {
         textAlign: 'center',
