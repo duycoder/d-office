@@ -31,7 +31,7 @@ export default class TimelineSignDoc extends Component {
 
     keyExtractor = (item, index) => item.ID.toString()
 
-    renderItem = ({ item }) => {
+    renderItem = ({ item, index }) => {
         let identifyBackground = TimeLineStyle.initState;
         let identifyColor = TimeLineStyle.initStateText;
         let iconName = 'plus-circle-outline';
@@ -51,30 +51,35 @@ export default class TimelineSignDoc extends Component {
                 stepName = util.toUpper(item.step.NAME);
             }
         }
+        const isStartNode = index === this.state.logs.length - 1,
+            isEndNode = index === 0;
+        let innerIconCircleColor = Colors.GRAY,
+            outerIconCircleColor = "#eaeaea";
+        if (isEndNode) {
+            innerIconCircleColor = Colors.MENU_BLUE;
+            outerIconCircleColor = Colors.OLD_LITE_BLUE;
+        }
         return (
             <View style={TimeLineStyle.container}>
-                <View style={TimeLineStyle.timeSection}>
-                    <Text style={TimeLineStyle.timeSectionDate}>
-                        {convertDateToString(item.create_at)}
-                    </Text>
-                    <Text style={TimeLineStyle.timeSectionHour}>
-                        {convertTimeToString(item.create_at)}
-                    </Text>
-                </View>
-
                 <View style={TimeLineStyle.iconSection}>
-                    <View style={[TimeLineStyle.iconCircle, identifyBackground]}>
-                        <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
+                    <View style={[TimeLineStyle.iconCircle, { backgroundColor: outerIconCircleColor }]}>
+                        {
+                            // <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
+                        }
+                        <View style={[TimeLineStyle.innerIconCircle, { backgroundColor: innerIconCircleColor }]} />
                     </View>
-
-                    <View style={[TimeLineStyle.iconLine, identifyBackground]}>
-                    </View>
+                    {
+                        !isStartNode && <View style={[TimeLineStyle.iconLine]} />
+                    }
                 </View>
 
                 <View style={TimeLineStyle.infoSection}>
                     <View style={TimeLineStyle.infoHeader}>
-                        <Text style={[TimeLineStyle.infoText, identifyColor]}>
-                            {stepName}
+                        <Text style={TimeLineStyle.infoText}>
+                            {util.capitalize(stepName)}
+                        </Text>
+                        <Text style={TimeLineStyle.infoTimeline}>
+                            {`${convertDateToString(item.create_at)} ${convertTimeToString(item.create_at)}`}
                         </Text>
                     </View>
                     <View style={TimeLineStyle.infoDetail}>
@@ -102,13 +107,18 @@ export default class TimelineSignDoc extends Component {
                                             </Text>
                                         </View>
 
-                                        <View style={TimeLineStyle.infoDetailValue}>
+                                        <View style={[TimeLineStyle.infoDetailValue, { flexDirection: 'row', alignItems: 'center' }]}>
                                             <Text style={TimeLineStyle.infoDetailValueText}>
-                                                {item.TenNguoiNhan} {renderIf(item.IsDaNhan)(<Text style={TimeLineStyle.infoDetailValueNote}>(Đã nhận)</Text>)}
+                                                {item.TenNguoiNhan}
                                             </Text>
+                                            {
+                                                item.IsDaNhan && <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
+                                                    <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã nhận</Text>
+                                                </View>
+                                            }
                                         </View>
                                     </View>
-                                    
+
                                     <View style={TimeLineStyle.infoDetailRow}>
                                         <View style={TimeLineStyle.infoDetailLabel}>
                                             <Text style={TimeLineStyle.infoDetailLabelText}>
@@ -118,8 +128,8 @@ export default class TimelineSignDoc extends Component {
 
                                         <View style={TimeLineStyle.infoDetailValue}>
                                             {
-                                                item.LstThamGia.map((name, index) => (
-                                                    <Text style={TimeLineStyle.infoDetailValueText} key={index.toString()}>
+                                                item.LstThamGia.map((name) => (
+                                                    <Text style={TimeLineStyle.infoDetailValueText}>
                                                         - {name}
                                                     </Text>
                                                 ))
@@ -145,7 +155,7 @@ export default class TimelineSignDoc extends Component {
                     </View>
                 </View>
             </View>
-        )
+        );
     }
 
     render() {

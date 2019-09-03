@@ -19,8 +19,8 @@ export const HistoryStyle = StyleSheet.create({
 export const TimeLineStyle = StyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 20,
-    paddingBottom: 20,
+    // paddingTop: 20,
+    // paddingBottom: 20,
     flexDirection: 'row',
     paddingRight: 5,
     paddingLeft: 5
@@ -40,15 +40,23 @@ export const TimeLineStyle = StyleSheet.create({
     textAlign: 'left'
   },
   iconSection: {
-    flex: 2,
+    flex: 1,
     alignItems: 'center',
   },
   iconCircle: {
-    height: 50,
-    width: 50,
+    height: 36,
+    width: 36,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 25
+    borderRadius: 18,
+    // backgroundColor: Colors.OLD_LITE_BLUE
+  }, innerIconCircle: {
+    height: 26,
+    width: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 13,
+    // backgroundColor: Colors.MENU_BLUE
   },
   initState: {
     backgroundColor: '#0D7D23'
@@ -69,13 +77,15 @@ export const TimeLineStyle = StyleSheet.create({
     color: '#FF0000'
   },
   iconLine: {
-    width: 5,
+    width: 4,
     position: 'absolute',
-    top: 52,
-    bottom: 0
+    top: 38,
+    bottom: 0,
+    backgroundColor: '#eaeaea'
   },
   infoSection: {
-    flex: 6,
+    flex: 8,
+    marginLeft: 10
   },
   infoHeader: {
     height: 50,
@@ -83,37 +93,57 @@ export const TimeLineStyle = StyleSheet.create({
     justifyContent: 'center'
   },
   infoText: {
-    fontSize: 16,
+    fontSize: moderateScale(14, 1.1),
     fontWeight: 'bold',
+    color: Colors.MENU_BLUE
+  }, infoTimeline: {
+    fontSize: moderateScale(12, 1.2),
+    color: Colors.DANK_GRAY
   },
   infoDetail: {
-    borderWidth: 1,
+    // borderWidth: 0.7,
+    borderTopWidth: 0.7,
+    borderRightWidth: 0.7,
+    borderLeftWidth: 0.7,
     borderColor: '#707070',
-    borderRadius: 7,
-    padding: 5
+    marginVertical: 15,
+    // borderRadius: 7,
+    // padding: 5
   },
   infoDetailRow: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.7,
     borderBottomColor: '#707070',
     width: '100%',
     minHeight: 40,
-    paddingTop: 10,
+    // padding: 10,
     flexDirection: 'row'
   }, infoDetailLabel: {
-    flex: 4,
-    alignItems: 'flex-start',
+    flex: 3,
+    // alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-start'
   },
   infoDetailLabelText: {
-    color: Colors.BLACK,
-    fontWeight: 'bold'
+    color: Colors.DANK_GRAY,
+    fontSize: moderateScale(11, 0.9),
+    
+    // fontWeight: 'bold'
   },
   infoDetailValue: {
-    flex: 6,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    flex: 7,
+    // alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    borderColor: '#707070',
+    borderLeftWidth: 0.7,
+    padding: 10,
+    alignItems: 'center',
+    flexDirection: 'row'
   }, infoDetailValueText: {
-    color: '#707070'
+    color: Colors.BLACK,
+    fontSize: moderateScale(12, 1.3)
   },
   infoDetailValueNote: {
     fontSize: 10,
