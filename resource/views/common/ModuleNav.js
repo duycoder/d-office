@@ -77,6 +77,12 @@ import WorkflowStreamProcessUsers from '../modules/Workflow/WorkflowStreamProces
 import WorkflowRequestReviewUsers from '../modules/Workflow/WorkflowRequestReviewUsers';
 //#endregion
 
+//#region màn hình đăng ký & quản lý chuyến xe
+import ListCarRegistration from '../modules/CarRegistration/ListRegistration';
+// import CreateRegistration from '../modules/CarRegistration/CreateRegistration';
+// import DetailRegistration from '../modules/CarRegistration/DetailRegistration';
+//#endregion
+
 //comment
 import ListComment from '../modules/Comment/ListComment';
 import ReplyComment from '../modules/Comment/ReplyComment';
@@ -106,173 +112,186 @@ import EditUyQuyen from '../modules/UyQuyen/EditUyQuyen';
 import DeptUyQuyen from '../modules/UyQuyen/DeptUyQuyen';
 //#endregion
 
+//stack gốc phục vụ StackNavigator
+const baseStack = {
+  VanBanDiIsNotProcessScreen: {
+    screen: VanBanDiIsNotProcessList
+  },
+  VanBanDiIsProcessScreen: {
+    screen: VanBanDiIsProcessList
+  },
+  VanBanDiJoinProcessScreen: {
+    screen: VanBanDiJoinProcessList
+  },
+  VanBanDiIsPublishScreen: {
+    screen: VanBanDiIsPublishList
+  },
+  VanBanDiSearchScreen: {
+    screen: VanBanDiSearchList
+  },
+  VanBanDiDetailScreen: {
+    screen: VanBanDiDetail
+  },
+  VanBanDenIsNotProcessScreen: {
+    screen: VanBanDenIsNotProcessList
+  },
+  VanBanDenIsProcessScreen: {
+    screen: VanBanDenIsProcessList
+  },
+  VanBanDenJoinProcessScreen: {
+    screen: VanBanDenJoinProcessList
+  },
+  VanBanDenInternalIsNotProcessScreen: {
+    screen: VanBanDenInternalNotProcessList
+  },
+  VanBanDenInternalIsProcessScreen: {
+    screen: VanBanDenInternalProcessList
+  },
+  VanBanDenSearchScreen: {
+    screen: VanBanDenSearchList
+  },
+  VanBanDenDetailScreen: {
+    screen: VanBanDenDetail
+  },
+  VanBanDenBriefScreen: {
+    screen: VanBanDenBrief
+  },
+  WorkflowStreamProcessScreen: {
+    screen: WorkflowStreamProcess
+  },
+  ListAssignedTaskScreen: {
+    screen: ListAssignedTask
+  },
+  ListCombinationTaskScreen: {
+    screen: ListCombinationTask
+  },
+  ListPersonalTaskScreen: {
+    screen: ListPersonalTask
+  },
+  ListProcessedTaskScreen: {
+    screen: ListProcessedTask
+  },
+  ListPendingConfirmTaskScreen: {
+    screen: ListPendingConfirmTask
+  },
+  ListFilterTaskScreen: {
+    screen: ListFilterTask
+  },
+  DetailTaskScreen: {
+    screen: DetailTask
+  },
+  CreateTaskScreen: {
+    screen: CreateTask
+  },
+  CreateTaskPlanScreen: {
+    screen: CreateTaskPlan
+  },
+  ConfirmTaskPlanScreen: {
+    screen: ConfirmTaskPlan
+  },
+  PickTaskAssignerScreen: {
+    screen: PickTaskAssigner
+  },
+  AssignTaskScreen: {
+    screen: AssignTask
+  }, AssignTaskUsersScreen: {
+    screen: AssignTaskUsers
+  },
+  RescheduleTaskScreen: {
+    screen: RescheduleTask
+  },
+  UpdateProgressTaskScreen: {
+    screen: UpdateProgressTask
+  },
+  ApproveProgressTaskScreen: {
+    screen: ApproveProgressTask
+  },
+  EvaluationTaskScreen: {
+    screen: EvaluationTask
+  },
+  HistoryEvaluateTaskScreen: {
+    screen: HistoryEvaluateTask
+  },
+  ApproveEvaluationTaskScreen: {
+    screen: ApproveEvaluationTask
+  },
+  HistoryRescheduleTaskScreen: {
+    screen: HistoryRescheduleTask
+  },
+  HistoryProgressTaskScreen: {
+    screen: HistoryProgressTask
+  },
+  HistoryPlanTaskScreen: {
+    screen: HistoryPlanTask
+  },
+  GroupSubTaskScreen: {
+    screen: GroupSubTask
+  },
+  CreateSubTaskScreen: {
+    screen: CreateSubTask
+  },
+  WorkflowReplyReviewScreen: {
+    screen: WorkflowReplyReview
+  },
+  WorkflowRequestReviewScreen: {
+    screen: WorkflowRequestReview
+  },
+  WorkflowRequestReviewUsersScreen: {
+    screen: WorkflowRequestReviewUsers
+  },
+  WorkflowStreamProcessUsersScreen: {
+    screen: WorkflowStreamProcessUsers
+  },
+  ListCommentScreen: {
+    screen: ListComment
+  },
+  ReplyCommentScreen: {
+    screen: ReplyComment
+  }, ApproveRescheduleTaskScreen: {
+    screen: ApproveRescheduleTask
+  }, DenyRescheduleTaskScreen: {
+    screen: DenyRescheduleTask
+  },
+
+  ListChatterScreen: {
+    screen: ListChatter
+  }, ChatterScreen: {
+    screen: Chatter
+  },
+  DetailChatterScreen: {
+    screen: DetailChatter
+  },
+
+  BaseCalendarScreen: {
+    screen: BaseCalendar
+  },
+  EventListScreen: {
+    screen: EventList
+  },
+  DetailEventScreen: {
+    screen: DetailEvent
+  },
+  ListUyQuyenScreen: {
+    screen: ListUyQuyen
+  },
+  EditUyQuyenScreen: {
+    screen: EditUyQuyen
+  }, DeptUyQuyenScreen: {
+    screen: DeptUyQuyen
+  },
+  ListCarRegistrationScreen: {
+    screen: ListCarRegistration
+  }, 
+  // CreateCarRegistrationScreen: {
+  //   screen: CreateRegistration
+  // }, DetailCarRegistrationScreen: {
+  //   screen: DetailRegistration
+  // }
+};
+
 const notificationStack = StackNavigator(
   {
-    VanBanDiIsNotProcessScreen: {
-      screen: VanBanDiIsNotProcessList
-    },
-    VanBanDiIsProcessScreen: {
-      screen: VanBanDiIsProcessList
-    },
-    VanBanDiJoinProcessScreen: {
-      screen: VanBanDiJoinProcessList
-    },
-    VanBanDiIsPublishScreen: {
-      screen: VanBanDiIsPublishList
-    },
-    VanBanDiSearchScreen: {
-      screen: VanBanDiSearchList
-    },
-    VanBanDiDetailScreen: {
-      screen: VanBanDiDetail
-    },
-    VanBanDenIsNotProcessScreen: {
-      screen: VanBanDenIsNotProcessList
-    },
-    VanBanDenIsProcessScreen: {
-      screen: VanBanDenIsProcessList
-    },
-    VanBanDenJoinProcessScreen: {
-      screen: VanBanDenJoinProcessList
-    },
-    VanBanDenInternalIsNotProcessScreen: {
-      screen: VanBanDenInternalNotProcessList
-    },
-    VanBanDenInternalIsProcessScreen: {
-      screen: VanBanDenInternalProcessList
-    },
-    VanBanDenSearchScreen: {
-      screen: VanBanDenSearchList
-    },
-    VanBanDenDetailScreen: {
-      screen: VanBanDenDetail
-    },
-    VanBanDenBriefScreen: {
-      screen: VanBanDenBrief
-    },
-    WorkflowStreamProcessScreen: {
-      screen: WorkflowStreamProcess
-    },
-    ListAssignedTaskScreen: {
-      screen: ListAssignedTask
-    },
-    ListCombinationTaskScreen: {
-      screen: ListCombinationTask
-    },
-    ListPersonalTaskScreen: {
-      screen: ListPersonalTask
-    },
-    ListProcessedTaskScreen: {
-      screen: ListProcessedTask
-    },
-    ListPendingConfirmTaskScreen: {
-      screen: ListPendingConfirmTask
-    },
-    ListFilterTaskScreen: {
-      screen: ListFilterTask
-    },
-    DetailTaskScreen: {
-      screen: DetailTask
-    },
-    CreateTaskScreen: {
-      screen: CreateTask
-    },
-    CreateTaskPlanScreen: {
-      screen: CreateTaskPlan
-    },
-    ConfirmTaskPlanScreen: {
-      screen: ConfirmTaskPlan
-    },
-    PickTaskAssignerScreen: {
-      screen: PickTaskAssigner
-    },
-    AssignTaskScreen: {
-      screen: AssignTask
-    }, AssignTaskUsersScreen: {
-      screen: AssignTaskUsers
-    },
-    RescheduleTaskScreen: {
-      screen: RescheduleTask
-    },
-    UpdateProgressTaskScreen: {
-      screen: UpdateProgressTask
-    },
-    ApproveProgressTaskScreen: {
-      screen: ApproveProgressTask
-    },
-    EvaluationTaskScreen: {
-      screen: EvaluationTask
-    },
-    HistoryEvaluateTaskScreen: {
-      screen: HistoryEvaluateTask
-    },
-    ApproveEvaluationTaskScreen: {
-      screen: ApproveEvaluationTask
-    },
-    HistoryRescheduleTaskScreen: {
-      screen: HistoryRescheduleTask
-    },
-    HistoryProgressTaskScreen: {
-      screen: HistoryProgressTask
-    },
-    HistoryPlanTaskScreen: {
-      screen: HistoryPlanTask
-    },
-    GroupSubTaskScreen: {
-      screen: GroupSubTask
-    },
-    CreateSubTaskScreen: {
-      screen: CreateSubTask
-    },
-    WorkflowReplyReviewScreen: {
-      screen: WorkflowReplyReview
-    },
-    WorkflowRequestReviewScreen: {
-      screen: WorkflowRequestReview
-    },
-    WorkflowRequestReviewUsersScreen: {
-      screen: WorkflowRequestReviewUsers
-    },
-    WorkflowStreamProcessUsersScreen: {
-      screen: WorkflowStreamProcessUsers
-    },
-    ListCommentScreen: {
-      screen: ListComment
-    },
-    ReplyCommentScreen: {
-      screen: ReplyComment
-    }, ApproveRescheduleTaskScreen: {
-      screen: ApproveRescheduleTask
-    }, DenyRescheduleTaskScreen: {
-      screen: DenyRescheduleTask
-    },
-
-    ListChatterScreen: {
-      screen: ListChatter
-    }, ChatterScreen: {
-      screen: Chatter
-    },
-    DetailChatterScreen: {
-      screen: DetailChatter
-    },
-
-    BaseCalendarScreen: {
-      screen: BaseCalendar
-    },
-    EventListScreen: {
-      screen: EventList
-    },
-    DetailEventScreen: {
-      screen: DetailEvent
-    },
-    ListUyQuyenScreen: {
-      screen: ListUyQuyen
-    },
-    EditUyQuyenScreen: {
-      screen: EditUyQuyen
-    }, DeptUyQuyenScreen: {
-      screen: DeptUyQuyen
-    },
+    ...baseStack,
     ListNotificationScreen: {
       screen: ListNotification
     },
@@ -285,171 +304,7 @@ const notificationStack = StackNavigator(
 
 const dashboardStack = StackNavigator(
   {
-    VanBanDiIsNotProcessScreen: {
-      screen: VanBanDiIsNotProcessList
-    },
-    VanBanDiIsProcessScreen: {
-      screen: VanBanDiIsProcessList
-    },
-    VanBanDiJoinProcessScreen: {
-      screen: VanBanDiJoinProcessList
-    },
-    VanBanDiIsPublishScreen: {
-      screen: VanBanDiIsPublishList
-    },
-    VanBanDiSearchScreen: {
-      screen: VanBanDiSearchList
-    },
-    VanBanDiDetailScreen: {
-      screen: VanBanDiDetail
-    },
-    VanBanDenIsNotProcessScreen: {
-      screen: VanBanDenIsNotProcessList
-    },
-    VanBanDenIsProcessScreen: {
-      screen: VanBanDenIsProcessList
-    },
-    VanBanDenJoinProcessScreen: {
-      screen: VanBanDenJoinProcessList
-    },
-    VanBanDenInternalIsNotProcessScreen: {
-      screen: VanBanDenInternalNotProcessList
-    },
-    VanBanDenInternalIsProcessScreen: {
-      screen: VanBanDenInternalProcessList
-    },
-    VanBanDenSearchScreen: {
-      screen: VanBanDenSearchList
-    },
-    VanBanDenDetailScreen: {
-      screen: VanBanDenDetail
-    },
-    VanBanDenBriefScreen: {
-      screen: VanBanDenBrief
-    },
-    WorkflowStreamProcessScreen: {
-      screen: WorkflowStreamProcess
-    },
-    ListAssignedTaskScreen: {
-      screen: ListAssignedTask
-    },
-    ListCombinationTaskScreen: {
-      screen: ListCombinationTask
-    },
-    ListPersonalTaskScreen: {
-      screen: ListPersonalTask
-    },
-    ListProcessedTaskScreen: {
-      screen: ListProcessedTask
-    },
-    ListPendingConfirmTaskScreen: {
-      screen: ListPendingConfirmTask
-    },
-    ListFilterTaskScreen: {
-      screen: ListFilterTask
-    },
-    CreateTaskScreen: {
-      screen: CreateTask
-    },
-    CreateTaskPlanScreen: {
-      screen: CreateTaskPlan
-    },
-    ConfirmTaskPlanScreen: {
-      screen: ConfirmTaskPlan
-    },
-    PickTaskAssignerScreen: {
-      screen: PickTaskAssigner
-    },
-    DetailTaskScreen: {
-      screen: DetailTask
-    },
-    AssignTaskScreen: {
-      screen: AssignTask
-    }, AssignTaskUsersScreen: {
-      screen: AssignTaskUsers
-    },
-    RescheduleTaskScreen: {
-      screen: RescheduleTask
-    },
-    UpdateProgressTaskScreen: {
-      screen: UpdateProgressTask
-    },
-    ApproveProgressTaskScreen: {
-      screen: ApproveProgressTask
-    },
-    EvaluationTaskScreen: {
-      screen: EvaluationTask
-    },
-    HistoryEvaluateTaskScreen: {
-      screen: HistoryEvaluateTask
-    },
-    ApproveEvaluationTaskScreen: {
-      screen: ApproveEvaluationTask
-    },
-    HistoryRescheduleTaskScreen: {
-      screen: HistoryRescheduleTask
-    },
-    HistoryProgressTaskScreen: {
-      screen: HistoryProgressTask
-    },
-    HistoryPlanTaskScreen: {
-      screen: HistoryPlanTask
-    },
-    GroupSubTaskScreen: {
-      screen: GroupSubTask
-    },
-    CreateSubTaskScreen: {
-      screen: CreateSubTask
-    },
-    WorkflowReplyReviewScreen: {
-      screen: WorkflowReplyReview
-    },
-    WorkflowRequestReviewScreen: {
-      screen: WorkflowRequestReview
-    },
-    WorkflowRequestReviewUsersScreen: {
-      screen: WorkflowRequestReviewUsers
-    },
-    WorkflowStreamProcessUsersScreen: {
-      screen: WorkflowStreamProcessUsers
-    },
-    ListCommentScreen: {
-      screen: ListComment
-    },
-    ReplyCommentScreen: {
-      screen: ReplyComment
-    }, ApproveRescheduleTaskScreen: {
-      screen: ApproveRescheduleTask
-    }, DenyRescheduleTaskScreen: {
-      screen: DenyRescheduleTask
-    },
-
-    ListChatterScreen: {
-      screen: ListChatter
-    }, ChatterScreen: {
-      screen: Chatter
-    },
-    DetailChatterScreen: {
-      screen: DetailChatter
-    },
-
-    BaseCalendarScreen: {
-      screen: BaseCalendar
-    },
-    EventListScreen: {
-      screen: EventList
-    },
-    DetailEventScreen: {
-      screen: DetailEvent
-    },
-    ListUyQuyenScreen: {
-      screen: ListUyQuyen
-    },
-    EditUyQuyenScreen: {
-      screen: EditUyQuyen
-    }, DeptUyQuyenScreen: {
-      screen: DeptUyQuyen
-    },
+    ...baseStack,
     DashboardScreen: {
       screen: Dashboard
     },
@@ -462,171 +317,7 @@ const dashboardStack = StackNavigator(
 
 const keyFunctionStack = StackNavigator(
   {
-    VanBanDiIsNotProcessScreen: {
-      screen: VanBanDiIsNotProcessList
-    },
-    VanBanDiIsProcessScreen: {
-      screen: VanBanDiIsProcessList
-    },
-    VanBanDiJoinProcessScreen: {
-      screen: VanBanDiJoinProcessList
-    },
-    VanBanDiIsPublishScreen: {
-      screen: VanBanDiIsPublishList
-    },
-    VanBanDiSearchScreen: {
-      screen: VanBanDiSearchList
-    },
-    VanBanDiDetailScreen: {
-      screen: VanBanDiDetail
-    },
-    VanBanDenIsNotProcessScreen: {
-      screen: VanBanDenIsNotProcessList
-    },
-    VanBanDenIsProcessScreen: {
-      screen: VanBanDenIsProcessList
-    },
-    VanBanDenJoinProcessScreen: {
-      screen: VanBanDenJoinProcessList
-    },
-    VanBanDenInternalIsNotProcessScreen: {
-      screen: VanBanDenInternalNotProcessList
-    },
-    VanBanDenInternalIsProcessScreen: {
-      screen: VanBanDenInternalProcessList
-    },
-    VanBanDenSearchScreen: {
-      screen: VanBanDenSearchList
-    },
-    VanBanDenDetailScreen: {
-      screen: VanBanDenDetail
-    },
-    VanBanDenBriefScreen: {
-      screen: VanBanDenBrief
-    },
-    WorkflowStreamProcessScreen: {
-      screen: WorkflowStreamProcess
-    },
-    ListAssignedTaskScreen: {
-      screen: ListAssignedTask
-    },
-    ListCombinationTaskScreen: {
-      screen: ListCombinationTask
-    },
-    ListPersonalTaskScreen: {
-      screen: ListPersonalTask
-    },
-    ListProcessedTaskScreen: {
-      screen: ListProcessedTask
-    },
-    ListPendingConfirmTaskScreen: {
-      screen: ListPendingConfirmTask
-    },
-    ListFilterTaskScreen: {
-      screen: ListFilterTask
-    },
-    CreateTaskScreen: {
-      screen: CreateTask
-    },
-    CreateTaskPlanScreen: {
-      screen: CreateTaskPlan
-    },
-    ConfirmTaskPlanScreen: {
-      screen: ConfirmTaskPlan
-    },
-    PickTaskAssignerScreen: {
-      screen: PickTaskAssigner
-    },
-    DetailTaskScreen: {
-      screen: DetailTask
-    },
-    AssignTaskScreen: {
-      screen: AssignTask
-    }, AssignTaskUsersScreen: {
-      screen: AssignTaskUsers
-    },
-    RescheduleTaskScreen: {
-      screen: RescheduleTask
-    },
-    UpdateProgressTaskScreen: {
-      screen: UpdateProgressTask
-    },
-    ApproveProgressTaskScreen: {
-      screen: ApproveProgressTask
-    },
-    EvaluationTaskScreen: {
-      screen: EvaluationTask
-    },
-    HistoryEvaluateTaskScreen: {
-      screen: HistoryEvaluateTask
-    },
-    ApproveEvaluationTaskScreen: {
-      screen: ApproveEvaluationTask
-    },
-    HistoryRescheduleTaskScreen: {
-      screen: HistoryRescheduleTask
-    },
-    HistoryProgressTaskScreen: {
-      screen: HistoryProgressTask
-    },
-    HistoryPlanTaskScreen: {
-      screen: HistoryPlanTask
-    },
-    GroupSubTaskScreen: {
-      screen: GroupSubTask
-    },
-    CreateSubTaskScreen: {
-      screen: CreateSubTask
-    },
-    WorkflowReplyReviewScreen: {
-      screen: WorkflowReplyReview
-    },
-    WorkflowRequestReviewScreen: {
-      screen: WorkflowRequestReview
-    },
-    WorkflowRequestReviewUsersScreen: {
-      screen: WorkflowRequestReviewUsers
-    },
-    WorkflowStreamProcessUsersScreen: {
-      screen: WorkflowStreamProcessUsers
-    },
-    ListCommentScreen: {
-      screen: ListComment
-    },
-    ReplyCommentScreen: {
-      screen: ReplyComment
-    }, ApproveRescheduleTaskScreen: {
-      screen: ApproveRescheduleTask
-    }, DenyRescheduleTaskScreen: {
-      screen: DenyRescheduleTask
-    },
-
-    ListChatterScreen: {
-      screen: ListChatter
-    }, ChatterScreen: {
-      screen: Chatter
-    },
-    DetailChatterScreen: {
-      screen: DetailChatter
-    },
-
-    BaseCalendarScreen: {
-      screen: BaseCalendar
-    },
-    EventListScreen: {
-      screen: EventList
-    },
-    DetailEventScreen: {
-      screen: DetailEvent
-    },
-    ListUyQuyenScreen: {
-      screen: ListUyQuyen
-    },
-    EditUyQuyenScreen: {
-      screen: EditUyQuyen
-    }, DeptUyQuyenScreen: {
-      screen: DeptUyQuyen
-    },
+    ...baseStack,
     KeyFunctionScreen: {
       screen: KeyFunction
     },
