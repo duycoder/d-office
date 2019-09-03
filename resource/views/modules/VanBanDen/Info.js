@@ -60,7 +60,7 @@ class MainInfoPublishDoc extends Component {
     getDetailEvent = () => {
         let eventId = 0;
         if (this.state.events) {
-            eventId = this.state.events.ID;            
+            eventId = this.state.events.ID;
         }
         this.props.navigateToEvent(eventId);
     }
@@ -124,6 +124,42 @@ class MainInfoPublishDoc extends Component {
             <View style={DetailPublishDocStyle.container}>
                 <ScrollView>
                     <List containerStyle={DetailPublishDocStyle.listContainer}>
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    TRÍCH YẾU
+                        </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.state.info.TRICHYEU}
+                                </Text>
+                            } />
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    SỐ HIỆU
+                        </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {sohieu}
+                                </Text>
+                            } />
+                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    SỔ ĐI THEO SỐ
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    {this.state.info.SODITHEOSO}
+                                </Text>
+                            } />
 
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
@@ -168,32 +204,6 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỐ HIỆU
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {sohieu}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    TRÍCH YẾU
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TRICHYEU}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
                                     MỨC ĐỘ QUAN TRỌNG
                                 </Text>
                             }
@@ -229,18 +239,7 @@ class MainInfoPublishDoc extends Component {
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỔ ĐI THEO SỐ
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SODITHEOSO}
-                                </Text>
-                            } />
+
 
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}

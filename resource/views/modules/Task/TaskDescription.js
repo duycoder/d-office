@@ -155,6 +155,19 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                    NGÀY HOÀN THÀNH MONG MUỐN
+                                </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                    {convertDateToString(this.props.info.CongViec.NGAYHOANTHANH_THEOMONGMUON)}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailTaskStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailTaskStyle.listItemTitleContainer}>
                                     NGƯỜI GIAO VIỆC
                                 </Text>
                             }
@@ -173,97 +186,105 @@ export default class TaskDescription extends Component {
                             }
                             subtitle={
                                 <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {util.isEmpty(this.props.info.NGUOIXULYCHINH) ? "Không rõ" : this.props.info.NGUOIXULYCHINH}
+                                    {util.isEmpty(this.props.info.NGUOIXULYCHINH) ? "Chưa giao việc" : this.props.info.NGUOIXULYCHINH}
                                 </Text>
                             } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NGƯỜI THAM GIA
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()}
-                                </Text>
-                            } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    SỐ NGÀY NHẮC VIỆC TRƯỚC HẠN
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.CongViec.SONGAYNHACTRUOCHAN || "Không thiết lập"}
-                                </Text>
-                            } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NHẮC VIỆC BẰNG EMAIL
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.CongViec.IS_EMAIL ? 'Có' : 'Không'}
-                                </Text>
-                            } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NHẮC VIỆC BẰNG SMS
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.CongViec.IS_SMS ? 'Có' : 'Không'}
-                                </Text>
-                            } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NHẮC VIỆC BẰNG TIN THÔNG BÁO
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {this.props.info.CongViec.IS_POPUP ? 'Có' : 'Không'}
-                                </Text>
-                            } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NGÀY HOÀN THÀNH MONG MUỐN
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.props.info.CongViec.NGAYHOANTHANH_THEOMONGMUON)}
-                                </Text>
-                            } />
-
                         {
-                            this.props.info.CongViec.IS_HASPLAN &&
-                            <ListItem style={DetailTaskStyle.listItemContainer}
+                            this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0 && <ListItem style={DetailTaskStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                        NGÀY HOÀN THÀNH THEO KẾ HOẠCH
+                                        NGƯỜI THAM GIA
                                     </Text>
                                 }
                                 subtitle={
                                     <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                        {util.isNull(this.props.info.CongViec.NGAYKETTHUC_KEHOACH) ? "Chưa duyệt kế hoạch" : convertDateToString(this.props.info.CongViec.NGAYKETTHUC_KEHOACH)}
+                                        {util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()}
                                     </Text>
-                                }
-                            />
+                                } />
+                        }
+
+                        <ListItem style={DetailTaskStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                    NỘI DUNG CÔNG VIỆC
+                                </Text>
+                            }
+                            subtitle={
+                                <HTMLView
+                                    value={this.props.info.CongViec.NOIDUNGCONGVIEC}
+                                    stylesheet={{ p: DetailTaskStyle.listItemSubTitleContainer }}
+                                />
+                            } />
+
+                        {
+                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            //     hideChevron={true}
+                            //     title={
+                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //             SỐ NGÀY NHẮC VIỆC TRƯỚC HẠN
+                            //     </Text>
+                            //     }
+                            //     subtitle={
+                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //             {this.props.info.CongViec.SONGAYNHACTRUOCHAN || "Không thiết lập"}
+                            //         </Text>
+                            //     } />
+                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            //     hideChevron={true}
+                            //     title={
+                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //             NHẮC VIỆC BẰNG EMAIL
+                            //     </Text>
+                            //     }
+                            //     subtitle={
+                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //             {this.props.info.CongViec.IS_EMAIL ? 'Có' : 'Không'}
+                            //         </Text>
+                            //     } />
+                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            //     hideChevron={true}
+                            //     title={
+                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //             NHẮC VIỆC BẰNG SMS
+                            //     </Text>
+                            //     }
+                            //     subtitle={
+                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //             {this.props.info.CongViec.IS_SMS ? 'Có' : 'Không'}
+                            //         </Text>
+                            //     } />
+                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            //     hideChevron={true}
+                            //     title={
+                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //             NHẮC VIỆC BẰNG TIN THÔNG BÁO
+                            //     </Text>
+                            //     }
+                            //     subtitle={
+                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //             {this.props.info.CongViec.IS_POPUP ? 'Có' : 'Không'}
+                            //         </Text>
+                            //     } />
+                        }
+
+
+                        {
+                            // this.props.info.CongViec.IS_HASPLAN &&
+                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            //     hideChevron={true}
+                            //     title={
+                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //             NGÀY HOÀN THÀNH THEO KẾ HOẠCH
+                            //         </Text>
+                            //     }
+                            //     subtitle={
+                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //             {util.isNull(this.props.info.CongViec.NGAYKETTHUC_KEHOACH) ? "Chưa duyệt kế hoạch" : convertDateToString(this.props.info.CongViec.NGAYKETTHUC_KEHOACH)}
+                            //         </Text>
+                            //     }
+                            // />
                         }
 
                         <ListItem style={DetailTaskStyle.listItemContainer}
@@ -304,19 +325,7 @@ export default class TaskDescription extends Component {
                                 </Text>
                             } />
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NỘI DUNG CÔNG VIỆC
-                                </Text>
-                            }
-                            subtitle={
-                                <HTMLView
-                                    value={this.props.info.CongViec.NOIDUNGCONGVIEC}
-                                    stylesheet={{ p: DetailTaskStyle.listItemSubTitleContainer }}
-                                />
-                            } />
+
 
 
                     </List>

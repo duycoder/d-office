@@ -24,7 +24,7 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -33,12 +33,13 @@ import {
   VANBANDI_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
-import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 
 class BaseList extends Component {
   constructor(props) {
@@ -170,66 +171,74 @@ class BaseList extends Component {
   }
 
   renderItem = ({ item, index }) => {
+    const readStateStyle = item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
+      dokhanText = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+        ? 'R.Q.TRỌNG'
+        : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
+      dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+        ? Colors.RED_PANTONE_186C
+        : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+
     return (
       <View>
-        <TouchableOpacity onPress={() => this.navigateToDocDetail(item.ID)}>
-          <ListItem
-            hideChevron={true}
-            badge={{
-              value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
-              textStyle: {
-                color: Colors.WHITE,
-                fontWeight: 'bold'
-              },
-              containerStyle: {
-                backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? Colors.RED_PANTONE_186C : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C),
-                borderRadius: 3
-              }
-            }}
-            leftIcon={
-              <View style={ListPublishDocStyle.leftSide}>
-                {
-                  renderIf(item.HAS_FILE)(
-                    <Icon name='ios-attach' />
-                  )
-                }
+        <ListItem
+          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .5 }}
+          leftIcon={
+            <View style={{ alignSelf: 'flex-start', justifyContent: 'center', flexDirection: 'column' }}>
+              <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: Colors.GREEN_PANTONE_364C, width: 36, height: 36, borderRadius: 18 }]}>
+                <RnText style={ListNotificationStyle.leftTitleText}>GD</RnText>
               </View>
-            }
+              {
+                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' containerStyle={{marginRight: 8, marginTop: 2}} />
+              }
+            </View>
+          }
 
-            title={
-              <RnText style={item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal}>
-                <RnText style={{ fontWeight: 'bold' }}>
-                  Mã hiệu:
-                </RnText>
-
-                <RnText>
-                  {' ' + item.SOHIEU}
-                </RnText>
+          title={
+            <RnText style={[readStateStyle, ListPublishDocStyle.abridgment]}>
+              <RnText style={{ fontWeight: 'bold' }}>
+                Trích yếu:
+            </RnText>
+              <RnText>
+                {' ' + formatLongText(item.TRICHYEU, 50)}
               </RnText>
-            }
+            </RnText>
+          }
 
-            subtitle={
-              <View>
-                <RnText style={[item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal, ListPublishDocStyle.abridgment]}>
+          subtitle={
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
+                <RnText style={[readStateStyle, ListPublishDocStyle.abridgmentSub]}>
                   <RnText style={{ fontWeight: 'bold' }}>
-                    Trích yếu:
-                  </RnText>
+                    Mã hiệu:
+              </RnText>
                   <RnText>
-                    {' ' + formatLongText(item.TRICHYEU, 50)}
+                    {' ' + item.SOHIEU}
                   </RnText>
                 </RnText>
-                <RnText style={[item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal, ListPublishDocStyle.abridgment]}>
+              </View>
+              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
+                <RnText style={[readStateStyle, ListPublishDocStyle.abridgmentSub]}>
                   <RnText style={{ fontWeight: 'bold' }}>
                     Số theo sổ:
-                  </RnText>
+            </RnText>
                   <RnText>
                     {` ${item.SODITHEOSO || "N/A"} - ${item.TENSOVANBAN ? item.TENSOVANBAN.replace(/^\D+/g, '') : "N/A"}`}
                   </RnText>
                 </RnText>
               </View>
-            }
-          />
-        </TouchableOpacity>
+            </View>
+          }
+          rightIcon={
+            <View style={{ flexDirection: 'column' }}>
+              <RnText style={[ListNotificationStyle.rightTitleText, { fontSize: moderateScale(9, .8) }]}>
+                {convertDateTimeToTitle(item.Update_At, true)}
+              </RnText>
+              <RNEIcon name='flag' size={26} color={dokhanBgColor} type='material-community' />
+            </View>
+          }
+          onPress={() => this.navigateToDocDetail(item.ID)}
+        />
       </View>
     );
   }

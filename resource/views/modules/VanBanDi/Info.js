@@ -55,20 +55,6 @@ export default class MainInfoSignDoc extends Component {
     }
 
     render() {
-        const { info } = this.state;
-        let sohieu = (
-            <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                {info.SOHIEU}
-            </Text>
-        );
-        if (info.SOHIEU === null || info.SOHIEU === "") {
-            sohieu = (
-                <Text style={[DetailSignDocStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
-                    Không rõ
-                </Text>
-            );
-        }
-
         let relateDoc;
         if (this.state.docInfo && this.state.docInfo.hasOwnProperty("entityVanBanDen")) {
             const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
@@ -106,6 +92,19 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                    TRÍCH YẾU
+                            </Text>
+                            }
+                            subtitle={
+                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                    {this.state.info.TRICHYEU}
+                                </Text>
+                            } />
+
+                        <ListItem style={DetailSignDocStyle.listItemContainer}
+                            hideChevron={true}
+                            title={
+                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
                                     LOẠI VĂN BẢN
                                 </Text>
                             }
@@ -132,95 +131,6 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    TRÍCH YẾU
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TRICHYEU}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY TẠO
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.CREATED_AT)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    SỐ HIỆU
-                                </Text>
-                            }
-                            subtitle={
-                                sohieu
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY VĂN BẢN
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAYVANBAN)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY BAN HÀNH
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAYBANHANH)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY HIỆU LỰC
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAYCOHIEULUC)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY HẾT HIỆU LỰC
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAYHETHIEULUC)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
                                     MỨC ĐỘ QUAN TRỌNG
                                 </Text>
                             }
@@ -229,6 +139,68 @@ export default class MainInfoSignDoc extends Component {
                                     {this.props.info.STR_DOKHAN}
                                 </Text>
                             } />
+
+
+
+                        {
+                            this.state.info.NGAYVANBAN && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NGÀY VĂN BẢN
+                                    </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYVANBAN)}
+                                    </Text>
+                                } />
+                        }
+
+                        {
+                            this.state.info.NGAYBANHANH && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NGÀY BAN HÀNH
+                                    </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYBANHANH)}
+                                    </Text>
+                                } />
+                        }
+
+                        {
+                            this.state.info.NGAYCOHIEULUC && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NGÀY HIỆU LỰC
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYCOHIEULUC)}
+                                    </Text>
+                                } />
+                        }
+
+                        {
+                            this.state.info.NGAYHETHIEULUC && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NGÀY HẾT HIỆU LỰC
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYHETHIEULUC)}
+                                    </Text>
+                                } />
+                        }
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
@@ -243,45 +215,50 @@ export default class MainInfoSignDoc extends Component {
                                 </Text>
                             } />
 
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGƯỜI KÝ
+                        {
+                            this.props.info.STR_NGUOIKY && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NGƯỜI KÝ
+                                    </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
+                                        {`${this.state.info.CHUCVU || ""} ${this.props.info.STR_NGUOIKY}`}
+                                    </Text>
+                                } />
+                        }
+
+                        {
+                            this.state.info.NOIDUNG && <ListItem style={DetailSignDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                        NỘI DUNG VĂN BẢN
                                 </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.props.info.STR_NGUOIKY || 'N/A'}
-                                </Text>
-                            } />
+                                }
+                                subtitle={
+                                    <HTMLView
+                                        value={this.state.info.NOIDUNG}
+                                        stylesheet={{ p: DetailSignDocStyle.listItemSubTitleContainer }}
+                                    />
+                                } />
+                        }
 
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    CHỨC VỤ NGƯỜI KÝ
+                                    NGÀY TẠO
                                 </Text>
                             }
                             subtitle={
                                 <Text style={DetailSignDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.CHUCVU}
+                                    {convertDateToString(this.state.info.CREATED_AT)}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailSignDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NỘI DUNG VĂN BẢN
-                                </Text>
-                            }
-                            subtitle={
-                                <HTMLView
-                                    value={this.state.info.NOIDUNG}
-                                    stylesheet={{ p: DetailSignDocStyle.listItemSubTitleContainer }}
-                                />
-                            } />
                     </List>
                 </ScrollView>
             </View>

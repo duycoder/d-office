@@ -599,7 +599,8 @@ class DetailTask extends Component {
                         menuActions.length > 0 &&
                         <ButtonGroup
                             containerStyle={ButtonGroupStyle.container}
-                            // buttonStyle={{padding:}}
+                            // buttonStyle={ButtonGroupStyle.button}
+                            // containerBorderRadius={50}
                             buttons={menuActions}
                         />
                         // <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>

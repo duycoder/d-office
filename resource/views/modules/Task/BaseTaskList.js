@@ -9,6 +9,7 @@ import {
     AsyncStorage, ActivityIndicator, View, Text as RnText,
     FlatList, RefreshControl, TouchableOpacity
 } from 'react-native';
+import HTMLView from 'react-native-htmlview';
 
 //redux
 import { connect } from 'react-redux';
@@ -27,16 +28,18 @@ import {
     API_URL, HEADER_COLOR, EMPTY_STRING,
     LOADER_COLOR, CONGVIEC_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-    Colors
+    Colors,
+    DOKHAN_CONSTANT
 } from '../../../common/SystemConstant';
 
 //utilities
-import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
 
 //styles
-import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
+import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
+import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -178,7 +181,7 @@ class BaseTaskList extends Component {
         else {
             let targetScreenParam = {
                 fromScreen: "ListPersonalTaskScreen",
-                
+
             }
             this.props.updateExtendsNavParams(targetScreenParam);
             this.props.navigator.navigate("CreateTaskScreen");
@@ -245,59 +248,116 @@ class BaseTaskList extends Component {
     }
 
     renderItem = ({ item, index }) => {
+        const readStateTextStyle = item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal,
+            progressColor = getColorCodeByProgressValue(item.PHANTRAMHOANTHANH),
+            progressText = `${item.PHANTRAMHOANTHANH || 0}%`;
+
+        let progressBars = Math.floor(item.PHANTRAMHOANTHANH / 10),
+            renderBars = new Array(10).fill(0);
+
+        while (progressBars > -1) {
+            renderBars[--progressBars] = 1;
+        }
+
+        const dokhanText = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+            ? 'R.Q.TRỌNG'
+            : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
+            dokhanBgColor = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+                ? Colors.RED_PANTONE_186C
+                : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+
         return (
             <View>
                 <ListItem
-                    hideChevron={true}
-                    badge={{
-                        value: (item.PHANTRAMHOANTHANH || 0) + '%',
-                        textStyle: {
-                            color: Colors.WHITE,
-                            fontWeight: 'bold'
-                        },
-                        containerStyle: {
-                            backgroundColor: getColorCodeByProgressValue(item.PHANTRAMHOANTHANH),
-                            borderRadius: 3
-                        }
-                    }}
-
-                    leftIcon={
-                        <View style={ListTaskStyle.leftSide}>
-                            {
-                                renderIf(item.HAS_FILE)(
-                                    <Icon name='ios-attach' />
-                                )
-                            }
-                        </View>
-                    }
-
+                    // hideChevron={true}
+                    containerStyle={{ borderBottomWidth: 0, paddingBottom: 0 }}
                     title={
-                        <TouchableOpacity onPress={() => this.navigateToDetail(item.ID)}>
-                            <RnText style={item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal}>
-                                <RnText style={{ fontWeight: 'bold' }}>
-                                    Tên công việc:
-                                </RnText>
-                                <RnText>
-                                    {' ' + item.TENCONGVIEC}
-                                </RnText>
-                            </RnText>
-                        </TouchableOpacity>
+                        <RnText style={[readStateTextStyle, { fontWeight: 'bold', fontSize: moderateScale(12, 1.2) }]}>
+                            {item.TENCONGVIEC}
+                        </RnText>
                     }
 
                     subtitle={
-                        <TouchableOpacity onPress={() => this.navigateToDetail(item.ID)}>
-                            <RnText style={[item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal, ListTaskStyle.abridgment]}>
-                                <RnText style={{ fontWeight: 'bold' }}>
-                                    Hạn xử lý:
-                                </RnText>
-                                <RnText>
-                                    {' ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
-                                </RnText>
-                            </RnText>
-                        </TouchableOpacity>
+                        <View style={{ marginTop: 8 }}>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: "35%" }}>
+                                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                                        Hạn xử lý:
+                                    </RnText>
+                                </View>
+                                <View style={{ width: "65%" }}>
+                                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                        {' ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
+                                    </RnText>
+                                </View>
+                            </View>
+                            {
+                                item.NOIDUNGCONGVIEC && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                    <View style={{ width: "35%" }}>
+                                        <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                                            Nội dung:
+                                        </RnText>
+                                    </View>
+                                    <View style={{ width: "65%" }}>
+                                        {
+                                            item.NOIDUNGCONGVIEC.indexOf("<p>") < 0
+                                                ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                                    {' ' + item.NOIDUNGCONGVIEC}
+                                                </RnText>
+                                                : <HTMLView
+                                                    value={item.NOIDUNGCONGVIEC}
+                                                    stylesheet={{ p: [DetailTaskStyle.listItemSubTitleContainer, { fontSize: moderateScale(12, 1.1), marginHorizontal: 3 }] }}
+                                                />
+                                        }
+                                    </View>
+                                </View>
+                            }
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: "35%" }}>
+                                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                                        Người xử lý chính:
+                                    </RnText>
+                                </View>
+                                <View style={{ width: "65%" }}>
+                                    {
+                                        item.TEN_NGUOIXULYCHINH
+                                            ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                                {' ' + item.TEN_NGUOIXULYCHINH}
+                                            </RnText>
+                                            : <RnText style={{ fontSize: moderateScale(12, 1.1), color: Colors.RED_PANTONE_186C }}>
+                                                {' Chưa giao việc'}
+                                            </RnText>
+                                    }
+                                </View>
+                            </View>
+                        </View>
                     }
+                    rightIcon={
+                        <View style={{ flexDirection: 'column' }}>
+                            <RNEIcon name='flag' size={26} color={dokhanBgColor} type='material-community' />
+                            {
+                                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' />
+                            }
+                        </View>
+                    }
+                    onPress={() => this.navigateToDetail(item.ID)}
                 />
-
+                <View style={{ paddingBottom: 10, paddingLeft: 10, paddingRight: 10 }}>
+                    <RnText style={{ fontSize: moderateScale(12, 1.1), fontWeight: 'bold', textAlign: "right" }}>{progressText}</RnText>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
+                        {
+                            renderBars.map((item, index) => {
+                                let bgColor = Colors.GRAY;
+                                if (!!item) {
+                                    bgColor = progressColor;
+                                }
+                                return (
+                                    <View key={index.toString()} style={[ListTaskStyle.progressBars, { backgroundColor: bgColor }]}></View>
+                                );
+                            })
+                        }
+                    </View>
+                </View>
             </View>
         );
     }
@@ -372,23 +432,22 @@ class BaseTaskList extends Component {
                     }
 
                     {
-                        this.state.taskType === CONGVIEC_CONSTANT.CA_NHAN &&
-                        <Fab
-                            active={true}
-                            direction="up"
-                            containerStyle={{}}
-                            style={{ backgroundColor: Colors.LITE_BLUE }}
-                            position="bottomRight"
-                            onPress={() => this.navigateToDetail(0)}>
-                            <Icon name="add" />
-                        </Fab>
-                    }
-
-                    {
                         executeLoading(this.state.executing)
                     }
 
                 </Content>
+                {
+                    this.state.taskType === CONGVIEC_CONSTANT.CA_NHAN &&
+                    <Fab
+                        active={true}
+                        direction="up"
+                        containerStyle={{}}
+                        style={{ backgroundColor: Colors.MENU_BLUE }}
+                        position="bottomRight"
+                        onPress={() => this.navigateToDetail(0)}>
+                        <Icon name="add" />
+                    </Fab>
+                }
             </Container>
         )
     }
