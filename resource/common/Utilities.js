@@ -24,6 +24,9 @@ import { verticalScale, moderateScale } from '../assets/styles/ScaleIndicator';
 //rút gọn đoạn văn dài
 export function formatLongText(text, size) {
     if (size > 1) {
+        if (!text) {
+            return "";
+        }
         if (text.length > size) {
             text = text.substring(0, size - 1);
             text += '...';
@@ -83,7 +86,7 @@ export function convertDateTimeToTitle(date, isShort = false) {
         let jsDate = new Date(date);
         let result = '';
 
-        let datePart = _readableFormat(jsDate.getUTCDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear();
+        let datePart = _readableFormat(jsDate.getUTCDate()) + '/' + _readableFormat(jsDate.getMonth() + 1) + '/' + jsDate.getFullYear().toString().slice(2);
         let timePart = _readableFormat(jsDate.getUTCHours()) + ':' + _readableFormat(jsDate.getUTCMinutes());
 
         result = isShort ? `${timePart}\n${datePart}` : `${datePart} lúc ${timePart}`;
