@@ -179,17 +179,20 @@ class BaseList extends Component {
         ? Colors.RED_PANTONE_186C
         : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
 
+    const loaiVanbanArr = item.TEN_HINHTHUC.split(" "),
+      loaiVanbanStr = loaiVanbanArr.map(x => x.charAt(0).toUpperCase()).join("");
+
     return (
       <View>
         <ListItem
           containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .5 }}
           leftIcon={
             <View style={{ alignSelf: 'flex-start', justifyContent: 'center', flexDirection: 'column' }}>
-              <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: Colors.GREEN_PANTONE_364C, width: 36, height: 36, borderRadius: 18 }]}>
-                <RnText style={ListNotificationStyle.leftTitleText}>GD</RnText>
+              <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: dokhanBgColor, width: 36, height: 36, borderRadius: 18 }]}>
+                <RnText style={ListNotificationStyle.leftTitleText}>{loaiVanbanStr}</RnText>
               </View>
               {
-                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' containerStyle={{marginRight: 8, marginTop: 2}} />
+                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' containerStyle={{ marginRight: 8, marginTop: 2 }} />
               }
             </View>
           }
