@@ -20,7 +20,7 @@ import { Colors } from '../../../common/SystemConstant';
 //lib
 import {
     Container, Content, List as NbList, ListItem as NbListItem,
-    Left, Title, Text as NbText, Body, Right, Radio
+    Left, Title, Text as NbText, Body, Right, Radio, CheckBox
 } from 'native-base';
 import {
     ListItem
@@ -28,7 +28,7 @@ import {
 import * as util from 'lodash';
 
 //style
-import {verticalScale} from '../../../assets/styles/ScaleIndicator';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 class AssignTaskMainProcessUsrs extends Component {
     constructor(props) {
@@ -128,7 +128,7 @@ class AssignTaskMainProcessUsrs extends Component {
                     {
                         this.state.data.map((item, index) => (
                             <NbListItem
-                                key={item.ID} style={{height: this.state.rowItemHeight}}
+                                key={item.ID} style={{ height: this.state.rowItemHeight }}
                                 onPress={() => this.onSelectUser(item.ID)}>
                                 <Left>
                                     <Title>
@@ -145,9 +145,11 @@ class AssignTaskMainProcessUsrs extends Component {
                                 </Body>
 
                                 <Right>
-                                    <Radio color={Colors.LITE_BLUE}
+                                    <CheckBox
+                                        color={Colors.LITE_BLUE}
                                         selected={this.props.mainProcessUser == item.ID}
-                                        onPress={() => this.onSelectUser(item.ID)} />
+                                        onPress={() => this.onSelectUser(item.ID)}
+                                    />
                                 </Right>
                             </NbListItem>
                         ))

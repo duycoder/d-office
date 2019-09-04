@@ -121,8 +121,8 @@ class WorkflowStreamMainProcessUsers extends Component {
                 <View style={styles.body} onLayout={this.setMaxHeight}>
                     {
                         this.state.users.map((item, index) => (
-                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)} 
-                                style={{height: this.state.rowItemHeight}}>
+                            <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)}
+                                style={{ height: this.state.rowItemHeight }}>
                                 <Left>
                                     <Title>
                                         <NbText>
@@ -140,11 +140,14 @@ class WorkflowStreamMainProcessUsers extends Component {
                                 </Body>
 
                                 <Right>
-                                    <Radio onPress={() => this.onSelectUser(item.ID)} 
-                                            selected={(this.props.mainProcessUsers == item.ID)} />
+                                    <CheckBox
+                                        onPress={() => this.onSelectUser(item.ID)}
+                                        checked={(this.props.mainProcessUsers == item.ID)}
+                                        style={{ alignSelf: "center" }}
+                                    />
                                 </Right>
                             </NbListItem>
-                        )) 
+                        ))
                     }
                 </View>
             </Animated.View>
