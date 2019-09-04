@@ -30,7 +30,8 @@ export const DetailSignDocStyle = StyleSheet.create({
     }, listItemSubTitleContainer: {
         fontSize: moderateScale(12, 1.3),
         color: 'black',
-        fontWeight: 'normal'
+        fontWeight: 'normal',
+        marginTop: 5
     }, timelineContainer: {
         paddingTop: verticalScale(20),
         flex: 1,

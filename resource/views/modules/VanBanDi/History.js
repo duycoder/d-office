@@ -161,7 +161,7 @@ export default class TimelineSignDoc extends Component {
     render() {
         return (
             <Container>
-                <Content>
+                <Content contentContainerStyle={{ paddingVertical: 20 }}>
                     <FlatList
                         data={this.state.logs}
                         renderItem={this.renderItem}

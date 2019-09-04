@@ -7,15 +7,17 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 
 //lib
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon } from 'react-native-elements';
 import HTMLView from 'react-native-htmlview';
 import { connect } from 'react-redux';
 //styles
 import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
-import { convertDateToString, _readableFormat, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { convertDateToString, _readableFormat, appStoreDataAndNavigate, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
 import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
+import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 class MainInfoPublishDoc extends Component {
 
@@ -26,12 +28,14 @@ class MainInfoPublishDoc extends Component {
             info: this.props.info.entityVanBanDen,
             loading: false,
             events: null,
-            hasAuthorization: props.hasAuthorization || 0
+            hasAuthorization: props.hasAuthorization || 0,
+            ListTaiLieu: null,
         };
     }
 
     componentWillMount = () => {
         this.fetchData();
+        this.fetchAttachment();
     }
 
     fetchData = async () => {
@@ -55,6 +59,28 @@ class MainInfoPublishDoc extends Component {
                 events: result
             })
         }
+    }
+    fetchAttachment = async () => {
+        this.setState({
+            loading: true
+        });
+        const url = `${API_URL}/api/VanBanDen/SearchAttachment?id=${this.state.info.ID}&attQuery=`;
+        const headers = new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        });
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers
+        });
+
+        const resultJson = await result.json();
+
+        this.setState({
+            loading: false,
+            ListTaiLieu: resultJson
+        });
     }
 
     getDetailEvent = () => {
@@ -124,11 +150,60 @@ class MainInfoPublishDoc extends Component {
             <View style={DetailPublishDocStyle.container}>
                 <ScrollView>
                     <List containerStyle={DetailPublishDocStyle.listContainer}>
+
+                        {
+                            this.state.ListTaiLieu && this.state.ListTaiLieu.length > 0
+                                ? <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                    hideChevron={true}
+                                    title={
+                                        <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                            Đính kèm
+                                        </Text>
+                                    }
+                                    subtitle={
+                                        <View>
+                                            {
+                                                this.state.ListTaiLieu.map((item, index) => {
+                                                    let regExtension = extention(item.DUONGDAN_FILE);
+                                                    let extension = regExtension ? regExtension[0] : "";
+                                                    return (
+                                                        <ListItem
+                                                            key={index.toString()}
+                                                            leftIcon={getFileExtensionLogo(extension)}
+                                                            title={item.TENTAILIEU}
+                                                            titleStyle={{
+                                                                marginLeft: 10,
+                                                                color: '#707070',
+                                                                fontWeight: 'bold'
+                                                            }}
+                                                            subtitle={
+                                                                getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
+                                                            }
+                                                            subtitleStyle={{
+                                                                fontWeight: 'normal',
+                                                                color: '#707070',
+                                                                marginLeft: 10,
+                                                            }}
+                                                            rightIcon={
+                                                                <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+                                                            }
+                                                            containerStyle={{ borderBottomWidth: 0 }}
+                                                            onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+                                                        />
+                                                    );
+                                                })
+                                            }
+                                        </View>
+                                    }
+                                />
+                                : null
+                        }
+
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    TRÍCH YẾU
+                                    Trích yếu
                         </Text>
                             }
                             subtitle={
@@ -140,7 +215,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỐ HIỆU
+                                    Số hiệu
                         </Text>
                             }
                             subtitle={
@@ -152,7 +227,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỔ ĐI THEO SỐ
+                                    Sổ đi theo số
                                 </Text>
                             }
                             subtitle={
@@ -165,7 +240,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    ĐƠN VỊ GỬI
+                                    Đơn vị gửi
                                 </Text>
                             }
                             subtitle={
@@ -178,7 +253,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    LOẠI VĂN BẢN
+                                    Loại văn bản
                                 </Text>
                             }
                             subtitle={
@@ -191,7 +266,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    LĨNH VỰC
+                                    Lĩnh vực
                                 </Text>
                             }
                             subtitle={
@@ -204,7 +279,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    MỨC ĐỘ QUAN TRỌNG
+                                    Mức độ quan trọng
                                 </Text>
                             }
                             subtitle={
@@ -217,7 +292,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    ĐỘ ƯU TIÊN
+                                    Độ ưu tiên
                                 </Text>
                             }
                             subtitle={
@@ -230,7 +305,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    SỐ TRANG
+                                    Số trang
                                 </Text>
                             }
                             subtitle={
@@ -240,87 +315,97 @@ class MainInfoPublishDoc extends Component {
                             } />
 
 
+                        {
+                            this.state.info.NGAY_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Ngày có hiệu lực
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAY_HIEULUC)}
+                                    </Text>
+                                } />
+                        }
+
+                        {
+                            this.state.info.NGAYHET_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Ngày hết hiệu lực
+                                    </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
+                                    </Text>
+                                } />
+                        }
+                        {
+                            this.state.info.NGAYHET_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Ngày hết hiệu lực
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
+                                    </Text>
+                                } />
+                        }
+                        {
+                            this.state.info.NGAY_VANBAN && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Ngày văn bản
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAY_VANBAN)}
+                                    </Text>
+                                } />
+                        }
+                        {
+                            this.state.info.NGAY_BANHANH && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Ngày ban hành
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {convertDateToString(this.state.info.NGAY_BANHANH)}
+                                    </Text>
+                                } />
+                        }
+                        {
+                            this.state.info.NGUOIKY && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        Người ký
+                                </Text>
+                                }
+                                subtitle={
+                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                        {`${this.state.info.CHUCVU || ""} ${this.state.info.NGUOIKY}`}
+                                    </Text>
+                                } />
+                        }
 
                         <ListItem style={DetailPublishDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NGÀY CÓ HIỆU LỰC
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAY_HIEULUC)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NGÀY HẾT HIỆU LỰC
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NGÀY VĂN BẢN
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAY_VANBAN)}
-                                </Text>
-                            } />
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NGÀY BAN HÀNH
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {convertDateToString(this.state.info.NGAY_BANHANH)}
-                                </Text>
-                            } />
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NGƯỜI KÝ
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.NGUOIKY}
-                                </Text>
-                            } />
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    CHỨC VỤ
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
-                                    {this.state.info.CHUCVU}
-                                </Text>
-                            } />
-
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    NỘI DUNG
+                                    Nội dung
                                 </Text>
                             }
                             subtitle={
@@ -330,12 +415,11 @@ class MainInfoPublishDoc extends Component {
                                 />
                             } />
                         {
-                            this.state.info.hasOwnProperty("NGAYCONGTAC") &&
-                            <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.hasOwnProperty("NGAYCONGTAC") && <ListItem style={DetailPublishDocStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                        THỜI GIAN CÔNG TÁC
+                                        Thời gian công tác
                                     </Text>
                                 }
                                 subtitle={
@@ -350,7 +434,7 @@ class MainInfoPublishDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>
-                                    TRÙNG LỊCH CÔNG TÁC LÃNH ĐẠO
+                                    Trùng lịch công tác lãnh đạo
                                 </Text>
                             }
                             subtitle={trungLichHop} />

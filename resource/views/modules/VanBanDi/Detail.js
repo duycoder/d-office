@@ -447,16 +447,18 @@ class DetailContent extends Component {
                         <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
                     </Tab>
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-attach' style={TabStyle.activeText} />
-                            <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                ĐÍNH KÈM
-                            </Text>
-                        </TabHeading>
-                    }>
-                        <AttachSignDoc info={this.state.docInfo.ListTaiLieu} docId={this.state.docId} />
-                    </Tab>
+                    {
+                        // <Tab heading={
+                        //     <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                        //         <Icon name='ios-attach' style={TabStyle.activeText} />
+                        //         <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                        //             ĐÍNH KÈM
+                        //     </Text>
+                        //     </TabHeading>
+                        // }>
+                        //     <AttachSignDoc info={this.state.docInfo.ListTaiLieu} docId={this.state.docId} />
+                        // </Tab>
+                    }
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 2 ? TabStyle.activeTab : TabStyle.inActiveTab)}>

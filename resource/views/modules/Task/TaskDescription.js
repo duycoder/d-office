@@ -11,7 +11,7 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 
 //common
-import { convertDateToString, asyncDelay, formatLongText, convertDateTimeToTitle } from '../../../common/Utilities';
+import { convertDateToString, asyncDelay, formatLongText, convertDateTimeToTitle, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
 
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import * as util from 'lodash';
@@ -21,6 +21,8 @@ import { API_URL, Colors } from '../../../common/SystemConstant';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
+import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 export default class TaskDescription extends Component {
     constructor(props) {
@@ -28,6 +30,7 @@ export default class TaskDescription extends Component {
         this.state = {
             docInfo: null,
             isArrivedDoc: false,
+            attachments: null,
 
             userId: props.userId,
             fromBrief: props.fromBrief || false
@@ -67,6 +70,23 @@ export default class TaskDescription extends Component {
         this.setState({
             docInfo: resultJson,
             isArrivedDoc: isArrived
+        });
+    }
+    fetchAttachment = async () => {
+        const url = `${API_URL}/api/HscvCongViec/SearchAttachment?id=${this.state.CongViec.ID}&attQuery=`;
+        const headers = new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        })
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers
+        });
+        const resultJson = await result.json();
+
+        this.setState({
+            attachments: resultJson
         });
     }
 
@@ -138,11 +158,56 @@ export default class TaskDescription extends Component {
                         {
                             this.state.docInfo && relateDoc
                         }
+                        {
+                            this.state.attachments && this.state.attachments.length > 0
+                                ? <ListItem style={DetailTaskStyle.listItemContainer}
+                                    hideChevron={true}
+                                    title={
+                                        <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                            Đính kèm
+                                        </Text>
+                                    }
+                                    subtitle={
+                                        <View>
+                                            {
+                                                this.state.attachments.map((item, index) => {
+                                                    let regExtension = extention(item.DUONGDAN_FILE);
+                                                    let extension = regExtension ? regExtension[0] : "";
+                                                    return <ListItem
+                                                        key={index.toString()}
+                                                        leftIcon={getFileExtensionLogo(extension)}
+                                                        title={item.TENTAILIEU}
+                                                        titleStyle={{
+                                                            marginLeft: 10,
+                                                            color: '#707070',
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                        subtitle={
+                                                            getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
+                                                        }
+                                                        subtitleStyle={{
+                                                            fontWeight: 'normal',
+                                                            color: '#707070',
+                                                            marginLeft: 10,
+                                                        }}
+                                                        rightIcon={
+                                                            <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+                                                        }
+                                                        containerStyle={{ borderBottomWidth: 0 }}
+                                                        onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+                                                    />
+                                                })
+                                            }
+                                        </View>
+                                    } />
+                                : null
+                        }
+
                         <ListItem style={DetailTaskStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    TÊN CÔNG VIỆC
+                                    Tên công việc
                                 </Text>
                             }
                             subtitle={
@@ -155,7 +220,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NGÀY HOÀN THÀNH MONG MUỐN
+                                    Ngày hoàn thành mong muốn
                                 </Text>
                             }
                             subtitle={
@@ -168,7 +233,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NGƯỜI GIAO VIỆC
+                                    Người giao việc
                                 </Text>
                             }
                             subtitle={
@@ -181,7 +246,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NGƯỜI XỬ LÝ CHÍNH
+                                    Người xử lý chính
                                 </Text>
                             }
                             subtitle={
@@ -194,7 +259,7 @@ export default class TaskDescription extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                        NGƯỜI THAM GIA
+                                        Người tham gia
                                     </Text>
                                 }
                                 subtitle={
@@ -208,7 +273,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    NỘI DUNG CÔNG VIỆC
+                                    Nội dung công việc
                                 </Text>
                             }
                             subtitle={
@@ -291,7 +356,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    ĐỘ ƯU TIÊN
+                                    Độ ưu tiên
                                 </Text>
                             }
                             subtitle={
@@ -304,7 +369,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    MỨC ĐỘ QUAN TRỌNG
+                                    Mức độ quan trọng
                                 </Text>
                             }
                             subtitle={
@@ -316,7 +381,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    TRẠNG THÁI
+                                    Trạng thái
                                 </Text>
                             }
                             subtitle={
@@ -324,10 +389,7 @@ export default class TaskDescription extends Component {
                                     {this.props.info.CongViec.PHANTRAMHOANTHANH === 100 ? `Đã hoàn thành vào ${convertDateTimeToTitle(this.props.info.CongViec.NGAYKETTHUC_THUCTE)}` : "Đang thực hiện"}
                                 </Text>
                             } />
-
-
-
-
+                            
                     </List>
                 </ScrollView>
             </View>

@@ -346,7 +346,7 @@ class DetailContent extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Tabs
-                    renderTabBar={() => <ScrollableTab />}
+                    // renderTabBar={() => <ScrollableTab />}
                     initialPage={this.state.currentTabIndex}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
@@ -361,16 +361,18 @@ class DetailContent extends Component {
                         <MainInfoPublishDoc info={this.state.docInfo} hasAuthorization={this.state.hasAuthorization} navigateToEvent={this.props.navigateToEvent} />
                     </Tab>
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-attach' style={TabStyle.activeText} />
-                            <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                ĐÍNH KÈM
-                            </Text>
-                        </TabHeading>
-                    }>
-                        <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems} docId={this.state.docId} />
-                    </Tab>
+                    {
+                        // <Tab heading={
+                        //     <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+                        //         <Icon name='ios-attach' style={TabStyle.activeText} />
+                        //         <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                        //             ĐÍNH KÈM
+                        //     </Text>
+                        //     </TabHeading>
+                        // }>
+                        //     <AttachPublishDoc info={this.state.docInfo.groupOfTaiLieuDinhKems} docId={this.state.docId} />
+                        // </Tab>
+                    }
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>

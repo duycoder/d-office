@@ -7,14 +7,16 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 
 //lib
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem, Icon } from 'react-native-elements'
 import _ from 'lodash';
 import HTMLView from 'react-native-htmlview';
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //common
-import { convertDateToString, asyncDelay, formatLongText } from '../../../common/Utilities';
+import { convertDateToString, asyncDelay, formatLongText, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
 import { Colors, API_URL } from '../../../common/SystemConstant';
+import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 export default class MainInfoSignDoc extends Component {
     constructor(props) {
@@ -23,7 +25,8 @@ export default class MainInfoSignDoc extends Component {
             info: props.info.VanBanTrinhKy,
             userId: props.userId,
             docInfo: null,
-            fromBrief: props.fromBrief
+            fromBrief: props.fromBrief,
+            ListTaiLieu: null
         }
     }
 
@@ -31,8 +34,8 @@ export default class MainInfoSignDoc extends Component {
         const { VANBANDEN_ID } = this.props.info.VanBanTrinhKy;
         if (VANBANDEN_ID !== null) {
             this.fetchData(VANBANDEN_ID);
-
         }
+        this.fetchAttachment();
     }
 
     fetchData = async (docId) => {
@@ -45,6 +48,26 @@ export default class MainInfoSignDoc extends Component {
 
         this.setState({
             docInfo: resultJson,
+        });
+    }
+    fetchAttachment = async () => {
+        const url = `${API_URL}/api/VanBanDi/SearchAttachment?id=${this.state.info.ID}&attQuery=`;
+        const headers = new Headers({
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=utf-8'
+        });
+
+        const result = await fetch(url, {
+            method: 'POST',
+            headers
+        });
+
+        const resultJson = await result.json();
+
+        await asyncDelay(1000);
+
+        this.setState({
+            ListTaiLieu: resultJson
         });
     }
 
@@ -88,11 +111,57 @@ export default class MainInfoSignDoc extends Component {
                         {
                             this.state.docInfo && relateDoc
                         }
+
+                        {
+                            this.state.ListTaiLieu && this.state.ListTaiLieu.length > 0
+                                ? <ListItem style={DetailSignDocStyle.listItemContainer}
+                                    hideChevron={true}
+                                    title={
+                                        <Text style={DetailSignDocStyle.listItemTitleContainer}>
+                                            Đính kèm
+                                        </Text>
+                                    }
+                                    subtitle={
+                                        <View>
+                                            {
+                                                this.state.ListTaiLieu.map((item, index) => {
+                                                    let regExtension = extention(item.DUONGDAN_FILE);
+                                                    let extension = regExtension ? regExtension[0] : "";
+                                                    return <ListItem
+                                                        key={index.toString()}
+                                                        leftIcon={getFileExtensionLogo(extension)}
+                                                        title={item.TENTAILIEU}
+                                                        titleStyle={{
+                                                            marginLeft: 10,
+                                                            color: '#707070',
+                                                            fontWeight: 'bold'
+                                                        }}
+                                                        subtitle={
+                                                            getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
+                                                        }
+                                                        subtitleStyle={{
+                                                            fontWeight: 'normal',
+                                                            color: '#707070',
+                                                            marginLeft: 10,
+                                                        }}
+                                                        rightIcon={
+                                                            <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+                                                        }
+                                                        containerStyle={{ borderBottomWidth: 0 }}
+                                                        onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
+                                                    />
+                                                })
+                                            }
+                                        </View>
+                                    } />
+                                : null
+                        }
+
                         <ListItem style={DetailSignDocStyle.listItemContainer}
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    TRÍCH YẾU
+                                    Trích yếu
                             </Text>
                             }
                             subtitle={
@@ -105,7 +174,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    LOẠI VĂN BẢN
+                                    Loại văn bản
                                 </Text>
                             }
                             subtitle={
@@ -118,7 +187,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    LĨNH VỰC
+                                    Lĩnh vực
                                 </Text>
                             }
                             subtitle={
@@ -131,7 +200,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    MỨC ĐỘ QUAN TRỌNG
+                                    Mức độ quan trọng
                                 </Text>
                             }
                             subtitle={
@@ -147,7 +216,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NGÀY VĂN BẢN
+                                        Ngày văn bản
                                     </Text>
                                 }
                                 subtitle={
@@ -162,7 +231,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NGÀY BAN HÀNH
+                                        Ngày ban hành
                                     </Text>
                                 }
                                 subtitle={
@@ -177,7 +246,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NGÀY HIỆU LỰC
+                                        Ngày hiệu lực
                                 </Text>
                                 }
                                 subtitle={
@@ -192,7 +261,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NGÀY HẾT HIỆU LỰC
+                                        Ngày hết hiệu lực
                                 </Text>
                                 }
                                 subtitle={
@@ -206,7 +275,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    SỐ BẢN
+                                    Số bản
                                 </Text>
                             }
                             subtitle={
@@ -220,7 +289,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NGƯỜI KÝ
+                                        Người ký
                                     </Text>
                                 }
                                 subtitle={
@@ -235,7 +304,7 @@ export default class MainInfoSignDoc extends Component {
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                        NỘI DUNG VĂN BẢN
+                                        Nội dung văn bản
                                 </Text>
                                 }
                                 subtitle={
@@ -250,7 +319,7 @@ export default class MainInfoSignDoc extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                                    NGÀY TẠO
+                                    Ngày tạo
                                 </Text>
                             }
                             subtitle={

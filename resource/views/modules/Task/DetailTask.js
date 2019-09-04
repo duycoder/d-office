@@ -682,16 +682,18 @@ class TaskContent extends Component {
                         <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
                     </Tab>
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.selectedTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                            <NbIcon name='ios-attach' style={TabStyle.activeText} />
-                            <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                ĐÍNH KÈM
-                            </Text>
-                        </TabHeading>
-                    }>
-                        <TaskAttachment info={this.props.info} />
-                    </Tab>
+                    {
+                        // <Tab heading={
+                        //     <TabHeading style={(this.state.selectedTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
+                        //         <NbIcon name='ios-attach' style={TabStyle.activeText} />
+                        //         <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
+                        //             ĐÍNH KÈM
+                        //     </Text>
+                        //     </TabHeading>
+                        // }>
+                        //     <TaskAttachment info={this.props.info} />
+                        // </Tab>
+                    }
 
                     <Tab heading={
                         <TabHeading style={(this.state.selectedTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
@@ -708,32 +710,34 @@ class TaskContent extends Component {
             )
         } else {
             bodyContent = (
-                <Tabs
-                    initialPage={0}
-                    tabBarUnderlineStyle={TabStyle.underLineStyle}
-                    onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}>
-                    <Tab heading={
-                        <TabHeading style={(this.state.selectedTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                            <NbIcon name='ios-information-circle-outline' style={TabStyle.activeText} />
-                            <Text style={(this.state.selectedTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                MÔ TẢ
-                            </Text>
-                        </TabHeading>
-                    }>
-                        <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
-                    </Tab>
+                <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.selectedTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                            <NbIcon name='ios-attach' style={TabStyle.activeText} />
-                            <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                ĐÍNH KÈM
-                            </Text>
-                        </TabHeading>
-                    }>
-                        <TaskAttachment info={this.props.info} />
-                    </Tab>
-                </Tabs>
+                // <Tabs
+                //     initialPage={0}
+                //     tabBarUnderlineStyle={TabStyle.underLineStyle}
+                //     onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}>
+                //     <Tab heading={
+                //         <TabHeading style={(this.state.selectedTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
+                //             <NbIcon name='ios-information-circle-outline' style={TabStyle.activeText} />
+                //             <Text style={(this.state.selectedTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
+                //                 MÔ TẢ
+                //             </Text>
+                //         </TabHeading>
+                //     }>
+                //         <TaskDescription info={this.props.info} navigateToDetailDoc={this.props.navigateToDetailDoc} userId={this.state.userInfo.ID} fromBrief={this.state.fromBrief} />
+                //     </Tab>
+
+                //     <Tab heading={
+                //         <TabHeading style={(this.state.selectedTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
+                //             <NbIcon name='ios-attach' style={TabStyle.activeText} />
+                //             <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
+                //                 ĐÍNH KÈM
+                //             </Text>
+                //         </TabHeading>
+                //     }>
+                //         <TaskAttachment info={this.props.info} />
+                //     </Tab>
+                // </Tabs>
             )
         }
         return (
