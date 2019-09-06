@@ -12,7 +12,7 @@ import {
 import {
 	Container, Content, Segment, Button, Text, Icon, Item, Input,
 	Header, Left, Body, Title, View, Tabs, Tab, TabHeading,
-	Right, Toast, ListItem as NbListItem, Radio
+	Right, Toast, ListItem as NbListItem, Radio, CheckBox
 } from 'native-base';
 import {
 	Icon as RneIcon
@@ -158,9 +158,9 @@ class PickTaskAssigner extends Component {
 				</Body>
 
 				<Right>
-					<Radio
+					<CheckBox
 						color={Colors.LITE_BLUE}
-						selected={this.state.giaoviecId == item.ID}
+						checked={this.state.giaoviecId == item.ID}
 						onPress={() => this.selectUser(item)}
 					/>
 				</Right>
