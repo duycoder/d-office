@@ -79,8 +79,18 @@ import WorkflowRequestReviewUsers from '../modules/Workflow/WorkflowRequestRevie
 
 //#region màn hình đăng ký & quản lý chuyến xe
 import ListCarRegistration from '../modules/CarRegistration/ListRegistration';
-// import CreateRegistration from '../modules/CarRegistration/CreateRegistration';
-// import DetailRegistration from '../modules/CarRegistration/DetailRegistration';
+import CreateRegistration from '../modules/CarRegistration/CreateRegistration';
+import DetailRegistration from '../modules/CarRegistration/DetailRegistration';
+import ListTrip from '../modules/CarRegistration/ListTrip';
+import CreateTrip from '../modules/CarRegistration/CreateTrip';
+import RejectTrip from '../modules/CarRegistration/RejectTrip';
+import DetailTrip from '../modules/CarRegistration/DetailTrip';
+import ReturnTrip from '../modules/CarRegistration/ReturnTrip';
+import PickCanbo from '../modules/CarRegistration/PickCanbo';
+//#endregion
+
+//#region màn hình lịch trực/ lịch khám
+import ListLichtruc from '../modules/LichTruc/ListLichtruc';
 //#endregion
 
 //comment
@@ -281,12 +291,27 @@ const baseStack = {
   },
   ListCarRegistrationScreen: {
     screen: ListCarRegistration
-  }, 
-  // CreateCarRegistrationScreen: {
-  //   screen: CreateRegistration
-  // }, DetailCarRegistrationScreen: {
-  //   screen: DetailRegistration
-  // }
+  }, CreateCarRegistrationScreen: {
+    screen: CreateRegistration
+  }, DetailCarRegistrationScreen: {
+    screen: DetailRegistration
+  }, CreateTripScreen: {
+    screen: CreateTrip
+  }, ListTripScreen: {
+    screen: ListTrip
+  }, RejectTripScreen: {
+    screen: RejectTrip
+  }, DetailTripScreen: {
+    screen: DetailTrip
+  }, ReturnTripScreen:{
+    screen: ReturnTrip
+  }, PickCanboScreen: {
+    screen: PickCanbo
+  },
+
+  ListLichtrucScreen: {
+    screen: ListLichtruc
+  }
 };
 
 const notificationStack = StackNavigator(
