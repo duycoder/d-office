@@ -117,7 +117,7 @@ class Dashboard extends Component {
   }
 
   fetchRecentNoti = async () => {
-    const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/3/1?query=`;
+    const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/3/1/false?query=`;
     const resource = await fetch(url);
     const result = await resource.json();
 
@@ -184,16 +184,16 @@ class Dashboard extends Component {
     this.props.navigation.navigate(screenName);
   }
 
-  // componentDidMount() {
-  //   this._navListener = this.props.navigation.addListener('didFocus', () => {
-  //     StatusBar.setBarStyle('dark-content');
-  //     // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
-  //   });
-  // }
+  componentDidMount() {
+    this._navListener = this.props.navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+      // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
+    });
+  }
 
-  // componentWillUnmount() {
-  //   this._navListener.remove();
-  // }
+  componentWillUnmount() {
+    this._navListener.remove();
+  }
 
   navigate(screenName) {
     this.props.navigation.push(screenName);
@@ -514,7 +514,7 @@ class Dashboard extends Component {
                     let ChutriString = "", ChutriArr = [],
                       ThoigianDiadiemString = `${_readableFormat(GIO_CONGTAC)}h${_readableFormat(PHUT_CONGTAC)}${DIADIEM ? ` - ${DIADIEM}` : ""}`;
                     if (TEN_NGUOI_CHUTRI) {
-                      ChutriArr.push(TEN_NGUOI_CHUTRI);
+                      ChutriArr.push(TEN_NGUOI_CHUTRI.split(" - ").reverse().join(" "));
                     }
                     if (TEN_VAITRO_CHUTRI) {
                       ChutriArr.push(TEN_VAITRO_CHUTRI);

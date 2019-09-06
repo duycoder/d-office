@@ -136,7 +136,7 @@ class ListNotification extends Component {
     }
 
     fetchData = async () => {
-        const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/${this.state.pageSize}/${this.state.pageIndex}?query=`;
+        const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/${this.state.pageSize}/${this.state.pageIndex}/true?query=`;
         const resource = await fetch(url);
         const result = await resource.json();
 
@@ -171,7 +171,8 @@ class ListNotification extends Component {
             noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
             noidungMessage = item.NOIDUNG.slice(noidungArchor);
 
-        let checkReadFont = item.IS_READ ? 'normal' : 'bold';
+        let checkReadFont = item.IS_READ ? 'normal' : 'bold',
+            checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
 
         return (
             <ListItem
@@ -197,8 +198,8 @@ class ListNotification extends Component {
                 // }}
                 hideChevron={true}
                 title={
-                    <RNText style={[styles.title, {fontWeight: checkReadFont}]}>
-                        <RNText style={{fontWeight:'bold'}}>{noidungSender}</RNText> {noidungMessage}
+                    <RNText style={[styles.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
+                        <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</RNText> {noidungMessage}
                     </RNText>
                 }
                 titleStyle={styles.title}
@@ -227,6 +228,7 @@ class ListNotification extends Component {
     render() {
         return (
             <Container>
+            <StatusBar barStyle="light-content" />
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>
