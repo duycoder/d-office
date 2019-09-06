@@ -1,8 +1,8 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://vanban.vnio.vn'
 // export const API_URL = 'http://192.168.1.29:8098';
-export const API_URL = 'http://101.96.76.204:8999';
-// export const API_URL = 'http://123.30.149.48:8099';
+// export const API_URL = 'http://101.96.76.204:8999'; //server vnio
+export const API_URL = 'http://123.16.245.4:8111'; //server local
 // export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -44,10 +44,13 @@ export const TASK_PROCESS_TYPE = {
 	ALL_PROCESS: 3
 }
 
+/**
+ * Giá trị độ khẩn
+ */
 export const DOKHAN_CONSTANT = {
-	KHAN: 98,
-	THUONG: 99,
-	THUONG_KHAN: 100
+	KHAN: 1,
+	THUONG: 2,
+	THUONG_KHAN: 3
 }
 
 export const VANBANDI_CONSTANT = {
@@ -79,12 +82,49 @@ export const THONGBAO_CONSTANT = {
 	VANBAN: 2
 }
 
+export const DATXE_CONSTANT = {
+	DATXE_STATUS: {
+		MOI_TAO: 1,
+		DA_GUI: 2,
+		DA_HUY: 3,
+		DA_TIEP_NHAN: 4,
+		DANG_THUC_HIEN: 5,
+		DA_HOAN_THANH: 6,
+	},
+	CHUYEN_STATUS: {
+		MOI_TAO: 1,
+		DANG_CHAY: 2,
+		DA_HOAN_THANH: 3
+	}
+}
+
+export const LICHTRUC_CONSTANT = {
+	CHUYEN_MON: "LT_LICHTRUC_CHUYENMON",
+	KHAM_CHUA_BENH: "LT_LICHKHAM_CHUABENH"
+}
+
 //colors
 export const Colors = {
 	WHITE: '#fff',
+	/**
+	 * Text bình thường
+	 */
 	BLACK: '#000',
+	/**
+	 * Text chưa đọc
+	 */
+	NOT_READ: '#0078d4',
+	/**
+	 * Text đã xử lý
+	 */
+	HAS_DONE: '#888',
 	RED: '#f00',
-	GRAY: '#bdc6cf', DARK_GRAY: '#96a2ad',
+	GRAY: '#bdc6cf',
+	DARK_GRAY: '#96a2ad',
+	/**
+	 * Màu icon inactive
+	 */
+	DANK_GRAY: '#858585',
 	CLOUDS: '#ecf0f1',
 	GREEN_PANTON_376C: '#7DBA00',
 	GREEN_PANTON_369C: '#4FA800',
@@ -93,8 +133,16 @@ export const Colors = {
 	RED_PANTONE_186C: '#FF0033',
 	RED_PANTONE_021C: '#FF6600',
 	DANK_BLUE: '#007cc2',
-	LITE_BLUE: '#00aeef',
+	/**
+	 * Màu header, icon active, action
+	 */
+	LITE_BLUE: '#1769b3', //00aeef
+	OLD_LITE_BLUE: '#00aeef',
 	LIGHT_GRAY_PASTEL: '#f4f3f3',
+	MENU_BLUE: '#0078d4',
+
+	RANDOM_COLOR_1: '#ad6b16',
+	RANDOM_COLOR_2: '#1ab41a'
 }
 
 export const BASEDOCSEARCH_CONSTANT = {
@@ -135,13 +183,13 @@ export const SYSTEM_FUNCTION = {
 			'PROCESSED_JOB'
 		]
 	},
-	LichCongTacFunction:{
+	LichCongTacFunction: {
 		code: 'LICHCONGTAC_LANHDAO',
 		actionCodes: [
 			'QL_LICHCONGTAC_LD',
 		]
 	},
-	UyQuyenFunction:{
+	UyQuyenFunction: {
 		code: 'QUANLY_UYQUYEN',
 		actionCodes: [
 			'DANHSACH_UYQUYEN',
