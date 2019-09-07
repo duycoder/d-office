@@ -93,6 +93,14 @@ import PickCanbo from '../modules/CarRegistration/PickCanbo';
 import ListLichtruc from '../modules/LichTruc/ListLichtruc';
 //#endregion
 
+//#region màn hình lịch họp/ phòng họp
+import MeetingDayList from '../modules/MeetingRoom/MeetingDayList';
+import DetailMeetingDay from '../modules/MeetingRoom/DetailMeetingDay';
+import PickMeetingRoom from '../modules/MeetingRoom/PickMeetingRoom';
+import CreateMeetingDay from '../modules/MeetingRoom/CreateMeetingDay';
+import PickNguoiChutri from '../modules/MeetingRoom/PickNguoiChutri';
+//#endregion
+
 //comment
 import ListComment from '../modules/Comment/ListComment';
 import ReplyComment from '../modules/Comment/ReplyComment';
@@ -303,7 +311,7 @@ const baseStack = {
     screen: RejectTrip
   }, DetailTripScreen: {
     screen: DetailTrip
-  }, ReturnTripScreen:{
+  }, ReturnTripScreen: {
     screen: ReturnTrip
   }, PickCanboScreen: {
     screen: PickCanbo
@@ -311,6 +319,18 @@ const baseStack = {
 
   ListLichtrucScreen: {
     screen: ListLichtruc
+  },
+
+  MeetingDayListScreen: {
+    screen: MeetingDayList
+  }, DetailMeetingDayScreen: {
+    screen: DetailMeetingDay
+  }, PickMeetingRoomScreen: {
+    screen: PickMeetingRoom
+  }, CreateMeetingDayScreen: {
+    screen: CreateMeetingDay
+  }, PickNguoiChutriScreen: {
+    screen: PickNguoiChutri
   }
 };
 
