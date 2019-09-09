@@ -67,9 +67,9 @@ class Dashboard extends Component {
       calendarLoading: false,
 
       //notifyCount
-      notifyCount_VBDen: 0,
-      notifyCount_VBDi: 0,
-      notifyCount_CV: 0
+      notifyCount_VBDen_Chuaxuly: 0,
+      notifyCount_VBDi_Chuaxuly: 0,
+      notifyCount_CV_Canhan: 0
     }
   }
 
@@ -92,9 +92,9 @@ class Dashboard extends Component {
     const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
     const result = await fetch(url).then(response => response.json());
     this.setState({
-      notifyCount_VBDen: result.notifyCount_VBDen || 0,
-      notifyCount_VBDi: result.notifyCount_VBDi || 0,
-      notifyCount_CV: result.notifyCount_CV || 0
+      notifyCount_VBDen_Chuaxuly: result.notifyCount_VBDen_Chuaxuly || 0,
+      notifyCount_VBDi_Chuaxuly: result.notifyCount_VBDi_Chuaxuly || 0,
+      notifyCount_CV_Canhan: result.notifyCount_CV_Canhan || 0
     })
   }
 
@@ -333,7 +333,7 @@ class Dashboard extends Component {
     // console.tron.log(this.state.userInfo)
     const { 
       notifyCount, userFunctions, onFocusNow,
-      notifyCount_VBDen, notifyCount_VBDi, notifyCount_CV
+      notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan
     } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
     const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
@@ -364,7 +364,7 @@ class Dashboard extends Component {
                 actionCode={VANBANDEN._CHUAXULY.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-                notifyCount={notifyCount_VBDen}
+                notifyCount={notifyCount_VBDen_Chuaxuly}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến</Text>
             </TouchableOpacity>
@@ -373,7 +373,7 @@ class Dashboard extends Component {
                 actionCode={VANBANDI._CHUAXULY.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-                notifyCount={notifyCount_VBDi}
+                notifyCount={notifyCount_VBDi_Chuaxuly}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi</Text>
             </TouchableOpacity>
@@ -382,7 +382,7 @@ class Dashboard extends Component {
                 actionCode={CONGVIEC._CANHAN.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-                notifyCount={notifyCount_CV}
+                notifyCount={notifyCount_CV_Canhan}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
             </TouchableOpacity>

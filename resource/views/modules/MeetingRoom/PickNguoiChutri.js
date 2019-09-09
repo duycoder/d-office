@@ -178,7 +178,7 @@ class PickNguoiChutri extends Component {
   }
 
   render() {
-    console.tron.log(this.state.chutriId)
+    // console.tron.log(this.state.chutriId)
     let unsubmitableCondition = this.state.chutriId === 0,
       checkButtonStyle = unsubmitableCondition ? { opacity: 0.6 } : { opacity: 1 };
 

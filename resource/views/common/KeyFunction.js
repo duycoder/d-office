@@ -54,8 +54,52 @@ class KeyFunction extends Component {
       userInfo: {},
       onFocusNow: '',
       notifyCount: 0,
-      userFunctions: []
+      userFunctions: [],
+
+      notifyCount_VBDen_Chuaxuly: 0,
+      notifyCount_VBDen_Noibo_Chuaxuly: 0,
+      notifyCount_VBDen_Thamgiaxuly: 0,
+
+      notifyCount_VBDi_Chuaxuly: 0,
+      notifyCount_VBDi_Thamgiaxuly: 0,
+      notifyCount_VBDi_Dabanhanh: 0,
+
+      notifyCount_CV_Canhan: 0,
+      notifyCount_CV_Duocgiao: 0,
+      notifyCount_CV_Choxacnhan: 0,
+      notifyCount_CV_Phoihopxuly: 0,
+
+      notifyCount_Lichhop: 0,
+      notifyCount_Datxe: 0,
+      notifyCount_Chuyenxe: 0,
+      notifyCount_Uyquyen: 0,
+      notifyCount_Lichtruc: 0,
     }
+  }
+
+  fetchNotifyCount = async () => {
+    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
+    const result = await fetch(url).then(response => response.json());
+    this.setState({
+      notifyCount_VBDen_Chuaxuly: result.notifyCount_VBDen_Chuaxuly || 0,
+      notifyCount_VBDen_Noibo_Chuaxuly: result.notifyCount_VBDen_Noibo_Chuaxuly || 0,
+      notifyCount_VBDen_Thamgiaxuly: result.notifyCount_VBDen_Thamgiaxuly || 0,
+
+      notifyCount_VBDi_Chuaxuly: result.notifyCount_VBDi_Chuaxuly || 0,
+      notifyCount_VBDi_Thamgiaxuly: result.notifyCount_VBDi_Thamgiaxuly || 0,
+      notifyCount_VBDi_Dabanhanh: result.notifyCount_VBDi_Dabanhanh || 0,
+
+      notifyCount_CV_Canhan: result.notifyCount_CV_Canhan || 0,
+      notifyCount_CV_Duocgiao: result.notifyCount_CV_Duocgiao || 0,
+      notifyCount_CV_Choxacnhan: result.notifyCount_CV_Choxacnhan || 0,
+      notifyCount_CV_Phoihopxuly: result.notifyCount_CV_Phoihopxuly || 0,
+
+      notifyCount_Lichhop: result.notifyCount_Lichhop || 0,
+      notifyCount_Datxe: result.notifyCount_Datxe || 0,
+      notifyCount_Chuyenxe: result.notifyCount_Chuyenxe || 0,
+      notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
+      notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
+    });
   }
 
   async componentWillMount() {
@@ -69,16 +113,17 @@ class KeyFunction extends Component {
     });
   }
 
-  // componentDidMount() {
-  //   this._navListener = this.props.navigation.addListener('didFocus', () => {
-  //     StatusBar.setBarStyle('dark-content');
-  //     // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
-  //   });
-  // }
+  componentDidMount() {
+    this._navListener = this.props.navigation.addListener('didFocus', () => {
+      StatusBar.setBarStyle('light-content');
+      // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
+    });
+    this.fetchNotifyCount();
+  }
 
-  // componentWillUnmount() {
-  //   this._navListener.remove();
-  // }
+  componentWillUnmount() {
+    this._navListener.remove();
+  }
 
   navigate(screenName) {
     this.props.navigation.push(screenName);
@@ -107,6 +152,56 @@ class KeyFunction extends Component {
     // });
     // this.props.navigation.dispatch(resetAction);
     this.props.navigation.navigate(screenName);
+  }
+
+  generateNotifyCount = (maThaotac) => {
+    const {
+      notifyCount_VBDen_Chuaxuly, notifyCount_VBDen_Noibo_Chuaxuly, notifyCount_VBDen_Thamgiaxuly,
+      notifyCount_VBDi_Chuaxuly, notifyCount_VBDi_Dabanhanh, notifyCount_VBDi_Thamgiaxuly,
+      notifyCount_CV_Canhan, notifyCount_CV_Choxacnhan, notifyCount_CV_Duocgiao, notifyCount_CV_Phoihopxuly,
+      notifyCount_Lichhop, notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichtruc, notifyCount_Uyquyen
+    } = this.state;
+
+    switch (maThaotac) {
+      case VANBANDEN._CHUAXULY.NAME:
+        return notifyCount_VBDen_Chuaxuly;
+      case VANBANDEN._NOIBO_CHUAXULY.NAME:
+        return notifyCount_VBDen_Noibo_Chuaxuly;
+      case VANBANDEN._THAMGIA_XULY.NAME:
+        return notifyCount_VBDen_Thamgiaxuly;
+        break;
+
+      case VANBANDI._CHUAXULY.NAME:
+        return notifyCount_VBDi_Chuaxuly;
+      case VANBANDI._DA_BANHANH.NAME:
+        return notifyCount_VBDi_Dabanhanh;
+      case VANBANDI._THAMGIA_XULY.NAME:
+        return notifyCount_VBDi_Thamgiaxuly;
+
+      case CONGVIEC._CANHAN.NAME:
+        return notifyCount_CV_Canhan;
+      case CONGVIEC._DUOCGIAO.NAME:
+        return notifyCount_CV_Duocgiao;
+      case CONGVIEC._PHOIHOPXULY.NAME:
+        return notifyCount_CV_Phoihopxuly;
+      case CONGVIEC._PROCESSED_JOB.NAME:
+        return notifyCount_CV_Choxacnhan;
+
+      case TIENICH._DS_YEUCAU_XE.NAME:
+        return notifyCount_Datxe;
+      case TIENICH._DS_CHUYEN.NAME:
+        return notifyCount_Chuyenxe;
+      case TIENICH._DS_LICHHOP.NAME:
+        return notifyCount_Lichhop;
+      case TIENICH._DS_UYQUYEN.NAME:
+        return notifyCount_Uyquyen;
+      case TIENICH._DS_LICHTRUC.NAME:
+        return notifyCount_Lichtruc;
+      default:
+        break;
+    }
+
+    return 0;
   }
 
   generateTitle(maThaotac) {
@@ -246,6 +341,7 @@ class KeyFunction extends Component {
                         >
                           <SideBarIcon
                             actionCode={sItem.MA_THAOTAC}
+                            notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
                           // customIconContainerStyle={{ flex: 1, marginBottom: '10%' }}
                           />
                           <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>

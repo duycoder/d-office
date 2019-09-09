@@ -7,7 +7,7 @@
 import React, { Component } from 'react'
 import {
     AsyncStorage, View, Text, Image,
-    ImageBackground
+    ImageBackground, StatusBar
 } from 'react-native'
 import { NavigationActions } from 'react-navigation';
 
@@ -39,7 +39,7 @@ import firebase, { Notification } from 'react-native-firebase';
 class Loading extends Component {
     state = {
         progress: 0,
-        timing: 300,
+        timing: 300,//300
         duration: 1,
         notif: '',
     }
@@ -128,20 +128,20 @@ class Loading extends Component {
             // console.tron.log("Listen, this is data when opened")
             // console.tron.log(notificationOpen.notification);
             if (data.targetScreen && data.objId) {
-                let screenParam = {};
-                if (data.isTaskNotification == "false") {
-                    screenParam = {
-                        docId: data.objId,
-                        docType: "1"
-                    }
-                }
-                else {
-                    screenParam = {
-                        taskId: data.objId,
-                        taskType: "1"
-                    }
-                }
-                this.props.updateCoreNavParams(screenParam);
+                // let screenParam = {};
+                // if (data.isTaskNotification == "false") {
+                //     screenParam = {
+                //         docId: data.objId,
+                //         docType: "1"
+                //     }
+                // }
+                // else {
+                //     screenParam = {
+                //         taskId: data.objId,
+                //         taskType: "1"
+                //     }
+                // }
+                this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
                 this.props.navigation.navigate(data.targetScreen);
                 // this.props.navigation.navigate("DashboardScreen");
             }
@@ -160,21 +160,21 @@ class Loading extends Component {
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body, data } = notificationOpen.notification;
-            const { objId, isTaskNotification, targetScreen } = data;
+            const { objId, isTaskNotification, targetScreen, url } = data;
             // screenName = targetScreen;
-            let screenParam = {};
-            if (isTaskNotification == "false") {
-                screenParam = {
-                    docId: objId,
-                    docType: "1"
-                }
-            }
-            else {
-                screenParam = {
-                    taskId: objId,
-                    taskType: "1"
-                }
-            }
+            // let screenParam = {};
+            // if (isTaskNotification == "false") {
+            //     screenParam = {
+            //         docId: objId,
+            //         docType: "1"
+            //     }
+            // }
+            // else {
+            //     screenParam = {
+            //         taskId: objId,
+            //         taskType: "1"
+            //     }
+            // }
             const storage = await AsyncStorage.getItem('userInfo').then((rs) => {
                 return {
                     user: JSON.parse(rs),
@@ -182,7 +182,7 @@ class Loading extends Component {
                 }
             });
             this.props.setUserInfo(storage.user);
-            this.props.updateCoreNavParams(screenParam);
+            this.props.updateCoreNavParams(this.generateScreenParams(url, objId));
             this.props.navigation.navigate(targetScreen);
             // this.props.navigation.navigate("DashboardScreen");
 
@@ -253,8 +253,9 @@ class Loading extends Component {
                     //     //VanBanDenIsProcessScreen VanBanDenIsNotProcessScreen ListPersonalTaskScreen TestScreen stack VanBanDiFlow ListNotificationScreen
                     // }
                     // screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
-                    // appNavigate(this.props.navigation, screenName, screenParam);
-                    this.props.navigation.navigate("KeyFunctionScreen");//AccountInfoScreen DashboardScreen KeyFunctionScreen
+                    // appNavigate(this.props.navigation, screenName, screenParam);VanBanDiIsNotProcessScreen
+                    // ListCarRegistrationScreen  ListTripScreen ListLichtrucScreen
+                    this.props.navigation.navigate("DashboardScreen");//AccountInfoScreen DashboardScreen KeyFunctionScreen ListPersonalTaskScreen VanBanDenIsNotProcessScreen ListCarRegistrationScreen
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
             } else {
@@ -273,6 +274,49 @@ class Loading extends Component {
         // this.notificationInitialization;
     }
 
+    generateScreenParams = (itemUrl, itemId) => {
+        let screenParam = {};
+        const itemType = itemUrl.split("/")[2];
+        switch (itemType) {
+            case "HSVanBanDi":
+                screenParam = {
+                    docId: itemId,
+                    docType: "1"
+                };
+                break;
+            case "QuanLyCongViec":
+                screenParam = {
+                    taskId: itemId,
+                    taskType: "1"
+                };
+                break;
+            case "HSCV_VANBANDEN":
+                screenParam = {
+                    docId: itemId,
+                    docType: "1"
+                };
+                break;
+            case "QL_LICHHOP":
+                screenParam = {
+                    lichhopId: itemId,
+                };
+                break;
+            case "QL_DANGKY_XE":
+                screenParam = {
+                    registrationId: itemId,
+                };
+                break;
+            case "QL_CHUYEN":
+                screenParam = {
+                    tripId: itemId,
+                };
+                break;
+            default:
+                break;
+        }
+        return screenParam;
+    }
+
     render() {
         return (
             <View style={{
@@ -281,6 +325,7 @@ class Loading extends Component {
                 alignItems: 'center',
                 backgroundColor: Colors.LITE_BLUE
             }}>
+                <StatusBar barStyle={"light-content"} />
                 <Image source={uriLogo} style={{
                     width: 150,
                     height: 150,
