@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Text } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
 import { SideBarStyle } from '../assets/styles/SideBarStyle';
 import { moderateScale } from '../assets/styles/ScaleIndicator';
 
-const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction, UyQuyenFunction } = SYSTEM_FUNCTION;
+const { VanBanDenFunction, VanBanDiFunction, CongViecFunction, LichCongTacFunction, UyQuyenFunction, TienichFunction } = SYSTEM_FUNCTION;
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 import VectorIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconImages from '../common/Images';
+import NotiTabBarIcon from '../views/common/NotiTabBarIcon';
 const { vanbandenIcons, vanbandiIcons, congviecIcons, otherIcons, hotPickIcons } = IconImages;
 
 export default class SideBarIcon extends Component {
@@ -21,10 +22,11 @@ export default class SideBarIcon extends Component {
     iconColor: Colors.BLACK,
     customIconContainerStyle: {},
     customIconImageStyle: {},
-    isHotPick: false
+    isHotPick: false,
+    notifyCount: 0
   }
   render() {
-    const { actionCode, status, isParent, iconSize, customIconContainerStyle, customIconImageStyle, isHotPick } = this.props;
+    const { actionCode, status, isParent, iconSize, customIconContainerStyle, customIconImageStyle, isHotPick, notifyCount } = this.props;
     let iconName = "file-download", iconColor = this.props.iconColor;
 
     if (isHotPick) {
@@ -115,6 +117,24 @@ export default class SideBarIcon extends Component {
           break;
         //#endregion
 
+        //#region Tiẹn ích
+        case TienichFunction.actionCodes[0]:
+          iconName = otherIcons.dat_xe;
+          break;
+        case TienichFunction.actionCodes[1]:
+          iconName = otherIcons.chuyen_xe;
+          break;
+        case TienichFunction.actionCodes[2]:
+          iconName = otherIcons.phong_hop;
+          break;
+        case TienichFunction.actionCodes[3]:
+          iconName = otherIcons.uy_quyen;
+          break;
+        case TienichFunction.actionCodes[4]:
+          iconName = otherIcons.lich_truc;
+          break;
+        //#endregion
+
         //#region Taikhoan
         case TAIKHOAN.code:
           iconName = "account-key";
@@ -132,9 +152,9 @@ export default class SideBarIcon extends Component {
           iconName = otherIcons.lich_cong_tac;
           iconColor = "#64DD17";
           break;
-        // case LichCongTacFunction.code:
-        //   iconName = 'calendar'
-        //   break;
+        case LichCongTacFunction.code:
+          iconName = 'calendar'
+          break;
         //#endregion
 
         //#region Uyquyen
@@ -142,9 +162,9 @@ export default class SideBarIcon extends Component {
           iconName = otherIcons.uy_quyen;
           iconColor = "#00C853";
           break;
-        // case UyQuyenFunction.code:
-        //   iconName = 'account-convert'
-        //   break;
+        case UyQuyenFunction.code:
+          iconName = 'account-convert'
+          break;
         //#endregion
 
         case THONGBAO.code:
@@ -169,6 +189,9 @@ export default class SideBarIcon extends Component {
           // <Icon name={iconName} color={iconColor} type="material-community" size={moderateScale(iconSize, 0.9)} />
         }
         <Image source={iconName} style={[baseStyle.iconImage, customIconImageStyle]} />
+        {
+          notifyCount > 0 && <NotiTabBarIcon notificationCount={notifyCount} />
+        }
       </View>
     )
   }

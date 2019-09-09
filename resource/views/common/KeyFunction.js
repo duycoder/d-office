@@ -43,7 +43,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
-const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
+const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;
 
 class KeyFunction extends Component {
@@ -154,13 +154,28 @@ class KeyFunction extends Component {
         tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
         break;
 
-      case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
-        tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
+      case TIENICH._DS_YEUCAU_XE.NAME:
+        tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
         break;
+      case TIENICH._DS_CHUYEN.NAME:
+        tenThaotac = TIENICH._DS_CHUYEN.MOBILENAME;
+        break;
+      case TIENICH._DS_LICHHOP.NAME:
+        tenThaotac = TIENICH._DS_LICHHOP.MOBILENAME;
+        break;
+      case TIENICH._DS_UYQUYEN.NAME:
+        tenThaotac = TIENICH._DS_UYQUYEN.MOBILENAME;
+        break;
+      case TIENICH._DS_LICHTRUC.NAME:
+        tenThaotac = TIENICH._DS_LICHTRUC.MOBILENAME;
+        break;
+      // case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
+      //   tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
+      //   break;
 
-      case QUANLY_UYQUYEN._DANHSACH.NAME:
-        tenThaotac = QUANLY_UYQUYEN._DANHSACH.MOBILENAME;
-        break;
+      // case QUANLY_UYQUYEN._DANHSACH.NAME:
+      //   tenThaotac = QUANLY_UYQUYEN._DANHSACH.MOBILENAME;
+      //   break;
 
       default:
         break;
@@ -191,7 +206,7 @@ class KeyFunction extends Component {
         </View>
       </View>
     }
-
+    // console.tron.log(userFunctions)
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="light-content" />
@@ -206,11 +221,14 @@ class KeyFunction extends Component {
         </Header>
 
         <View style={[SideBarStyle.body]}>
-          <ScrollView contentContainerStyle={{paddingVertical: moderateScale(6, 1.2)}}>
+          <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
             {
               // Lấy chức năng của người dùng
               userFunctions && userFunctions.map((item, index) => {
                 // let count = 0;
+                if (item.MA_CHUCNANG.indexOf("HSCV") < 0) {
+                  return null;
+                }
                 return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
                   {
                     item.ListThaoTac.map((sItem, sIndex) => {
@@ -239,8 +257,7 @@ class KeyFunction extends Component {
                     })
                   }
                 </GridPanel>
-              }
-              )
+              })
             }
           </ScrollView>
         </View>

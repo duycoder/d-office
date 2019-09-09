@@ -26,6 +26,8 @@ const images = {
   otherIcons: {
     lich_cong_tac: require('../assets/images/Dashboard_icon/tien_ich/lich_cong_tac.png'),
     dat_xe: require('../assets/images/Dashboard_icon/tien_ich/dat_xe.png'),
+    chuyen_xe: require('../assets/images/Dashboard_icon/tien_ich/chuyen_xe.png'),
+    phong_hop: require('../assets/images/Dashboard_icon/tien_ich/phong_hop.png'),
     lich_truc: require('../assets/images/Dashboard_icon/tien_ich/lich_truc.png'),
     uy_quyen: require('../assets/images/Dashboard_icon/tien_ich/uy_quyen.png'),
   },

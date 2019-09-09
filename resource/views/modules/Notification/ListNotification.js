@@ -62,31 +62,61 @@ class ListNotification extends Component {
         let screenName = EMPTY_STRING;
         let screenParam = {};
 
-        let urlArr = item.URL.split("/");
-        const itemType = urlArr[2];
-        const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
-        if (itemType === "HSVanBanDi") {
-            screenName = "VanBanDiDetailScreen";
-            screenParam = {
-                docId: itemId,
-                docType: "1"
-            }
-        }
-        else if (itemType === "QuanLyCongViec") {
-            screenName = "DetailTaskScreen";
-            screenParam = {
-                taskId: urlArr[4],
-                taskType: "1"
-            }
-        }
-        else if (itemType === "HSCV_VANBANDEN") {
-            screenName = "VanBanDenDetailScreen";
-            screenParam = {
-                docId: itemId,
-                docType: "1"
+        let outOfSwitch = false;
+        if (item.URL) {
+            let urlArr = item.URL.split("/");
+            const itemType = urlArr[2];
+            const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
+            switch (itemType) {
+                case "HSVanBanDi":
+                    screenName = "VanBanDiDetailScreen";
+                    screenParam = {
+                        docId: itemId,
+                        docType: "1"
+                    };
+                    break;
+                case "QuanLyCongViec":
+                    screenName = "DetailTaskScreen";
+                    screenParam = {
+                        taskId: urlArr[4],
+                        taskType: "1"
+                    };
+                    break;
+                case "HSCV_VANBANDEN":
+                    screenName = "VanBanDenDetailScreen";
+                    screenParam = {
+                        docId: itemId,
+                        docType: "1"
+                    };
+                    break;
+                case "QL_LICHHOP":
+                    screenName = "DetailMeetingDayScreen";
+                    screenParam = {
+                        lichhopId: itemId,
+                    };
+                    break;
+                case "QL_DANGKY_XE":
+                    screenName = "DetailCarRegistrationScreen";
+                    screenParam = {
+                        registrationId: itemId,
+                    };
+                    break;
+                case "QL_CHUYEN":
+                    screenName = "DetailTripScreen";
+                    screenParam = {
+                        tripId: itemId,
+                    };
+                    break;
+                default:
+                    outOfSwitch = true;
+                    break;
             }
         }
         else {
+            outOfSwitch = true;
+        }
+        
+        if (outOfSwitch) {
             Toast.show({
                 text: 'Bạn không có quyền truy cập vào thông tin này!',
                 type: 'danger',
@@ -165,6 +195,18 @@ class ListNotification extends Component {
                 badgeBackgroundColor = '#5C6BC0';
                 leftTitle = "VBĐ";
                 break;
+            case "QL_LICHHOP":
+                badgeBackgroundColor = Colors.RANDOM_COLOR_1;
+                leftTitle = "LH";
+                break;
+            case "QL_DANGKY_XE":
+                badgeBackgroundColor = Colors.RANDOM_COLOR_2;
+                leftTitle = "DKX";
+                break;
+            case "QL_CHUYEN":
+                badgeBackgroundColor = Colors.DANK_BLUE;
+                leftTitle = "CX";
+                break;
         }
 
         let noidungArchor = item.NOIDUNG.indexOf("đã"),
@@ -228,7 +270,7 @@ class ListNotification extends Component {
     render() {
         return (
             <Container>
-            <StatusBar barStyle="light-content" />
+                <StatusBar barStyle="light-content" />
                 <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>

@@ -147,31 +147,61 @@ class Dashboard extends Component {
     let screenName = EMPTY_STRING;
     let screenParam = {};
 
-    let urlArr = item.URL.split("/");
-    const itemType = urlArr[2];
-    const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
-    if (itemType === "HSVanBanDi") {
-      screenName = "VanBanDiDetailScreen";
-      screenParam = {
-        docId: itemId,
-        docType: "1"
-      }
-    }
-    else if (itemType === "QuanLyCongViec") {
-      screenName = "DetailTaskScreen";
-      screenParam = {
-        taskId: urlArr[4],
-        taskType: "1"
-      }
-    }
-    else if (itemType === "HSCV_VANBANDEN") {
-      screenName = "VanBanDenDetailScreen";
-      screenParam = {
-        docId: itemId,
-        docType: "1"
+    let outOfSwitch = false;
+    if (item.URL) {
+      let urlArr = item.URL.split("/");
+      const itemType = urlArr[2];
+      const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
+      switch (itemType) {
+        case "HSVanBanDi":
+          screenName = "VanBanDiDetailScreen";
+          screenParam = {
+            docId: itemId,
+            docType: "1"
+          };
+          break;
+        case "QuanLyCongViec":
+          screenName = "DetailTaskScreen";
+          screenParam = {
+            taskId: urlArr[4],
+            taskType: "1"
+          };
+          break;
+        case "HSCV_VANBANDEN":
+          screenName = "VanBanDenDetailScreen";
+          screenParam = {
+            docId: itemId,
+            docType: "1"
+          };
+          break;
+        case "QL_LICHHOP":
+          screenName = "DetailMeetingDayScreen";
+          screenParam = {
+            lichhopId: itemId,
+          };
+          break;
+        case "QL_DANGKY_XE":
+          screenName = "DetailCarRegistrationScreen";
+          screenParam = {
+            registrationId: itemId,
+          };
+          break;
+        case "QL_CHUYEN":
+          screenName = "DetailTripScreen";
+          screenParam = {
+            tripId: itemId,
+          };
+          break;
+        default:
+          outOfSwitch = true;
+          break;
       }
     }
     else {
+      outOfSwitch = true;
+    }
+
+    if (outOfSwitch) {
       Toast.show({
         text: 'Bạn không có quyền truy cập vào thông tin này!',
         type: 'danger',
@@ -284,10 +314,12 @@ class Dashboard extends Component {
   }
 
   render() {
+    // console.tron.log(this.state.userInfo)
     const { notifyCount, userFunctions, onFocusNow } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
     const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
     let notificationIcon = <View></View>;
+    
     if (notifyCount > 0 && notifyCount < 100) {
       notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
         <View style={SideBarStyle.chatNotificationCircle}>
@@ -393,7 +425,7 @@ class Dashboard extends Component {
 
         <View style={[SideBarStyle.body, { paddingBottom: moderateScale(12, 1.2) }]}>
           <ScrollView
-          contentContainerStyle={{ paddingTop: moderateScale(12, 1.2)}}
+            contentContainerStyle={{ paddingTop: moderateScale(12, 1.2) }}
           >
             <View style={{ backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
               <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -422,6 +454,18 @@ class Dashboard extends Component {
                         badgeBackgroundColor = '#5C6BC0';
                         leftTitle = "VBĐ";
                         break;
+                      case "QL_LICHHOP":
+                        badgeBackgroundColor = Colors.RANDOM_COLOR_1;
+                        leftTitle = "LH";
+                        break;
+                      case "QL_DANGKY_XE":
+                        badgeBackgroundColor = Colors.RANDOM_COLOR_2;
+                        leftTitle = "DKX";
+                        break;
+                      case "QL_CHUYEN":
+                        badgeBackgroundColor = Colors.DANK_BLUE;
+                        leftTitle = "CX";
+                        break;
                     }
 
                     let noidungArchor = item.NOIDUNG.indexOf("đã"),
@@ -429,7 +473,7 @@ class Dashboard extends Component {
                       noidungMessage = item.NOIDUNG.slice(noidungArchor);
 
                     let checkReadFont = item.IS_READ ? 'normal' : 'bold',
-                    checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
+                      checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
 
                     if (index % 2 !== 0) {
                       thisBGColor = Colors.LIGHT_GRAY_PASTEL;
