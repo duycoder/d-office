@@ -43,10 +43,10 @@ class CreateRegistration extends Component {
       currentUserId: props.userInfo.ID,
 
       canboId: 0,
-      lichCongtacId: 0,
+      lichCongtacId: props.extendsNavParams.lichCongtacId || 0,
       mucdich: EMPTY_STRING,
       noidung: EMPTY_STRING,
-      ngayXP: EMPTY_STRING,
+      ngayXP: props.extendsNavParams.ngayXP || EMPTY_STRING,
       gioXP: 0,
       phutXP: 0,
       diemXP: EMPTY_STRING,
@@ -60,6 +60,7 @@ class CreateRegistration extends Component {
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
       loading: false,
       baseListCanbo: [],
+      noidungLich: props.extendsNavParams.noidungLich || EMPTY_STRING,
     }
   }
 
@@ -117,7 +118,8 @@ class CreateRegistration extends Component {
 
   saveTask = async () => {
     const {
-      mucdich, noidung, canboId, ngayXP, diemKT, diemXP, songuoi, ghichu, currentUserId  
+      mucdich, noidung, canboId, ngayXP, diemKT, diemXP, songuoi, ghichu, currentUserId,
+      lichCongtacId
     } = this.state;
 
     if (!mucdich) {
@@ -145,7 +147,7 @@ class CreateRegistration extends Component {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
       });
-    } else if (!diemXP){
+    } else if (!diemXP) {
       Toast.show({
         text: 'Vui lòng chọn điểm xuất phát',
         type: 'danger',
@@ -235,7 +237,7 @@ class CreateRegistration extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         mucdich, noidung, canboId, ngayXP, diemKT, diemXP, songuoi, ghichu,
-        loading, focusId, canboName
+        loading, focusId, canboName, lichCongtacId, noidungLich
       } = this.state,
       nothingChangeStatus = !mucdich || !noidung || !ngayXP || !diemKT || !diemXP,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -243,6 +245,25 @@ class CreateRegistration extends Component {
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
     let relateCalendar = null;
+    if (lichCongtacId > 0) {
+      relateCalendar = (
+        <ListItem
+          style={DetailTaskStyle.listItemContainer}
+          hideChevron={true}
+          title={
+            <Text style={DetailTaskStyle.listItemTitleContainer}>Lịch công tác liên quan</Text>
+          }
+          subtitle={
+            <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626', marginTop: 5 }]}>
+              <Text>{`Ngày công tác: ${ngayXP}` + "\n"}</Text>
+              <Text>{`Nội dung: ${formatLongText(noidungLich, 50)}`}</Text>
+            </Text>
+          }
+          // onPress={() => this.navigateToVanbanLienquan("VanBanDenDetailScreen")}
+          containerStyle={{ backgroundColor: 'rgba(189,198,207, 0.6)' }}
+        />
+      );
+    }
 
     let bodyContent = null;
     if (loading) {
@@ -253,7 +274,7 @@ class CreateRegistration extends Component {
         <ScrollView contentContainerStyle={[{ margin: 5, padding: 5 }]}>
           <Form style={{ marginVertical: 10 }}>
             {
-              // (this.state.vanbanDenId > 0 || this.state.vanbanDiId > 0) && relateDoc
+              lichCongtacId > 0 && relateCalendar
             }
             <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "mucdich" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
               <Label>
@@ -297,7 +318,7 @@ class CreateRegistration extends Component {
                 date={ngayXP}
                 mode="datetime"
                 placeholder='Chọn ngày nhận việc'
-                format='DD/MM/YYYY HH:MM'
+                format='DD/MM/YYYY HH:mm'
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'

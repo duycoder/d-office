@@ -174,7 +174,7 @@ class PickCanbo extends Component {
   }
 
   render() {
-    console.tron.log(this.state.canboId)
+    // console.tron.log(this.state.canboId)
     let unsubmitableCondition = this.state.canboId === 0,
       checkButtonStyle = unsubmitableCondition ? { opacity: 0.6 } : { opacity: 1 };
 

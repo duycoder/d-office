@@ -8,8 +8,10 @@ import {
 } from 'native-base';
 
 import {
-  Icon as RneIcon
+  Icon as RneIcon, ButtonGroup
 } from 'react-native-elements';
+
+import { connect } from 'react-redux';
 
 import { Colors, API_URL } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -19,8 +21,10 @@ import { dataLoading } from '../../../common/Effect';
 import GoBackButton from '../../common/GoBackButton';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
 import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
+import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
+import * as navAction from '../../../redux/modules/Nav/Action';
 
-export default class DetailEvent extends Component {
+class DetailEvent extends Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +35,21 @@ export default class DetailEvent extends Component {
     }
   }
 
+  componentDidMount = () => {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("check")) {
+        if (this.props.extendsNavParams.check === true) {
+          this.fetchData();
+          // this.setState({ check: true }, () => this.fetchData());
+          // this.props.updateExtendsNavParams({ check: false });
+        }
+      }
+    })
+  }
+
+  componentWillUnmount = () => {
+    this.willFocusListener.remove();
+  }
 
   fetchData = async () => {
     this.setState({
@@ -46,7 +65,7 @@ export default class DetailEvent extends Component {
     })
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.fetchData();
   }
 
@@ -54,12 +73,25 @@ export default class DetailEvent extends Component {
     this.props.navigation.goBack();
   }
 
+  onRegistCar = () => {
+    const {
+      NGAY_CONGTAC, GIO_CONGTAC, PHUT_CONGTAC, NOIDUNG
+    } = this.state.data;
+    this.props.updateExtendsNavParams({
+      lichCongtacId: this.state.id,
+      originScreen: "detail",
+      ngayXP: `${convertDateToString(NGAY_CONGTAC)} ${_readableFormat(GIO_CONGTAC)}:${_readableFormat(PHUT_CONGTAC)}`,
+      noidungLich: NOIDUNG
+    });
+    this.props.navigation.navigate("CreateCarRegistrationScreen");
+  }
+
   render() {
     const { data } = this.state;
 
     let chutriStr = "", chutriArr = [];
     if (data.TEN_NGUOI_CHUTRI) {
-      chutriArr.push(...data.TEN_NGUOI_CHUTRI.split(", "));
+      chutriArr.push(...data.TEN_NGUOI_CHUTRI.split(", ").map(nameRole => nameRole.split(" - ").reverse().join(" ")));
     }
     if (data.TEN_VAITRO_CHUTRI) {
       chutriArr.push(...data.TEN_VAITRO_CHUTRI.split(", "));
@@ -70,8 +102,16 @@ export default class DetailEvent extends Component {
     if (chutriArr.length > 0) {
       chutriStr = chutriArr.map(x => `- ${x}`).join("\n");
     }
+
+    let actionButtons = [];
+    if (!data.IS_REGISTERED_CAR) {
+      actionButtons.push({
+        element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRegistCar()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT XE</Text></TouchableOpacity>
+      });
+    }
+
     return (
-      <Container style={{backgroundColor: '#f1f1f1'}}>
+      <Container style={{ backgroundColor: '#f1f1f1' }}>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.navigateBack()} />
@@ -100,7 +140,7 @@ export default class DetailEvent extends Component {
               <View style={{ marginTop: "0.5%" }}>
                 <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
               </View>
-            </View>
+            </View>7
             <View style={{ width: "35%" }}>
               <View style={GridPanelStyle.titleContainer}>
                 <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
@@ -124,7 +164,7 @@ export default class DetailEvent extends Component {
 
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Người chủ trì</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
@@ -158,8 +198,30 @@ export default class DetailEvent extends Component {
             </View>
           </View>
 
+          
+
         </Content>
+        {
+          actionButtons.length > 0 && <ButtonGroup
+            containerStyle={ButtonGroupStyle.container}
+            buttons={actionButtons}
+          />
+        }
       </Container>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    extendsNavParams: state.navState.extendsNavParams
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailEvent);
