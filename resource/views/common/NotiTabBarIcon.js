@@ -5,23 +5,25 @@ import { connect } from 'react-redux';
 import { Colors } from '../../common/SystemConstant';
 import { _readableFormat } from '../../common/Utilities';
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
+import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 
 class NotiTabBarIcon extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      notificationCount: this.props.userInfo.numberUnReadMessage || 0
+      notificationCount: props.notificationCount || props.userInfo.numberUnReadMessage || 0,
+      customStyle: props.customStyle || {},
     }
   }
   render() {
-    const { notificationCount } = this.state;
-    let notificationCountText = notificationCount > 99
-      ? '99+'
-      : _readableFormat(notificationCount);
+    const { notificationCount, customStyle } = this.state;
+    let notificationCountText = notificationCount > 99 ? '99+' : notificationCount.toString();
 
     return notificationCount > 0
-      ? <View style={styles.countContainer}>
-        <Text style={styles.countText}>{notificationCountText}</Text>
+      ? <View style={[styles.badge, customStyle]}>
+        <Text style={styles.badgeTitle}>
+          {notificationCountText}
+        </Text>
       </View>
       : null
   }
@@ -36,21 +38,22 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, null)(NotiTabBarIcon);
 
 const styles = StyleSheet.create({
-  countContainer: {
-    position: 'absolute',
-    top: 1,
-    right: 1,
-    margin: -1,
-    minWidth: 18,
-    height: 14,
-    borderRadius: 6,
-    alignItems: 'center',
+  badge: {
     justifyContent: 'center',
-    backgroundColor: Colors.RED_PANTONE_186C,
-  },
-  countText: {
+    flexDirection: 'row',
+    position: 'absolute',
+    zIndex: 10,
+    top: -2,
+    right: -5,
+    padding: 1,
+    backgroundColor: 'red',
+    borderRadius: 5,
+    minWidth: 20,
+    borderColor: '#fff',
+    borderWidth: 1.75
+  }, badgeTitle: {
+    fontSize: moderateScale(10, 1.05),
     color: Colors.WHITE,
-    textAlign: "center",
-    fontSize: 9,
+    fontWeight: 'bold'
   }
 });
