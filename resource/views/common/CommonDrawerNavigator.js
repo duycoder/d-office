@@ -17,6 +17,7 @@ import Loading from '../common/Loading';
 import { accountStack, notificationStack, dashboardStack, keyFunctionStack, authStack } from "./ModuleNav";
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
 import NotiTabBarIcon from './NotiTabBarIcon';
+import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 
 const appStack = TabNavigator(
     {
@@ -61,7 +62,7 @@ const appStack = TabNavigator(
                 return <View>
                     <Icon name={iconName} size={moderateScale(25, 1.3)} color={tintColor} type="material-community" />
                     {
-                        routeName === "Notification" && <NotiTabBarIcon />
+                        routeName === "Notification" && <NotiTabBarIcon customStyle={{right: -10}} />
                     }
                 </View>;
             },
@@ -95,7 +96,7 @@ const appStack = TabNavigator(
         },
         animationEnabled: false,
         swipeEnabled: false,
-        
+
     }
 );
 

@@ -49,7 +49,7 @@ class RegistrationInfo extends Component {
           hideChevron={true}
           title={
             <Text style={DetailSignDocStyle.listItemTitleContainer}>
-              LỊCH CÔNG TÁC LIÊN QUAN
+              Lịch công tác liên quan
             </Text>
           }
           subtitle={

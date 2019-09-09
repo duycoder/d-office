@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
     Alert, ActivityIndicator, StyleSheet, RefreshControl,
-    View as RnView, Text as RnText, FlatList, Platform,
+    View, Text as RnText, FlatList, Platform,
     TouchableOpacity
 } from 'react-native';
 
@@ -19,7 +19,7 @@ import {
     Container, Header, Item, Input, Icon, Title, Form,
     Content, Button, Text, SwipeRow, Left, Body, Toast, Label, Right
 } from 'native-base';
-import { Icon as RneIcon } from 'react-native-elements';
+import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import renderIf from 'render-if';
 import * as util from 'lodash';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
@@ -269,6 +269,64 @@ class GroupSubTask extends Component {
         let canFinish = this.state.canFinishTask && item.DAGIAOVIEC != true;
 
         return (
+            // <View>
+            //     <ListItem
+            //         // hideChevron={true}
+            //         containerStyle={{ borderBottomWidth: 0, paddingBottom: 0 }}
+            //         title={
+            //             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2) }]}>
+            //                 {item.NOIDUNG}
+            //             </RnText>
+            //         }
+
+            //         subtitle={
+            //             <View style={{ marginTop: 8 }}>
+            //                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            //                     <View style={{ width: "35%" }}>
+            //                         <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+            //                             Hạn xử lý:
+            //                         </RnText>
+            //                     </View>
+            //                     <View style={{ width: "65%" }}>
+            //                         <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+            //                             {' ' + convertDateToString(item.HANHOANTHANH)}
+            //                         </RnText>
+            //                     </View>
+            //                 </View>
+            //                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            //                     <View style={{ width: "35%" }}>
+            //                         <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+            //                             Người thực hiện:
+            //                         </RnText>
+            //                     </View>
+            //                     <View style={{ width: "65%" }}>
+            //                         {
+            //                             item.NGUOITHUCHIEN
+            //                                 ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+            //                                     {' ' + item.NGUOITHUCHIEN}
+            //                                 </RnText>
+            //                                 : item.TRANGTHAI_ID > 0 
+            //                                     ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+            //                                         {' Tự thực hiện'}
+            //                                     </RnText>
+            //                                     : <RnText style={{ fontSize: moderateScale(12, 1.1), color: Colors.RED_PANTONE_186C }}>
+            //                                         {' Chưa giao việc'}
+            //                                     </RnText>
+            //                         }
+            //                     </View>
+            //                 </View>
+            //             </View>
+            //         }
+            //         rightIcon={
+            //             <View style={{ flexDirection: 'column' }}>
+            //                 <RneIcon name='check-bold' size={26} color={item.TRANGTHAI_ID > 0 ? Colors.GREEN_PANTON_369C : Colors.RED_PANTONE_186C} type='material-community' />
+            //             </View>
+            //         }
+            //     />
+            // </View>
+
+
+
             <SwipeRow
                 leftOpenValue={75}
                 rightOpenValue={-75}
@@ -281,30 +339,51 @@ class GroupSubTask extends Component {
                 }
 
                 body={
-                    <RnView>
-                        <RnText style={styles.rowItem}>
-                            <RnText style={styles.rowItemLabel}>
-                                {'Tên công việc: '}
+                    <View style={{ flexDirection: 'row' }}>
+                        <View style={{ width: "85%", paddingLeft: 10 }}>
+                            <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2) }]}>
+                                {item.NOIDUNG}
                             </RnText>
 
-                            <RnText>
-                                {item.TENCONGVIEC || formatLongText(item.NOIDUNG, 20)}
-                            </RnText>
-
-                            <RnText style={item.TRANGTHAI_ID > 0 ? styles.complete : styles.inComplete}>
-                                {item.TRANGTHAI_ID > 0 ? ' (Đã hoàn thành)' : ' (Chưa hoàn thành)'}
-                            </RnText>
-                        </RnText>
-
-                        <RnText style={styles.rowItem}>
-                            <RnText style={styles.rowItemLabel}>
-                                {'Thời hạn: '}
-                            </RnText>
-                            <RnText>
-                                {convertDateToString(item.HANHOANTHANH)}
-                            </RnText>
-                        </RnText>
-                    </RnView>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
+                                <View style={{ width: "45%" }}>
+                                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                                        Hạn xử lý:
+                                    </RnText>
+                                </View>
+                                <View style={{ width: "55%" }}>
+                                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                        {' ' + convertDateToString(item.HANHOANTHANH)}
+                                    </RnText>
+                                </View>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <View style={{ width: "45%" }}>
+                                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                                        Người thực hiện:
+                                    </RnText>
+                                </View>
+                                <View style={{ width: "55%" }}>
+                                    {
+                                        item.NGUOITHUCHIEN
+                                            ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                                {' ' + item.NGUOITHUCHIEN}
+                                            </RnText>
+                                            : item.TRANGTHAI_ID > 0
+                                                ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                                    {' Tự thực hiện'}
+                                                </RnText>
+                                                : <RnText style={{ fontSize: moderateScale(12, 1.1), color: Colors.RED_PANTONE_186C }}>
+                                                    {' Chưa giao việc'}
+                                                </RnText>
+                                    }
+                                </View>
+                            </View>
+                        </View>
+                        <View style={{ width: "15%", justifyContent: 'center', alignItems: 'center' }}>
+                            <RneIcon name={item.TRANGTHAI_ID > 0 ? "check" : "close"} size={26} color={item.TRANGTHAI_ID > 0 ? Colors.GREEN_PANTON_369C : Colors.RED_PANTONE_186C} type='material-community' />
+                        </View>
+                    </View>
                 }
 
                 right={
@@ -313,6 +392,7 @@ class GroupSubTask extends Component {
                     </Button>
                 }
             />
+
         );
     }
 
@@ -371,9 +451,9 @@ class GroupSubTask extends Component {
 
                     {
                         renderIf(this.state.searching)(
-                            <RnView style={{ flex: 1, justifyContent: 'center' }}>
+                            <View style={{ flex: 1, justifyContent: 'center' }}>
                                 <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-                            </RnView>
+                            </View>
                         )
                     }
 
@@ -521,21 +601,21 @@ class GroupSubTask extends Component {
                     bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
                     exitText="THOÁT"
                 >
-                    <RnView style={AlertMessageStyle.leftFooter}>
+                    <View style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onConfirmCompleteTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 HOÀN THÀNH
                             </RnText>
                         </TouchableOpacity>
-                    </RnView>
+                    </View>
 
-                    <RnView style={AlertMessageStyle.leftFooter}>
+                    <View style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onNavigateToAssignTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 GIAO VIỆC
                             </RnText>
                         </TouchableOpacity>
-                    </RnView>
+                    </View>
                 </AlertMessage>
 
                 <AlertMessage
@@ -544,13 +624,13 @@ class GroupSubTask extends Component {
                     bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
                     exitText="THOÁT"
                 >
-                    <RnView style={AlertMessageStyle.leftFooter}>
+                    <View style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onNavigateToAssignTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 GIAO VIỆC
                             </RnText>
                         </TouchableOpacity>
-                    </RnView>
+                    </View>
                 </AlertMessage>
 
                 <AlertMessage
@@ -559,13 +639,13 @@ class GroupSubTask extends Component {
                     bodyText={`Xử lý công việc #${this.state.alertIdHolder}`}
                     exitText="THOÁT"
                 >
-                    <RnView style={AlertMessageStyle.leftFooter}>
+                    <View style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onConfirmCompleteTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 HOÀN THÀNH
                             </RnText>
                         </TouchableOpacity>
-                    </RnView>
+                    </View>
                 </AlertMessage>
 
                 <AlertMessage
@@ -574,13 +654,13 @@ class GroupSubTask extends Component {
                     bodyText="Bạn có chắc chắn đã hoàn thành công việc này?"
                     exitText="HUỶ BỎ"
                 >
-                    <RnView style={AlertMessageStyle.leftFooter}>
+                    <View style={AlertMessageStyle.leftFooter}>
                         <TouchableOpacity onPress={() => this.onCompleteSubTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
                             <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                 ĐỒNG Ý
                             </RnText>
                         </TouchableOpacity>
-                    </RnView>
+                    </View>
                 </AlertMessage>
             </Container>
         );

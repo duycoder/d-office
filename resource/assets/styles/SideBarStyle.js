@@ -105,7 +105,7 @@ export const SideBarStyle = StyleSheet.create({
         alignItems: 'center',
         borderRadius: moderateScale(10)
     }, chatNotificationText: {
-        fontSize: moderateScale(10),
+        fontSize: moderateScale(10, 1.05),
         color: Colors.WHITE,
         fontWeight: 'bold'
     },

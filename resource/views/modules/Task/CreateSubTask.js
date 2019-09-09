@@ -223,19 +223,21 @@ class CreateSubTask extends Component {
 							</Picker>
 						</Item>
 
-						<Item stackedLabel>
-							<Label>Lập kế hoạch</Label>
-							<Picker
-								iosHeader='Chọn mức quan trọng'
-								mode='dropdown'
-								iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-								style={{ width: pickerFormat() }}
-								selectedValue={this.state.planValue}
-								onValueChange={this.onPlanValueChange.bind(this)}>
-								<Picker.Item value="1" label="Có" />
-								<Picker.Item value="0" label="Không" />
-							</Picker>
-						</Item>
+						{
+							// <Item stackedLabel>
+							// 	<Label>Lập kế hoạch</Label>
+							// 	<Picker
+							// 		iosHeader='Chọn mức quan trọng'
+							// 		mode='dropdown'
+							// 		iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
+							// 		style={{ width: pickerFormat() }}
+							// 		selectedValue={this.state.planValue}
+							// 		onValueChange={this.onPlanValueChange.bind(this)}>
+							// 		<Picker.Item value="1" label="Có" />
+							// 		<Picker.Item value="0" label="Không" />
+							// 	</Picker>
+							// </Item>
+						}
 
 						<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
 							<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>

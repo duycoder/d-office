@@ -102,7 +102,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    VĂN BẢN ĐẾN LIÊN QUAN
+                                    Văn bản đến liên quan
                                 </Text>
                             }
                             subtitle={
@@ -130,7 +130,7 @@ export default class TaskDescription extends Component {
                             hideChevron={true}
                             title={
                                 <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                    VĂN BẢN ĐI LIÊN QUAN
+                                    Văn bản đi liên quan
                             </Text>
                             }
                             subtitle={

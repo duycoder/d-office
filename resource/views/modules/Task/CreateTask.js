@@ -295,7 +295,7 @@ class CreateTask extends Component {
           style={DetailTaskStyle.listItemContainer}
           hideChevron={true}
           title={
-            <Text style={DetailTaskStyle.listItemTitleContainer}>VĂN BẢN ĐẾN LIÊN QUAN</Text>
+            <Text style={DetailTaskStyle.listItemTitleContainer}>Văn bản đến liên quan</Text>
           }
           subtitle={
             <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
@@ -318,7 +318,7 @@ class CreateTask extends Component {
           style={DetailTaskStyle.listItemContainer}
           hideChevron={true}
           title={
-            <Text style={DetailTaskStyle.listItemTitleContainer}>VĂN BẢN ĐI LIÊN QUAN</Text>
+            <Text style={DetailTaskStyle.listItemTitleContainer}>Văn bản đi liên quan</Text>
           }
           subtitle={
             <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>

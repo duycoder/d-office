@@ -183,6 +183,17 @@ export const SYSTEM_FUNCTION = {
 			'PROCESSED_JOB'
 		]
 	},
+
+	TienichFunction: {
+		code: 'HSCV_TIENICH',
+		actionCodes: [
+			'DS_YEUCAU_XE',
+			'DS_CHUYEN',
+			'DS_LICHHOP',
+			'DS_UYQUYEN',
+			'DS_LICHTRUC'
+		]
+	},
 	LichCongTacFunction: {
 		code: 'LICHCONGTAC_LANHDAO',
 		actionCodes: [
@@ -305,6 +316,28 @@ export const DM_FUNCTIONS = {
 			IDTHAOTAC: 108,
 			MOBILENAME: 'ỦY QUYỀN'
 		}
+	},
+	TIENICH: {
+		_DS_YEUCAU_XE: {
+			NAME: 'DS_YEUCAU_XE',
+			MOBILENAME: 'Đặt xe'
+		},
+		_DS_CHUYEN: {
+			NAME: 'DS_CHUYEN',
+			MOBILENAME: 'Chuyến xe'
+		},
+		_DS_LICHHOP: {
+			NAME: 'DS_LICHHOP',
+			MOBILENAME: 'Lịch họp'
+		},
+		_DS_UYQUYEN: {
+			NAME: 'DS_UYQUYEN',
+			MOBILENAME: 'Uỷ quyền'
+		},
+		_DS_LICHTRUC: {
+			NAME: 'DS_LICHTRUC',
+			MOBILENAME: 'Lịch trực'
+		},
 	}
 }
 
