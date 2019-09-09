@@ -269,7 +269,7 @@ class AccountChangePassword extends Component {
         focusId
       } = this.state,
       nothingChangeStatus = !password && !TMPpassword,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.GRAY },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
 
 
@@ -288,9 +288,9 @@ class AccountChangePassword extends Component {
           <Right style={NativeBaseStyle.right}>
           </Right>
         </Header>
-        <ImageBackground style={AccountStyle.mainContainer}>
-          <Content>
-            <Form>
+        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+          <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
+            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               <Item stackedLabel style={focusId === 'newPassword' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
                 <Label style={AccountStyle.labelTitle}>Điền mật khẩu mới</Label>
                 <Input
@@ -318,15 +318,17 @@ class AccountChangePassword extends Component {
                 />
               </Item>
             </Form>
-            <TouchableOpacity
-              onPress={() => this.onSaveChange()}
-              style={[AccountStyle.submitButton, submitableButtonBackground]}
-              disabled={nothingChangeStatus}
-            >
-              <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU MẬT KHẨU</Text>
-            </TouchableOpacity>
+            <View style={{ marginHorizontal: 25 }}>
+              <TouchableOpacity
+                onPress={() => this.onSaveChange()}
+                style={[AccountStyle.submitButton, submitableButtonBackground]}
+                disabled={nothingChangeStatus}
+              >
+                <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU MẬT KHẨU</Text>
+              </TouchableOpacity>
+            </View>
           </Content>
-        </ImageBackground>
+        </Container>
         {
           authenticateLoading(this.state.loading)
         }

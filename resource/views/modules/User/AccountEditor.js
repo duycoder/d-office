@@ -250,14 +250,14 @@ class AccountEditor extends Component {
         TMPfullName, TMPemail, TMPdateOfBirth, TMPmobilePhone, TMPaddress,
       } = this.state,
       nothingChangeStatus = !fullName && !email && !dateOfBirth && !mobilePhone && !address,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.GRAY },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
 
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBackToAccountInfo()}/>
+            <GoBackButton onPress={() => this.navigateBackToAccountInfo()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -271,9 +271,9 @@ class AccountEditor extends Component {
             </Button> */}
           </Right>
         </Header>
-        <ImageBackground style={AccountStyle.mainContainer}>
-          <Content>
-            <Form>
+        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+          <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
+            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               <Item stackedLabel style={this.state.focusId === 'fullName' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
                 <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
                 <Input
@@ -355,15 +355,17 @@ class AccountEditor extends Component {
                 />
               </Item>
             </Form>
-            <TouchableOpacity
-              onPress={() => this.onSaveAccountInfo()}
-              style={[AccountStyle.submitButton, submitableButtonBackground]}
-              disabled={nothingChangeStatus}
-            >
-              <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU THÔNG TIN</Text>
-            </TouchableOpacity>
+            <View style={{marginHorizontal: 25}}>
+              <TouchableOpacity
+                onPress={() => this.onSaveAccountInfo()}
+                style={[AccountStyle.submitButton, submitableButtonBackground]}
+                disabled={nothingChangeStatus}
+              >
+                <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU THÔNG TIN</Text>
+              </TouchableOpacity>
+            </View>
           </Content>
-        </ImageBackground>
+        </Container>
         {
           authenticateLoading(this.state.loading)
         }

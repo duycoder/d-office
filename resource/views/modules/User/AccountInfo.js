@@ -16,11 +16,12 @@ import {
   Container, Content, Form, Item, Input, Label,
   Header, Right, Body, Left, Button, Title
 } from 'native-base';
-import { Icon, Button as RNEButton } from 'react-native-elements';
+import { Icon, Button as RNEButton, ListItem } from 'react-native-elements';
+import 'moment/locale/vi';
 // import ImagePicker from 'react-native-image-picker';
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, WEB_URL } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -62,6 +63,7 @@ class AccountInfo extends Component {
       mobilePhone: EMPTY_STRING,
       address: EMPTY_STRING,
 
+      avatarLink: EMPTY_STRING,
       headerComponentsDisplayStatus: 'flex',
 
       isDisabledLoginButton: true,
@@ -99,6 +101,7 @@ class AccountInfo extends Component {
       dateOfBirth: result.NGAYSINH,
       mobilePhone: result.DIENTHOAI || '(Không có)',
       address: result.DIACHI || '(Không có)',
+      avatarLink: result.ANH_DAIDIEN || EMPTY_STRING,
       loading: false
     });
   }
@@ -134,13 +137,16 @@ class AccountInfo extends Component {
   }
 
   render() {
-    const { fullName, email, dateOfBirth, mobilePhone, address } = this.state;
+    const {
+      fullName, email, dateOfBirth, mobilePhone, address,
+      avatarLink
+    } = this.state;
 
     const dateOfBirthText = dateOfBirth ? convertDateToString(dateOfBirth) : '(Không có)';
 
     return (
       <Container>
-      <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="light-content" />
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
           </Left>
@@ -156,16 +162,20 @@ class AccountInfo extends Component {
             </TouchableOpacity>
           </Right>
         </Header>
-        {
-          //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 20, backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
-          //   <TouchableOpacity>
-          //     <Image source={Images.userAvatar} style={{ width: moderateScale(80), height: moderateScale(80), borderRadius: moderateScale(30), backgroundColor: Colors.LITE_BLUE }} />
-          //   </TouchableOpacity>
-          // </View>
-        }
-        <ImageBackground style={AccountStyle.mainContainer}>
-          <Content>
-            <Form>
+        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+          <ListItem
+            roundAvatar
+            hideChevron
+            title={fullName.toUpperCase()}
+            titleStyle={{ fontWeight: 'bold', fontSize: moderateScale(14, 1.1) }}
+            subtitle={email}
+            subtitleStyle={{ fontSize: moderateScale(12, 1.1) }}
+            avatar={avatarLink.length > 0 ? { uri: `${WEB_URL}/Uploads/${avatarLink}` } : Images.userAvatar}
+            containerStyle={{ borderBottomWidth: 0, marginTop: moderateScale(14, .9), backgroundColor: Colors.WHITE, paddingHorizontal: 15 }}
+          />
+          <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
+
+            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               {
                 // <Item stackedLabel style={AccountStyle.labelContainer}>
                 //   <Label>Tên đăng nhập</Label>
@@ -173,19 +183,20 @@ class AccountInfo extends Component {
                 //     {this.state.userName}
                 //   </Label>
                 // </Item>
+                // <Item stackedLabel style={AccountStyle.labelContainer}>
+                //   <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
+                //   <Label style={AccountStyle.labelResult}>
+                //     {fullName}
+                //   </Label>
+                // </Item>
+                // <Item stackedLabel style={AccountStyle.labelContainer}>
+                //   <Label style={AccountStyle.labelTitle}>Email</Label>
+                //   <Label style={AccountStyle.labelResult}>
+                //     {email}
+                //   </Label>
+                // </Item>
               }
-              <Item stackedLabel style={AccountStyle.labelContainer}>
-                <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
-                <Label style={AccountStyle.labelResult}>
-                  {fullName}
-                </Label>
-              </Item>
-              <Item stackedLabel style={AccountStyle.labelContainer}>
-                <Label style={AccountStyle.labelTitle}>Email</Label>
-                <Label style={AccountStyle.labelResult}>
-                  {email}
-                </Label>
-              </Item>
+
               <Item stackedLabel style={AccountStyle.labelContainer}>
                 <Label style={AccountStyle.labelTitle}>Ngày sinh</Label>
                 <Label style={AccountStyle.labelResult}>
@@ -205,21 +216,27 @@ class AccountInfo extends Component {
                 </Label>
               </Item>
             </Form>
-            <TouchableOpacity
-              onPress={() => this.navigateToEditAccount()}
-              style={[LoginStyle.formButtonLogin, AccountStyle.submitButton]}
-            >
-              <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>SỬA THÔNG TIN</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate("AccountChangePasswordScreen")}
-              style={[LoginStyle.formButtonLogin, AccountStyle.submitButton, { backgroundColor: Colors.RED_PANTONE_186C }]}
-            >
-              <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>ĐỔI MẬT KHẨU</Text>
-            </TouchableOpacity>
+            <View style={{ marginHorizontal: moderateScale(25) }}>
+              <TouchableOpacity
+                onPress={() => this.navigateToEditAccount()}
+                style={[LoginStyle.formButtonLogin, AccountStyle.submitButton]}
+              >
+                <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>SỬA THÔNG TIN</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("AccountChangePasswordScreen")}
+                style={[LoginStyle.formButtonLogin, AccountStyle.submitButton, { backgroundColor: '#e3900b' }]}
+              >
+                <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>ĐỔI MẬT KHẨU</Text>
+              </TouchableOpacity>
+            </View>
+
           </Content>
-        </ImageBackground>
+        </Container>
+
+
         {
           executeLoading(this.state.loading)
         }
