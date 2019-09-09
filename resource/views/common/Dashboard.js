@@ -65,6 +65,11 @@ class Dashboard extends Component {
       calendarData: [],
       calendarDate: "",
       calendarLoading: false,
+
+      //notifyCount
+      notifyCount_VBDen: 0,
+      notifyCount_VBDi: 0,
+      notifyCount_CV: 0
     }
   }
 
@@ -79,7 +84,18 @@ class Dashboard extends Component {
     }, () => {
       this.fetchRecentNoti();
       this.fetchCalendarData(new Date());
+      this.fetchNotifyCount();
     });
+  }
+
+  fetchNotifyCount = async () => {
+    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
+    const result = await fetch(url).then(response => response.json());
+    this.setState({
+      notifyCount_VBDen: result.notifyCount_VBDen || 0,
+      notifyCount_VBDi: result.notifyCount_VBDi || 0,
+      notifyCount_CV: result.notifyCount_CV || 0
+    })
   }
 
   fetchCalendarData = async (selectedDate) => {
@@ -315,29 +331,12 @@ class Dashboard extends Component {
 
   render() {
     // console.tron.log(this.state.userInfo)
-    const { notifyCount, userFunctions, onFocusNow } = this.state;
+    const { 
+      notifyCount, userFunctions, onFocusNow,
+      notifyCount_VBDen, notifyCount_VBDi, notifyCount_CV
+    } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
     const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
-    let notificationIcon = <View></View>;
-    
-    if (notifyCount > 0 && notifyCount < 100) {
-      notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
-        <View style={SideBarStyle.chatNotificationCircle}>
-          <Text style={SideBarStyle.chatNotificationText}>
-            {notifyCount}
-          </Text>
-        </View>
-      </View>
-    }
-    if (notifyCount >= 100) {
-      notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
-        <View style={[SideBarStyle.chatNotificationCircle, { width: moderateScale(25), height: moderateScale(25), borderRadius: moderateScale(25 / 2) }]}>
-          <Text style={SideBarStyle.chatNotificationText}>
-            99+
-                </Text>
-        </View>
-      </View>
-    }
 
     return (
       <View style={SideBarStyle.container}>
@@ -354,31 +353,10 @@ class Dashboard extends Component {
               <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
             </TouchableOpacity>
           </Right>
-          {
-            // <Left style={[NativeBaseStyle.left, SideBarStyle.headerAvatarContainer, { flex: 1, paddingLeft: 0 }]}>
-            //   <Image source={Images.logo} style={SideBarStyle.headerAvatar} />
-            // </Left>
-
-            // <Body style={[NativeBaseStyle.body, { flex: 4 }]}>
-            //   <Title style={SideBarStyle.headerUserName}>
-            //     {this.state.userInfo.Fullname}
-            //   </Title>
-            //   <Subtitle style={SideBarStyle.headerUserJob}>
-            //     {this.state.userInfo.Position}
-            //   </Subtitle>
-            // </Body>
-            // <Right style={NativeBaseStyle.right}>
-            //   <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-            //     <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-            //   </TouchableOpacity>
-            // </Right>
-          }
         </Header>
 
         <View
           style={{ flex: 1, backgroundColor: Colors.WHITE, borderRadius: 10, marginHorizontal: moderateScale(8, 1.2), marginTop: -50, borderColor: '#ccc', borderWidth: .7 }}
-        // source={Images.banner_top} 
-        // imageStyle={{ resizeMode: 'cover', opacity: 0.7 }}
         >
           <View style={SideBarStyle.shortcutBoxContainer}>
             <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
@@ -386,8 +364,7 @@ class Dashboard extends Component {
                 actionCode={VANBANDEN._CHUAXULY.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-              // customIconImageStyle={{height: "50%"}}
-              // customIconImageStyle={SideBarStyle.customIconImageStyle}
+                notifyCount={notifyCount_VBDen}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến</Text>
             </TouchableOpacity>
@@ -396,7 +373,7 @@ class Dashboard extends Component {
                 actionCode={VANBANDI._CHUAXULY.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-              // customIconImageStyle={{height: "100%"}}
+                notifyCount={notifyCount_VBDi}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi</Text>
             </TouchableOpacity>
@@ -405,8 +382,7 @@ class Dashboard extends Component {
                 actionCode={CONGVIEC._CANHAN.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-              // customIconImageStyle={{height: "100%"}}
-              // customIconImageStyle={SideBarStyle.customIconImageStyle}
+                notifyCount={notifyCount_CV}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
             </TouchableOpacity>
@@ -415,8 +391,6 @@ class Dashboard extends Component {
                 actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
-              // customIconImageStyle={{height: "100%"}}
-              // customIconImageStyle={SideBarStyle.customIconImageStyle}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Tiện ích</Text>
             </TouchableOpacity>
