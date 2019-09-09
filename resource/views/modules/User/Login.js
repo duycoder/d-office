@@ -8,7 +8,7 @@ import React, { Component } from 'react'
 import {
     AsyncStorage, View, ScrollView, Text, TextInput, Button,
     Keyboard, Animated, Image, ImageBackground,
-    TouchableOpacity
+    TouchableOpacity, StatusBar
 } from 'react-native'
 
 //lib
@@ -155,9 +155,9 @@ class Login extends Component {
 
             if (!deviceToken) {
                 deviceToken = await firebase.messaging().getToken();
-                
+
                 //Reactotron.log('========> Device từ firebase.messaging().getToken()', deviceToken);
-                
+
                 if (deviceToken) {
                     await AsyncStorage.setItem('deviceToken', deviceToken);
                 }
@@ -278,6 +278,7 @@ class Login extends Component {
         const toggleLoginStyleText = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
         return (
             <ImageBackground source={uriBackground} style={{ flex: 1 }}>
+                <StatusBar barStyle="dark-content" />
                 <Container>
                     <Animated.View style={[
                         {

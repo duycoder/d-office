@@ -87,7 +87,7 @@ export default class MainInfoSignDoc extends Component {
                     hideChevron={true}
                     title={
                         <Text style={DetailSignDocStyle.listItemTitleContainer}>
-                            VĂN BẢN ĐẾN LIÊN QUAN
+                            Văn bản đến liên quan
                         </Text>
                     }
                     subtitle={

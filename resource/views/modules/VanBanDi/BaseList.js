@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import {
   AsyncStorage, ActivityIndicator, View,
-  FlatList, RefreshControl, TouchableOpacity, Text as RnText
+  FlatList, RefreshControl, TouchableOpacity, Text as RnText, StatusBar
 } from 'react-native';
 
 //redux

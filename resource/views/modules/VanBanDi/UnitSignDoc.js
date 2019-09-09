@@ -30,9 +30,9 @@ export default class UnitSignDoc extends Component {
 	}
 
 	renderItem = ({ item }) => {
-		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={Colors.RED_PANTONE_186C} />
+		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={Colors.MENU_BLUE} />
 		if (item.IsDoc) {
-			rightIcon = <RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.GREEN_PANTON_369C} />
+			rightIcon = <RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.DANK_GRAY} />
 		}
 		return <ListItem titleStyle={{color: Colors.BLACK}} title={item.TenDonVi} rightIcon={rightIcon}/>
 	}

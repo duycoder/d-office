@@ -140,6 +140,7 @@ class AccountInfo extends Component {
 
     return (
       <Container>
+      <StatusBar barStyle="light-content" />
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
           </Left>
