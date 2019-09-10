@@ -280,7 +280,7 @@ class MeetingDayList extends Component {
             </TouchableOpacity>
           </Left>
 
-          <Body style={[NativeBaseStyle.body, { flex: 5 }]}>
+          <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
             <Title style={NativeBaseStyle.bodyTitle}>LỊCH HỌP</Title>
           </Body>
 

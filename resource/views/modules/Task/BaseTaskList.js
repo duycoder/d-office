@@ -40,6 +40,7 @@ import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appSto
 //styles
 import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -367,9 +368,7 @@ class BaseTaskList extends Component {
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={() => this.props.navigator.goBack()} style={{ width: '100%' }}>
-                            <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
-                        </TouchableOpacity>
+                        <GoBackButton onPress={() => this.props.navigator.goBack()} buttonStyle='100%' />
                     </Left>
 
                     <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>

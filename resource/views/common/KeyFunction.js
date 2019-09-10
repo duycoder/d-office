@@ -32,7 +32,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 import Panel from './Panel';
 import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -42,6 +42,7 @@ const userAvatar = require('../../assets/images/avatar.png');
 const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
+import GoBackButton from './GoBackButton';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;

@@ -34,6 +34,7 @@ import { executeLoading } from '../../../common/Effect';
 
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import GoBackButton from '../../common/GoBackButton';
 
 class ListUyQuyen extends Component {
     constructor(props) {
@@ -197,9 +198,7 @@ class ListUyQuyen extends Component {
             <Container>
                 <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
                     <Left style={{ flex: 1 }}>
-                        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-                            <RneIcon name="arrow-left" size={25} color={Colors.WHITE} type="material-community" />
-                        </TouchableOpacity>
+                        <GoBackButton onPress={() => this.props.navigation.goBack()} buttonStyle='100%' />
                     </Left>
                     <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
                         <Icon name='ios-search' />
