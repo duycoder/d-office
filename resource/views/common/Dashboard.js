@@ -69,7 +69,13 @@ class Dashboard extends Component {
       //notifyCount
       notifyCount_VBDen_Chuaxuly: 0,
       notifyCount_VBDi_Chuaxuly: 0,
-      notifyCount_CV_Canhan: 0
+      notifyCount_CV_Canhan: 0,
+
+      notifyCount_Lichhop: 0,
+      notifyCount_Datxe: 0,
+      notifyCount_Chuyenxe: 0,
+      notifyCount_Uyquyen: 0,
+      notifyCount_Lichtruc: 0,
     }
   }
 
@@ -94,7 +100,13 @@ class Dashboard extends Component {
     this.setState({
       notifyCount_VBDen_Chuaxuly: result.notifyCount_VBDen_Chuaxuly || 0,
       notifyCount_VBDi_Chuaxuly: result.notifyCount_VBDi_Chuaxuly || 0,
-      notifyCount_CV_Canhan: result.notifyCount_CV_Canhan || 0
+      notifyCount_CV_Canhan: result.notifyCount_CV_Canhan || 0,
+
+      notifyCount_Lichhop: result.notifyCount_Lichhop || 0,
+      notifyCount_Datxe: result.notifyCount_Datxe || 0,
+      notifyCount_Chuyenxe: result.notifyCount_Chuyenxe || 0,
+      notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
+      notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
     })
   }
 
@@ -331,12 +343,13 @@ class Dashboard extends Component {
 
   render() {
     // console.tron.log(this.state.userInfo)
-    const { 
+    const {
       notifyCount, userFunctions, onFocusNow,
-      notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan
+      notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan,
+      notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen
     } = this.state;
-    const subItemIcon = <Image source={Images.subItemIconLink} />;
-    const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
+
+    let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen]);
 
     return (
       <View style={SideBarStyle.container}>
@@ -386,11 +399,12 @@ class Dashboard extends Component {
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("KeyFunction")} style={[SideBarStyle.shortcutBoxStyle]}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate("ExtendKeyFunctionScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
               <SideBarIcon
                 actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
                 customIconContainerStyle={SideBarStyle.customIconContainerStyle}
                 isHotPick
+                notifyCount={maxExtendKeyFunctionNotiCount}
               />
               <Text style={SideBarStyle.shortcutBoxTextStyle}>Tiện ích</Text>
             </TouchableOpacity>
