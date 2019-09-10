@@ -68,6 +68,7 @@ import Loading from '../common/Loading';
 import SideBar from './SideBar';
 import Dashboard from './Dashboard';
 import KeyFunction from './KeyFunction';
+import ExtendKeyFunction from './ExtendKeyFunction';
 
 //#region màn hình luồng xử lý công việc
 import WorkflowReplyReview from '../modules/Workflow/WorkflowReplyReview';
@@ -350,6 +351,9 @@ const notificationStack = StackNavigator(
 const dashboardStack = StackNavigator(
   {
     ...baseStack,
+    ExtendKeyFunctionScreen: {
+      screen: ExtendKeyFunction
+    },
     DashboardScreen: {
       screen: Dashboard
     },
