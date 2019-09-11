@@ -293,7 +293,7 @@ class BaseTaskList extends Component {
                                 </View>
                             </View>
                             {
-                                item.NOIDUNGCONGVIEC && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                (item.NOIDUNGCONGVIEC && item.NOIDUNGCONGVIEC.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <View style={{ width: "35%" }}>
                                         <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                                             Nội dung:
@@ -321,7 +321,7 @@ class BaseTaskList extends Component {
                                 </View>
                                 <View style={{ width: "65%" }}>
                                     {
-                                        item.TEN_NGUOIXULYCHINH
+                                        (item.TEN_NGUOIXULYCHINH && item.TEN_NGUOIXULYCHINH.length > 0)
                                             ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                                                 {' ' + item.TEN_NGUOIXULYCHINH}
                                             </RnText>
@@ -337,7 +337,7 @@ class BaseTaskList extends Component {
                         <View style={{ flexDirection: 'column' }}>
                             <RNEIcon name='flag' size={26} color={dokhanBgColor} type='material-community' />
                             {
-                                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' />
+                                item.HAS_FILE == true && <RNEIcon name='ios-attach' size={26} type='ionicon' />
                             }
                         </View>
                     }
