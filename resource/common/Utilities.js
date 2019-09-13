@@ -248,6 +248,9 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
     fileLink = fileLink.replace(/\\/g, '/');
     let date = new Date();
     let url = `${WEB_URL}/Uploads/${fileLink}`;
+    if (fileLink.toString().toLowerCase().indexOf("upload")>-1){
+        url = `${WEB_URL}/${fileLink}`;
+    }
     // url = url.replace('\\', '/');
     // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
