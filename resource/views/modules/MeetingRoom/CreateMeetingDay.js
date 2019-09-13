@@ -34,6 +34,7 @@ import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class CreateMeetingDay extends Component {
   constructor(props) {
@@ -106,7 +107,7 @@ class CreateMeetingDay extends Component {
 
   saveLichhop = async () => {
     const {
-      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId  
+      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId
     } = this.state;
 
     if (!mucdich) {
@@ -134,7 +135,7 @@ class CreateMeetingDay extends Component {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
       });
-    } else if (!thoigianKetthuc){
+    } else if (!thoigianKetthuc) {
       Toast.show({
         text: 'Vui lòng chọn thời gian kết thúc',
         type: 'danger',
@@ -227,7 +228,7 @@ class CreateMeetingDay extends Component {
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
-      let relateCalendar = null;
+    let relateCalendar = null;
 
     let bodyContent = null;
     if (loading) {
@@ -235,7 +236,7 @@ class CreateMeetingDay extends Component {
     }
     else {
       bodyContent = (
-        <ScrollView contentContainerStyle={[{ margin: 5, padding: 5 }]}>
+        <KeyboardAwareScrollView contentContainerStyle={{ margin: 5, padding: 5 }}>
           <Form style={{ marginVertical: 10 }}>
             {
               // (this.state.vanbanDenId > 0 || this.state.vanbanDiId > 0) && relateDoc
@@ -329,31 +330,31 @@ class CreateMeetingDay extends Component {
             </Item>
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-            <Label>Thời gian kết thúc</Label>
-            <DatePicker
-              locale={"vi"}
-              style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
-              date={thoigianKetthuc}
-              mode="time"
-              placeholder='Chọn thời gian kết thúc'
-              // format='HH:MM'
-              // minDate={new Date()}
-              confirmBtnText='CHỌN'
-              cancelBtnText='BỎ'
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: scale(36),
-                }
-              }}
-              onDateChange={this.handleChange("thoigianKetthuc")}
-            />
-          </Item>
+              <Label>Thời gian kết thúc</Label>
+              <DatePicker
+                locale={"vi"}
+                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                date={thoigianKetthuc}
+                mode="time"
+                placeholder='Chọn thời gian kết thúc'
+                // format='HH:MM'
+                // minDate={new Date()}
+                confirmBtnText='CHỌN'
+                cancelBtnText='BỎ'
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: scale(36),
+                  }
+                }}
+                onDateChange={this.handleChange("thoigianKetthuc")}
+              />
+            </Item>
 
             <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "thamgia" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
               <Label>
@@ -361,7 +362,6 @@ class CreateMeetingDay extends Component {
               </Label>
 
               <Input
-                style={{ textAlign: 'center' }}
                 value={thamgia}
                 onChangeText={this.handleChange("thamgia")}
                 onFocus={() => this.setState({ focusId: "thamgia" })}
@@ -377,7 +377,150 @@ class CreateMeetingDay extends Component {
               <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
             </TouchableOpacity>
           </Form>
-        </ScrollView>
+        </KeyboardAwareScrollView>
+        // <ScrollView contentContainerStyle={[{ margin: 5, padding: 5 }]}>
+        //   <Form style={{ marginVertical: 10 }}>
+        //     {
+        //       // (this.state.vanbanDenId > 0 || this.state.vanbanDiId > 0) && relateDoc
+        //     }
+        //     <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "mucdich" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+        //       <Label>
+        //         Mục đích <Text style={{ color: '#f00' }}>*</Text>
+        //       </Label>
+
+        //       <Input
+        //         value={mucdich}
+        //         onChangeText={this.handleChange("mucdich")}
+        //         onFocus={() => this.setState({ focusId: "mucdich" })}
+        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
+        //       />
+        //     </Item>
+        //     {
+        //       <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
+        //         <Label>
+        //           Người chủ trì
+        //         </Label>
+        //         <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
+        //           <Button transparent style={{ width: chutriId > 0 ? '100%' : '90%' }} onPress={() => this.onPickChutri()}>
+        //             {
+        //               !chutriName
+        //                 ? <Text style={{ color: '#ccc' }}>Chọn người chủ trì</Text>
+        //                 : <Text style={{ color: Colors.BLACK }}>{chutriName}</Text>
+        //             }
+        //           </Button>
+        //           {
+        //             chutriId > 0 && <Button transparent onPress={() => this.clearNguoiChutri()}>
+        //               <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
+        //             </Button>
+        //           }
+        //         </View>
+        //       </Item>
+        //     }
+
+        //     <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
+        //       <Label>Ngày họp</Label>
+        //       <DatePicker
+        //         locale={"vi"}
+        //         style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+        //         date={ngayHop}
+        //         mode="date"
+        //         placeholder='Chọn ngày họp'
+        //         format='DD/MM/YYYY'
+        //         // minDate={new Date()}
+        //         confirmBtnText='CHỌN'
+        //         cancelBtnText='BỎ'
+        //         customStyles={{
+        //           dateIcon: {
+        //             position: 'absolute',
+        //             left: 0,
+        //             top: 4,
+        //             marginLeft: 0
+        //           },
+        //           dateInput: {
+        //             marginLeft: scale(36),
+        //           }
+        //         }}
+        //         onDateChange={this.handleChange("ngayHop")}
+        //       />
+        //     </Item>
+
+        //     <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
+        //       <Label>Thời gian bắt đầu</Label>
+        //       <DatePicker
+        //         locale={"vi"}
+        //         style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+        //         date={thoigianBatdau}
+        //         mode="time"
+        //         placeholder='Chọn thời gian bắt đầu'
+        //         // format='HH:MM'
+        //         // minDate={new Date()}
+        //         confirmBtnText='CHỌN'
+        //         cancelBtnText='BỎ'
+        //         customStyles={{
+        //           dateIcon: {
+        //             position: 'absolute',
+        //             left: 0,
+        //             top: 4,
+        //             marginLeft: 0
+        //           },
+        //           dateInput: {
+        //             marginLeft: scale(36),
+        //           }
+        //         }}
+        //         onDateChange={this.handleChange("thoigianBatdau")}
+        //       />
+        //     </Item>
+
+        //     <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
+        //       <Label>Thời gian kết thúc</Label>
+        //       <DatePicker
+        //         locale={"vi"}
+        //         style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+        //         date={thoigianKetthuc}
+        //         mode="time"
+        //         placeholder='Chọn thời gian kết thúc'
+        //         // format='HH:MM'
+        //         // minDate={new Date()}
+        //         confirmBtnText='CHỌN'
+        //         cancelBtnText='BỎ'
+        //         customStyles={{
+        //           dateIcon: {
+        //             position: 'absolute',
+        //             left: 0,
+        //             top: 4,
+        //             marginLeft: 0
+        //           },
+        //           dateInput: {
+        //             marginLeft: scale(36),
+        //           }
+        //         }}
+        //         onDateChange={this.handleChange("thoigianKetthuc")}
+        //       />
+        //     </Item>
+
+        //     <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "thamgia" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+        //       <Label>
+        //         Thành phần tham dự <Text style={{ color: '#f00' }}>*</Text>
+        //       </Label>
+
+        //       <Input
+        //         style={{ textAlign: 'center' }}
+        //         value={thamgia}
+        //         onChangeText={this.handleChange("thamgia")}
+        //         onFocus={() => this.setState({ focusId: "thamgia" })}
+        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
+        //       />
+        //     </Item>
+
+        //     <TouchableOpacity
+        //       onPress={() => this.saveLichhop()}
+        //       style={[AccountStyle.submitButton, submitableButtonBackground]}
+        //       disabled={nothingChangeStatus}
+        //     >
+        //       <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
+        //     </TouchableOpacity>
+        //   </Form>
+        // </ScrollView>
       );
     }
 
@@ -390,7 +533,7 @@ class CreateMeetingDay extends Component {
 
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
-              THÊM MỚI ĐĂNG KÝ XE
+              THÊM MỚI LỊCH HỌP
 						</Title>
           </Body>
 
