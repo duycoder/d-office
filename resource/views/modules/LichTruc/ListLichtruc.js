@@ -24,7 +24,7 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, onDownloadFile } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, onDownloadFile, asyncDelay } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -41,8 +41,9 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { MenuProvider, MenuOption, MenuOptions, MenuTrigger, Menu } from 'react-native-popup-menu';
-import { HeaderMenuStyle } from '../../../assets/styles';
+import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import { getFileExtensionLogo } from '../../../common/Effect';
+import AlertMessage from '../../common/AlertMessage';
 
 class ListLichtruc extends Component {
   constructor(props) {
@@ -56,8 +57,11 @@ class ListLichtruc extends Component {
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
+
       data: [],
-      type: LICHTRUC_CONSTANT.CHUYEN_MON
+      type: LICHTRUC_CONSTANT.CHUYEN_MON,
+      executing: false,
+      tempKehoachId: null,
     }
   }
 
@@ -164,11 +168,78 @@ class ListLichtruc extends Component {
     })
   }
 
+  onConfirmLichtruc = (kehoachId) => {
+    this.setState({
+      tempKehoachId: kehoachId
+    }, () => this.refs.confirmLichtruc.showModal());
+  }
+  submitConfirm = async () => {
+    this.refs.confirmLichtruc.closeModal();
+    this.setState({
+      executing: true
+    });
+
+    const {
+      userId, tempKehoachId
+    } = this.state;
+
+    if (tempKehoachId !== null) {
+      const url = `${API_URL}/api/Lichtruc/PheduyetLichtruc/`;
+      const headers = new Headers({
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=utf-8'
+      });
+      const body = JSON.stringify({
+        userId,
+        kehoachId: tempKehoachId
+      });
+
+      const result = await fetch(url, {
+        method: 'POST',
+        headers,
+        body
+      });
+
+      const resultJson = await result.json();
+
+      await asyncDelay(2000);
+
+      this.setState({
+        executing: false
+      });
+
+      Toast.show({
+        text: resultJson.Message,
+        type: resultJson.Status ? 'success' : 'danger',
+        buttonText: "OK",
+        buttonStyle: { backgroundColor: Colors.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        duration: 3000,
+        onClose: () => {
+          if (resultJson.Status) {
+            this.fetchData();
+          }
+        }
+      });
+    }
+    else {
+      Toast.show({
+        text: "Vui lòng chọn lịch trực cần phê duyệt",
+        type: 'danger',
+        buttonText: "OK",
+        buttonStyle: { backgroundColor: Colors.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        duration: 3000
+      });
+    }
+  }
+
   renderItem = ({ item, index }) => {
+    const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: 0 }}
+          containerStyle={{ borderBottomColor: Colors.GRAY }}
 
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
@@ -179,25 +250,25 @@ class ListLichtruc extends Component {
           subtitle={
             <View style={{ marginTop: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
+                <View style={{ width: "30%" }}>
                   <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Thời hạn:
                 </RnText>
                 </View>
-                <View style={{ width: "65%" }}>
+                <View style={{ width: "70%" }}>
                   <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                     {` ${convertDateToString(item.TUNGAY)} - ${convertDateToString(item.DENNGAY)}`}
                   </RnText>
                 </View>
               </View>
               {
-                item.BS_TRUC_THAM_VAN && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "35%" }}>
+                (item.BS_TRUC_THAM_VAN && item.BS_TRUC_THAM_VAN.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ width: "30%" }}>
                     <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                       Bác sĩ trực tham vấn:
                     </RnText>
                   </View>
-                  <View style={{ width: "65%" }}>
+                  <View style={{ width: "70%" }}>
                     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                       {' ' + item.BS_TRUC_THAM_VAN}
                     </RnText>
@@ -205,28 +276,48 @@ class ListLichtruc extends Component {
                 </View>
               }
               {
-                item.BS_KIEM_TRA_TRUC && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "35%" }}>
+                (item.BS_KIEM_TRA_TRUC && item.BS_KIEM_TRA_TRUC.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={{ width: "30%" }}>
                     <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                       Bác sĩ kiểm tra trực:
                     </RnText>
                   </View>
-                  <View style={{ width: "65%" }}>
+                  <View style={{ width: "70%" }}>
                     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                       {' ' + item.BS_KIEM_TRA_TRUC}
                     </RnText>
                   </View>
                 </View>
               }
-
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ width: "30%" }}>
+                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                    Trạng thái:
+                </RnText>
+                </View>
+                <View style={{ width: "70%" }}>
+                  <RnText style={{ fontSize: moderateScale(12, 1.1), color: statusTextColor }}>
+                    {` ${item.TenTrangThai}`}
+                  </RnText>
+                </View>
+              </View>
             </View>
           }
           rightIcon={
-            item.DuongdanFile
-              ? <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => onDownloadFile(item.TENTAILIEU, item.DuongdanFile)}>
-                <RNEIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-              </TouchableOpacity>
-              : <View />
+            <View style={{ flexDirection: 'column' }}>
+              {
+                (item.DuongdanFile && item.DuongdanFile.length > 0)
+                  ? <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => onDownloadFile(item.TENTAILIEU, item.DuongdanFile)}>
+                    <RNEIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(35)} type='entypo' />
+                  </TouchableOpacity>
+                  : <View />
+              }
+              {
+                (item.STATUS && item.STATUS === LICHTRUC_CONSTANT.STATUS.BAN_THAO) && <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => this.onConfirmLichtruc(item.ID)}>
+                  <RNEIcon name='check-circle' color={Colors.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
+                </TouchableOpacity>
+              }
+            </View>
           }
         />
       </View>
@@ -262,7 +353,7 @@ class ListLichtruc extends Component {
                   {
                     this.state.type === LICHTRUC_CONSTANT.CHUYEN_MON
                       ? <MenuOption onSelect={() => this.changeListType(LICHTRUC_CONSTANT.KHAM_CHUA_BENH)} text="Lịch khám chữa bệnh" customStyles={HeaderMenuStyle.optionStyles} />
-                      : <MenuOption onSelect={() => this.changeListType(LICHTRUC_CONSTANT.CHUYEN_MON)} text="Lịch trưcj chuyên môn" customStyles={HeaderMenuStyle.optionStyles} />
+                      : <MenuOption onSelect={() => this.changeListType(LICHTRUC_CONSTANT.CHUYEN_MON)} text="Lịch trực chuyên môn" customStyles={HeaderMenuStyle.optionStyles} />
                   }
                 </MenuOptions>
               </Menu>
@@ -325,6 +416,20 @@ class ListLichtruc extends Component {
               )
             }
           </Content>
+          <AlertMessage
+            ref="confirmLichtruc"
+            title="XÁC NHẬN PHÊ DUYỆT KẾ HOẠCH"
+            bodyText="Bạn có chắc chắn muốn phê duyệt kế hoạch này không? Sau khi phê duyệt, bạn sẽ không thể chỉnh sửa lại kế hoạch nữa."
+            exitText="HỦY BỎ"
+          >
+            <View style={AlertMessageStyle.leftFooter}>
+              <TouchableOpacity onPress={() => this.submitConfirm()} style={AlertMessageStyle.footerButton}>
+                <Text style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                  ĐỒNG Ý
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </AlertMessage>
         </Container>
       </MenuProvider>
     );

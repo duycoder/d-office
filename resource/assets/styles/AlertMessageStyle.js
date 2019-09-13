@@ -31,9 +31,10 @@ export default StyleSheet.create({
     height: verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 5
   }, contentText: {
     color: '#000',
-    fontSize: moderateScale(18, 1.3),
+    fontSize: moderateScale(14, 1.3),
     textAlign: 'center'
   }, footer: {
     height: verticalScale(50),

@@ -148,7 +148,7 @@ class ExtendKeyFunction extends Component {
   }
 
   generateTitle(maThaotac) {
-    let tenThaotac = TIENICH._DS_YEUCAU_XE.NAME;
+    let tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
     switch (maThaotac) {
 
       case TIENICH._DS_YEUCAU_XE.NAME:
@@ -175,6 +175,7 @@ class ExtendKeyFunction extends Component {
 
   render() {
     const { notifyCount, userFunctions, onFocusNow } = this.state;
+    // console.tron.log(userFunctions)
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="light-content" />

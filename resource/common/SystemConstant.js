@@ -1,8 +1,8 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://vanban.vnio.vn'
 // export const API_URL = 'http://192.168.1.29:8098';
-// export const API_URL = 'http://101.96.76.204:8999'; //server vnio
-export const API_URL = 'http://123.16.245.4:8111'; //server local
+export const API_URL = 'http://101.96.76.204:8999'; //server vnio
+// export const API_URL = 'http://123.16.245.4:8111'; //server local
 // export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -100,7 +100,11 @@ export const DATXE_CONSTANT = {
 
 export const LICHTRUC_CONSTANT = {
 	CHUYEN_MON: "LT_LICHTRUC_CHUYENMON",
-	KHAM_CHUA_BENH: "LT_LICHKHAM_CHUABENH"
+	KHAM_CHUA_BENH: "LT_LICHKHAM_CHUABENH",
+	STATUS: {
+		BAN_THAO: 1,
+		DA_PHE_DUYET: 3
+	}
 }
 
 //colors
