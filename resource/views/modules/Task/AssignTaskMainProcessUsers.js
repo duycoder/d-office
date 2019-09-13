@@ -147,7 +147,7 @@ class AssignTaskMainProcessUsrs extends Component {
                                 <Right>
                                     <CheckBox
                                         color={Colors.LITE_BLUE}
-                                        selected={this.props.mainProcessUser == item.ID}
+                                        checked={this.props.mainProcessUser == item.ID}
                                         onPress={() => this.onSelectUser(item.ID)}
                                     />
                                 </Right>
