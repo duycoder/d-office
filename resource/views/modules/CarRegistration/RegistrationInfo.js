@@ -188,7 +188,7 @@ class RegistrationInfo extends Component {
               } />
 
             {
-              info.GHICHU && <ListItem style={DetailPublishDocStyle.listItemContainer}
+              (info.GHICHU && info.GHICHU.length > 0) && <ListItem style={DetailPublishDocStyle.listItemContainer}
                 hideChevron={true}
                 title={
                   <Text style={DetailPublishDocStyle.listItemTitleContainer}>

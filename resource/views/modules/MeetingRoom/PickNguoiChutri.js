@@ -126,7 +126,7 @@ class PickNguoiChutri extends Component {
     return (
       <NbListItem
         key={item.Value}
-        onPress={() => this.selectUser(nameTmp, item.Value)}
+        onPress={() => this.selectUser(item.Text, item.Value)}
         style={{ height: verticalScale(60) }}
       >
         <Left>
@@ -151,7 +151,7 @@ class PickNguoiChutri extends Component {
           <CheckBox
             color={Colors.LITE_BLUE}
             checked={this.state.chutriId == item.Value}
-            onPress={() => this.selectUser(nameTmp, item.Value)}
+            onPress={() => this.selectUser(item.Text, item.Value)}
           />
         </Right>
       </NbListItem>

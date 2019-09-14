@@ -199,7 +199,7 @@ class CreateMeetingDay extends Component {
         onClose: () => {
           if (resultJson.Status) {
             const screenParam = {
-              lichHopId: resultJson.Params,
+              lichhopId: resultJson.Params,
             };
 
             this.props.updateCoreNavParams(screenParam);
