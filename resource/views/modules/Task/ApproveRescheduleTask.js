@@ -93,7 +93,7 @@ class ApproveRescheduleTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000)
+        await asyncDelay(2000);
 
         this.setState({
             executing: false
