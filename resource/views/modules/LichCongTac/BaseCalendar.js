@@ -14,7 +14,7 @@ import { Icon as RNEIcon } from 'react-native-elements';
 
 import { Colors, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appStoreDataAndNavigate, convertDateTimeToString, convertDateToString } from '../../../common/Utilities';
+import { appStoreDataAndNavigate, convertDateTimeToString, convertDateToString, asyncDelay } from '../../../common/Utilities';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { executeLoading, dataLoading } from '../../../common/Effect';
@@ -126,6 +126,8 @@ class BaseCalendar extends Component {
         }
       }
     }
+
+    await asyncDelay(2000);
 
     this.setState({
       executing: false,

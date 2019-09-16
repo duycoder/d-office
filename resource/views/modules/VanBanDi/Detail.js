@@ -237,6 +237,8 @@ class Detail extends Component {
             })
         }).then(response => response.json());
 
+        await asyncDelay(2000);
+        
         this.setState({
             executing: false
         })

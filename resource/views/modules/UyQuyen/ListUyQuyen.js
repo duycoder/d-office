@@ -24,7 +24,7 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToString, convertDateToString } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToString, convertDateToString, asyncDelay } from '../../../common/Utilities';
 import {
     API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
     Colors,
@@ -145,6 +145,9 @@ class ListUyQuyen extends Component {
         const result = await fetch(url, {
             method: 'delete',
         }).then(response => response.json());
+
+        await asyncDelay(2000);
+
         this.setState({
             executing: false
         })

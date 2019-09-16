@@ -35,7 +35,7 @@ import {
 //utilities
 import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate, asyncDelay } from '../../../common/Utilities';
 
 //styles
 import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
@@ -227,6 +227,8 @@ class BaseTaskList extends Component {
                 }
                 return item;
             })
+
+            await asyncDelay(2000);
 
             this.setState({
                 executing: false,

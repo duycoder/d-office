@@ -33,7 +33,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
-import { formatMessage } from '../../../common/Utilities';
+import { formatMessage, asyncDelay } from '../../../common/Utilities';
 import GoBackButton from '../../common/GoBackButton';
 
 class DenyRescheduleTask extends Component {
@@ -79,6 +79,8 @@ class DenyRescheduleTask extends Component {
         });
 
         const resultJson = await result.json();
+
+        await asyncDelay(2000);
 
         this.setState({
             executing: false

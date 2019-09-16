@@ -188,6 +188,8 @@ class Detail extends Component {
         const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
         const result = await fetch(url).then(response => response.json());
 
+        await asyncDelay(2000);
+
         this.setState({ executing: false })
 
         if (result.IsNeedExecuteFunction) {
