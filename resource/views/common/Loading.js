@@ -127,7 +127,21 @@ class Loading extends Component {
             const { title, body, data } = notificationOpen.notification;
             // console.tron.log("Listen, this is data when opened")
             // console.tron.log(notificationOpen.notification);
-            if (data.targetScreen && data.objId) {
+            if (data.targetScreen) {
+                if (data.objId && data.objId > 0) {
+                    // nếu là chi tiết
+                    this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
+                }
+                else if (data.isReminder) {
+                    // nếu là nhắc việc thì gửi vào đây
+                    this.props.updateCoreNavParams({
+                        taskType: 1,
+                        docType: 1
+                    });
+                }
+                else {
+                    appNavigate(this.props.navigation, 'ListNotificationScreen', null);
+                }
                 // let screenParam = {};
                 // if (data.isTaskNotification == "false") {
                 //     screenParam = {
@@ -141,7 +155,7 @@ class Loading extends Component {
                 //         taskType: "1"
                 //     }
                 // }
-                this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
+                // this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
                 this.props.navigation.navigate(data.targetScreen);
                 // this.props.navigation.navigate("DashboardScreen");
             }
@@ -160,7 +174,7 @@ class Loading extends Component {
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body, data } = notificationOpen.notification;
-            const { objId, isTaskNotification, targetScreen, url } = data;
+            const { objId, isTaskNotification, targetScreen, url, isReminder } = data;
             // screenName = targetScreen;
             // let screenParam = {};
             // if (isTaskNotification == "false") {
@@ -182,7 +196,19 @@ class Loading extends Component {
                 }
             });
             this.props.setUserInfo(storage.user);
-            this.props.updateCoreNavParams(this.generateScreenParams(url, objId));
+
+            if (targetScreen) {
+                this.props.updateCoreNavParams(this.generateScreenParams(url, objId));
+            }
+            else if (isReminder) {
+                this.props.updateCoreNavParams({
+                    taskType: 1,
+                    docType: 1
+                });
+            }
+            else {
+                targetScreen = "ListNotificationScreen";
+            }
             this.props.navigation.navigate(targetScreen);
             // this.props.navigation.navigate("DashboardScreen");
 

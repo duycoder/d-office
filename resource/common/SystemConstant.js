@@ -1,5 +1,6 @@
 import { Dimensions } from 'react-native'
 export const WEB_URL = 'http://vanban.vnio.vn'
+// export const WEB_URL = 'http://192.168.1.10:8022';
 // export const API_URL = 'http://192.168.1.29:8098';
 export const API_URL = 'http://101.96.76.204:8999'; //server vnio
 // export const API_URL = 'http://123.16.245.4:8111'; //server local
