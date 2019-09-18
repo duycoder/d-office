@@ -102,7 +102,7 @@ class Dashboard extends Component {
     const result = await fetch(url)
       .then((response) => response.json());
     this.setState({
-      birthdayData: result.Params
+      birthdayData: result.Params || null
     });
   }
 
