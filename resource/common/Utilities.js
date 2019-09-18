@@ -58,11 +58,11 @@ export function convertTimeToString(date) {
 }
 
 //chuyển sang định dạng ngày/tháng/năm
-export function convertDateTimeToString(date) {
+export function convertDateTimeToString(date, isYearShorten = false) {
 
     if (date !== null && date !== '') {
         let deadline = new Date(date);
-        let deadlineStr = _readableFormat(deadline.getUTCDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + deadline.getFullYear();
+        let deadlineStr = _readableFormat(deadline.getUTCDate()) + '/' + _readableFormat(deadline.getMonth() + 1) + '/' + (isYearShorten ? deadline.getFullYear().toString().slice(2) : deadline.getFullYear());
         deadlineStr += ' ' + _readableFormat(deadline.getUTCHours()) + ':' + _readableFormat(deadline.getUTCMinutes()) + ':' + _readableFormat(deadline.getUTCSeconds());
         return deadlineStr;
     }
@@ -248,7 +248,7 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
     fileLink = fileLink.replace(/\\/g, '/');
     let date = new Date();
     let url = `${WEB_URL}/Uploads/${fileLink}`;
-    if (fileLink.toString().toLowerCase().indexOf("upload")>-1){
+    if (fileLink.toString().toLowerCase().indexOf("upload") > -1) {
         url = `${WEB_URL}/${fileLink}`;
     }
     // url = url.replace('\\', '/');
