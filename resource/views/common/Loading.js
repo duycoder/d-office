@@ -139,6 +139,14 @@ class Loading extends Component {
                         docType: 1
                     });
                 }
+                else if (data.isBirthday) {
+                    this.props.updateCoreNavParams({
+                        birthdayData: {
+                            title,
+                            body
+                        }
+                    });
+                }
                 else {
                     appNavigate(this.props.navigation, 'ListNotificationScreen', null);
                 }
@@ -174,7 +182,7 @@ class Loading extends Component {
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body, data } = notificationOpen.notification;
-            const { objId, isTaskNotification, targetScreen, url, isReminder } = data;
+            const { objId, isTaskNotification, targetScreen, url, isReminder, isBirthday } = data;
             // screenName = targetScreen;
             // let screenParam = {};
             // if (isTaskNotification == "false") {
@@ -204,6 +212,14 @@ class Loading extends Component {
                 this.props.updateCoreNavParams({
                     taskType: 1,
                     docType: 1
+                });
+            }
+            else if (isBirthday) {
+                this.props.updateCoreNavParams({
+                    birthdayData: {
+                        title,
+                        body
+                    }
                 });
             }
             else {

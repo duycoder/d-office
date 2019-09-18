@@ -76,6 +76,8 @@ class Dashboard extends Component {
       notifyCount_Chuyenxe: 0,
       notifyCount_Uyquyen: 0,
       notifyCount_Lichtruc: 0,
+
+      birthdayData: props.coreNavParams.birthdayData || null,
     }
   }
 
@@ -510,7 +512,34 @@ class Dashboard extends Component {
                   })
                   : emptyDataPage()
               }
-
+              {
+                this.state.birthdayData !== null && <ListItem
+                  containerStyle={{ backgroundColor: "#ffccd7", borderBottomColor: "#ccc" }}
+                  leftIcon={
+                    <Icon name="gift" type="font-awesome" color={"#ff460f"} size={moderateScale(45)} />
+                    // <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: "#ff460f" }]}>
+                    //   <Text style={ListNotificationStyle.leftTitleText}>SN</Text>
+                    // </View>
+                  }
+                  hideChevron={true}
+                  title={
+                    <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                      <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{this.state.birthdayData.title}</Text>
+                    </Text>
+                  }
+                  titleStyle={ListNotificationStyle.title}
+                  titleContainerStyle={{
+                    marginHorizontal: '3%',
+                  }}
+                  subtitle={
+                    <Text style={{ color: Colors.BLACK }}>{this.state.birthdayData.body}</Text>
+                  }
+                  subtitleContainerStyle={{
+                    marginHorizontal: '3%'
+                  }}
+                  titleNumberOfLines={3}
+                />
+              }
             </View>
 
             <View style={{ marginTop: moderateScale(10, 1.2), backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
@@ -592,6 +621,12 @@ class Dashboard extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+      coreNavParams: state.navState.coreNavParams
+  }
+}
+
 const mapDispatchToProps = (dispatch) => {
   return {
     updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization)),
@@ -599,4 +634,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
