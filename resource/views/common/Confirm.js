@@ -57,7 +57,7 @@ export default class Confirm extends Component {
                 'Content-Type': 'application/json; charset=utf-8'
             }, body: JSON.stringify({
                 userId: userInfo.ID,
-                token: userInfo.Token
+                token: userInfo.Token || userInfo.DeviceToken
             })
         }).then(response => response.json())
             .then(responseJson => {
