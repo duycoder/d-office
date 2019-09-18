@@ -112,14 +112,15 @@ class KeyFunction extends Component {
       notifyCount: userInfo.numberUnReadMessage,
       userFunctions: userInfo.GroupUserFunctions
     });
+    this.fetchNotifyCount();
   }
 
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
+      this.fetchNotifyCount();
       // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
     });
-    this.fetchNotifyCount();
   }
 
   componentWillUnmount() {
