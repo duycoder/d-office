@@ -16,25 +16,25 @@ export const ListCommentStyle = StyleSheet.create({
   },
   commentAvatar: {
     backgroundColor: Colors.BLUE_PANTONE_640C,
-    borderRadius: 5,
-    height: verticalScale(60),
+    borderRadius: 25,
+    height: 50,
     width: '100%',
     justifyContent: 'center'
   },
   commentContentContainer: {
-    flex: 4,
+    flex: 5,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    paddingHorizontal: moderateScale(5),
+    paddingHorizontal: 8,
   },
   commentUserName: {
-    fontSize: moderateScale(15, 1.5),
+    fontSize: moderateScale(13, 1.2),
     fontWeight: 'bold',
     flexWrap: 'wrap',
     color: Colors.BLACK
   },
   commentContent: {
-    fontSize: moderateScale(11, 1.2),
+    fontSize: moderateScale(12, 1.2),
     color: Colors.BLACK
   },
   boldText: {
@@ -43,7 +43,8 @@ export const ListCommentStyle = StyleSheet.create({
   },
   commentTime: {
     alignItems: 'center',
-    fontSize: moderateScale(12, 1.1)
+    fontSize: moderateScale(10, .9), 
+    color: Colors.DANK_GRAY
   },
   separator: {
     borderBottomWidth: 1,
@@ -70,6 +71,8 @@ export const ListCommentStyle = StyleSheet.create({
 export const ReplyCommentStyle = StyleSheet.create({
   replyCommentContainer: {
     padding: moderateScale(10),
+    borderBottomWidth: .7,
+    borderBottomColor: Colors.DANK_GRAY,  
   },
   replyObjectContainer: {
     marginBottom: moderateScale(10),
@@ -98,7 +101,7 @@ export const ReplyCommentStyle = StyleSheet.create({
     paddingHorizontal: moderateScale(10),
   },
   replyObjectContent: {
-    marginTop: verticalScale(10)
+    marginTop: 3
   },
   replyObjectTime: {
     marginTop: moderateScale(10),
@@ -114,27 +117,29 @@ export const ReplyCommentStyle = StyleSheet.create({
     fontSize: moderateScale(16, 1.2),
   },
   replyObjectContentText: {
-    fontSize: moderateScale(11, 1.2),
+    fontSize: moderateScale(13, 1.2),
     color: Colors.BLACK
   },
   replyListContainer: {
     marginHorizontal: moderateScale(5),
     paddingTop: moderateScale(10),
-    borderTopColor: Colors.GRAY,
-    borderTopWidth: 1
+    // borderTopColor: Colors.GRAY,
+    // borderTopWidth: 1
   }
 });
 
 export const FooterCommentStyle = StyleSheet.create({
   footerComment: {
     justifyContent: 'space-around',
+    alignItems: 'center',
     flexDirection: 'row',
     backgroundColor: Colors.WHITE,
     borderTopWidth: 1,
     borderColor: '#e5e5e5',
-    flexWrap: 'wrap',
+    // flexWrap: 'wrap',
+    paddingHorizontal: 10
   }, footerCommentContent: {
-    paddingLeft: moderateScale(10), 
+    // paddingLeft: moderateScale(10), 
     maxHeight: verticalScale(50),
   },
   footerUploader: {

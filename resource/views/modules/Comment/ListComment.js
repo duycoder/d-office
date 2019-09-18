@@ -16,7 +16,7 @@ import {
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate
+  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate, convertDateToString
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
@@ -31,11 +31,12 @@ import {
   Container, Header, Left, Right, Body, Title, Input,
   Button, Content, Icon, Footer, Text as NbText, Toast
 } from 'native-base';
-import { Icon as RneIcon } from 'react-native-elements';
+import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import * as util from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 //import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 // import ImagePicker from 'react-native-image-picker';
+import Images from '../../../common/Images';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -392,7 +393,7 @@ class ListComment extends Component {
     })
   }
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item, index }) => {
     let attachmentContent = null;
     if (item.ATTACH != null) {
       attachmentContent = (
@@ -410,51 +411,96 @@ class ListComment extends Component {
         </View>
       )
     }
+    // let currentBorderBottomWidth = .7;
+    // if (--this.state.data.length === index) {
+    //   currentBorderBottomWidth = 0;
+    // }
     return (
-      <View style={ListCommentStyle.commentContainer}>
-        <View style={{ flexDirection: 'row' }}>
-          <View style={ListCommentStyle.commentAvatarContainer}>
-            <View style={ListCommentStyle.commentAvatar}>
-              <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={Colors.WHITE} />
+      <ListItem
+        roundAvatar
+        hideChevron
+        avatar={Images.userAvatar}
+        avatarContainerStyle={{ alignSelf: "flex-start" }}
+        avatarStyle={{ width: 40, height: 40, borderRadius: 20 }}
+        title={
+          <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
+            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: Colors.OLD_LITE_BLUE }}>{item.FullName}</Text>
+            <Text style={{ fontSize: moderateScale(11, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
+          </View>
+        }
+        subtitle={
+          <View style={{ marginTop: 8, marginHorizontal: 10, flexDirection: "column" }}>
+            <Text style={{ fontSize: moderateScale(12, 1.2) }}>{item.NOIDUNG}</Text>
+
+            <View style={[ListCommentStyle.subInfoContainer, { marginTop: 8 }]}>
+              {
+                item.NUMBER_REPLY > 0
+                  ? <TouchableOpacity style={ListCommentStyle.replyCommentContainer} onPress={() => this.onReplyComment(item)}>
+                    <Text style={ListCommentStyle.replyButtonText}>
+                      {'Xem tất cả ' + item.NUMBER_REPLY + ' phản hồi'}
+                    </Text>
+                  </TouchableOpacity>
+                  : <TouchableOpacity style={ListCommentStyle.replyButtonContainer} onPress={() => this.onReplyComment(item)}>
+                    {
+                      // <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={Colors.BLUE_PANTONE_640C} />
+                    }
+                    <Text style={ListCommentStyle.replyButtonText}>Trả lời</Text>
+                  </TouchableOpacity>
+              }
+
             </View>
           </View>
-          <View style={ListCommentStyle.commentContentContainer}>
-            <Text style={ListCommentStyle.commentUserName}>
-              {item.FullName}
-            </Text>
-            <Text style={ListCommentStyle.commentContent}>
-              {item.NOIDUNG}
-            </Text>
+        }
+        containerStyle={{
+          marginBottom: 10,
+          borderBottomWidth: .7,
+          marginHorizontal: 7,
+        }}
+      />
+      // <View style={ListCommentStyle.commentContainer}>
+      //   <View style={{ flexDirection: 'row' }}>
+      //     <View style={ListCommentStyle.commentAvatarContainer}>
+      //       <View style={ListCommentStyle.commentAvatar}>
+      //         <RneIcon size={moderateScale(30)} type='ionicon' name='ios-people' color={Colors.WHITE} />
+      //       </View>
+      //     </View>
+      //     <View style={ListCommentStyle.commentContentContainer}>
+      //       <Text style={ListCommentStyle.commentUserName}>
+      //         {item.FullName}
+      //       </Text>
+      //       <Text style={ListCommentStyle.commentContent}>
+      //         {item.NOIDUNG}
+      //       </Text>
 
-            {
-              attachmentContent
-            }
+      //       {
+      //         attachmentContent
+      //       }
 
-            <View style={ListCommentStyle.subInfoContainer}>
-              <TouchableOpacity style={ListCommentStyle.replyButtonContainer} onPress={() => this.onReplyComment(item)}>
-                <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={Colors.BLUE_PANTONE_640C} />
-                <Text style={ListCommentStyle.replyButtonText}>
-                  Trả lời
-              </Text>
-              </TouchableOpacity>
+      //       <View style={ListCommentStyle.subInfoContainer}>
+      //         <TouchableOpacity style={ListCommentStyle.replyButtonContainer} onPress={() => this.onReplyComment(item)}>
+      //           <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={Colors.BLUE_PANTONE_640C} />
+      //           <Text style={ListCommentStyle.replyButtonText}>
+      //             Trả lời
+      //         </Text>
+      //         </TouchableOpacity>
 
-              <Text style={ListCommentStyle.commentTime}>
-                {convertDateTimeToString(item.NGAYTAO)}
-              </Text>
-            </View>
+      //         <Text style={ListCommentStyle.commentTime}>
+      //           {convertDateTimeToString(item.NGAYTAO)}
+      //         </Text>
+      //       </View>
 
-            {
-              renderIf(item.NUMBER_REPLY > 0)(
-                <TouchableOpacity style={ListCommentStyle.replyCommentContainer} onPress={() => this.onReplyComment(item)}>
-                  <Text style={ListCommentStyle.replyCommentText}>
-                    {'Đã có ' + item.NUMBER_REPLY + ' phản hồi'}
-                  </Text>
-                </TouchableOpacity>
-              )
-            }
-          </View>
-        </View>
-      </View>
+      //       {
+      //         renderIf(item.NUMBER_REPLY > 0)(
+      //           <TouchableOpacity style={ListCommentStyle.replyCommentContainer} onPress={() => this.onReplyComment(item)}>
+      //             <Text style={ListCommentStyle.replyCommentText}>
+      //               {'Đã có ' + item.NUMBER_REPLY + ' phản hồi'}
+      //             </Text>
+      //           </TouchableOpacity>
+      //         )
+      //       }
+      //     </View>
+      //   </View>
+      // </View>
     )
   }
 
@@ -519,20 +565,28 @@ class ListComment extends Component {
           }
         </Content>
 
-        <Footer style={[FooterCommentStyle.footerUploader, { height: this.state.heightAnimation, flex: this.state.footerFlex }]}>
+        <View style={{ height: verticalScale(50), flex: this.state.footerFlex, backgroundColor: Colors.WHITE }}>
           <View style={[FooterCommentStyle.footerComment]}>
             <Input
-              style={FooterCommentStyle.footerCommentContent}
+              // style={FooterCommentStyle.footerCommentContent}
               placeholder='Nhập nội dung trao đổi'
               value={this.state.commentContent}
               onChangeText={(commentContent) => this.setState({ commentContent })}
               multiline={true}
             />
-            <Button transparent onPress={this.sendComment}>
-              <RneIcon name='md-send' size={moderateScale(40)} color={commentSendableIcon} type='ionicon' />
-            </Button>
+            <TouchableOpacity
+              transparent
+              onPress={this.sendComment}
+              disabled={this.state.commentContent.trim() === EMPTY_STRING}
+              style={{ marginVertical: 10 }}
+            >
+              <Text style={{ fontSize: moderateScale(20), color: commentSendableIcon }}>GỬI</Text>
+              {
+                // <RneIcon name='md-send' size={moderateScale(40)} color={commentSendableIcon} type='ionicon' />
+              }
+            </TouchableOpacity>
           </View>
-        </Footer>
+        </View>
 
         {
           executeLoading(this.state.executing)

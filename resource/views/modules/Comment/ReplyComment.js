@@ -29,9 +29,11 @@ import {
   Button, Content, Icon, Footer, Text as NbText, Toast
 } from 'native-base';
 import renderIf from 'render-if';
-import { Icon as RneIcon } from 'react-native-elements';
+import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import * as util from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
+
+import Images from '../../../common/Images';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -331,38 +333,29 @@ class ReplyComment extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <View>
-        <View style={{ flexDirection: 'row', marginTop: verticalScale(10) }}>
-          <View style={ListCommentStyle.commentAvatarContainer}>
-            <View style={ListCommentStyle.commentAvatar}>
-              <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={Colors.WHITE} />
-            </View>
+      <ListItem
+        roundAvatar
+        hideChevron
+        avatar={Images.userAvatar}
+        avatarContainerStyle={{ alignSelf: "flex-start" }}
+        avatarStyle={{ width: 40, height: 40, borderRadius: 20 }}
+        title={
+          <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
+            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: Colors.OLD_LITE_BLUE }}>{item.FullName}</Text>
+            <Text style={{ fontSize: moderateScale(11, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
           </View>
-
-
-          <View style={ListCommentStyle.commentContentContainer}>
-            <Text style={ListCommentStyle.commentUserName}>{item.FullName}</Text>
-            <Text style={ListCommentStyle.commentContent}>
-              {item.NOIDUNG}
-            </Text>
-            <View style={{ alignItems: 'flex-end' }}>
-              <Text style={ListCommentStyle.commentTime}>
-                {convertDateTimeToString(item.NGAYTAO)}
-              </Text>
-            </View>
-
-            {
-              renderIf(item.NUMBER_REPLY > 0)(
-                <TouchableOpacity style={ListCommentStyle.replyCommentContainer} onPress={() => this.onReplyComment(item)}>
-                  <Text style={ListCommentStyle.replyCommentText}>
-                    {'Đã có ' + item.NUMBER_REPLY + ' phản hồi'}
-                  </Text>
-                </TouchableOpacity>
-              )
-            }
+        }
+        subtitle={
+          <View style={{ marginTop: 8, marginHorizontal: 10 }}>
+            <Text style={{ fontSize: moderateScale(12, 1.2) }}>{item.NOIDUNG}</Text>
           </View>
-        </View>
-      </View>
+        }
+        containerStyle={{
+          marginBottom: 10,
+          borderBottomWidth: .7,
+          marginHorizontal: 7,
+        }}
+      />
     )
   }
 
@@ -385,12 +378,12 @@ class ReplyComment extends Component {
         </View>
       )
     }
-    const buttonSendColor = this.state.commentContent === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
+    const buttonSendColor = this.state.commentContent.trim() === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
     return (
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={()=>this.navigateToListComment()}/>
+            <GoBackButton onPress={() => this.navigateToListComment()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -402,42 +395,60 @@ class ReplyComment extends Component {
           <Right style={NativeBaseStyle.right} />
         </Header>
 
+        <View style={ReplyCommentStyle.replyCommentContainer}>
+          <ListItem
+            roundAvatar
+            hideChevron
+            avatar={Images.userAvatar}
+            avatarContainerStyle={{ alignSelf: "flex-start" }}
+            avatarStyle={{ width: 50, height: 50, borderRadius: 25 }}
+            title={
+              <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
+                <Text style={{ fontSize: moderateScale(15, 1.2), fontWeight: "bold", color: Colors.LITE_BLUE }}>{this.state.comment.FullName}</Text>
+                <Text style={{ fontSize: moderateScale(12, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(this.state.comment.NGAYTAO, true)}</Text>
+              </View>
+            }
+            containerStyle={{
+              borderBottomWidth: 0
+            }}
+          />
+          {
+            // <View style={ReplyCommentStyle.replyObjectContainer}>
+            //   <View style={ReplyCommentStyle.replyObjectHeader}>
+
+            //     <View style={ReplyCommentStyle.replyObjectAvatarContainer}>
+            //       <View style={ReplyCommentStyle.replyObjectAvatar}>
+            //         <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={Colors.WHITE} />
+            //       </View>
+            //     </View>
+
+            //     <View style={ReplyCommentStyle.replyObjectUserContainer}>
+            //       <Text style={ReplyCommentStyle.replyObjectUserText}>
+            //         {this.state.comment.FullName}
+            //       </Text>
+            //     </View>
+            //   </View>
+
+            <View style={ReplyCommentStyle.replyObjectContent}>
+              <Text style={ReplyCommentStyle.replyObjectContentText}>
+                {this.state.comment.NOIDUNG}
+              </Text>
+            </View>
+
+            //   {
+            //     attachmentContent
+            //   }
+
+            //   <View style={ReplyCommentStyle.replyObjectTime}>
+            //     <Text style={ReplyCommentStyle.replyObjectTimeText}>
+            //       {convertDateTimeToString(this.state.comment.NGAYTAO)}
+            //     </Text>
+            //   </View>
+            // </View>
+          }
+        </View>
         <Content contentContainerStyle={{ flex: 1 }}>
           <ScrollView>
-            <View style={ReplyCommentStyle.replyCommentContainer}>
-              <View style={ReplyCommentStyle.replyObjectContainer}>
-                <View style={ReplyCommentStyle.replyObjectHeader}>
-
-                  <View style={ReplyCommentStyle.replyObjectAvatarContainer}>
-                    <View style={ReplyCommentStyle.replyObjectAvatar}>
-                      <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={Colors.WHITE} />
-                    </View>
-                  </View>
-
-                  <View style={ReplyCommentStyle.replyObjectUserContainer}>
-                    <Text style={ReplyCommentStyle.replyObjectUserText}>
-                      {this.state.comment.FullName}
-                    </Text>
-                  </View>
-                </View>
-
-                <View style={ReplyCommentStyle.replyObjectContent}>
-                  <Text style={ReplyCommentStyle.replyObjectContentText}>
-                    {this.state.comment.NOIDUNG}
-                  </Text>
-                </View>
-
-                {
-                  attachmentContent
-                }
-
-                <View style={ReplyCommentStyle.replyObjectTime}>
-                  <Text style={ReplyCommentStyle.replyObjectTimeText}>
-                    {convertDateTimeToString(this.state.comment.NGAYTAO)}
-                  </Text>
-                </View>
-              </View>
-            </View>
             <View style={ReplyCommentStyle.replyListContainer}>
               {
                 renderIf(this.state.loading)(
@@ -448,6 +459,7 @@ class ReplyComment extends Component {
               {
                 renderIf(!this.state.loading)(
                   <FlatList
+                    inverted
                     renderItem={this.renderItem}
                     data={this.state.data}
                     keyExtractor={(item, index) => index.toString()}
@@ -470,13 +482,24 @@ class ReplyComment extends Component {
           </ScrollView>
         </Content>
 
-        <Footer style={[{ flex: this.state.footerFlex }, FooterCommentStyle.footerComment]}>
-          <Input style={{ paddingLeft: moderateScale(10) }}
-            placeholder='Nhập nội dung trao đổi'
+        <Footer style={[{ flex: this.state.footerFlex, backgroundColor: Colors.WHITE, height: verticalScale(50) }, FooterCommentStyle.footerComment]}>
+          <Input
+            // style={{ paddingLeft: moderateScale(10) }}
+            placeholder='Nhập nội dung phản hồi'
             value={this.state.commentContent}
-            onChangeText={(commentContent) => this.setState({ commentContent })} />
-          <Button transparent onPress={this.sendComment}>
-            <RneIcon name='md-send' size={moderateScale(40)} color={buttonSendColor} type='ionicon' />
+            onChangeText={(commentContent) => this.setState({ commentContent })}
+            multiline
+          />
+          <Button
+            transparent
+            onPress={this.sendComment}
+            disabled={this.state.commentContent.trim() === EMPTY_STRING}
+            style={{ marginVertical: 10 }}
+          >
+            <Text style={{ fontSize: moderateScale(20), color: buttonSendColor }}>GỬI</Text>
+            {
+              // <RneIcon name='md-send' size={moderateScale(40)} color={buttonSendColor} type='ionicon' />
+            }
           </Button>
         </Footer>
 
