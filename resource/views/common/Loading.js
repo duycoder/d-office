@@ -139,14 +139,14 @@ class Loading extends Component {
                         docType: 1
                     });
                 }
-                else if (data.isBirthday) {
-                    this.props.updateCoreNavParams({
-                        birthdayData: {
-                            title,
-                            body
-                        }
-                    });
-                }
+                // else if (data.isBirthday) {
+                //     this.props.updateCoreNavParams({
+                //         birthdayData: {
+                //             title,
+                //             body
+                //         }
+                //     });
+                // }
                 else {
                     appNavigate(this.props.navigation, 'ListNotificationScreen', null);
                 }
@@ -214,14 +214,14 @@ class Loading extends Component {
                     docType: 1
                 });
             }
-            else if (isBirthday) {
-                this.props.updateCoreNavParams({
-                    birthdayData: {
-                        title,
-                        body
-                    }
-                });
-            }
+            // else if (isBirthday) {
+            //     this.props.updateCoreNavParams({
+            //         birthdayData: {
+            //             title,
+            //             body
+            //         }
+            //     });
+            // }
             else {
                 targetScreen = "ListNotificationScreen";
             }

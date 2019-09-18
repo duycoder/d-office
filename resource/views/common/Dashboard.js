@@ -77,7 +77,7 @@ class Dashboard extends Component {
       notifyCount_Uyquyen: 0,
       notifyCount_Lichtruc: 0,
 
-      birthdayData: props.coreNavParams.birthdayData || null,
+      birthdayData: null,
     }
   }
 
@@ -93,6 +93,16 @@ class Dashboard extends Component {
       this.fetchRecentNoti();
       this.fetchCalendarData(new Date());
       this.fetchNotifyCount();
+      this.fetchBirthdayData();
+    });
+  }
+
+  fetchBirthdayData = async () => {
+    const url = `${API_URL}/api/Account/GetBirthdayData/`;
+    const result = await fetch(url)
+      .then((response) => response.json());
+    this.setState({
+      birthdayData: result.Params
     });
   }
 
