@@ -140,7 +140,7 @@ class DetailEvent extends Component {
               <View style={{ marginTop: "0.5%" }}>
                 <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
               </View>
-            </View>7
+            </View>
             <View style={{ width: "35%" }}>
               <View style={GridPanelStyle.titleContainer}>
                 <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>

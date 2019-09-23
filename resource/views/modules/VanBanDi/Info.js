@@ -285,7 +285,7 @@ export default class MainInfoSignDoc extends Component {
                             } />
 
                         {
-                            this.props.info.STR_NGUOIKY && <ListItem style={DetailSignDocStyle.listItemContainer}
+                            (this.props.info.STR_NGUOIKY && this.props.info.STR_NGUOIKY.length > 0) && <ListItem style={DetailSignDocStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>
@@ -300,7 +300,7 @@ export default class MainInfoSignDoc extends Component {
                         }
 
                         {
-                            this.state.info.NOIDUNG && <ListItem style={DetailSignDocStyle.listItemContainer}
+                            (this.state.info.NOIDUNG && this.state.info.NOIDUNG.length > 0) && <ListItem style={DetailSignDocStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailSignDocStyle.listItemTitleContainer}>

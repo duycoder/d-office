@@ -159,7 +159,7 @@ export default class TaskDescription extends Component {
                             this.state.docInfo && relateDoc
                         }
                         {
-                            this.state.attachments && this.state.attachments.length > 0
+                            (this.state.attachments && this.state.attachments.length > 0)
                                 ? <ListItem style={DetailTaskStyle.listItemContainer}
                                     hideChevron={true}
                                     title={

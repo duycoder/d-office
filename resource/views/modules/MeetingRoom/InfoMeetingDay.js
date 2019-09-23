@@ -80,7 +80,7 @@ class RegistrationInfo extends Component {
                   {thoigianHop}
                 </Text>
               } />
-            }
+            
             <ListItem style={DetailPublishDocStyle.listItemContainer}
               hideChevron={true}
               title={
@@ -89,7 +89,7 @@ class RegistrationInfo extends Component {
                                 </Text>
               }
               subtitle={
-                info.TEN_PHONG
+                (info.TEN_PHONG && info.TEN_PHONG.length > 0)
                   ? <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
                     {info.TEN_PHONG}
                   </Text>
