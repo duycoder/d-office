@@ -18,8 +18,9 @@ import { appNavigate, isObjectHasValue } from '../../common/Utilities';
 import ProgressBar from './ProgressBar';
 
 //const
-const uriLogo = require('../../assets/images/logovnio.png')
 const uriBackground = require('../../assets/images/background.png');
+import Images from '../../common/Images';
+const uriLogo = Images.logo;
 
 //redux
 import { connect } from 'react-redux';

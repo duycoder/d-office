@@ -558,7 +558,7 @@ class Dashboard extends Component {
                 calendarAnimation={{ type: 'sequence', duration: 30 }}
                 // daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
                 style={{ height: 100, paddingTop: 20, paddingBottom: 10, borderBottomColor: '#ccc', borderBottomWidth: 0.7 }}
-                calendarHeaderStyle={{ color: Colors.DARK_GRAY, fontSize: moderateScale(12, 1.01) }}
+                calendarHeaderStyle={{ color: '#2F2F2F', fontSize: moderateScale(12, 1.01) }}
                 calendarColor={Colors.WHITE}
                 dateNumberStyle={{ color: Colors.BLACK, fontSize: moderateScale(14, 1.2) }}
                 dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
@@ -604,7 +604,7 @@ class Dashboard extends Component {
                         hideChevron
                         title={
                           <Text style={[ListNotificationStyle.title]}>
-                            <Text style={{ fontWeight: 'bold', color: Colors.GRAY }}>{ThoigianDiadiemString} / Chủ trì: {ChutriString}</Text>
+                            <Text style={{ fontWeight: 'bold', color: '#2F2F2F' }}>{ThoigianDiadiemString} / Chủ trì: {ChutriString}</Text>
                           </Text>
                         }
                         subtitle={
