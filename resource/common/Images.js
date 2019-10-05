@@ -2,7 +2,7 @@ const images = {
   background: require('../assets/images/background.png'),
   userAvatar: require('../assets/images/avatar.png'),
   subItemIconLink: require('../assets/images/arrow-white-right.png'),
-  logo: require('../assets/images/logovnio.png'),
+  logo: require('../assets/images/new_logo.png'),
   vanbandenIcons: {
     chua_xuly: require('../assets/images/Dashboard_icon/van_ban_den/chua_xu_ly.png'),
     da_xuly: require('../assets/images/Dashboard_icon/van_ban_den/da_xu_ly.png'),
@@ -39,7 +39,7 @@ const images = {
   },
   banner_top: require('../assets/images/banner_top.png'),
   banner_top_2: require('../assets/images/banner_top_2.jpeg'),
-  
+  icon_phe_duyet: require('../assets/images/icon_phe_duyet.png'),
 }
 
 export default images;

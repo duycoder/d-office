@@ -7,7 +7,8 @@
 import React, { Component } from 'react';
 import {
   AsyncStorage, ActivityIndicator, View,
-  FlatList, RefreshControl, TouchableOpacity, Text as RnText
+  FlatList, RefreshControl, TouchableOpacity, Text as RnText,
+  Image
 } from 'react-native';
 
 //redux
@@ -18,7 +19,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
   Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button, Fab, Title, Subtitle
+  Content, Badge, Left, Right, Button, Fab, Title, Subtitle, Toast
 } from 'native-base'
 import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
@@ -34,6 +35,7 @@ import {
   EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
+import Images from '../../../common/Images';
 
 
 //styles
@@ -213,7 +215,7 @@ class ListLichtruc extends Component {
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonTextStyle: { color: Colors.WHITE },
         duration: 3000,
         onClose: () => {
           if (resultJson.Status) {
@@ -228,7 +230,7 @@ class ListLichtruc extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonTextStyle: { color: Colors.WHITE },
         duration: 3000
       });
     }
@@ -314,7 +316,10 @@ class ListLichtruc extends Component {
               }
               {
                 (item.STATUS && item.STATUS === LICHTRUC_CONSTANT.STATUS.BAN_THAO) && <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => this.onConfirmLichtruc(item.ID)}>
-                  <RNEIcon name='check-circle' color={Colors.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
+                  <Image source={Images.icon_phe_duyet} style={{ height: verticalScale(35), width: verticalScale(35), resizeMode: 'stretch' }} />
+                  {
+                    // <RNEIcon name='check-circle' color={Colors.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
+                  }
                 </TouchableOpacity>
               }
             </View>
