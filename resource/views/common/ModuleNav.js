@@ -114,6 +114,11 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 //màn hình thông báo
 import ListNotification from '../modules/Notification/ListNotification';
 
+//#region tính năng chuyên biệt (không biết xếp vào đâu)
+import ListReminder from '../modules/Miscs/ListReminder';
+import CreateReminder from '../modules/Miscs/CreateReminder';
+//#endregion
+
 //test
 //import { TestFCM as Test, TestNav } from '../../common/Test';
 
@@ -332,6 +337,12 @@ const baseStack = {
     screen: CreateMeetingDay
   }, PickNguoiChutriScreen: {
     screen: PickNguoiChutri
+  },
+
+  ListReminderScreen: {
+    screen: ListReminder
+  }, CreateReminderScreen: {
+    screen: CreateReminder
   }
 };
 

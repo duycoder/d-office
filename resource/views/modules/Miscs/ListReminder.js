@@ -12,7 +12,6 @@ import {
 
 //redux
 import { connect } from 'react-redux';
-import * as vanbandenAction from '../../../redux/modules/VanBanDen/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
@@ -42,9 +41,10 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 
-const TOTAL_TIME_OF_DAY = 86400000;
+const TOTAL_TIME_OF_DAY = 86400000,
+  SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
 
-class MeetingDayList extends Component {
+class ListReminder extends Component {
   constructor(props) {
     super(props);
 
@@ -76,7 +76,10 @@ class MeetingDayList extends Component {
           this.setState({
             loadingData: true
           }, () => {
-            this.fetchData();
+            let currentDate = new Date(),
+              startDate = currentDate.getTime() - SEARCH_TIME_SCOPE,
+              endDate = currentDate.getTime() + SEARCH_TIME_SCOPE;
+            this.fetchData(startDate, endDate);
           });
           this.props.updateExtendsNavParams({ check: false });
         }
@@ -88,12 +91,8 @@ class MeetingDayList extends Component {
     this.didFocusListener.remove();
   }
 
-  async fetchData() {
-    let currentDate = new Date(),
-      startDate = currentDate.getTime() - 15 * TOTAL_TIME_OF_DAY,
-      endDate = currentDate.getTime() + 15 * TOTAL_TIME_OF_DAY;
-
-    const url = `${API_URL}/api/MeetingRoom/ListLichhop/`
+  async fetchData(startDate, endDate) {
+    const url = `${API_URL}/api/Reminder/ListReminder/`
     const headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=utf-8'
@@ -117,17 +116,14 @@ class MeetingDayList extends Component {
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           resultJson.map(x => {
-            if (this.timeToString(x.NGAY_HOP) == strTime) {
-              const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
-                ngayHop = convertDateToString(x.NGAY_HOP);
+            if (this.timeToString(x.NGAY) == strTime) {
+              const thoidiem = `${_readableFormat(x.GIO)}h${_readableFormat(x.PHUT)}`,
+                ngayNhac = convertDateToString(x.NGAY);
               this.state.items[strTime].push({
-                thoigianHop,
-                ngayHop,
-                mucdich: x.MUCDICH,
-                thamdu: x.THANHPHAN_THAMDU,
-                id: x.ID,
-                tenPhong: x.TEN_PHONG,
-                tenNguoiChutri: x.TEN_NGUOICHUTRI
+                thoidiem,
+                ngayNhac,
+                noidung: x.NOIDUNG,
+                id: x.ID
               });
             }
           });
@@ -159,63 +155,17 @@ class MeetingDayList extends Component {
     }
     else {
       let targetScreenParam = {
-        fromScreen: "MeetingDayListScreen",
+        fromScreen: "ListReminderScreen",
       }
       this.props.updateExtendsNavParams(targetScreenParam);
-      navObj.navigate("CreateMeetingDayScreen");
+      navObj.navigate("CreateReminderScreen");
     }
   }
 
-  async loadItems(day) {
-    const startDate = convertDateToString(day.timestamp - 15 * TOTAL_TIME_OF_DAY),
-      endDate = convertDateToString(day.timestamp + 15 * TOTAL_TIME_OF_DAY);
-
-    const url = `${API_URL}/api/MeetingRoom/ListLichhop/`
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
-      startDate,
-      endDate
-    });
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-    const resultJson = await result.json();
-
-    setTimeout(() => {
-      for (let i = -15; i < 15; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          resultJson.map(x => {
-            if (this.timeToString(x.NGAY_HOP) == strTime) {
-              const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
-                ngayHop = convertDateToString(x.NGAY_HOP);
-              this.state.items[strTime].push({
-                thoigianHop,
-                ngayHop,
-                mucdich: x.MUCDICH,
-                thamdu: x.THANHPHAN_THAMDU,
-                id: x.ID,
-                tenPhong: x.TEN_PHONG,
-                tenNguoiChutri: x.TEN_NGUOICHUTRI
-              });
-            }
-          });
-        }
-      }
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
-      this.setState({
-        items: newItems
-      });
-    }, 1000);
+  loadItems(day) {
+    const startDate = convertDateToString(day.timestamp - SEARCH_TIME_SCOPE),
+      endDate = convertDateToString(day.timestamp + SEARCH_TIME_SCOPE);
+    this.fetchData(startDate, endDate);
   }
 
   renderItem(item) {
@@ -225,7 +175,7 @@ class MeetingDayList extends Component {
 
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
-            {item.mucdich}
+            {item.noidung}
           </RnText>
         }
 
@@ -234,48 +184,15 @@ class MeetingDayList extends Component {
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <View style={{ width: "35%" }}>
                 <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                  Thời gian họp:
-                    </RnText>
+                  Thời điểm:
+                </RnText>
               </View>
               <View style={{ width: "65%" }}>
                 <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                  {` ${item.thoigianHop}`}
+                  {` ${item.thoidiem}`}
                 </RnText>
               </View>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ width: "35%" }}>
-                <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                  Phòng họp:
-                  </RnText>
-              </View>
-              <View style={{ width: "65%" }}>
-                {
-                  item.tenPhong
-                    ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.tenPhong}
-                    </RnText>
-                    : <RnText style={{ fontSize: moderateScale(12, 1.1), fontWeight: 'bold', color: Colors.RED_PANTONE_186C }}>
-                      {' Chưa xếp phòng'}
-                    </RnText>
-                }
-
-              </View>
-            </View>
-            {
-              item.tenNguoiChutri && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Người chủ trì:
-                  </RnText>
-                </View>
-                <View style={{ width: "65%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {' ' + item.tenNguoiChutri}
-                  </RnText>
-                </View>
-              </View>
-            }
           </View>
         }
         hideChevron
@@ -374,7 +291,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStatetoProps, mapDispatchToProps)(MeetingDayList);
+export default connect(mapStatetoProps, mapDispatchToProps)(ListReminder);
 
 const styles = StyleSheet.create({
   item: {
