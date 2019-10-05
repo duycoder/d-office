@@ -59,6 +59,8 @@ export default class TimelinePublishDoc extends Component {
             outerIconCircleColor = Colors.OLD_LITE_BLUE;
         }
 
+        let ListJoinStr = (item.LstThamGia && item.LstThamGia.length > 0) ? item.LstThamGia.map(name => `- ${name}`).join(`\n`) : "";
+
         return (
             <View style={TimeLineStyle.container}>
                 <View style={TimeLineStyle.iconSection}>
@@ -128,11 +130,14 @@ export default class TimelinePublishDoc extends Component {
 
                                         <View style={TimeLineStyle.infoDetailValue}>
                                             {
-                                                item.LstThamGia.map((name) => (
-                                                    <Text style={TimeLineStyle.infoDetailValueText}>
-                                                        - {name}
-                                                    </Text>
-                                                ))
+                                                <Text style={TimeLineStyle.infoDetailValueText}>
+                                                    {ListJoinStr}    
+                                                </Text>
+                                                // item.LstThamGia.map((name) => (
+                                                //     <Text style={TimeLineStyle.infoDetailValueText}>
+                                                //         - {`${name}\n`}
+                                                //     </Text>
+                                                // ))
                                             }
                                         </View>
                                     </View>

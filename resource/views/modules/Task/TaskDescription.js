@@ -150,6 +150,9 @@ export default class TaskDescription extends Component {
             }
         }
 
+        let ListThamgiaStr = (this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0)
+            ? this.props.info.LstNguoiThamGia.split(",").map(name => `- ${name}`).join("\n")
+            : "N/A";
 
         return (
             <View style={DetailTaskStyle.container}>
@@ -264,7 +267,10 @@ export default class TaskDescription extends Component {
                                 }
                                 subtitle={
                                     <Text style={DetailTaskStyle.listItemSubTitleContainer}>
-                                        {util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()}
+                                        {
+                                            ListThamgiaStr
+                                            // util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()
+                                        }
                                     </Text>
                                 } />
                         }
@@ -389,7 +395,7 @@ export default class TaskDescription extends Component {
                                     {this.props.info.CongViec.PHANTRAMHOANTHANH === 100 ? `Đã hoàn thành vào ${convertDateTimeToTitle(this.props.info.CongViec.NGAYKETTHUC_THUCTE)}` : "Đang thực hiện"}
                                 </Text>
                             } />
-                            
+
                     </List>
                 </ScrollView>
             </View>
