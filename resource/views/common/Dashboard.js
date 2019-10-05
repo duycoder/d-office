@@ -603,8 +603,8 @@ class Dashboard extends Component {
                         containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
                         hideChevron
                         title={
-                          <Text style={[ListNotificationStyle.title]}>
-                            <Text style={{ fontWeight: 'bold', color: '#2F2F2F' }}>{ThoigianDiadiemString} / Chủ trì: {ChutriString}</Text>
+                          <Text style={[ListNotificationStyle.title, {fontWeight: "bold"}]}>
+                            {ThoigianDiadiemString} / Chủ trì: {ChutriString}
                           </Text>
                         }
                         subtitle={

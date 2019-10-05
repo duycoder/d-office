@@ -17,7 +17,7 @@ export const ListNotificationStyle = StyleSheet.create({
     color: Colors.WHITE
   },
   title: {
-    color: Colors.BLACK,
+    color: Colors.VERY_DANK_GRAY,
     fontSize: moderateScale(12, 1.2)
   },
   rightTitleText: {
