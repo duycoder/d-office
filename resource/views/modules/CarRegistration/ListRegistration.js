@@ -35,11 +35,11 @@ import {
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
-
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import { ItemProportion } from '../../../assets/styles/ListLayoutStyles';
 
 class ListRegistration extends Component {
   constructor(props) {
@@ -173,71 +173,137 @@ class ListRegistration extends Component {
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: 0 }}
+          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
 
-          title={
-            <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
-              {formatLongText(item.MUCDICH, 50)}
-            </RnText>
+          leftIcon={
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <RnText style={{ color: Colors.LITE_BLUE, fontWeight: "bold", fontSize: moderateScale(12, 1.05) }}>{timePart}</RnText>
+              <RnText style={{ color: Colors.LITE_BLUE, fontSize: moderateScale(11, 1.02) }}>{datePart}</RnText>
+            </View>
           }
+          // title={
+          //   <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
+          //     {formatLongText(item.MUCDICH, 50)}
+          //   </RnText>
+          // }
 
           subtitle={
-            <View style={{ marginTop: 8 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Thời gian xuất phát:
-              </RnText>
+            <View style={{ marginLeft: 8 }}>
+              {
+                // <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                //   <View style={ItemProportion.leftPart}>
+                //     <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                //       Thời gian xuất phát:
+                //   </RnText>
+                //   </View>
+                //   <View style={ItemProportion.rightPart}>
+                //     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                //       {' ' + [timePart, datePart].join(" - ")}
+                //     </RnText>
+                //   </View>
+                // </View>
+              }
+              {
+                (!!item.TEN_CHUYENXE && !!item.TEN_XE) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Tên chuyến:
+                    </RnText>
+                  </View>
+                  <View style={ItemProportion.rightPart}>
+                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                      {`${item.TEN_CHUYENXE.split("-").shift()} - ${item.TEN_XE}`}
+                    </RnText>
+                  </View>
                 </View>
-                <View style={{ width: "65%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {' ' + [timePart, datePart].join(" - ")}
-                  </RnText>
+              }
+
+              {
+                (!!item.TEN_LAIXE && !!item.DIEN_THOAI_LAI_XE) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Lái xe:
+                    </RnText>
+                  </View>
+                  <View style={ItemProportion.rightPart}>
+                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                      {`${item.TEN_LAIXE} - ${item.DIEN_THOAI_LAI_XE}`}
+                    </RnText>
+                  </View>
                 </View>
-              </View>
+              }
+
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Người đăng ký:
+                <View style={ItemProportion.leftPart}>
+                  <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                    Nội dung:
                 </RnText>
                 </View>
-                <View style={{ width: "65%" }}>
+                <View style={ItemProportion.rightPart}>
                   <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {' ' + item.NGUOIDANGKY}
+                    {formatLongText(item.MUCDICH, 50)}
                   </RnText>
                 </View>
               </View>
               {
                 item.DIEM_XUATPHAT && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "35%" }}>
-                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                      Điểm xuất phát:
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Điểm đi:
                 </RnText>
                   </View>
-                  <View style={{ width: "65%" }}>
+                  <View style={ItemProportion.rightPart}>
                     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.DIEM_XUATPHAT}
+                      {item.DIEM_XUATPHAT}
                     </RnText>
                   </View>
                 </View>
               }
               {
                 item.DIEM_KETTHUC && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "35%" }}>
-                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                      Điểm kết thúc:
-              </RnText>
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Điểm đến:
+                    </RnText>
                   </View>
-                  <View style={{ width: "65%" }}>
+                  <View style={ItemProportion.rightPart}>
                     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.DIEM_KETTHUC}
+                      {item.DIEM_KETTHUC}
                     </RnText>
                   </View>
                 </View>
               }
 
+              {
+                !!item.TEN_DONVI_DEXUAT && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Đơn vị đề xuất:
+                    </RnText>
+                  </View>
+                  <View style={ItemProportion.rightPart}>
+                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                      {item.NGUOIDANGKY}
+                    </RnText>
+                  </View>
+                </View>
+              }
+
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={ItemProportion.leftPart}>
+                  <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                    Trạng thái:
+                  </RnText>
+                </View>
+                <View style={ItemProportion.rightPart}>
+                  <RnText style={{ fontSize: moderateScale(12, 1.1), color: item.MAU_TRANGTHAI, fontWeight: 'bold' }}>
+                    {item.TEN_TRANGTHAI}
+                  </RnText>
+                </View>
+              </View>
             </View>
           }
+          hideChevron
           rightIcon={
             <View style={{ flexDirection: 'column' }}>
               <RNEIcon name='flag' size={26} color={item.MAU_TRANGTHAI} type='material-community' />
@@ -245,28 +311,30 @@ class ListRegistration extends Component {
           }
           onPress={() => this.navigateToDetail(item.ID)}
         />
-        <View style={{ paddingBottom: 10, paddingLeft: 10, paddingRight: 10, flexDirection: 'row', borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}>
-          <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-            <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-              <RnText style={{ fontWeight: 'bold' }}>
-                Số người:
-        </RnText>
-              <RnText>
-                {' ' + item.SONGUOI}
-              </RnText>
-            </RnText>
-          </View>
-          <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-            <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-              <RnText style={{ fontWeight: 'bold' }}>
-                Trạng thái:
-        </RnText>
-              <RnText style={{ color: item.MAU_TRANGTHAI, fontWeight: 'bold' }}>
-                {' ' + item.TEN_TRANGTHAI}
-              </RnText>
-            </RnText>
-          </View>
-        </View>
+        {
+          //   <View style={{ paddingBottom: 10, paddingLeft: 10, paddingRight: 10, flexDirection: 'row', borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}>
+          //     <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
+          //       <RnText style={[ListPublishDocStyle.abridgmentSub]}>
+          //         <RnText style={{ fontWeight: 'bold' }}>
+          //           Số người:
+          // </RnText>
+          //         <RnText>
+          //           {' ' + item.SONGUOI}
+          //         </RnText>
+          //       </RnText>
+          //     </View>
+          //     <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
+          //       <RnText style={[ListPublishDocStyle.abridgmentSub]}>
+          //         <RnText style={{ fontWeight: 'bold' }}>
+          //           Trạng thái:
+          // </RnText>
+          //         <RnText style={{ color: item.MAU_TRANGTHAI, fontWeight: 'bold' }}>
+          //           {' ' + item.TEN_TRANGTHAI}
+          //         </RnText>
+          //       </RnText>
+          //     </View>
+          //   </View>
+        }
       </View>
     );
   }
@@ -283,7 +351,7 @@ class ListRegistration extends Component {
 
           <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
-            <Input placeholder='Mục đích'
+            <Input placeholder='Nội dung'
               value={this.state.filterValue}
               onChangeText={(filterValue) => this.setState({ filterValue })}
               onSubmitEditing={() => this.onFilter()} />
