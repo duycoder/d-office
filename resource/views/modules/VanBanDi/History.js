@@ -115,9 +115,15 @@ export default class TimelineSignDoc extends Component {
                                                 {item.TenNguoiNhan}
                                             </Text>
                                             {
-                                                item.IsDaNhan && <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
-                                                    <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã nhận</Text>
-                                                </View>
+                                                item.IsDaXuly
+                                                    ? <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
+                                                        <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã xử lý</Text>
+                                                    </View>
+                                                    : item.IsDaNhan
+                                                        ? <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
+                                                            <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã nhận</Text>
+                                                        </View>
+                                                        : null
                                             }
                                         </View>
                                     </View>
@@ -132,7 +138,7 @@ export default class TimelineSignDoc extends Component {
                                         <View style={TimeLineStyle.infoDetailValue}>
                                             {
                                                 <Text style={TimeLineStyle.infoDetailValueText}>
-                                                    {ListJoinStr}    
+                                                    {ListJoinStr}
                                                 </Text>
                                                 // item.LstThamGia.map((name) => (
                                                 //     <Text style={TimeLineStyle.infoDetailValueText}>
