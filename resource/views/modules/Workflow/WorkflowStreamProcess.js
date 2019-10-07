@@ -278,7 +278,7 @@ class WorkflowStreamProcess extends Component {
                             <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                                 <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                 <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                    TIN NHẮN
+                                    GHI CHÚ
                                 </Text>
                             </TabHeading>
                         }>
@@ -294,7 +294,7 @@ class WorkflowStreamProcess extends Component {
                                             </Text>
                                         </Label>
                                     </Item>
-                                    <Textarea rowSpan={5} bordered placeholder='Nội dung tin nhắn' onChangeText={(message) => this.setState({ message })} />
+                                    <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
                                 </Form>
                             </Content>
                         </Tab>
@@ -420,13 +420,13 @@ class WorkflowStreamProcess extends Component {
                                 <TabHeading style={(this.state.currentTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                                     <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                        TIN NHẮN
+                                        GHI CHÚ
                                     </Text>
                                 </TabHeading>
                             }>
                                 <Content>
                                     <Form>
-                                        <Textarea rowSpan={5} bordered placeholder='Nội dung tin nhắn' onChangeText={(message) => this.setState({ message })} />
+                                        <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
                                     </Form>
                                 </Content>
                             </Tab>
@@ -495,13 +495,13 @@ class WorkflowStreamProcess extends Component {
                                 <TabHeading style={(this.state.currentTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                                     <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                        TIN NHẮN
+                                        GHI CHÚ
                                 </Text>
                                 </TabHeading>
                             }>
                                 <Content>
                                     <Form>
-                                        <Textarea rowSpan={5} bordered placeholder='Nội dung tin nhắn' onChangeText={(message) => this.setState({ message })} />
+                                        <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
                                     </Form>
                                 </Content>
                             </Tab>
@@ -570,13 +570,13 @@ class WorkflowStreamProcess extends Component {
                                 <TabHeading style={(this.state.currentTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                                     <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                        TIN NHẮN
+                                        GHI CHÚ
                                 </Text>
                                 </TabHeading>
                             }>
                                 <Content>
                                     <Form>
-                                        <Textarea rowSpan={5} bordered placeholder='Nội dung tin nhắn' onChangeText={(message) => this.setState({ message })} />
+                                        <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
                                     </Form>
                                 </Content>
                             </Tab>
@@ -592,13 +592,13 @@ class WorkflowStreamProcess extends Component {
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                                     <Icon name='ios-chatboxes' style={TabStyle.activeText} />
                                     <Text style={(this.state.currentTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                        TIN NHẮN
+                                        GHI CHÚ
                                 </Text>
                                 </TabHeading>
                             }>
                                 <Content>
                                     <Form>
-                                        <Textarea rowSpan={5} bordered placeholder='Nội dung tin nhắn' onChangeText={(message) => this.setState({ message })} />
+                                        <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
                                     </Form>
                                 </Content>
                             </Tab>

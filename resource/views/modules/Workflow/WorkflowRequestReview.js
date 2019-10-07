@@ -303,13 +303,13 @@ class WorkflowRequestReview extends Component {
 								<TabHeading style={this.state.selectedTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab}>
 									<Icon name='ios-chatboxes' style={TabStyle.activeText} />
 									<Text style={this.state.selectedTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText}>
-										TIN NHẮN
+										GHI CHÚ
 									</Text>
 								</TabHeading>
 							}>
 								<Form>
 									<Textarea rowSpan={5} bordered
-										placeholder="Nội dung tin nhắn"
+										placeholder="Nội dung ghi chú"
 										value={this.state.message}
 										onChangeText={(message) => this.setState({ message })} />
 								</Form>
