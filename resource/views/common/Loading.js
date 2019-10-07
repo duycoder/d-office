@@ -139,6 +139,9 @@ class Loading extends Component {
                         taskType: 1,
                         docType: 1
                     });
+                    this.props.updateExtendsNavParams({
+                        listIds: data.listIds
+                    });
                 }
                 // else if (data.isBirthday) {
                 //     this.props.updateCoreNavParams({
@@ -183,7 +186,7 @@ class Loading extends Component {
         const notificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
             const { title, body, data } = notificationOpen.notification;
-            const { objId, isTaskNotification, targetScreen, url, isReminder, isBirthday } = data;
+            const { objId, isTaskNotification, targetScreen, url, isReminder, isBirthday, listIds } = data;
             // screenName = targetScreen;
             // let screenParam = {};
             // if (isTaskNotification == "false") {
@@ -213,6 +216,9 @@ class Loading extends Component {
                 this.props.updateCoreNavParams({
                     taskType: 1,
                     docType: 1
+                });
+                this.props.updateExtendsNavParams({
+                    listIds
                 });
             }
             // else if (isBirthday) {
@@ -389,7 +395,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         setUserInfo: (data) => dispatch(userAction.setUserInfo(data)),
-        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
     }
 }
 
