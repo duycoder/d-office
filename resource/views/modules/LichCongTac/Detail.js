@@ -13,7 +13,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { Colors, API_URL } from '../../../common/SystemConstant';
+import { Colors, API_URL, EMPTY_STRING } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { appGetDataAndNavigate, _readableFormat, convertDateToString } from '../../../common/Utilities';
@@ -85,6 +85,22 @@ class DetailEvent extends Component {
     });
     this.props.navigation.navigate("CreateCarRegistrationScreen");
   }
+  onCreateLichHop = () => {
+    const {
+      NGAY_CONGTAC, GIO_CONGTAC, PHUT_CONGTAC, NOIDUNG, THANHPHAN_THAMDU, NGUOICHUTRI_ID, TEN_NGUOI_CHUTRI
+    } = this.state.data;
+    this.props.updateExtendsNavParams({
+      lichCongtacId: this.state.id,
+      originScreen: "detail",
+      mucdich: NOIDUNG,
+      ngayHop: `${convertDateToString(NGAY_CONGTAC)}`,
+      thoigianBatdau: `${_readableFormat(GIO_CONGTAC)}:${_readableFormat(PHUT_CONGTAC)}`,
+      thamgia: THANHPHAN_THAMDU,
+      chutriId: !!NGUOICHUTRI_ID ? NGUOICHUTRI_ID.split(",").shift() : EMPTY_STRING,
+      chutriName: !!TEN_NGUOI_CHUTRI ? TEN_NGUOI_CHUTRI.split(",").shift() : EMPTY_STRING,
+    });
+    this.props.navigation.navigate("CreateMeetingDayScreen");
+  }
 
   render() {
     const { data } = this.state;
@@ -104,10 +120,17 @@ class DetailEvent extends Component {
     }
 
     let actionButtons = [];
-    if (!data.IS_REGISTERED_CAR) {
-      actionButtons.push({
-        element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRegistCar()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT XE</Text></TouchableOpacity>
-      });
+    if (!data.IS_OLD_WEEK) {
+      if (!data.IS_REGISTERED_CAR) {
+        actionButtons.push({
+          element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRegistCar()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT XE</Text></TouchableOpacity>
+        });
+      }
+      if (!data.IS_LICH_HOP) {
+        actionButtons.push({
+          element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateLichHop()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT LỊCH HỌP</Text></TouchableOpacity>
+        });
+      }
     }
 
     return (
@@ -198,7 +221,7 @@ class DetailEvent extends Component {
             </View>
           </View>
 
-          
+
 
         </Content>
         {

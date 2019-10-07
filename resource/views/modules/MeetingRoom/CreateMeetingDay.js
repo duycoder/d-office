@@ -43,14 +43,15 @@ class CreateMeetingDay extends Component {
     this.state = {
       userId: props.userInfo.ID,
 
-      chutriId: 0,
-      mucdich: EMPTY_STRING, //required
-      thamgia: EMPTY_STRING,//required
-      ngayHop: EMPTY_STRING,//required
-      thoigianBatdau: EMPTY_STRING,//required
+      chutriId: props.extendsNavParams.chutriId || 0,
+      mucdich: props.extendsNavParams.mucdich || EMPTY_STRING, //required
+      thamgia: props.extendsNavParams.thamgia || EMPTY_STRING,//required
+      ngayHop: props.extendsNavParams.ngayHop || EMPTY_STRING,//required
+      thoigianBatdau: props.extendsNavParams.thoigianBatdau || EMPTY_STRING,//required
       thoigianKetthuc: EMPTY_STRING,//required
+      lichCongtacId: props.extendsNavParams.lichCongtacId || 0,
 
-      chutriName: EMPTY_STRING,
+      chutriName: props.extendsNavParams.chutriName || EMPTY_STRING,
       executing: false,
       focusId: EMPTY_STRING,
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
@@ -91,7 +92,7 @@ class CreateMeetingDay extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/MeetingRoom/CreateMeetingDay/${this.state.userId}`;
+    const url = `${API_URL}/api/MeetingRoom/CreateLichhop/${this.state.userId}`;
 
     const result = await fetch(url);
     const resultJson = await result.json();
@@ -128,7 +129,7 @@ class CreateMeetingDay extends Component {
 
   saveLichhop = async () => {
     const {
-      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId,
+      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId,
       isVanthu
     } = this.state;
 
@@ -194,7 +195,8 @@ class CreateMeetingDay extends Component {
         gioKetthuc: thoigianKetthuc.split(":")[0],
         phutKetthuc: thoigianKetthuc.split(":")[1],
         chutriId: isVanthu ? chutriId : userId,
-        userId
+        userId,
+        lichCongtacId,
       });
 
       const result = await fetch(url, {
@@ -278,7 +280,7 @@ class CreateMeetingDay extends Component {
             {
               isVanthu && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
                 <Label>
-                  Người chủ trì
+                  Người chủ trì <Text style={{ color: '#f00' }}>*</Text>
                 </Label>
                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
                   <Button transparent style={{ width: chutriId > 0 ? '100%' : '90%' }} onPress={() => this.onPickChutri()}>
@@ -298,7 +300,7 @@ class CreateMeetingDay extends Component {
             }
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Ngày họp</Label>
+              <Label>Ngày họp <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
@@ -325,7 +327,7 @@ class CreateMeetingDay extends Component {
             </Item>
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Thời gian bắt đầu</Label>
+              <Label>Thời gian bắt đầu <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
@@ -352,7 +354,7 @@ class CreateMeetingDay extends Component {
             </Item>
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Thời gian kết thúc</Label>
+              <Label>Thời gian kết thúc <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}

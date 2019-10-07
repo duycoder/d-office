@@ -56,6 +56,8 @@ class MeetingDayList extends Component {
       items: {},
       currentDay: new Date(),
       refreshAgenda: false,
+
+      listIds: props.extendsNavParams.listIds || [],
     }
   }
 
@@ -76,7 +78,10 @@ class MeetingDayList extends Component {
           this.setState({
             loadingData: true
           }, () => {
-            this.fetchData();
+            let currentDate = new Date(),
+              startDate = currentDate.getTime() - 15 * TOTAL_TIME_OF_DAY,
+              endDate = currentDate.getTime() + 15 * TOTAL_TIME_OF_DAY;
+            this.fetchData(convertDateToString(startDate), convertDateToString(endDate), currentDate.getTime());
           });
           this.props.updateExtendsNavParams({ check: false });
         }
@@ -88,11 +93,7 @@ class MeetingDayList extends Component {
     this.didFocusListener.remove();
   }
 
-  async fetchData() {
-    let currentDate = new Date(),
-      startDate = currentDate.getTime() - 15 * TOTAL_TIME_OF_DAY,
-      endDate = currentDate.getTime() + 15 * TOTAL_TIME_OF_DAY;
-
+  async fetchData(startDate, endDate, chosenTimeStamp) {
     const url = `${API_URL}/api/MeetingRoom/ListLichhop/`
     const headers = new Headers({
       'Accept': 'application/json',
@@ -111,25 +112,25 @@ class MeetingDayList extends Component {
 
     setTimeout(() => {
       for (let i = -15; i < 15; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const time = chosenTimeStamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
 
         if (!this.state.items[strTime]) {
           this.state.items[strTime] = [];
           resultJson.map(x => {
-            if (this.timeToString(x.NGAY_HOP) == strTime) {
-              const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
-                ngayHop = convertDateToString(x.NGAY_HOP);
-              this.state.items[strTime].push({
-                thoigianHop,
-                ngayHop,
-                mucdich: x.MUCDICH,
-                thamdu: x.THANHPHAN_THAMDU,
-                id: x.ID,
-                tenPhong: x.TEN_PHONG,
-                tenNguoiChutri: x.TEN_NGUOICHUTRI
-              });
-            }
+            // if (this.timeToString(x.NGAY_HOP) == strTime) {
+            const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
+              ngayHop = convertDateToString(x.NGAY_HOP);
+            this.state.items[strTime].push({
+              thoigianHop,
+              ngayHop,
+              mucdich: x.MUCDICH,
+              thamdu: x.THANHPHAN_THAMDU,
+              id: x.ID,
+              tenPhong: x.TEN_PHONG,
+              tenNguoiChutri: x.TEN_NGUOICHUTRI
+            });
+            // }
           });
         }
       }
@@ -166,65 +167,22 @@ class MeetingDayList extends Component {
     }
   }
 
-  async loadItems(day) {
+  loadItems(day) {
     const startDate = convertDateToString(day.timestamp - 15 * TOTAL_TIME_OF_DAY),
       endDate = convertDateToString(day.timestamp + 15 * TOTAL_TIME_OF_DAY);
 
-    const url = `${API_URL}/api/MeetingRoom/ListLichhop/`
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
-      startDate,
-      endDate
-    });
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-    const resultJson = await result.json();
-
-    setTimeout(() => {
-      for (let i = -15; i < 15; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          resultJson.map(x => {
-            if (this.timeToString(x.NGAY_HOP) == strTime) {
-              const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
-                ngayHop = convertDateToString(x.NGAY_HOP);
-              this.state.items[strTime].push({
-                thoigianHop,
-                ngayHop,
-                mucdich: x.MUCDICH,
-                thamdu: x.THANHPHAN_THAMDU,
-                id: x.ID,
-                tenPhong: x.TEN_PHONG,
-                tenNguoiChutri: x.TEN_NGUOICHUTRI
-              });
-            }
-          });
-        }
-      }
-      const newItems = {};
-      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
-      this.setState({
-        items: newItems
-      });
-    }, 1000);
+    this.fetchData(startDate, endDate, day.timestamp);
   }
 
   renderItem(item) {
+    let isNotiAlertTextColor = this.state.listIds.some(x => x == item.id) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+
     return (
       <ListItem
         containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
 
         title={
-          <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
+          <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: isNotiAlertTextColor }]}>
             {item.mucdich}
           </RnText>
         }
