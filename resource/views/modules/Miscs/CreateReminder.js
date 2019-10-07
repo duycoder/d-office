@@ -79,7 +79,7 @@ class CreateReminder extends Component {
 
     this.setState({
       loading: false,
-      period: resultJson != null ? resultJson.Params.DefaultPeriod : EMPTY_STRING,
+      period: resultJson != null ? `${resultJson.Params.DefaultPeriod}` : EMPTY_STRING,
       listPeriod: resultJson != null ? resultJson.Params.ListPeriod : [],
     });
   }
@@ -103,7 +103,7 @@ class CreateReminder extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
+        buttonTextStyle: { color: Colors.WHITE },
       });
     }
     else if (!thoigian) {
@@ -112,7 +112,7 @@ class CreateReminder extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
+        buttonTextStyle: { color: Colors.WHITE },
       });
     } else {
       this.setState({
@@ -155,7 +155,7 @@ class CreateReminder extends Component {
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonTextStyle: { color: Colors.WHITE },
         duration: 3000,
         onClose: () => {
           if (resultJson.Status) {
@@ -183,7 +183,8 @@ class CreateReminder extends Component {
     const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
-        noidung, thoigian, period
+        noidung, thoigian, period,
+        loading, focusId
       } = this.state,
       nothingChangeStatus = !noidung || !thoigian,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -250,7 +251,7 @@ class CreateReminder extends Component {
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
                 style={{ width: pickerFormat(), justifyContent: 'space-around' }}
-                selectedValue={period} //sai chinh ta @@
+                selectedValue={period}
                 onValueChange={this.handleChange("period")}>
                 {
                   this.state.listPeriod.map((item, index) => (
@@ -281,7 +282,7 @@ class CreateReminder extends Component {
 
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
-              THÊM MỚI LỊCH HỌP
+              THÊM MỚI NHẮC NHỞ
 						</Title>
           </Body>
 

@@ -17,14 +17,14 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
   Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button, Fab, Title, Subtitle
+  Content, Badge, Left, Right, Button, Fab, Title, Subtitle, Toast
 } from 'native-base'
 import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, _readableFormat } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, _readableFormat, asyncDelay } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -40,6 +40,9 @@ import { indicatorResponsive, moderateScale } from '../../../assets/styles/Scale
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import AlertMessage from '../../common/AlertMessage';
+import { AlertMessageStyle } from '../../../assets/styles';
+import { executeLoading } from '../../../common/Effect';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
@@ -51,11 +54,16 @@ class ListReminder extends Component {
     this.state = {
       userId: props.userInfo.ID,
       loadingData: false,
+      executingLoading: false,
       data: [],
 
       items: {},
       currentDay: new Date(),
       refreshAgenda: false,
+
+      listIds: props.extendsNavParams.listIds || [],
+      confirmTilte: EMPTY_STRING,
+      confirmReminderId: 0,
     }
   }
 
@@ -79,7 +87,7 @@ class ListReminder extends Component {
             let currentDate = new Date(),
               startDate = currentDate.getTime() - SEARCH_TIME_SCOPE,
               endDate = currentDate.getTime() + SEARCH_TIME_SCOPE;
-            this.fetchData(startDate, endDate);
+            this.fetchData(convertDateToString(startDate), convertDateToString(endDate), currentDate.getTime());
           });
           this.props.updateExtendsNavParams({ check: false });
         }
@@ -91,7 +99,7 @@ class ListReminder extends Component {
     this.didFocusListener.remove();
   }
 
-  async fetchData(startDate, endDate) {
+  async fetchData(startDate, endDate, chosenTimestamp) {
     const url = `${API_URL}/api/Reminder/ListReminder/`
     const headers = new Headers({
       'Accept': 'application/json',
@@ -99,7 +107,8 @@ class ListReminder extends Component {
     });
     const body = JSON.stringify({
       startDate,
-      endDate
+      endDate,
+      userId: this.state.userId
     });
     const result = await fetch(url, {
       method: 'POST',
@@ -110,24 +119,26 @@ class ListReminder extends Component {
 
     setTimeout(() => {
       for (let i = -15; i < 15; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const time = chosenTimestamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
 
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          resultJson.map(x => {
-            if (this.timeToString(x.NGAY) == strTime) {
-              const thoidiem = `${_readableFormat(x.GIO)}h${_readableFormat(x.PHUT)}`,
-                ngayNhac = convertDateToString(x.NGAY);
-              this.state.items[strTime].push({
-                thoidiem,
-                ngayNhac,
-                noidung: x.NOIDUNG,
-                id: x.ID
-              });
-            }
-          });
-        }
+        // if (!this.state.items[strTime]) {
+        this.state.items[strTime] = [];
+        resultJson.map(x => {
+          if (this.timeToString(x.NGAY) == strTime) {
+            const thoidiem = `${_readableFormat(x.GIO)}h${_readableFormat(x.PHUT)}`,
+              ngayNhac = convertDateToString(x.NGAY);
+            this.state.items[strTime].push({
+              thoidiem,
+              ngayNhac,
+              noidung: x.NOIDUNG,
+              id: x.ID,
+              reminderAfter: this.getReminderTimeStr(x.NHACVIEC_SAU_ID),
+              isActive: x.IS_ACTIVE,
+            });
+          }
+        });
+        // }
       }
       const newItems = {};
       Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
@@ -139,42 +150,137 @@ class ListReminder extends Component {
   }
 
   navigateBack = () => {
+    if (this.state.listIds.length > 0) {
+      this.props.updateExtendsNavParams({ listIds: [] });
+    }
     const navObj = this.props.navigation || this.props.navigator;
     navObj.goBack();
   }
 
-  navigateToDetail = (lichhopId) => {
-    const navObj = this.props.navigation || this.props.navigator;
-    if (lichhopId > 0) {
-      let targetScreenParam = {
-        lichhopId
-      }
-
-      this.props.updateCoreNavParams(targetScreenParam);
-      navObj.navigate("DetailMeetingDayScreen");
+  onToggleReminder = (reminderId, isActive) => {
+    let tmpTilte = "";
+    if (isActive) {
+      tmpTilte = "tắt nhắc";
     }
     else {
-      let targetScreenParam = {
-        fromScreen: "ListReminderScreen",
-      }
-      this.props.updateExtendsNavParams(targetScreenParam);
-      navObj.navigate("CreateReminderScreen");
+      tmpTilte = "bật nhắc";
     }
+    this.setState({
+      confirmTilte: tmpTilte,
+      confirmReminderId: reminderId
+    }, () => {
+      this.refs.confirm.showModal();
+    })
   }
+  toggleReminder = async () => {
+    this.refs.confirm.closeModal();
+    this.setState({
+      executingLoading: true
+    });
+    const url = `${API_URL}/api/Reminder/ToggleReminder`;
+
+    const headers = new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8'
+    });
+
+    const body = JSON.stringify({
+      userId: this.state.userId,
+      reminderId: this.state.confirmReminderId,
+    });
+
+    const result = await fetch(url, {
+      method: 'POST',
+      headers,
+      body
+    });
+
+    const resultJson = await result.json();
+
+    await asyncDelay(2000);
+
+    this.setState({
+      executingLoading: false
+    });
+
+    Toast.show({
+      text: resultJson.Status ? "Thay đổi trạng thái nhắc nhở thành công" : "Thay đổi trạng thái nhắc nhở thất bại",
+      type: resultJson.Status ? 'success' : 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: Colors.WHITE },
+      duration: 3000,
+      onClose: () => {
+        if (resultJson.Status) {
+          let curr = new Date(),
+            startDate = curr.getTime() - SEARCH_TIME_SCOPE,
+            endDate = curr.getTime() + SEARCH_TIME_SCOPE;
+          this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
+        }
+      }
+    });
+  }
+
+  createReminder = () => {
+    const navObj = this.props.navigation || this.props.navigator;
+    let targetScreenParam = {
+      fromScreen: "ListReminderScreen",
+    }
+    this.props.updateExtendsNavParams(targetScreenParam);
+    navObj.navigate("CreateReminderScreen");
+  }
+
+  // navigateToDetail = (lichhopId) => {
+  //   const navObj = this.props.navigation || this.props.navigator;
+  //   if (lichhopId > 0) {
+  //     let targetScreenParam = {
+  //       lichhopId
+  //     }
+
+  //     this.props.updateCoreNavParams(targetScreenParam);
+  //     navObj.navigate("DetailMeetingDayScreen");
+  //   }
+  //   else {
+  //     let targetScreenParam = {
+  //       fromScreen: "ListReminderScreen",
+  //     }
+  //     this.props.updateExtendsNavParams(targetScreenParam);
+  //     navObj.navigate("CreateReminderScreen");
+  //   }
+  // }
 
   loadItems(day) {
     const startDate = convertDateToString(day.timestamp - SEARCH_TIME_SCOPE),
       endDate = convertDateToString(day.timestamp + SEARCH_TIME_SCOPE);
-    this.fetchData(startDate, endDate);
+    this.fetchData(startDate, endDate, day.timestamp);
+  }
+
+  getReminderTimeStr = (reminderTime) => {
+    switch (reminderTime) {
+      case 1:
+        return "10 phút";
+      case 2:
+        return "30 phút";
+      case 3:
+        return "1 tiếng";
+      default:
+        break;
+    }
+    return "";
   }
 
   renderItem(item) {
+    let colorFromNoti = this.state.listIds.some(x => x == item.id) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+    let iconActive = item.isActive
+      ? <RNEIcon name='bell-ring' size={26} color={Colors.BLACK} type='material-community' />
+      : <RNEIcon name='bell-off' size={26} color={Colors.DANK_GRAY} type='material-community' />;
+
     return (
       <ListItem
         containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
 
         title={
-          <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
+          <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
             {item.noidung}
           </RnText>
         }
@@ -189,19 +295,35 @@ class ListReminder extends Component {
               </View>
               <View style={{ width: "65%" }}>
                 <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                  {` ${item.thoidiem}`}
+                  {`${item.thoidiem}`}
                 </RnText>
               </View>
             </View>
+            {
+              item.reminderAfter && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ width: "35%" }}>
+                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                    Nhắc việc sau:
+                  </RnText>
+                </View>
+                <View style={{ width: "65%" }}>
+                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                    {`${item.reminderAfter}`}
+                  </RnText>
+                </View>
+              </View>
+            }
           </View>
         }
-        hideChevron
-        // rightIcon={
-        //   <View style={{ flexDirection: 'column' }}>
-        //     <RNEIcon name='flag' size={26} color={item.MAU_TRANGTHAI} type='material-community' />
-        //   </View>
-        // }
-        onPress={() => this.navigateToDetail(item.id)}
+        // hideChevron
+        rightIcon={
+          <View style={{ flexDirection: 'column' }}>
+            {
+              iconActive
+            }
+          </View>
+        }
+        onPress={() => this.onToggleReminder(item.id, item.isActive)}
       />
     );
   }
@@ -234,12 +356,10 @@ class ListReminder extends Component {
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
-            <Title style={NativeBaseStyle.bodyTitle}>LỊCH HỌP</Title>
+            <Title style={NativeBaseStyle.bodyTitle}>DANH SÁCH NHẮC NHỞ</Title>
           </Body>
 
-          <Right style={NativeBaseStyle.right}>
-            <RNEIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-          </Right>
+          <Right style={NativeBaseStyle.right} />
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
@@ -249,6 +369,9 @@ class ListReminder extends Component {
                 <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
               </View>
             )
+          }
+          {
+            this.state.executingLoading && executeLoading(this.state.executeLoading)
           }
 
           {
@@ -268,9 +391,23 @@ class ListReminder extends Component {
           containerStyle={{}}
           style={{ backgroundColor: Colors.MENU_BLUE }}
           position="bottomRight"
-          onPress={() => this.navigateToDetail(0)}>
+          onPress={() => this.createReminder(0)}>
           <Icon name="add" />
         </Fab>
+        <AlertMessage
+          ref="confirm"
+          title={`XÁC NHẬN ${this.state.confirmTilte.toUpperCase()}`}
+          bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc nhở này không? Sau này bạn vẫn có thể bật lại được.`}
+          exitText="HỦY BỎ"
+        >
+          <View style={AlertMessageStyle.leftFooter}>
+            <TouchableOpacity onPress={() => this.toggleReminder()} style={AlertMessageStyle.footerButton}>
+              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                ĐỒNG Ý
+              </RnText>
+            </TouchableOpacity>
+          </View>
+        </AlertMessage>
       </Container>
     );
   }
