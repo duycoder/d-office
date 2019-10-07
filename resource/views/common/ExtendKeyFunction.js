@@ -167,7 +167,9 @@ class ExtendKeyFunction extends Component {
       case TIENICH._DS_LICHTRUC.NAME:
         tenThaotac = TIENICH._DS_LICHTRUC.MOBILENAME;
         break;
-
+      case TIENICH._DS_NHACNHO.NAME:
+        tenThaotac = TIENICH._DS_NHACNHO.MOBILENAME;
+        break;
       default:
         break;
     }

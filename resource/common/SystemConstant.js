@@ -3,7 +3,7 @@ export const WEB_URL = 'http://vanban.vnio.vn'
 // export const WEB_URL = 'http://192.168.1.10:8022';
 // export const API_URL = 'http://192.168.1.29:8098';
 export const API_URL = 'http://101.96.76.204:8999'; //server vnio
-// export const API_URL = 'http://123.16.245.4:8111'; //server local
+// export const API_URL = 'http://14.162.150.109:8111'; //server local
 // export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -130,6 +130,7 @@ export const Colors = {
 	 * Màu icon inactive
 	 */
 	DANK_GRAY: '#858585',
+	VERY_DANK_GRAY: '#2F2F2F',
 	CLOUDS: '#ecf0f1',
 	GREEN_PANTON_376C: '#7DBA00',
 	GREEN_PANTON_369C: '#4FA800',
@@ -196,7 +197,8 @@ export const SYSTEM_FUNCTION = {
 			'DS_CHUYEN',
 			'DS_LICHHOP',
 			'DS_UYQUYEN',
-			'DS_LICHTRUC'
+			'DS_LICHTRUC',
+			'DS_NHACNHO'
 		]
 	},
 	LichCongTacFunction: {
@@ -325,7 +327,7 @@ export const DM_FUNCTIONS = {
 	TIENICH: {
 		_DS_YEUCAU_XE: {
 			NAME: 'DS_YEUCAU_XE',
-			MOBILENAME: 'Đặt xe'
+			MOBILENAME: 'Lịch trình xe'
 		},
 		_DS_CHUYEN: {
 			NAME: 'DS_CHUYEN',
@@ -341,8 +343,12 @@ export const DM_FUNCTIONS = {
 		},
 		_DS_LICHTRUC: {
 			NAME: 'DS_LICHTRUC',
-			MOBILENAME: 'Lịch trực'
+			MOBILENAME: 'Lịch trực - Lịch PK'
 		},
+		_DS_NHACNHO: {
+			NAME: 'DS_NHACNHO',
+			MOBILENAME: 'Nhắc nhở'
+		}
 	}
 }
 

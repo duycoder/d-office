@@ -133,6 +133,9 @@ export default class SideBarIcon extends Component {
         case TienichFunction.actionCodes[4]:
           iconName = otherIcons.lich_truc;
           break;
+        case TienichFunction.actionCodes[5]:
+          iconName = otherIcons.nhac_nho;
+          break;
         //#endregion
 
         //#region Taikhoan
