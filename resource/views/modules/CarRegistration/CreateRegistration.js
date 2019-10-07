@@ -69,7 +69,7 @@ class CreateRegistration extends Component {
   handleChange = fieldName => fieldValue => this.setState({ [fieldName]: fieldValue })
 
   componentWillMount() {
-    // this.fetchData();
+    this.fetchData();
   }
 
   componentDidMount = () => {

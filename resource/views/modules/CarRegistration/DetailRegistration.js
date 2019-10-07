@@ -338,7 +338,7 @@ class DetailRegistration extends Component {
   }
 
   render() {
-    console.tron.log(this.state.registrationInfo)
+    // console.tron.log(this.state.registrationInfo)
     let bodyContent = null;
     let workflowButtons = [];
     if (this.state.loading) {
