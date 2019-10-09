@@ -103,7 +103,7 @@ class CreateReminder extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
       });
     }
     else if (!thoigian) {
@@ -112,7 +112,7 @@ class CreateReminder extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
       });
     } else {
       this.setState({
@@ -151,11 +151,11 @@ class CreateReminder extends Component {
       });
 
       Toast.show({
-        text: resultJson.Message,
+        text: resultJson.Status ? "Thêm mới nhắc nhở thành công" : "Thêm mới nhắc nhở thất bại",
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
         duration: 3000,
         onClose: () => {
           if (resultJson.Status) {

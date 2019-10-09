@@ -215,7 +215,7 @@ class ListLichtruc extends Component {
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
         duration: 3000,
         onClose: () => {
           if (resultJson.Status) {
@@ -230,7 +230,7 @@ class ListLichtruc extends Component {
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
         duration: 3000
       });
     }

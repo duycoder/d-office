@@ -208,7 +208,7 @@ class ListReminder extends Component {
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.WHITE },
+      buttonTextStyle: { color: Colors.LITE_BLUE },
       duration: 3000,
       onClose: () => {
         if (resultJson.Status) {
@@ -300,7 +300,7 @@ class ListReminder extends Component {
               </View>
             </View>
             {
-              item.reminderAfter && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              !!item.reminderAfter && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
                   <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Nhắc việc sau:
