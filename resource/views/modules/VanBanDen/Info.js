@@ -387,7 +387,7 @@ class MainInfoPublishDoc extends Component {
                                 } />
                         }
                         {
-                            (this.state.info.NGUOIKY && this.state.info.NGUOIKY.length > 0) && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            !!this.state.info.NGUOIKY && <ListItem style={DetailPublishDocStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
                                     <Text style={DetailPublishDocStyle.listItemTitleContainer}>
