@@ -33,7 +33,7 @@ import {
   VANBANDI_CONSTANT, LICHTRUC_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
-import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 
 //styles
@@ -82,7 +82,7 @@ class ListReminder extends Component {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
-            loadingData: true
+            items: {}
           }, () => {
             let currentDate = new Date(),
               startDate = currentDate.getTime() - SEARCH_TIME_SCOPE,
@@ -118,17 +118,18 @@ class ListReminder extends Component {
     const resultJson = await result.json();
 
     setTimeout(() => {
+      let tmpItems = {};
       for (let i = -15; i < 15; i++) {
-        const time = chosenTimestamp + i * 24 * 60 * 60 * 1000;
+        const time = chosenTimestamp + i * TOTAL_TIME_OF_DAY;
         const strTime = this.timeToString(time);
 
         // if (!this.state.items[strTime]) {
-        this.state.items[strTime] = [];
+        tmpItems[strTime] = [];
         resultJson.map(x => {
           if (this.timeToString(x.NGAY) == strTime) {
             const thoidiem = `${_readableFormat(x.GIO)}h${_readableFormat(x.PHUT)}`,
               ngayNhac = convertDateToString(x.NGAY);
-            this.state.items[strTime].push({
+            tmpItems[strTime].push({
               thoidiem,
               ngayNhac,
               noidung: x.NOIDUNG,
@@ -140,8 +141,9 @@ class ListReminder extends Component {
         });
         // }
       }
+      // console.tron.log(tmpItems)
       const newItems = {};
-      Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
+      Object.keys(tmpItems).forEach(key => { newItems[key] = tmpItems[key]; });
       this.setState({
         items: newItems,
         loadingData: false
@@ -155,6 +157,65 @@ class ListReminder extends Component {
     }
     const navObj = this.props.navigation || this.props.navigator;
     navObj.goBack();
+  }
+
+  onDeleteReminder = (reminderId) => {
+    this.setState({
+      confirmReminderId: reminderId
+    }, () => this.refs.confirmDelete.showModal());
+  }
+  deleteReminder = async () => {
+    this.refs.confirmDelete.closeModal();
+    this.setState({
+      executingLoading: true
+    });
+    const url = `${API_URL}/api/Reminder/DeleteReminder`;
+
+    const headers = new Headers({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=utf-8'
+    });
+
+    const body = JSON.stringify({
+      userId: this.state.userId,
+      reminderId: this.state.confirmReminderId,
+    });
+
+    const result = await fetch(url, {
+      method: 'POST',
+      headers,
+      body
+    });
+
+    const resultJson = await result.json();
+
+    await asyncDelay(2000);
+
+    this.setState({
+      executingLoading: false
+    });
+
+    Toast.show({
+      text: resultJson.Status ? "Xoá nhắc nhở thành công" : "Xoá nhắc nhở thất bại",
+      type: resultJson.Status ? 'success' : 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: Colors.LITE_BLUE },
+      duration: 3000,
+      onClose: () => {
+        if (resultJson.Status) {
+          this.setState({
+            items: {}
+          }, () => {
+            let curr = new Date(),
+              startDate = curr.getTime() - SEARCH_TIME_SCOPE,
+              endDate = curr.getTime() + SEARCH_TIME_SCOPE;
+            this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
+          })
+
+        }
+      }
+    });
   }
 
   onToggleReminder = (reminderId, isActive) => {
@@ -212,10 +273,15 @@ class ListReminder extends Component {
       duration: 3000,
       onClose: () => {
         if (resultJson.Status) {
-          let curr = new Date(),
-            startDate = curr.getTime() - SEARCH_TIME_SCOPE,
-            endDate = curr.getTime() + SEARCH_TIME_SCOPE;
-          this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
+          this.setState({
+            items: {}
+          }, () => {
+            let curr = new Date(),
+              startDate = curr.getTime() - SEARCH_TIME_SCOPE,
+              endDate = curr.getTime() + SEARCH_TIME_SCOPE;
+            this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
+          })
+
         }
       }
     });
@@ -270,10 +336,10 @@ class ListReminder extends Component {
   }
 
   renderItem(item) {
-    let colorFromNoti = this.state.listIds.some(x => x == item.id) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+    let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     let iconActive = item.isActive
-      ? <RNEIcon name='bell-ring' size={26} color={Colors.BLACK} type='material-community' />
-      : <RNEIcon name='bell-off' size={26} color={Colors.DANK_GRAY} type='material-community' />;
+      ? <RNEIcon name='bell-ring' size={verticalScale(35)} color={Colors.BLACK} type='material-community' />
+      : <RNEIcon name='bell-off' size={verticalScale(35)} color={Colors.DANK_GRAY} type='material-community' />;
 
     return (
       <ListItem
@@ -303,7 +369,7 @@ class ListReminder extends Component {
               !!item.reminderAfter && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
                   <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Nhắc việc sau:
+                    Nhắc việc trước:
                   </RnText>
                 </View>
                 <View style={{ width: "65%" }}>
@@ -318,9 +384,14 @@ class ListReminder extends Component {
         // hideChevron
         rightIcon={
           <View style={{ flexDirection: 'column' }}>
-            {
-              iconActive
-            }
+            <TouchableOpacity onPress={() => this.onToggleReminder(item.id, item.isActive)}>
+              {
+                iconActive
+              }
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.onDeleteReminder(item.id)}>
+              <RNEIcon name='delete' size={verticalScale(35)} color={Colors.RED_PANTONE_186C} type='material-community' />
+            </TouchableOpacity>
           </View>
         }
         onPress={() => this.onToggleReminder(item.id, item.isActive)}
@@ -363,13 +434,7 @@ class ListReminder extends Component {
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
-          {
-            renderIf(this.state.loadingData)(
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              </View>
-            )
-          }
+
           {
             this.state.executingLoading && executeLoading(this.state.executeLoading)
           }
@@ -384,6 +449,14 @@ class ListReminder extends Component {
               rowHasChanged={this.rowHasChanged.bind(this)}
             />
           }
+
+          {
+            renderIf(this.state.loadingData)(
+              <View style={{ flex: 1, justifyContent: 'center' }}>
+                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+              </View>
+            )
+          }
         </Content>
         <Fab
           active={true}
@@ -394,10 +467,11 @@ class ListReminder extends Component {
           onPress={() => this.createReminder(0)}>
           <Icon name="add" />
         </Fab>
+
         <AlertMessage
           ref="confirm"
           title={`XÁC NHẬN ${this.state.confirmTilte.toUpperCase()}`}
-          bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc nhở này không? Sau này bạn vẫn có thể bật lại được.`}
+          bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc nhở này không?\nSau này bạn vẫn có thể thay đổi được.`}
           exitText="HỦY BỎ"
         >
           <View style={AlertMessageStyle.leftFooter}>
@@ -408,6 +482,22 @@ class ListReminder extends Component {
             </TouchableOpacity>
           </View>
         </AlertMessage>
+
+        <AlertMessage
+          ref="confirmDelete"
+          title={`XÁC NHẬN XOÁ`}
+          bodyText={`Bạn có chắc chắn muốn xoá nhắc nhở này không?\nViệc này sẽ không thể đảo ngược.`}
+          exitText="HỦY BỎ"
+        >
+          <View style={AlertMessageStyle.leftFooter}>
+            <TouchableOpacity onPress={() => this.deleteReminder()} style={AlertMessageStyle.footerButton}>
+              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                ĐỒNG Ý
+              </RnText>
+            </TouchableOpacity>
+          </View>
+        </AlertMessage>
+
       </Container>
     );
   }
