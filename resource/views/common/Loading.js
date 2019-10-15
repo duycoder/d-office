@@ -129,6 +129,7 @@ class Loading extends Component {
             // console.tron.log("Listen, this is data when opened")
             // console.tron.log(notificationOpen.notification);
             if (data.targetScreen) {
+                // console.tron.log(data);
                 if (data.objId && data.objId > 0) {
                     // nếu là chi tiết
                     this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
@@ -140,7 +141,7 @@ class Loading extends Component {
                         docType: 1
                     });
                     this.props.updateExtendsNavParams({
-                        listIds: data.listIds
+                        listIds: !!data.listIds ? JSON.parse(data.listIds) : []
                     });
                 }
                 // else if (data.isBirthday) {
@@ -208,18 +209,24 @@ class Loading extends Component {
                 }
             });
             this.props.setUserInfo(storage.user);
+            // console.tron.log(data);
 
             if (targetScreen) {
-                this.props.updateCoreNavParams(this.generateScreenParams(url, objId));
-            }
-            else if (isReminder) {
-                this.props.updateCoreNavParams({
-                    taskType: 1,
-                    docType: 1
-                });
-                this.props.updateExtendsNavParams({
-                    listIds
-                });
+                if (objId && objId > 0) {
+                    this.props.updateCoreNavParams(this.generateScreenParams(url, objId));
+                }
+                else if (isReminder) {
+                    this.props.updateCoreNavParams({
+                        taskType: 1,
+                        docType: 1
+                    });
+                    this.props.updateExtendsNavParams({
+                        listIds: !!listIds ? JSON.parse(listIds) : []
+                    });
+                }
+                else {
+                    targetScreen = "ListNotificationScreen";
+                }
             }
             // else if (isBirthday) {
             //     this.props.updateCoreNavParams({
