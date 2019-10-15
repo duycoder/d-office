@@ -257,6 +257,7 @@ class Dashboard extends Component {
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
+      this.fetchNotifyCount();
       // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
     });
   }
