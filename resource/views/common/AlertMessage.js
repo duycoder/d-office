@@ -51,7 +51,7 @@ export default class AlertMessage extends Component {
                 </Text>
               }
             />
-            <View style={styles.content}>
+            <View style={[styles.content, {paddingHorizontal: 10}]}>
               <Text style={styles.contentText}>
                 {this.props.bodyText}
               </Text>

@@ -19,7 +19,8 @@ export default StyleSheet.create({
     borderColor: '#ececec'
   }, headerCenterTitle: {
     color: Colors.LITE_BLUE,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: moderateScale(14, 1.3)
   }, headerOuter: {
     height: verticalScale(50),
     borderBottomColor: Colors.LITE_BLUE,
@@ -34,7 +35,7 @@ export default StyleSheet.create({
     padding: 5
   }, contentText: {
     color: '#000',
-    fontSize: moderateScale(14, 1.3),
+    fontSize: moderateScale(14, 1.2),
     textAlign: 'center'
   }, footer: {
     height: verticalScale(50),
