@@ -108,7 +108,7 @@ class KeyFunction extends Component {
     const userInfo = JSON.parse(storageUserInfo);
     this.setState({
       userInfo,
-      onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
+      // onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
       notifyCount: userInfo.numberUnReadMessage,
       userFunctions: userInfo.GroupUserFunctions
     });
@@ -137,7 +137,7 @@ class KeyFunction extends Component {
 
   setCurrentFocus(screenName, ref, actionCode = EMPTY_STRING) {
     this.setState({
-      onFocusNow: ref,
+      // onFocusNow: ref,
       notifyCount: 0
     });
     // check authorize
@@ -153,6 +153,11 @@ class KeyFunction extends Component {
     //   actions: [NavigationActions.navigate({ routeName: screenName })] // navigate
     // });
     // this.props.navigation.dispatch(resetAction);
+    const webviewUrl = ref || "";
+    this.props.extendsNavParams({
+      webviewUrl
+    });
+
     this.props.navigation.navigate(screenName);
   }
 
@@ -269,6 +274,9 @@ class KeyFunction extends Component {
       case TIENICH._DS_NHACNHO.NAME:
         tenThaotac = TIENICH._DS_NHACNHO.MOBILENAME;
         break;
+      case TIENICH._KHAC.NAME:
+        tenThaotac = TIENICH._KHAC.MOBILENAME;
+        break;
       // case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
       //   tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
       //   break;
@@ -342,7 +350,7 @@ class KeyFunction extends Component {
                         return <TouchableOpacity
                           style={elementStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
+                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DUONG_DAN, item.MA_CHUCNANG)}
                         >
                           <SideBarIcon
                             actionCode={sItem.MA_THAOTAC}
@@ -371,7 +379,8 @@ class KeyFunction extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization))
+    updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

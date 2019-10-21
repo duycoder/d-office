@@ -117,6 +117,7 @@ import ListNotification from '../modules/Notification/ListNotification';
 //#region tính năng chuyên biệt (không biết xếp vào đâu)
 import ListReminder from '../modules/Miscs/ListReminder';
 import CreateReminder from '../modules/Miscs/CreateReminder';
+import WebViewerScreen from '../modules/Miscs/WebViewer';
 //#endregion
 
 //test
@@ -343,6 +344,8 @@ const baseStack = {
     screen: ListReminder
   }, CreateReminderScreen: {
     screen: CreateReminder
+  }, WebViewerScreen: {
+    screen: WebViewerScreen
   }
 };
 

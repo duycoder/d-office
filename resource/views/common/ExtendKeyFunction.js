@@ -121,6 +121,10 @@ class ExtendKeyFunction extends Component {
     else {
       this.props.updateAuthorization(0);
     }
+    const webviewUrl = ref || "";
+    this.props.updateExtendsNavParams({
+      webviewUrl
+    });
     this.props.navigation.navigate(screenName);
   }
 
@@ -170,6 +174,9 @@ class ExtendKeyFunction extends Component {
       case TIENICH._DS_NHACNHO.NAME:
         tenThaotac = TIENICH._DS_NHACNHO.MOBILENAME;
         break;
+      case TIENICH._KHAC.NAME:
+        tenThaotac = TIENICH._KHAC.MOBILENAME;
+        break;
       default:
         break;
     }
@@ -212,7 +219,7 @@ class ExtendKeyFunction extends Component {
                         return <TouchableOpacity
                           style={elementStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DM_THAOTAC_ID, item.MA_CHUCNANG)}
+                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DUONG_DAN, item.MA_CHUCNANG)}
                         >
                           <SideBarIcon
                             actionCode={sItem.MA_THAOTAC}
@@ -238,7 +245,8 @@ class ExtendKeyFunction extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization))
+    updateAuthorization: (hasAuthorization) => dispatch(navAction.updateAuthorization(hasAuthorization)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }
 }
 

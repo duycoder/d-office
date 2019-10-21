@@ -348,6 +348,10 @@ export const DM_FUNCTIONS = {
 		_DS_NHACNHO: {
 			NAME: 'DS_NHACNHO',
 			MOBILENAME: 'Nhắc nhở'
+		},
+		_KHAC: {
+			NAME: 'KHAC',
+			MOBILENAME: 'Khác'
 		}
 	}
 }
