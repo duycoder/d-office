@@ -294,7 +294,7 @@ class Login extends Component {
 
                         <Text style={[LoginStyle.formHeaderSoftwareName,
                         { display: this.state.headerComponentsDisplayStatus }]}>
-                            EofficeVNIO
+                            EofficeVNEH
                         </Text>
                     </Animated.View>
                     <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
