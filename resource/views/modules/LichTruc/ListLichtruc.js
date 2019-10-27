@@ -64,6 +64,8 @@ class ListLichtruc extends Component {
       type: LICHTRUC_CONSTANT.CHUYEN_MON,
       executing: false,
       tempKehoachId: null,
+
+      listIds: props.extendsNavParams.listIds || []
     }
   }
 
@@ -121,7 +123,8 @@ class ListLichtruc extends Component {
     const resultJson = await result.json();
 
     this.setState({
-      data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
+      //DONE: Filter out duongdanFile if null
+      data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem.filter(item => item.DuongdanFile && item.DuongdanFile.length > 0)] : resultJson.ListItem.filter(item => item.DuongdanFile && item.DuongdanFile.length > 0),
       loadingData: false,
       loadingMoreData: false,
       refreshingData: false,
@@ -129,6 +132,9 @@ class ListLichtruc extends Component {
   }
 
   navigateBack = () => {
+    if (this.state.listIds.length > 0) {
+      this.props.updateExtendsNavParams({ listIds: [] });
+    }
     const navObj = this.props.navigation || this.props.navigator;
     navObj.goBack();
   }
@@ -237,6 +243,7 @@ class ListLichtruc extends Component {
   }
 
   renderItem = ({ item, index }) => {
+    const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;    
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
     return (
       <View>
@@ -244,7 +251,7 @@ class ListLichtruc extends Component {
           containerStyle={{ borderBottomColor: Colors.GRAY }}
 
           title={
-            <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
+            <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
               {item.KEHOACH}
             </RnText>
           }
@@ -315,7 +322,7 @@ class ListLichtruc extends Component {
                   : <View />
               }
               {
-                (item.STATUS && item.STATUS === LICHTRUC_CONSTANT.STATUS.BAN_THAO) && <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => this.onConfirmLichtruc(item.ID)}>
+                (item.STATUS && item.STATUS === LICHTRUC_CONSTANT.STATUS.BAN_THAO && !!item.canPheduyet) && <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => this.onConfirmLichtruc(item.ID)}>
                   <Image source={Images.icon_phe_duyet} style={{ height: verticalScale(35), width: verticalScale(35), resizeMode: 'stretch' }} />
                   {
                     // <RNEIcon name='check-circle' color={Colors.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
