@@ -102,6 +102,9 @@ class DetailMeetingDay extends Component {
       if (this.state.from === "list") {
         this.props.updateExtendsNavParams({ check: this.state.check })
       }
+      else if (this.state.from === "createMeetingDay") {
+        this.props.updateExtendsNavParams({ check: true });
+      }
       else {
         this.props.updateExtendsNavParams({ from: "detail" });
       }
@@ -203,7 +206,7 @@ class DetailMeetingDay extends Component {
         //   })
         // }
       }
-      
+
       bodyContent = <DetailContent lichhopInfo={this.state.lichhopInfo} buttons={workflowButtons} />
     }
 

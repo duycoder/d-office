@@ -224,6 +224,7 @@ class CreateMeetingDay extends Component {
           if (resultJson.Status) {
             const screenParam = {
               lichhopId: resultJson.Params,
+              from: "createMeetingDay",
             };
 
             this.props.updateCoreNavParams(screenParam);
@@ -267,7 +268,7 @@ class CreateMeetingDay extends Component {
             }
             <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "mucdich" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
               <Label>
-                Mục đích <Text style={{ color: '#f00' }}>*</Text>
+                Nội dung <Text style={{ color: '#f00' }}>*</Text>
               </Label>
 
               <Input

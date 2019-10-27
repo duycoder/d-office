@@ -76,7 +76,8 @@ class MeetingDayList extends Component {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
-            loadingData: true
+            // loadingData: true,
+            items : {},
           }, () => {
             let currentDate = new Date(),
               startDate = currentDate.getTime() - 15 * TOTAL_TIME_OF_DAY,
@@ -115,10 +116,10 @@ class MeetingDayList extends Component {
         const time = chosenTimeStamp + i * 24 * 60 * 60 * 1000;
         const strTime = this.timeToString(time);
 
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          resultJson.map(x => {
-            // if (this.timeToString(x.NGAY_HOP) == strTime) {
+        // if (!this.state.items[strTime]) {
+        this.state.items[strTime] = [];
+        resultJson.map(x => {
+          if (this.timeToString(x.NGAY_HOP) == strTime) {
             const thoigianHop = `${_readableFormat(x.GIO_BATDAU)}h${_readableFormat(x.PHUT_BATDAU)} - ${_readableFormat(x.GIO_KETTHUC)}h${_readableFormat(x.PHUT_KETTHUC)}`,
               ngayHop = convertDateToString(x.NGAY_HOP);
             this.state.items[strTime].push({
@@ -130,9 +131,9 @@ class MeetingDayList extends Component {
               tenPhong: x.TEN_PHONG,
               tenNguoiChutri: x.TEN_NGUOICHUTRI
             });
-            // }
-          });
-        }
+          }
+        });
+        // }
       }
       const newItems = {};
       Object.keys(this.state.items).forEach(key => { newItems[key] = this.state.items[key]; });
@@ -144,6 +145,9 @@ class MeetingDayList extends Component {
   }
 
   navigateBack = () => {
+    if (this.state.listIds.length > 0) {
+      this.props.updateExtendsNavParams({ listIds: [] });
+    }
     const navObj = this.props.navigation || this.props.navigator;
     navObj.goBack();
   }
@@ -285,11 +289,11 @@ class MeetingDayList extends Component {
 
         <Content contentContainerStyle={{ flex: 1 }}>
           {
-            renderIf(this.state.loadingData)(
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              </View>
-            )
+            // renderIf(this.state.loadingData)(
+            //   <View style={{ flex: 1, justifyContent: 'center' }}>
+            //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+            //   </View>
+            // )
           }
 
           {
