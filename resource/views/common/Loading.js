@@ -18,7 +18,7 @@ import { appNavigate, isObjectHasValue } from '../../common/Utilities';
 import ProgressBar from './ProgressBar';
 
 //const
-const uriBackground = require('../../assets/images/background.png');
+// const uriBackground = require('../../assets/images/background.png');
 import Images from '../../common/Images';
 const uriLogo = Images.logo;
 
@@ -140,9 +140,9 @@ class Loading extends Component {
                         taskType: 1,
                         docType: 1
                     });
-                    this.props.updateExtendsNavParams({
-                        listIds: !!data.listIds ? JSON.parse(data.listIds) : []
-                    });
+                    // this.props.updateExtendsNavParams({
+                    //     listIds: !!data.listIds ? JSON.parse(data.listIds) : []
+                    // });
                 }
                 // else if (data.isBirthday) {
                 //     this.props.updateCoreNavParams({
@@ -168,6 +168,9 @@ class Loading extends Component {
                 //         taskType: "1"
                 //     }
                 // }
+                this.props.updateExtendsNavParams({
+                    listIds: !!data.listIds ? JSON.parse(data.listIds) : []
+                });
                 // this.props.updateCoreNavParams(this.generateScreenParams(data.url, data.objId));
                 this.props.navigation.navigate(data.targetScreen);
                 // this.props.navigation.navigate("DashboardScreen");
@@ -220,9 +223,9 @@ class Loading extends Component {
                         taskType: 1,
                         docType: 1
                     });
-                    this.props.updateExtendsNavParams({
-                        listIds: !!listIds ? JSON.parse(listIds) : []
-                    });
+                    // this.props.updateExtendsNavParams({
+                    //     listIds: !!listIds ? JSON.parse(listIds) : []
+                    // });
                 }
                 else {
                     targetScreen = "ListNotificationScreen";
@@ -239,6 +242,9 @@ class Loading extends Component {
             else {
                 targetScreen = "ListNotificationScreen";
             }
+            this.props.updateExtendsNavParams({
+                listIds: !!listIds ? JSON.parse(listIds) : []
+            });
             this.props.navigation.navigate(targetScreen);
             // this.props.navigation.navigate("DashboardScreen");
 
@@ -310,7 +316,7 @@ class Loading extends Component {
                     // }
                     // screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                     // appNavigate(this.props.navigation, screenName, screenParam);VanBanDiIsNotProcessScreen
-                    // ListCarRegistrationScreen  ListTripScreen ListLichtrucScreen
+                    // ListCarRegistrationScreen  ListTripScreen ListLichtrucScreen WebViewerScreen
                     this.props.navigation.navigate("DashboardScreen");//AccountInfoScreen DashboardScreen KeyFunctionScreen ListPersonalTaskScreen VanBanDenIsNotProcessScreen ListCarRegistrationScreen
                     //screenName = storage.user.hasRoleAssignUnit ? 'VanBanDiIsNotProcessScreen' : 'VanBanDenIsNotProcessScreen';
                 }, this.state.timing)
