@@ -21,7 +21,8 @@ class WebViewer extends Component {
     this.state = {
       url: props.extendsNavParams.webviewUrl || DEFAULT_URL,
       title: props.userInfo.Fullname || "Người dùng",
-      deviceToken: props.userInfo.DeviceToken || EMPTY_STRING
+      // deviceToken: props.userInfo.DeviceToken || EMPTY_STRING,
+      userId: props.userInfo.ID || 0,
     }
   }
 
@@ -39,7 +40,7 @@ class WebViewer extends Component {
 
   render() {
     const {
-      url, title, deviceToken
+      url, title, userId
     } = this.state;
     return (
       <Container>
@@ -58,7 +59,7 @@ class WebViewer extends Component {
         </Header>
         <WebView
           source={{
-            uri: url + deviceToken,
+            uri: url + userId,
           }}
           onNavigationStateChange={this.onNavigationStateChange}
           startInLoadingState
