@@ -10,21 +10,22 @@ import {
     EMPTY_STRING, THONGBAO_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
-import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate, convertDateToString } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //lib
-import { ListItem } from 'react-native-elements';
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import {
     Container, Header, Title, Content,
-    Left, Body, Right, Text, Button, Toast
+    Left, Body, Right, Text, Button, Toast, Fab, Icon
 } from 'native-base';
 import renderIf from 'render-if';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
+import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 
 class ListNotification extends Component {
     constructor(props) {
@@ -36,7 +37,11 @@ class ListNotification extends Component {
             refreshing: false,
             data: [],
             pageIndex: DEFAULT_PAGE_INDEX,
-            pageSize: DEFAULT_PAGE_SIZE
+            pageSize: DEFAULT_PAGE_SIZE,
+
+            dataUyQuyen: [],
+
+            isRefreshNotiList: false,
         }
     }
 
@@ -56,6 +61,10 @@ class ListNotification extends Component {
                 headers,
                 body
             });
+
+            this.setState({
+                isRefreshNotiList: true,
+            });
         }
 
         //navigate to detail
@@ -65,8 +74,8 @@ class ListNotification extends Component {
         let outOfSwitch = false;
         if (item.URL) {
             let urlArr = item.URL.split("/");
-            const itemType = urlArr[2];
-            const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
+            const itemType = urlArr[2] || item.NOTIFY_ITEM_TYPE;
+            const itemId = +urlArr[3].split("&").shift().match(/\d+/gm) || item.NOTIFY_ITEM_ID;
             switch (itemType) {
                 case "HSVanBanDi":
                     screenName = "VanBanDiDetailScreen";
@@ -115,7 +124,7 @@ class ListNotification extends Component {
         else {
             outOfSwitch = true;
         }
-        
+
         if (outOfSwitch) {
             Toast.show({
                 text: 'Bạn không có quyền truy cập vào thông tin này!',
@@ -134,21 +143,38 @@ class ListNotification extends Component {
         userInfo.numberUnReadMessage = 0;
         await AsyncStorage.removeItem('firebaseNotification');
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
-        // this._navListener = this.props.navigation.addListener('didFocus', () => {
-        //     StatusBar.setBarStyle('light-content');
-        //     // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
-        // });
+        this._navListener = this.props.navigation.addListener('didFocus', () => {
+            StatusBar.setBarStyle('light-content');
+            if (this.state.isRefreshNotiList) {
+                this.setState({
+                    loading: true,
+                    isRefreshNotiList: false
+                }, () => this.fetchData());
+            }
+            if (this.props.extendsNavParams.hasOwnProperty("checkRefreshUyQuyenList")) {
+                if (this.props.extendsNavParams.checkRefreshUyQuyenList === true) {
+                    this.setState({
+                        loading: true
+                    }, () => this.fetchDataUyQuyen())
+                }
+                this.props.updateExtendsNavParams({ checkRefreshUyQuyenList: false });
+            }
+            // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
+        });
     }
 
     componentWillMount = () => {
         this.setState({
             loading: true
-        }, () => this.fetchData());
+        }, () => {
+            this.fetchData();
+            this.fetchDataUyQuyen();
+        });
     }
 
-    // componentWillUnmount = () => {
-    //     this._navListener.remove();
-    // }
+    componentWillUnmount = () => {
+        this._navListener.remove();
+    }
 
     onLoadingMore = () => {
         this.setState({
@@ -165,6 +191,17 @@ class ListNotification extends Component {
         }, () => this.fetchData())
     }
 
+    fetchDataUyQuyen = async () => {
+        const url = `${API_URL}/api/Account/GetUyQuyenMessages/`;
+        const resource = await fetch(url);
+        const result = await resource.json();
+
+        this.setState({
+            loading: false,
+            dataUyQuyen: result
+        })
+    }
+
     fetchData = async () => {
         const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/${this.state.pageSize}/${this.state.pageIndex}/true?query=`;
         const resource = await fetch(url);
@@ -177,7 +214,6 @@ class ListNotification extends Component {
             data: this.state.loadingMore ? this.state.data.concat(result) : result
         })
     }
-
     renderItem = ({ item }) => {
         let itemType = item.URL.split('/')[2],
             badgeBackgroundColor = Colors.GRAY,
@@ -222,22 +258,11 @@ class ListNotification extends Component {
                     <View style={[styles.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
                         <RNText style={styles.leftTitleText}>
                             {
-                                // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
                                 leftTitle
                             }
                         </RNText>
                     </View>
                 }
-                // badge={{
-                //     value: convertDateTimeToTitle(item.NGAYTAO, true),
-                //     textStyle: {
-                //         textAlign: 'center',
-                //         fontSize: moderateScale(11, 0.9)
-                //     },
-                //     containerStyle: {
-                //         backgroundColor: Colors.GRAY,
-                //     }
-                // }}
                 hideChevron={true}
                 title={
                     <RNText style={[styles.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
@@ -261,10 +286,13 @@ class ListNotification extends Component {
                 rightTitleContainerStyle={{
                     flex: 0
                 }}
-                // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
                 onPress={() => this.onPressNotificationItem(item)}
             />
         );
+    }
+
+    createNotiUyQuyen = () => {
+        this.props.navigation.navigate("CreateNotiUyQuyenScreen");
     }
 
     render() {
@@ -285,6 +313,41 @@ class ListNotification extends Component {
                     {
                         renderIf(this.state.loading)(
                             dataLoading()
+                        )
+                    }
+
+                    {
+                        renderIf(!this.state.loading)(
+                            renderIf(this.state.dataUyQuyen.length > 0)(
+                                this.state.dataUyQuyen.map((item, index) => {
+                                    return (
+                                        <ListItem
+                                            key={index.toString()}
+                                            containerStyle={{ backgroundColor: "#EBDEF0", borderBottomColor: "#ccc" }}
+                                            leftIcon={
+                                                <RNEIcon name="transition-masked" type="material-community" color={"#8E44AD"} size={moderateScale(45)} />
+                                            }
+                                            hideChevron={true}
+                                            title={
+                                                <RNText style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                                                    <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} ${item.TIEUDE}`}</RNText>
+                                                </RNText>
+                                            }
+                                            titleStyle={ListNotificationStyle.title}
+                                            titleContainerStyle={{
+                                                marginHorizontal: '3%',
+                                            }}
+                                            subtitle={
+                                                <RNText style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</RNText>
+                                            }
+                                            subtitleContainerStyle={{
+                                                marginHorizontal: '3%'
+                                            }}
+                                            titleNumberOfLines={3}
+                                        />
+                                    );
+                                })
+                            )
                         )
                     }
 
@@ -324,6 +387,17 @@ class ListNotification extends Component {
                         )
                     }
                 </Content>
+                {
+                    !!this.state.userInfo.CanUyQuyen && <Fab
+                        active={true}
+                        direction="up"
+                        containerStyle={{}}
+                        style={{ backgroundColor: Colors.MENU_BLUE }}
+                        position="bottomRight"
+                        onPress={() => this.createNotiUyQuyen()}>
+                        <Icon name="add" />
+                    </Fab>
+                }
             </Container>
         );
     }
@@ -352,13 +426,15 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
     return {
         userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams
+        coreNavParams: state.navState.coreNavParams,
+        extendsNavParams: state.navState.extendsNavParams
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams))
+        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+        updateExtendsNavParams: (coreNavParams) => dispatch(navAction.updateExtendsNavParams(coreNavParams)),
     }
 }
 

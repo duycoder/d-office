@@ -78,6 +78,7 @@ class Dashboard extends Component {
       notifyCount_Lichtruc: 0,
 
       birthdayData: null,
+      dataUyQuyen: [],
     }
   }
 
@@ -94,7 +95,18 @@ class Dashboard extends Component {
       this.fetchCalendarData(new Date());
       this.fetchNotifyCount();
       this.fetchBirthdayData();
+      this.fetchDataUyQuyen();
     });
+  }
+
+  fetchDataUyQuyen = async () => {
+    const url = `${API_URL}/api/Account/GetUyQuyenMessages/`;
+    const resource = await fetch(url);
+    const result = await resource.json();
+
+    this.setState({
+      dataUyQuyen: result
+    })
   }
 
   fetchBirthdayData = async () => {
@@ -190,8 +202,8 @@ class Dashboard extends Component {
     let outOfSwitch = false;
     if (item.URL) {
       let urlArr = item.URL.split("/");
-      const itemType = urlArr[2];
-      const itemId = +urlArr[3].split("&").shift().match(/\d+/gm);
+      const itemType = urlArr[2] || item.NOTIFY_ITEM_TYPE;
+      const itemId = +urlArr[3].split("&").shift().match(/\d+/gm) || item.NOTIFY_ITEM_ID;
       switch (itemType) {
         case "HSVanBanDi":
           screenName = "VanBanDiDetailScreen";
@@ -258,6 +270,8 @@ class Dashboard extends Component {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       this.fetchNotifyCount();
+      this.fetchDataUyQuyen();
+      this.fetchRecentNoti();
       // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
     });
   }
@@ -435,6 +449,38 @@ class Dashboard extends Component {
                 </View>
               </View>
               {
+                this.state.dataUyQuyen.length > 0
+                  ? this.state.dataUyQuyen.map((item, index) => {
+                    return (
+                      <ListItem
+                        key={index.toString()}
+                        containerStyle={{ backgroundColor: "#EBDEF0", borderBottomColor: "#ccc" }}
+                        leftIcon={
+                          <Icon name="transition-masked" type="material-community" color={"#8E44AD"} size={moderateScale(45)} />
+                        }
+                        hideChevron={true}
+                        title={
+                          <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                            <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} ${item.TIEUDE}`}</Text>
+                          </Text>
+                        }
+                        titleStyle={ListNotificationStyle.title}
+                        titleContainerStyle={{
+                          marginHorizontal: '3%',
+                        }}
+                        subtitle={
+                          <Text style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</Text>
+                        }
+                        subtitleContainerStyle={{
+                          marginHorizontal: '3%'
+                        }}
+                        titleNumberOfLines={3}
+                      />
+                    );
+                  })
+                  : null
+              }
+              {
                 this.state.notiData.length > 0
                   ? this.state.notiData.map((item, index) => {
                     let thisBGColor = Colors.WHITE;
@@ -604,7 +650,7 @@ class Dashboard extends Component {
                         containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
                         hideChevron
                         title={
-                          <Text style={[ListNotificationStyle.title, {fontWeight: "bold"}]}>
+                          <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
                             {ThoigianDiadiemString} / Chủ trì: {ChutriString}
                           </Text>
                         }
@@ -634,7 +680,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      coreNavParams: state.navState.coreNavParams
+    coreNavParams: state.navState.coreNavParams
   }
 }
 
