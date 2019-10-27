@@ -232,7 +232,8 @@ class CreateRegistration extends Component {
         onClose: () => {
           if (resultJson.Status) {
             const screenParam = {
-              registrationId: resultJson.Params
+              registrationId: resultJson.Params,
+              from: "create"
             };
 
             this.props.updateCoreNavParams(screenParam);

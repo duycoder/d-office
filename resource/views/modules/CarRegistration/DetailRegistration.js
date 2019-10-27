@@ -60,6 +60,7 @@ class DetailRegistration extends Component {
       from: props.coreNavParams.from || "list", // check if send from `list` or `detail` or `create`
       selectedTabIndex: 0,
       tripInfo: null,
+      tripId: 0,
     };
 
     this.onNavigate = this.onNavigate.bind(this);
@@ -67,7 +68,7 @@ class DetailRegistration extends Component {
 
   componentWillMount = () => {
     this.fetchData();
-    this.fetchTripData();
+    // this.fetchTripData();
   }
 
   componentDidMount = () => {
@@ -93,11 +94,19 @@ class DetailRegistration extends Component {
     const result = await fetch(url);
     const resultJson = await result.json();
 
+    const tripUrl = `${API_URL}/api/CarTrip/DetailTripByRegistrationId/${this.state.registrationId}/${this.state.userId}`;
+    const tripResult = await fetch(tripUrl);
+    const tripResultJson = await tripResult.json();
+
+    // console.tron.log(tripResultJson)
+
     await asyncDelay(2000);
 
     this.setState({
       loading: false,
       registrationInfo: resultJson.Status ? resultJson.Params : null,
+      tripInfo: tripResultJson.Status ? tripResultJson.Params : null,
+      tripId: tripResultJson.Status ? tripResultJson.Params.entity.ID : 0
     });
   }
   fetchTripData = async () => {
@@ -105,7 +114,7 @@ class DetailRegistration extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/CarTrip/DetailTripByRegistrationId/${this.state.registrationId}`;
+    const url = `${API_URL}/api/CarTrip/DetailTripByRegistrationId/${this.state.registrationId}/${this.state.userId}`;
     const result = await fetch(url);
     const resultJson = await result.json();
 
@@ -119,14 +128,20 @@ class DetailRegistration extends Component {
 
   navigateBack = () => {
     if (this.state.registrationInfo && this.state.registrationInfo.hasOwnProperty("entity")) { // done loading
-      if (this.state.from === "list") {
-        this.props.updateExtendsNavParams({ check: this.state.check })
+      // if (this.state.from === "list") {
+      //   // this.props.updateExtendsNavParams({ check: this.state.check })
+      // }
+      // else {
+      //   this.props.updateExtendsNavParams({ from: "detail" });
+      // }
+      if (this.state.from === "create") {
+        this.props.updateExtendsNavParams({ check: true });
       }
       else {
-        this.props.updateExtendsNavParams({ from: "detail" });
+        this.props.updateExtendsNavParams({ check: this.state.check });
       }
+      this.props.navigation.goBack();
     }
-    this.props.navigation.goBack();
   }
 
   navigateToEvent = (eventId) => {
@@ -144,7 +159,7 @@ class DetailRegistration extends Component {
     }
   }
 
-  onConfirmAction = (actionId = 1) => {
+  onConfirmActionForRegistration = (actionId = 1) => {
     switch (actionId) {
       case 1:
         this.refs.confirmSendRegistration.showModal();
@@ -191,7 +206,7 @@ class DetailRegistration extends Component {
     })
 
     Toast.show({
-      text: 'Gửi yêu cầu đăng ký xe ' + resultJson.Status ? 'thành công' : 'thất bại',
+      text: resultJson.Status ? 'Gửi yêu cầu đăng ký xe thành công' : 'Gửi yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -199,7 +214,9 @@ class DetailRegistration extends Component {
       duration: 3000,
       onClose: () => {
         if (resultJson.Status) {
-          this.fetchData();
+          this.setState({
+            check: true
+          }, () => this.fetchData());
         }
       }
     });
@@ -239,7 +256,7 @@ class DetailRegistration extends Component {
     })
 
     Toast.show({
-      text: 'Huỷ yêu cầu đăng ký xe ' + resultJson.Status ? 'thành công' : 'thất bại',
+      text: resultJson.Status ? 'Huỷ yêu cầu đăng ký xe thành công' : 'Huỷ yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -247,7 +264,9 @@ class DetailRegistration extends Component {
       duration: 3000,
       onClose: () => {
         if (resultJson.Status) {
-          this.fetchData();
+          this.setState({
+            check: true
+          }, () => this.fetchData());
         }
       }
     });
@@ -265,7 +284,8 @@ class DetailRegistration extends Component {
     this.onNavigate("RejectTripScreen", targetScreenParam);
   }
 
-  onConfirmAction = (actionId = 1) => {
+  //TODO: update tripID
+  onConfirmActionForTrip = (actionId = 1) => {
     switch (actionId) {
       case 1:
         this.refs.confirmTrip.showModal();
@@ -308,7 +328,7 @@ class DetailRegistration extends Component {
     })
 
     Toast.show({
-      text: 'Bắt đầu chạy xe ' + resultJson.Status ? 'thành công' : 'thất bại',
+      text: resultJson.Status ? 'Bắt đầu chạy xe thành công' : 'Bắt đầu chạy xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -316,7 +336,9 @@ class DetailRegistration extends Component {
       duration: 3000,
       onClose: () => {
         if (resultJson.Status) {
-          this.fetchData();
+          this.setState({
+            check: true
+          }, () => this.fetchData());
         }
       }
     });
@@ -338,31 +360,32 @@ class DetailRegistration extends Component {
   }
 
   render() {
-    // console.tron.log(this.state.registrationInfo)
     let bodyContent = null;
     let workflowButtons = [];
     if (this.state.loading) {
       bodyContent = dataLoading(true);
     }
     else {
-      //TODO: check trangthai_id to change bodyContent
+      //DONE: check trangthai_id to change bodyContent
       if (this.state.tripInfo) {
         const {
-          TRANGTHAI
+          entity, canChangeCarTripStatus
         } = this.state.tripInfo;
-        switch (TRANGTHAI) {
-          case DATXE_CONSTANT.CHUYEN_STATUS.MOI_TAO:
-            workflowButtons.push({
-              element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU</RNText></RnButton>
-            });
-            break;
-          case DATXE_CONSTANT.CHUYEN_STATUS.DANG_CHAY:
-            workflowButtons.push({
-              element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onReturnTrip()}><RNText style={ButtonGroupStyle.buttonText}>TRẢ XE</RNText></RnButton>
-            });
-            break;
-          default:
-            break;
+        if (canChangeCarTripStatus) {
+          switch (entity.TRANGTHAI) {
+            case DATXE_CONSTANT.CHUYEN_STATUS.MOI_TAO:
+              workflowButtons.push({
+                element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForTrip(1)}><RNText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU</RNText></RnButton>
+              });
+              break;
+            case DATXE_CONSTANT.CHUYEN_STATUS.DANG_CHAY:
+              workflowButtons.push({
+                element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onReturnTrip()}><RNText style={ButtonGroupStyle.buttonText}>TRẢ XE</RNText></RnButton>
+              });
+              break;
+            default:
+              break;
+          }
         }
         bodyContent = (
           <DetailContent registrationInfo={this.state.registrationInfo} tripInfo={this.state.tripInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
@@ -375,7 +398,7 @@ class DetailRegistration extends Component {
 
         if (canSendRegistration) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>GỬI YÊU CẦU</RNText></RnButton>
+            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(1)}><RNText style={ButtonGroupStyle.buttonText}>GỬI YÊU CẦU</RNText></RnButton>
           })
         }
         else if (canRecieveRegistratiion) {
@@ -388,7 +411,7 @@ class DetailRegistration extends Component {
         }
         if (this.state.registrationInfo.entity.NGUOITAO === this.state.userId && this.state.registrationInfo.entity.TRANGTHAI != DATXE_CONSTANT.DATXE_STATUS.DA_HUY && this.state.registrationInfo.entity.TRANGTHAI < DATXE_CONSTANT.DATXE_STATUS.DANG_THUC_HIEN) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
+            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
           })
         }
         bodyContent = <DetailContent registrationInfo={this.state.registrationInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
@@ -485,7 +508,7 @@ class DetailContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTabIndex: 0,
+      selectedTabIndex: 0,
       registrationInfo: props.registrationInfo,
       registrationId: props.registrationId,
       tripInfo: props.tripInfo || null
@@ -493,6 +516,7 @@ class DetailContent extends Component {
   }
 
   render() {
+    // console.tron.log(this.state)
     return (
       <View style={{ flex: 1 }}>
         {
@@ -500,7 +524,7 @@ class DetailContent extends Component {
             ? <Tabs
               initialPage={0}
               tabBarUnderlineStyle={TabStyle.underLineStyle}
-              onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}>
+              onChangeTab={({ selectedTabIndex }) => this.setState({ selectedTabIndex })}>
               <Tab heading={
                 <TabHeading style={(this.state.selectedTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
                   <Icon name='ios-information-circle-outline' style={TabStyle.activeText} />
