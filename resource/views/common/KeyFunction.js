@@ -154,10 +154,10 @@ class KeyFunction extends Component {
     // });
     // this.props.navigation.dispatch(resetAction);
     const webviewUrl = ref || "";
-    this.props.extendsNavParams({
+    this.props.updateExtendsNavParams({
       webviewUrl
     });
-
+    // console.tron.log(screenName)
     this.props.navigation.navigate(screenName);
   }
 
@@ -350,7 +350,7 @@ class KeyFunction extends Component {
                         return <TouchableOpacity
                           style={elementStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.DUONG_DAN, item.MA_CHUCNANG)}
+                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
                         >
                           <SideBarIcon
                             actionCode={sItem.MA_THAOTAC}

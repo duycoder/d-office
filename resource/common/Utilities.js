@@ -254,7 +254,7 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
     // url = url.replace('\\', '/');
     // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
-
+    
     let regExtension = extention(url);
     let extension = "." + regExtension[0];
     const { config, fs } = RNFetchBlob;

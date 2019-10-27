@@ -113,11 +113,12 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 
 //màn hình thông báo
 import ListNotification from '../modules/Notification/ListNotification';
+import CreateNotiUyQuyen from '../modules/Notification/CreateNotiUyQuyen';
 
 //#region tính năng chuyên biệt (không biết xếp vào đâu)
 import ListReminder from '../modules/Miscs/ListReminder';
 import CreateReminder from '../modules/Miscs/CreateReminder';
-import WebViewerScreen from '../modules/Miscs/WebViewer';
+import WebViewer from '../modules/Miscs/WebViewer';
 //#endregion
 
 //test
@@ -345,7 +346,11 @@ const baseStack = {
   }, CreateReminderScreen: {
     screen: CreateReminder
   }, WebViewerScreen: {
-    screen: WebViewerScreen
+    screen: WebViewer
+  },
+
+  CreateNotiUyQuyenScreen: {
+    screen: CreateNotiUyQuyen
   }
 };
 

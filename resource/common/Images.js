@@ -31,6 +31,7 @@ const images = {
     lich_truc: require('../assets/images/Dashboard_icon/tien_ich/lich_truc.png'),
     uy_quyen: require('../assets/images/Dashboard_icon/tien_ich/uy_quyen.png'),
     nhac_nho: require('../assets/images/Dashboard_icon/tien_ich/nhac_nho.png'),
+    khac: require('../assets/images/Dashboard_icon/tien_ich/khac.png'),
   },
   hotPickIcons: {
     van_ban_den: require('../assets/images/Dashboard_icon/hot_pick/van_ban_den_chua_xu_ly.png'),
