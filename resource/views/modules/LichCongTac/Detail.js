@@ -23,6 +23,8 @@ import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
 import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 import * as navAction from '../../../redux/modules/Nav/Action';
+import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
+import { HeaderMenuStyle } from '../../../assets/styles';
 
 class DetailEvent extends Component {
   constructor(props) {
@@ -102,6 +104,12 @@ class DetailEvent extends Component {
     this.props.navigation.navigate("CreateMeetingDayScreen");
   }
 
+  onNavigateToScreen = (screenParams, screenName) => {
+    const navObj = this.props.navigation || this.props.navigator;
+    this.props.updateCoreNavParams(screenParams);
+    navObj.navigate(screenName);
+  }
+
   render() {
     const { data } = this.state;
 
@@ -133,104 +141,156 @@ class DetailEvent extends Component {
       }
     }
 
+    let menuElems = [];
+    if (data.CAR_REGISTRATION_ID > 0) {
+      menuElems.push({
+        itemId: data.CAR_REGISTRATION_ID,
+        type: 'CAR'
+      });
+    }
+    if (data.MEETING_ID > 0) {
+      menuElems.push({
+        itemId: data.MEETING_ID,
+        type: 'MEETING'
+      });
+    }
+
+    //TODO: add menu provider 
     return (
-      <Container style={{ backgroundColor: '#f1f1f1' }}>
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
-          <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBack()} />
-          </Left>
+      <MenuProvider backHandler>
+        <Container style={{ backgroundColor: '#f1f1f1' }}>
+          <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+            <Left style={NativeBaseStyle.left}>
+              <GoBackButton onPress={() => this.navigateBack()} />
+            </Left>
 
-          <Body style={NativeBaseStyle.body}>
-            <Title style={NativeBaseStyle.bodyTitle}>
-              CHI TIẾT LỊCH CÔNG TÁC
+            <Body style={NativeBaseStyle.body}>
+              <Title style={NativeBaseStyle.bodyTitle}>
+                CHI TIẾT LỊCH CÔNG TÁC
             </Title>
-            <Subtitle style={NativeBaseStyle.bodyTitle}>
-              NGÀY {convertDateToString(data.NGAY_CONGTAC)}
-            </Subtitle>
-          </Body>
+              <Subtitle style={NativeBaseStyle.bodyTitle}>
+                NGÀY {convertDateToString(data.NGAY_CONGTAC)}
+              </Subtitle>
+            </Body>
 
-          <Right style={NativeBaseStyle.right}>
+            <Right style={NativeBaseStyle.right}>
+              {
+                menuElems.length > 0
+                  ? <Menu>
+                    <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                    <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                      {
+                        menuElems.map((item, index) => {
+                          if (item.type === 'CAR') {
+                            return (
+                              <MenuOption
+                                key={index.toString()}
+                                onSelect={() => this.onNavigateToScreen({ registrationId: item.itemId }, "DetailCarRegistrationScreen")}
+                                text="Chi tiết đăng ký xe"
+                                customStyles={HeaderMenuStyle.optionStyles}
+                              />
+                            );
+                          }
+                          else if (item.type === 'MEETING') {
+                            return (
+                              <MenuOption
+                                key={index.toString()}
+                                onSelect={() => this.onNavigateToScreen({ lichhopId: item.itemId }, "DetailMeetingDayScreen")}
+                                text="Chi tiết lịch họp"
+                                customStyles={HeaderMenuStyle.optionStyles}
+                              />
+                            );
+                          }
+                          else {
+                            return null;
+                          }
+                        })
+                      }
+                    </MenuOptions>
+                  </Menu>
+                  : null
+              }
+            </Right>
+          </Header>
 
-          </Right>
-        </Header>
-
-        <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
-          <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-            <View style={{ width: "65%" }}>
-              <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+          <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
+            <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+              <View style={{ width: "65%" }}>
+                <View style={GridPanelStyle.titleContainer}>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+                </View>
+                <View style={{ marginTop: "0.5%" }}>
+                  <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
+                </View>
               </View>
-              <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
+              <View style={{ width: "35%" }}>
+                <View style={GridPanelStyle.titleContainer}>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+                </View>
+                <View style={{ marginTop: "0.5%" }}>
+                  <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
+                </View>
               </View>
             </View>
-            <View style={{ width: "35%" }}>
+
+            {
+              // <View style={GridPanelStyle.container}>
+              //   <View style={GridPanelStyle.titleContainer}>
+              //     <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+              //   </View>
+              //   <View style={{ marginTop: "0.5%" }}>
+              //     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
+              //   </View>
+              // </View>
+            }
+
+            <View style={GridPanelStyle.container}>
               <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
               </View>
               <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
               </View>
             </View>
-          </View>
 
+            <View style={GridPanelStyle.container}>
+              <View style={GridPanelStyle.titleContainer}>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
+              </View>
+              <View style={{ marginTop: "0.5%" }}>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
+              </View>
+            </View>
+
+            <View style={GridPanelStyle.container}>
+              <View style={GridPanelStyle.titleContainer}>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
+              </View>
+              <View style={{ marginTop: "0.5%" }}>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.CHUANBI}</Text>
+              </View>
+            </View>
+
+            <View style={GridPanelStyle.container}>
+              <View style={GridPanelStyle.titleContainer}>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
+              </View>
+              <View style={{ marginTop: "0.5%" }}>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.THANHPHAN_THAMDU}</Text>
+              </View>
+            </View>
+
+
+
+          </Content>
           {
-            // <View style={GridPanelStyle.container}>
-            //   <View style={GridPanelStyle.titleContainer}>
-            //     <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
-            //   </View>
-            //   <View style={{ marginTop: "0.5%" }}>
-            //     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
-            //   </View>
-            // </View>
+            actionButtons.length > 0 && <ButtonGroup
+              containerStyle={ButtonGroupStyle.container}
+              buttons={actionButtons}
+            />
           }
-
-          <View style={GridPanelStyle.container}>
-            <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
-            </View>
-            <View style={{ marginTop: "0.5%" }}>
-              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
-            </View>
-          </View>
-
-          <View style={GridPanelStyle.container}>
-            <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
-            </View>
-            <View style={{ marginTop: "0.5%" }}>
-              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
-            </View>
-          </View>
-
-          <View style={GridPanelStyle.container}>
-            <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
-            </View>
-            <View style={{ marginTop: "0.5%" }}>
-              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.CHUANBI}</Text>
-            </View>
-          </View>
-
-          <View style={GridPanelStyle.container}>
-            <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
-            </View>
-            <View style={{ marginTop: "0.5%" }}>
-              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.THANHPHAN_THAMDU}</Text>
-            </View>
-          </View>
-
-
-
-        </Content>
-        {
-          actionButtons.length > 0 && <ButtonGroup
-            containerStyle={ButtonGroupStyle.container}
-            buttons={actionButtons}
-          />
-        }
-      </Container>
+        </Container>
+      </MenuProvider>
     );
   }
 }
@@ -243,6 +303,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    updateCoreNavParams: (extendsNavParams) => dispatch(navAction.updateCoreNavParams(extendsNavParams)),
     updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams)),
   }
 }
