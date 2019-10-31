@@ -4,7 +4,7 @@
  * @since: 26/10/2019
  */
 import React, { Component } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Linking } from 'react-native'
 
 //lib
 import { List, ListItem } from 'react-native-elements';
@@ -55,6 +55,7 @@ class TripInfo extends Component {
                 </Text>
               } />
             <ListItem style={DetailPublishDocStyle.listItemContainer}
+              onPress={() => Linking.openURL(`tel:${info.DIENTHOAI_LAIXE}`)}
               hideChevron={true}
               title={
                 <Text style={DetailPublishDocStyle.listItemTitleContainer}>

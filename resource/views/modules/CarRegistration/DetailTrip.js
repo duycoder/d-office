@@ -173,7 +173,7 @@ class DetailTrip extends Component {
     };
     this.onNavigate("ReturnTripScreen", targetScreenParam);
   }
-  
+
   onNavigate(targetScreenName, targetScreenParam) {
     if (!util.isNull(targetScreenParam)) {
       this.props.updateExtendsNavParams(targetScreenParam);
