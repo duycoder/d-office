@@ -99,7 +99,7 @@ class DetailNotiUyQuyen extends Component {
                 </View>
               </View>
 
-              <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+              <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
                   <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Hạn hiển thị</Text>
                 </View>
@@ -119,7 +119,7 @@ class DetailNotiUyQuyen extends Component {
                 </View>
               }
 
-              <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+              <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
                   <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Ngày tạo</Text>
                 </View>
