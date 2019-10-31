@@ -154,7 +154,10 @@ class CreateSubTask extends Component {
 				duration: 3000,
 				onClose: () => {
 					if (resultJson.Status) {
-						this.props.updateExtendsNavParams({ check: true });
+						this.props.updateExtendsNavParams({
+							check: true,
+							from: "createSubTask"
+						});
 						this.navigateBackToDetail();
 					}
 				}

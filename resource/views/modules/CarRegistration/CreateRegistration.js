@@ -63,6 +63,9 @@ class CreateRegistration extends Component {
       baseListCanbo: [],
       noidungLich: props.extendsNavParams.noidungLich || EMPTY_STRING,
       isVanthu: false,
+
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     }
   }
 
@@ -135,6 +138,11 @@ class CreateRegistration extends Component {
   // }
 
   saveRegistration = async () => {
+    this.setState({
+      isSaveBtnPressed: false,
+      isSaveIcoPressed: false
+    });
+
     const {
       mucdich, noidung, canboId, ngayXP, diemKT, diemXP, songuoi, ghichu, currentUserId,
       lichCongtacId, isVanthu
@@ -239,6 +247,12 @@ class CreateRegistration extends Component {
             this.props.updateCoreNavParams(screenParam);
             this.props.navigation.navigate("DetailCarRegistrationScreen");
           }
+          else {
+            this.setState({
+              isSaveBtnPressed: true,
+              isSaveIcoPressed: true
+            });
+          }
         }
       });
     }
@@ -255,7 +269,8 @@ class CreateRegistration extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         mucdich, noidung, canboId, ngayXP, diemKT, diemXP, songuoi, ghichu,
-        loading, focusId, canboName, lichCongtacId, noidungLich, isVanthu
+        loading, focusId, canboName, lichCongtacId, noidungLich, isVanthu,
+        isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
       nothingChangeStatus = !mucdich || !noidung || !ngayXP || !diemKT || !diemXP,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -433,7 +448,7 @@ class CreateRegistration extends Component {
             <TouchableOpacity
               onPress={() => this.saveRegistration()}
               style={[AccountStyle.submitButton, submitableButtonBackground]}
-              disabled={nothingChangeStatus}
+              disabled={nothingChangeStatus && isSaveBtnPressed}
             >
               <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
             </TouchableOpacity>
@@ -456,7 +471,7 @@ class CreateRegistration extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={() => this.saveRegistration()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
+            <TouchableOpacity onPress={() => this.saveRegistration()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus && isSaveIcoPressed}>
               <RneIcon name='save' size={30} color={Colors.WHITE} />
             </TouchableOpacity>
           </Right>

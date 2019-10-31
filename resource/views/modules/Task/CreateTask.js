@@ -251,7 +251,8 @@ class CreateTask extends Component {
           if (resultJson.Status) {
             const screenParam = {
               taskId: resultJson.Params,
-              taskType: "1"
+              taskType: "1",
+              from: "createTask"
             };
 
             this.props.updateCoreNavParams(screenParam);

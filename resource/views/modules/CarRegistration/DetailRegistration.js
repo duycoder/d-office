@@ -136,6 +136,7 @@ class DetailRegistration extends Component {
       // }
       if (this.state.from === "create") {
         this.props.updateExtendsNavParams({ check: true });
+        this.props.navigation.pop(2);
       }
       else {
         this.props.updateExtendsNavParams({ check: this.state.check });

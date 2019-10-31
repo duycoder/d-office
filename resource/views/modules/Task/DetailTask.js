@@ -68,6 +68,7 @@ class DetailTask extends Component {
 
             fromBrief: this.props.coreNavParams.fromBrief || false,
             check: false,
+            from: this.props.extendsNavParams.from || EMPTY_STRING
         };
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -187,6 +188,10 @@ class DetailTask extends Component {
     }
 
     navigateBackToList = () => {
+        if (this.state.from === "createTask") {
+            this.props.updateExtendsNavParams({ check: this.state.check });
+            this.props.navigation.pop(2);
+        }
         if (this.state.taskInfo.hasOwnProperty("CongViec")) {
             this.props.updateExtendsNavParams({ check: this.state.check });
         }
