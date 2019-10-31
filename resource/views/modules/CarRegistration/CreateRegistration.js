@@ -272,7 +272,7 @@ class CreateRegistration extends Component {
         loading, focusId, canboName, lichCongtacId, noidungLich, isVanthu,
         isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
-      nothingChangeStatus = !mucdich || !noidung || !ngayXP || !diemKT || !diemXP,
+      nothingChangeStatus = !mucdich || !noidung || !ngayXP || !diemKT || !diemXP || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
@@ -448,7 +448,7 @@ class CreateRegistration extends Component {
             <TouchableOpacity
               onPress={() => this.saveRegistration()}
               style={[AccountStyle.submitButton, submitableButtonBackground]}
-              disabled={nothingChangeStatus && isSaveBtnPressed}
+              disabled={nothingChangeStatus}
             >
               <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
             </TouchableOpacity>
@@ -471,7 +471,7 @@ class CreateRegistration extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={() => this.saveRegistration()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus && isSaveIcoPressed}>
+            <TouchableOpacity onPress={() => this.saveRegistration()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
               <RneIcon name='save' size={30} color={Colors.WHITE} />
             </TouchableOpacity>
           </Right>

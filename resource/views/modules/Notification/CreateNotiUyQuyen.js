@@ -50,6 +50,9 @@ class CreateNotiUyQuyen extends Component {
       executing: false,
       focusId: EMPTY_STRING,
       loading: false,
+
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     }
   }
 
@@ -60,6 +63,10 @@ class CreateNotiUyQuyen extends Component {
   }
 
   saveNotiUyQuyen = async () => {
+    this.setState({
+      isSaveBtnPressed: false,
+      isSaveIcoPressed: false
+    });
     const {
       tieude, noidung, showUntil, userId
     } = this.state;
@@ -90,7 +97,7 @@ class CreateNotiUyQuyen extends Component {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
       });
-    } 
+    }
     else {
       this.setState({
         executing: true
@@ -138,6 +145,12 @@ class CreateNotiUyQuyen extends Component {
             });
             this.navigateBack();
           }
+          else {
+            this.setState({
+              isSaveBtnPressed: true,
+              isSaveIcoPressed: true
+            });
+          }
         }
       });
     }
@@ -148,9 +161,10 @@ class CreateNotiUyQuyen extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         tieude, noidung, showUntil,
-        loading, focusId
+        loading, focusId,
+        isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
-      nothingChangeStatus = !tieude || !showUntil,
+      nothingChangeStatus = !tieude || !showUntil || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };

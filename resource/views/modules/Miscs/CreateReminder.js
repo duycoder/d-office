@@ -54,6 +54,9 @@ class CreateReminder extends Component {
       focusId: EMPTY_STRING,
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
       loading: false,
+
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     }
   }
 
@@ -93,6 +96,10 @@ class CreateReminder extends Component {
   // }
 
   saveReminder = async () => {
+    this.setState({
+      isSaveBtnPressed: false,
+      isSaveIcoPressed: false
+    });
     const {
       noidung, thoigian, period, userId
     } = this.state;
@@ -168,6 +175,12 @@ class CreateReminder extends Component {
             // this.props.updateCoreNavParams(screenParam);
             // this.props.navigation.navigate("DetailMeetingDayScreen");
           }
+          else {
+            this.setState({
+              isSaveBtnPressed: true,
+              isSaveIcoPressed: true
+            });
+          }
         }
       });
     }
@@ -184,9 +197,10 @@ class CreateReminder extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         noidung, thoigian, period,
-        loading, focusId
+        loading, focusId,
+        isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
-      nothingChangeStatus = !noidung || !thoigian,
+      nothingChangeStatus = !noidung || !thoigian || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };

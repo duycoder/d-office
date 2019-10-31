@@ -57,6 +57,9 @@ class CreateMeetingDay extends Component {
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
       loading: false,
       isVanthu: false,
+
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     }
   }
 
@@ -128,6 +131,10 @@ class CreateMeetingDay extends Component {
   // }
 
   saveLichhop = async () => {
+    this.setState({
+      isSaveBtnPressed: false,
+      isSaveIcoPressed: false
+    });
     const {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId,
       isVanthu
@@ -230,6 +237,12 @@ class CreateMeetingDay extends Component {
             this.props.updateCoreNavParams(screenParam);
             this.props.navigation.navigate("DetailMeetingDayScreen");
           }
+          else{
+            this.setState({
+              isSaveBtnPressed: true,
+              isSaveIcoPressed: true
+            });
+          }
         }
       });
     }
@@ -246,9 +259,10 @@ class CreateMeetingDay extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop,
-        loading, focusId, chutriName, isVanthu
+        loading, focusId, chutriName, isVanthu,
+        isSaveBtnPressed,isSaveIcoPressed
       } = this.state,
-      nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop,
+      nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };

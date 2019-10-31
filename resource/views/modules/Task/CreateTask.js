@@ -78,6 +78,9 @@ class CreateTask extends Component {
       vanbanDenId: 0,
       vanbanDiId: 0,
       giaoviecName: null,
+
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     }
   }
 
@@ -166,6 +169,11 @@ class CreateTask extends Component {
   }
 
   saveTask = async () => {
+    this.setState({
+      isSaveBtnPressed: false,
+      isSaveIcoPressed: false
+    });
+
     const {
       title, deadline, content,
       purpose, priorityValue, urgencyValue, startDate,
@@ -266,6 +274,12 @@ class CreateTask extends Component {
             //   this.navigateBack();
             // }
           }
+          else {
+            this.setState({
+              isSaveBtnPressed: true,
+              isSaveIcoPressed: true
+            });
+          }
         }
       });
     }
@@ -284,9 +298,10 @@ class CreateTask extends Component {
         title, content, deadline,
         purpose, priorityValue, urgencyValue, startDate, reminderDays,
         vanbanDenId, vanbanDiId, fromScreen, loading, giaoviecName, giaoviecId,
-        focusId, isGiamdoc
+        focusId, isGiamdoc,
+        isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
-      nothingChangeStatus = !title || !content || !deadline,
+      nothingChangeStatus = !title || !content || !deadline || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
