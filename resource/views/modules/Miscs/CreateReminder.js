@@ -99,7 +99,7 @@ class CreateReminder extends Component {
 
     if (!noidung) {
       Toast.show({
-        text: 'Vui lòng nhập nội dung nhắc nhở',
+        text: 'Vui lòng nhập nội dung nhắc việc',
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
@@ -151,7 +151,7 @@ class CreateReminder extends Component {
       });
 
       Toast.show({
-        text: resultJson.Status ? "Thêm mới nhắc nhở thành công" : "Thêm mới nhắc nhở thất bại",
+        text: resultJson.Status ? "Thêm mới nhắc việc thành công" : "Thêm mới nhắc việc thất bại",
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
@@ -282,7 +282,7 @@ class CreateReminder extends Component {
 
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
-              THÊM MỚI NHẮC NHỞ
+              THÊM MỚI NHẮC VIỆC
 						</Title>
           </Body>
 

@@ -196,7 +196,7 @@ class ListReminder extends Component {
     });
 
     Toast.show({
-      text: resultJson.Status ? "Xoá nhắc nhở thành công" : "Xoá nhắc nhở thất bại",
+      text: resultJson.Status ? "Xoá nhắc việc thành công" : "Xoá nhắc việc thất bại",
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -265,7 +265,7 @@ class ListReminder extends Component {
     });
 
     Toast.show({
-      text: resultJson.Status ? "Thay đổi trạng thái nhắc nhở thành công" : "Thay đổi trạng thái nhắc nhở thất bại",
+      text: resultJson.Status ? "Thay đổi trạng thái nhắc việc thành công" : "Thay đổi trạng thái nhắc việc thất bại",
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -427,7 +427,7 @@ class ListReminder extends Component {
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
-            <Title style={NativeBaseStyle.bodyTitle}>DANH SÁCH NHẮC NHỞ</Title>
+            <Title style={NativeBaseStyle.bodyTitle}>DANH SÁCH NHẮC VIỆC</Title>
           </Body>
 
           <Right style={NativeBaseStyle.right} />
@@ -471,7 +471,7 @@ class ListReminder extends Component {
         <AlertMessage
           ref="confirm"
           title={`XÁC NHẬN ${this.state.confirmTilte.toUpperCase()}`}
-          bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc nhở này không?\nSau này bạn vẫn có thể thay đổi được.`}
+          bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc việc này không?\nSau này bạn vẫn có thể thay đổi được.`}
           exitText="HỦY BỎ"
         >
           <View style={AlertMessageStyle.leftFooter}>
@@ -486,7 +486,7 @@ class ListReminder extends Component {
         <AlertMessage
           ref="confirmDelete"
           title={`XÁC NHẬN XOÁ`}
-          bodyText={`Bạn có chắc chắn muốn xoá nhắc nhở này không?\nViệc này sẽ không thể đảo ngược.`}
+          bodyText={`Bạn có chắc chắn muốn xoá nhắc việc này không?\nViệc này sẽ không thể đảo ngược.`}
           exitText="HỦY BỎ"
         >
           <View style={AlertMessageStyle.leftFooter}>
