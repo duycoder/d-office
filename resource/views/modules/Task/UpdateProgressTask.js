@@ -21,7 +21,7 @@ import * as util from 'lodash';
 
 //utilities
 import {
-    API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors
+    API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
@@ -100,7 +100,7 @@ class UpdateProgressTask extends Component {
 
             const resultJson = await result.json();
 
-            await asyncDelay(2000);
+            await asyncDelay();
 
             this.setState({
                 executing: false
@@ -112,7 +112,7 @@ class UpdateProgressTask extends Component {
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
                 buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-                duration: 3000,
+                duration: TOAST_DURATION_TIMEOUT,
                 onClose: () => {
                     if (resultJson.Status) {
                         this.props.updateExtendsNavParams({ check: true });

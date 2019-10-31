@@ -16,7 +16,7 @@ import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } f
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import {
 	API_URL, EMPTY_STRING, HEADER_COLOR, LOADER_COLOR, Colors,
-	LOADMORE_COLOR, DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE
+	LOADMORE_COLOR, DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -170,7 +170,7 @@ class WorkflowRequestReview extends Component {
 
 			const resultJson = await result.json();
 
-			await asyncDelay(2000);
+			await asyncDelay();
 
 			this.setState({
 				executing: false
@@ -199,7 +199,7 @@ class WorkflowRequestReview extends Component {
 				buttonText: "OK",
 				buttonStyle: { backgroundColor: Colors.WHITE },
 				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-				duration: 5000,
+				duration: TOAST_DURATION_TIMEOUT,
 				onClose: () => {
 					this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {

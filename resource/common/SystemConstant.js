@@ -1,9 +1,9 @@
 import { Dimensions } from 'react-native'
-export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
-// export const WEB_URL = 'http://192.168.1.10:8022';// web test
+// export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
+export const WEB_URL = 'http://192.168.1.10:8022';// web test
 // export const API_URL = 'http://192.168.1.29:8098';
-export const API_URL = 'http://101.96.76.204:8999'; //server vnio
-// export const API_URL = 'http://123.16.130.9:8111'; //server local
+// export const API_URL = 'http://101.96.76.204:8999'; //server vnio
+export const API_URL = 'http://123.16.130.9:8111'; //server local
 // export const API_URL = 'http://192.168.1.7:8098';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -368,3 +368,6 @@ export const MODULE_CONSTANT = {
 
 export const SEPERATOR_STRING = '-HINETVNIO-';
 export const SEPERATOR_UNDERSCORE = '-';
+
+export const TOAST_DURATION_TIMEOUT = 1000;
+export const ASYNC_DELAY_TIMEOUT = 1000;

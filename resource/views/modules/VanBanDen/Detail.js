@@ -102,7 +102,7 @@ class Detail extends Component {
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             loading: false,
@@ -188,7 +188,7 @@ class Detail extends Component {
         const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
         const result = await fetch(url).then(response => response.json());
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({ executing: false })
 

@@ -228,7 +228,7 @@ class BaseTaskList extends Component {
                 return item;
             })
 
-            await asyncDelay(2000);
+            await asyncDelay();
 
             this.setState({
                 executing: false,

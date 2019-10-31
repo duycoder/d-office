@@ -26,7 +26,7 @@ import * as util from 'lodash';
 
 //utilities
 import { executeLoading } from '../../../common/Effect';
-import { API_URL, Colors, EMPTY_STRING } from '../../../common/SystemConstant';
+import { API_URL, Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { asyncDelay, convertDateToString, convertDateTimeToString, formatMessage } from '../../../common/Utilities';
 
@@ -93,7 +93,7 @@ class ApproveRescheduleTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -105,7 +105,7 @@ class ApproveRescheduleTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.props.updateExtendsNavParams({ check: true });

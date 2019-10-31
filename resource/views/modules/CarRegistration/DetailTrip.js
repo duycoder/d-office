@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
 //utilities
-import { API_URL, Colors, DATXE_CONSTANT } from '../../../common/SystemConstant';
+import { API_URL, Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -91,7 +91,7 @@ class DetailTrip extends Component {
     const result = await fetch(url);
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       loading: false,
@@ -147,7 +147,7 @@ class DetailTrip extends Component {
 
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       executing: false
@@ -159,7 +159,7 @@ class DetailTrip extends Component {
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
       buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
-      duration: 3000,
+      duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
           this.fetchData();

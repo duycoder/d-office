@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -120,7 +120,7 @@ class AccountChangePassword extends Component {
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
           buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: 3000
+          duration: TOAST_DURATION_TIMEOUT
         });
       });
       return;
@@ -136,7 +136,7 @@ class AccountChangePassword extends Component {
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
           buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: 3000
+          duration: TOAST_DURATION_TIMEOUT
         });
       });
       return;
@@ -153,7 +153,7 @@ class AccountChangePassword extends Component {
       MATKHAU: this.state.password
     });
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     const result = await fetch(url, {
       method: 'POST',
@@ -178,7 +178,7 @@ class AccountChangePassword extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
-        duration: 3000,
+        duration: TOAST_DURATION_TIMEOUT,
         onClose: () => this.signOut()
       })
     }
@@ -190,7 +190,7 @@ class AccountChangePassword extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: 3000
+        duration: TOAST_DURATION_TIMEOUT
       })
     }
   }
@@ -231,7 +231,7 @@ class AccountChangePassword extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: 3000
+        duration: TOAST_DURATION_TIMEOUT
       });
       return;
     }
@@ -242,7 +242,7 @@ class AccountChangePassword extends Component {
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
       buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
-      duration: 3000,
+      duration: TOAST_DURATION_TIMEOUT,
     });
   }
 
@@ -255,7 +255,7 @@ class AccountChangePassword extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: 3000
+        duration: TOAST_DURATION_TIMEOUT
       });
       return;
     }

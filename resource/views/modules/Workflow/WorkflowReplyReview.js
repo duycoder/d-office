@@ -13,7 +13,7 @@ import {
 
 //constant
 import {
-    API_URL, HEADER_COLOR, EMPTY_STRING, Colors
+    API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //native-base
@@ -142,7 +142,7 @@ class WorkflowReplyReview extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -171,7 +171,7 @@ class WorkflowReplyReview extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 5000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 this.props.resetProcessUsers();
                 if (resultJson.Status) {

@@ -14,7 +14,7 @@ import DatePicker from 'react-native-datepicker';
 //local util
 import {
     API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors
+    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { moderateScale, indicatorResponsive, verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, _readableFormat } from '../../../common/Utilities';
@@ -307,7 +307,7 @@ class EditUyQuyen extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -320,7 +320,7 @@ class EditUyQuyen extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.navigateBackToList();

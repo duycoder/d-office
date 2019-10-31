@@ -28,6 +28,7 @@ import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAn
 import {
     API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
     Colors,
+    TOAST_DURATION_TIMEOUT,
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
@@ -146,7 +147,7 @@ class ListUyQuyen extends Component {
             method: 'delete',
         }).then(response => response.json());
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -157,7 +158,7 @@ class ListUyQuyen extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: result.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (result.Status) {
                     this.fetchData();

@@ -147,7 +147,7 @@ class CreateTask extends Component {
     const result = await fetch(url);
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       loading: false,
@@ -234,7 +234,7 @@ class CreateTask extends Component {
 
       const resultJson = await result.json();
 
-      await asyncDelay(2000);
+      await asyncDelay();
 
       this.setState({
         executing: false
@@ -246,7 +246,7 @@ class CreateTask extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-        duration: 3000,
+        duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
             const screenParam = {

@@ -17,7 +17,7 @@ import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
@@ -144,7 +144,7 @@ class CreateReminder extends Component {
 
       const resultJson = await result.json();
 
-      await asyncDelay(2000);
+      await asyncDelay();
 
       this.setState({
         executing: false
@@ -156,7 +156,7 @@ class CreateReminder extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: 3000,
+        duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
             this.props.updateExtendsNavParams({ check: true });

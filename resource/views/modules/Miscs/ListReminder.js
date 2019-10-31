@@ -31,7 +31,8 @@ import {
   Colors,
   VANBANDEN_CONSTANT,
   VANBANDI_CONSTANT, LICHTRUC_CONSTANT,
-  EMPTY_STRING
+  EMPTY_STRING,
+  TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -189,7 +190,7 @@ class ListReminder extends Component {
 
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       executingLoading: false
@@ -201,7 +202,7 @@ class ListReminder extends Component {
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
       buttonTextStyle: { color: Colors.LITE_BLUE },
-      duration: 3000,
+      duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
           this.setState({
@@ -258,7 +259,7 @@ class ListReminder extends Component {
 
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       executingLoading: false
@@ -270,7 +271,7 @@ class ListReminder extends Component {
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
       buttonTextStyle: { color: Colors.LITE_BLUE },
-      duration: 3000,
+      duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
           this.setState({

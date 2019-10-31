@@ -16,7 +16,7 @@ import { Container, Content, CheckBox, Form, Item, Input, Label, Toast } from 'n
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -186,7 +186,7 @@ class Login extends Component {
 
             const resultJson = await result.json();
 
-            await asyncDelay(2000);
+            await asyncDelay();
 
             if (resultJson != null) {
                 if (resultJson.hasOwnProperty("Message")) {
@@ -198,7 +198,7 @@ class Login extends Component {
                             textStyle: { fontSize: moderateScale(12, 1.5) },
                             buttonText: "OK",
                             buttonStyle: { backgroundColor: "#acb7b1" },
-                            duration: 3000
+                            duration: TOAST_DURATION_TIMEOUT
                         });
                     });
                 }
@@ -254,7 +254,7 @@ class Login extends Component {
                         textStyle: { fontSize: moderateScale(12, 1.5) },
                         buttonText: "OK",
                         buttonStyle: { backgroundColor: "#acb7b1" },
-                        duration: 3000
+                        duration: TOAST_DURATION_TIMEOUT
                     });
                 });
             }

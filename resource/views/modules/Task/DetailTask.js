@@ -24,7 +24,7 @@ import * as util from 'lodash'
 //utilities
 import {
     API_URL, LOADER_COLOR, HEADER_COLOR, Colors,
-    CONGVIEC_CONSTANT, PLANJOB_CONSTANT, EMPTY_DATA_ICON_URI, EMPTY_STRING, DEFAULT_PAGE_INDEX
+    CONGVIEC_CONSTANT, PLANJOB_CONSTANT, EMPTY_DATA_ICON_URI, EMPTY_STRING, DEFAULT_PAGE_INDEX, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { asyncDelay, convertDateToString, formatLongText, appGetDataAndNavigate, backHandlerConfig, appStoreDataAndNavigate } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -139,7 +139,7 @@ class DetailTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -151,7 +151,7 @@ class DetailTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.fetchData();
@@ -348,7 +348,7 @@ class DetailTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -360,7 +360,7 @@ class DetailTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.fetchData();

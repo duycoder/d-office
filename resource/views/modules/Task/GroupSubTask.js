@@ -34,7 +34,7 @@ import { executeLoading } from '../../../common/Effect'
 import {
     API_URL, DEFAULT_PAGE_INDEX,
     EMPTY_STRING, LOADMORE_COLOR,
-    LOADER_COLOR, HEADER_COLOR, DEFAULT_PAGE_SIZE, Colors
+    LOADER_COLOR, HEADER_COLOR, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //styles
@@ -242,7 +242,7 @@ class GroupSubTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -254,7 +254,7 @@ class GroupSubTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.searchData();

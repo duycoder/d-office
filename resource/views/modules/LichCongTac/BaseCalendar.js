@@ -127,7 +127,7 @@ class BaseCalendar extends Component {
       }
     }
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       executing: false,

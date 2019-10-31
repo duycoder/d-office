@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { API_URL, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -128,7 +128,7 @@ class ApproveProgressTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -140,7 +140,7 @@ class ApproveProgressTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.props.updateExtendsNavParams({ check: true });

@@ -23,7 +23,7 @@ import {
 import * as util from 'lodash';
 
 //utilities
-import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors } from '../../../common/SystemConstant';
+import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
 import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -142,7 +142,7 @@ class ApproveEvaluationTask extends Component {
 
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             executing: false
@@ -154,7 +154,7 @@ class ApproveEvaluationTask extends Component {
             buttonText: "OK",
             buttonStyle: { backgroundColor: Colors.WHITE },
             buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: 3000,
+            duration: TOAST_DURATION_TIMEOUT,
             onClose: () => {
                 if (resultJson.Status) {
                     this.navigateBackToDetail();

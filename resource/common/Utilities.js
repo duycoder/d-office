@@ -14,7 +14,7 @@ import OpenFile from 'react-native-doc-viewer';
 import * as util from 'lodash';
 //lib
 import { Button, Icon, Text as NBText } from 'native-base'
-import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL } from './SystemConstant'
+import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL, ASYNC_DELAY_TIMEOUT } from './SystemConstant'
 import AlertMessage from '../views/common/AlertMessage';
 import AlertMessageStyle from '../assets/styles/AlertMessageStyle';
 
@@ -100,7 +100,7 @@ export function _readableFormat(value) {
     return (value < 10) ? '0' + value : value;
 }
 
-export const asyncDelay = (ms) => {
+export const asyncDelay = (ms = ASYNC_DELAY_TIMEOUT) => {
     return new Promise(result => setTimeout(result, ms));
 };
 

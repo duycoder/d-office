@@ -11,7 +11,8 @@ import { ActivityIndicator, View, Text as RnText, FlatList } from 'react-native'
 import {
     API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
-    MODULE_CONSTANT
+    MODULE_CONSTANT,
+    TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -158,7 +159,7 @@ class WorkflowStreamProcess extends Component {
 
             const resultJson = await result.json();
 
-            await asyncDelay(2000);
+            await asyncDelay();
 
             this.setState({
                 executing: false
@@ -170,7 +171,7 @@ class WorkflowStreamProcess extends Component {
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
                 buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
-                duration: 3000,
+                duration: TOAST_DURATION_TIMEOUT,
                 onClose: () => {
                     this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
                     if (resultJson.Status) {

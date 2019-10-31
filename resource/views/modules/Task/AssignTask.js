@@ -28,7 +28,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import {
 	API_URL, HEADER_COLOR, DEFAULT_PAGE_INDEX,
 	EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
-	TASK_PROCESS_TYPE, Colors
+	TASK_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
@@ -237,7 +237,7 @@ class AssignTask extends Component {
 
 			const resultJson = await result.json();
 
-			await asyncDelay(2000);
+			await asyncDelay();
 
 			this.setState({
 				executing: false
@@ -249,7 +249,7 @@ class AssignTask extends Component {
 				buttonText: "OK",
 				buttonStyle: { backgroundColor: Colors.WHITE },
 				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-				duration: 3000,
+				duration: TOAST_DURATION_TIMEOUT,
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
 					if (resultJson.Status) {

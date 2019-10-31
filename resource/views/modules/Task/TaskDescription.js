@@ -65,7 +65,7 @@ export default class TaskDescription extends Component {
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             docInfo: resultJson,

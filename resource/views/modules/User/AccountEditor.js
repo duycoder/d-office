@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import * as util from 'lodash';
 import DatePicker from 'react-native-datepicker';
 //constants
-import { EMPTY_STRING, API_URL, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -159,7 +159,7 @@ class AccountEditor extends Component {
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
           buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: 3000
+          duration: TOAST_DURATION_TIMEOUT
         });
       });
       return;
@@ -176,7 +176,7 @@ class AccountEditor extends Component {
           buttonText: "OK",
           buttonStyle: { backgroundColor: Colors.WHITE },
           buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: 3000
+          duration: TOAST_DURATION_TIMEOUT
         });
       });
       return;
@@ -200,7 +200,7 @@ class AccountEditor extends Component {
       EMAIL: savedEmail,
     });
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     const result = await fetch(url, {
       method: 'POST',
@@ -223,7 +223,7 @@ class AccountEditor extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
-        duration: 3000,
+        duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           this.navigateBackToAccountInfo()
         }
@@ -237,7 +237,7 @@ class AccountEditor extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: 3000
+        duration: TOAST_DURATION_TIMEOUT
       });
     }
   }

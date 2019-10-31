@@ -16,7 +16,7 @@ import { Icon as RneIcon } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat } from '../../../common/Utilities';
@@ -117,7 +117,7 @@ class CreateTaskPlan extends Component {
 
       const resultJson = await result.json();
 
-      await asyncDelay(2000);
+      await asyncDelay();
 
       this.setState({
         executing: false
@@ -129,7 +129,7 @@ class CreateTaskPlan extends Component {
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-        duration: 3000,
+        duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
             if (fromScreen === "DashboardScreen") {

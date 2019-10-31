@@ -123,7 +123,7 @@ this.props.updateExtendsNavParams({check: false});
     const result = await fetch(url);
     const resultJson = await result.json();
 
-    await asyncDelay(2000);
+    await asyncDelay();
 
     this.setState({
       loading: false,

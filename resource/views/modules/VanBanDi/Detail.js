@@ -86,7 +86,7 @@ class Detail extends Component {
         const result = await fetch(url);
         const resultJson = await result.json();
 
-        await asyncDelay(2000);
+        await asyncDelay();
 
         this.setState({
             loading: false,
@@ -237,7 +237,7 @@ class Detail extends Component {
             })
         }).then(response => response.json());
 
-        await asyncDelay(2000);
+        await asyncDelay();
         
         this.setState({
             executing: false
