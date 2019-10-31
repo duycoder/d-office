@@ -104,6 +104,7 @@ class DetailMeetingDay extends Component {
       }
       else if (this.state.from === "createMeetingDay") {
         this.props.updateExtendsNavParams({ check: true });
+        this.props.navigation.pop(2);
       }
       else {
         this.props.updateExtendsNavParams({ from: "detail" });

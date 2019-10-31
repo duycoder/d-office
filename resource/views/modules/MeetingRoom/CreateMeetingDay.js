@@ -248,7 +248,7 @@ class CreateMeetingDay extends Component {
         mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop,
         loading, focusId, chutriName, isVanthu
       } = this.state,
-      nothingChangeStatus = !mucdich || !thamgia || !thoigianBatdau || !thoigianKetthuc || !ngayHop,
+      nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
@@ -355,13 +355,13 @@ class CreateMeetingDay extends Component {
             </Item>
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Thời gian kết thúc <Text style={{ color: '#f00' }}>*</Text></Label>
+              <Label>Thời gian dự kiến kết thúc <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
                 style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
                 date={thoigianKetthuc}
                 mode="time"
-                placeholder='Chọn thời gian kết thúc'
+                placeholder='Chọn thời gian dự kiến kết thúc'
                 // format='HH:MM'
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
@@ -383,7 +383,7 @@ class CreateMeetingDay extends Component {
 
             <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "thamgia" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
               <Label>
-                Thành phần tham dự <Text style={{ color: '#f00' }}>*</Text>
+                Thành phần tham dự
               </Label>
 
               <Input
