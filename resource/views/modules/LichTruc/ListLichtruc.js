@@ -217,7 +217,7 @@ class ListLichtruc extends Component {
       });
 
       Toast.show({
-        text: resultJson.Message,
+        text: resultJson.Status ? "Phê duyệt thành công" : "Phê duyệt thất bại",
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
@@ -232,7 +232,7 @@ class ListLichtruc extends Component {
     }
     else {
       Toast.show({
-        text: "Vui lòng chọn lịch trực cần phê duyệt",
+        text: "Vui lòng chọn lịch cần phê duyệt",
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
