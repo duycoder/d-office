@@ -100,6 +100,7 @@ class Dashboard extends Component {
       this.fetchNotifyCount();
       this.fetchBirthdayData();
       this.fetchDataUyQuyen();
+      this.fetchHotline();
     });
   }
 
@@ -435,7 +436,7 @@ class Dashboard extends Component {
                         dataHotline.map(item => {
                           return (
                             <MenuOption
-                              onSelect={() => Linking.openURL(`tel:${item.DATA}`)}
+                              onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
                               text={item.TEXT}
                               customStyles={HeaderMenuStyle.optionStyles}
                             />
