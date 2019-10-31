@@ -330,20 +330,32 @@ class ListNotification extends Component {
                                             hideChevron={true}
                                             title={
                                                 <RNText style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
-                                                    <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} ${item.TIEUDE}`}</RNText>
+                                                    <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} `}</RNText><RNText style={{ color: "#8E44AD" }}>{`${item.TIEUDE}`}</RNText>
                                                 </RNText>
                                             }
                                             titleStyle={ListNotificationStyle.title}
                                             titleContainerStyle={{
                                                 marginHorizontal: '3%',
                                             }}
-                                            subtitle={
-                                                <RNText style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</RNText>
-                                            }
-                                            subtitleContainerStyle={{
-                                                marginHorizontal: '3%'
+                                            rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                                            rightTitleNumberOfLines={2}
+                                            rightTitleStyle={{
+                                                textAlign: 'center',
+                                                color: Colors.DARK_GRAY,
+                                                fontSize: moderateScale(12, 0.9),
+                                                fontStyle: 'italic',
                                             }}
+                                            rightTitleContainerStyle={{
+                                                flex: 0
+                                            }}
+                                            // subtitle={
+                                            //     <RNText style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</RNText>
+                                            // }
+                                            // subtitleContainerStyle={{
+                                            //     marginHorizontal: '3%'
+                                            // }}
                                             titleNumberOfLines={3}
+                                            onPress={() => this.props.navigation.navigate("DetailNotiUyQuyenScreen", { id: item.ID })}
                                         />
                                     );
                                 })

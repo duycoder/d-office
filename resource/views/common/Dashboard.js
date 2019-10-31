@@ -7,7 +7,8 @@ import React, { Component } from 'react';
 import {
   AsyncStorage, View, Text, ScrollView, Image,
   ImageBackground, Modal,
-  TouchableOpacity, StatusBar, FlatList, RefreshControl, ActivityIndicator
+  TouchableOpacity, StatusBar, FlatList, RefreshControl, ActivityIndicator,
+  Linking
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Agenda } from 'react-native-calendars';
@@ -45,9 +46,11 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import { GridPanelStyle } from '../../assets/styles/GridPanelStyle';
-import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat } from '../../common/Utilities';
+import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat, isArray } from '../../common/Utilities';
 import { ListNotificationStyle } from '../../assets/styles/ListNotificationStyle';
 import { DashboardStyle } from '../../assets/styles/DashboardStyle';
+import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { HeaderMenuStyle } from '../../assets/styles';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;
@@ -79,6 +82,7 @@ class Dashboard extends Component {
 
       birthdayData: null,
       dataUyQuyen: [],
+      dataHotline: [],
     }
   }
 
@@ -97,6 +101,16 @@ class Dashboard extends Component {
       this.fetchBirthdayData();
       this.fetchDataUyQuyen();
     });
+  }
+
+  fetchHotline = async () => {
+    const url = `${API_URL}/api/Account/GetHotlines/`;
+    const resource = await fetch(url);
+    const result = await resource.json();
+
+    this.setState({
+      dataHotline: result
+    })
   }
 
   fetchDataUyQuyen = async () => {
@@ -373,307 +387,372 @@ class Dashboard extends Component {
     const {
       notifyCount, userFunctions, onFocusNow,
       notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan,
-      notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen
+      notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen,
+      dataHotline
     } = this.state;
 
     let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen]);
 
     return (
-      <View style={SideBarStyle.container}>
-        <StatusBar barStyle="light-content" />
-        <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0, height: 120, paddingTop: 35 }}>
-          <Left style={{ flex: 5, paddingLeft: 20, alignSelf: "flex-start" }}>
-            <Text style={{ color: Colors.WHITE }}>
-              <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
-            </Text>
-          </Left>
-          <Body />
-          <Right style={{ flex: 1, alignSelf: "flex-start" }}>
-            <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-              <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-            </TouchableOpacity>
-          </Right>
-        </Header>
+      <MenuProvider backHandler>
+        <View style={SideBarStyle.container}>
+          <StatusBar barStyle="light-content" />
+          <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0, height: 120, paddingTop: 35 }}>
+            <Left style={{ flex: 5, paddingLeft: 20, alignSelf: "flex-start" }}>
+              {
+                // <Menu>
+                //   <MenuTrigger children={
+                //     <View style={{ flexDirection: "row", alignItems: "center" }}>
+                //       <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
+                //       <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
+                //     </View>
+                //   } />
+                //   <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                //     <MenuOption
+                //       onSelect={() => Linking.openURL(`tel:0909090`)}
+                //       text={"Cấp cứu - 0983250571"}
+                //       customStyles={HeaderMenuStyle.optionStyles}
+                //     />
+                //     <MenuOption
+                //       onSelect={() => Linking.openURL(`tel:0909090`)}
+                //       text={"Cấp cứu - 0983250571"}
+                //       customStyles={HeaderMenuStyle.optionStyles}
+                //     />
+                //   </MenuOptions>
+                // </Menu>
+              }
+              {
+                (isArray(dataHotline) && dataHotline.length > 0)
+                  ? <Menu>
+                    <MenuTrigger children={
+                      <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
+                        <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
+                      </View>
+                    } />
+                    <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                      {
+                        dataHotline.map(item => {
+                          return (
+                            <MenuOption
+                              onSelect={() => Linking.openURL(`tel:${item.DATA}`)}
+                              text={item.TEXT}
+                              customStyles={HeaderMenuStyle.optionStyles}
+                            />
+                          );
+                        })
+                      }
+                    </MenuOptions>
+                  </Menu>
+                  : <Text style={{ color: Colors.WHITE }}>
+                    <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
+                  </Text>
+              }
+            </Left>
+            <Body />
+            <Right style={{ flex: 1, alignSelf: "flex-start" }}>
+              <TouchableOpacity onPress={() => this.setCurrentFocus("AccountInfoScreen")} style={{ marginRight: 20 }}>
+                <Icon name="shield-account" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
+                <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+              </TouchableOpacity>
+            </Right>
+          </Header>
 
-        <View
-          style={{ flex: 1, backgroundColor: Colors.WHITE, borderRadius: 10, marginHorizontal: moderateScale(8, 1.2), marginTop: -50, borderColor: '#ccc', borderWidth: .7 }}
-        >
-          <View style={SideBarStyle.shortcutBoxContainer}>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
-              <SideBarIcon
-                actionCode={VANBANDEN._CHUAXULY.NAME}
-                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
-                isHotPick
-                notifyCount={notifyCount_VBDen_Chuaxuly}
-              />
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
-              <SideBarIcon
-                actionCode={VANBANDI._CHUAXULY.NAME}
-                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
-                isHotPick
-                notifyCount={notifyCount_VBDi_Chuaxuly}
-              />
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
-              <SideBarIcon
-                actionCode={CONGVIEC._CANHAN.NAME}
-                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
-                isHotPick
-                notifyCount={notifyCount_CV_Canhan}
-              />
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate("ExtendKeyFunctionScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
-              <SideBarIcon
-                actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
-                customIconContainerStyle={SideBarStyle.customIconContainerStyle}
-                isHotPick
-                notifyCount={maxExtendKeyFunctionNotiCount}
-              />
-              <Text style={SideBarStyle.shortcutBoxTextStyle}>Tiện ích</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={[SideBarStyle.body, { paddingBottom: moderateScale(12, 1.2) }]}>
-          <ScrollView
-            contentContainerStyle={{ paddingTop: moderateScale(12, 1.2) }}
+          <View
+            style={{ flex: 1, backgroundColor: Colors.WHITE, borderRadius: 10, marginHorizontal: moderateScale(8, 1.2), marginTop: -50, borderColor: '#ccc', borderWidth: .7 }}
           >
-            <View style={{ backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <View style={{ backgroundColor: Colors.NOT_READ, padding: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: 15 }}>
-                  <Text style={{ textAlign: "center", color: Colors.WHITE, fontWeight: "bold", fontSize: moderateScale(12, 1.16) }}>Thông báo</Text>
-                </View>
-              </View>
-              {
-                this.state.dataUyQuyen.length > 0
-                  ? this.state.dataUyQuyen.map((item, index) => {
-                    return (
-                      <ListItem
-                        key={index.toString()}
-                        containerStyle={{ backgroundColor: "#EBDEF0", borderBottomColor: "#ccc" }}
-                        leftIcon={
-                          <Icon name="transition-masked" type="material-community" color={"#8E44AD"} size={moderateScale(45)} />
-                        }
-                        hideChevron={true}
-                        title={
-                          <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
-                            <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} ${item.TIEUDE}`}</Text>
-                          </Text>
-                        }
-                        titleStyle={ListNotificationStyle.title}
-                        titleContainerStyle={{
-                          marginHorizontal: '3%',
-                        }}
-                        subtitle={
-                          <Text style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</Text>
-                        }
-                        subtitleContainerStyle={{
-                          marginHorizontal: '3%'
-                        }}
-                        titleNumberOfLines={3}
-                      />
-                    );
-                  })
-                  : null
-              }
-              {
-                this.state.notiData.length > 0
-                  ? this.state.notiData.map((item, index) => {
-                    let thisBGColor = Colors.WHITE;
-                    let itemType = item.URL.split('/')[2],
-                      badgeBackgroundColor = Colors.GRAY,
-                      leftTitle = "CV";
-                    //TODO: Replace itemType with userRole (shortname)
-                    switch (itemType) {
-                      case "HSVanBanDi":
-                        badgeBackgroundColor = '#4FC3F7';
-                        leftTitle = "VBTK"
-                        break;
-                      case "QuanLyCongViec":
-                        badgeBackgroundColor = '#4DB6AC';
-                        leftTitle = "CV";
-                        break;
-                      case "HSCV_VANBANDEN":
-                        badgeBackgroundColor = '#5C6BC0';
-                        leftTitle = "VBĐ";
-                        break;
-                      case "QL_LICHHOP":
-                        badgeBackgroundColor = Colors.RANDOM_COLOR_1;
-                        leftTitle = "LH";
-                        break;
-                      case "QL_DANGKY_XE":
-                        badgeBackgroundColor = Colors.RANDOM_COLOR_2;
-                        leftTitle = "DKX";
-                        break;
-                      case "QL_CHUYEN":
-                        badgeBackgroundColor = Colors.DANK_BLUE;
-                        leftTitle = "CX";
-                        break;
-                    }
-
-                    let noidungArchor = item.NOIDUNG.indexOf("đã"),
-                      noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
-                      noidungMessage = item.NOIDUNG.slice(noidungArchor);
-
-                    let checkReadFont = item.IS_READ ? 'normal' : 'bold',
-                      checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
-
-                    if (index % 2 !== 0) {
-                      thisBGColor = Colors.LIGHT_GRAY_PASTEL;
-                    }
-                    return (
-                      <ListItem
-                        key={index.toString()}
-                        containerStyle={{ backgroundColor: thisBGColor, borderBottomColor: "#ccc" }}
-                        leftIcon={
-                          <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
-                            <Text style={ListNotificationStyle.leftTitleText}>
-                              {
-                                // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
-                                leftTitle
-                              }
-                            </Text>
-                          </View>
-                        }
-                        hideChevron={true}
-                        title={
-                          <Text style={[ListNotificationStyle.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
-                            <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</Text> {noidungMessage}
-                          </Text>
-                        }
-                        titleStyle={ListNotificationStyle.title}
-                        titleContainerStyle={{
-                          marginHorizontal: '3%',
-                        }}
-                        titleNumberOfLines={3}
-                        rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
-                        rightTitleNumberOfLines={2}
-                        rightTitleStyle={{
-                          textAlign: 'center',
-                          color: Colors.DARK_GRAY,
-                          fontSize: moderateScale(12, 0.9),
-                          fontStyle: 'italic',
-                          fontWeight: checkReadFont,
-                        }}
-                        rightTitleContainerStyle={{
-                          flex: 0
-                        }}
-                        // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
-                        onPress={() => this.onPressNotificationItem(item)}
-                      />
-                    );
-                  })
-                  : emptyDataPage()
-              }
-              {
-                this.state.birthdayData !== null && <ListItem
-                  containerStyle={{ backgroundColor: "#ffccd7", borderBottomColor: "#ccc" }}
-                  leftIcon={
-                    <Icon name="gift" type="font-awesome" color={"#ff460f"} size={moderateScale(45)} />
-                    // <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: "#ff460f" }]}>
-                    //   <Text style={ListNotificationStyle.leftTitleText}>SN</Text>
-                    // </View>
-                  }
-                  hideChevron={true}
-                  title={
-                    <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
-                      <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{this.state.birthdayData.title}</Text>
-                    </Text>
-                  }
-                  titleStyle={ListNotificationStyle.title}
-                  titleContainerStyle={{
-                    marginHorizontal: '3%',
-                  }}
-                  subtitle={
-                    <Text style={{ color: Colors.BLACK }}>{this.state.birthdayData.body}</Text>
-                  }
-                  subtitleContainerStyle={{
-                    marginHorizontal: '3%'
-                  }}
-                  titleNumberOfLines={3}
+            <View style={SideBarStyle.shortcutBoxContainer}>
+              <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDenIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+                <SideBarIcon
+                  actionCode={VANBANDEN._CHUAXULY.NAME}
+                  customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                  isHotPick
+                  notifyCount={notifyCount_VBDen_Chuaxuly}
                 />
-              }
+                <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đến</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setCurrentFocus("VanBanDiIsNotProcessScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+                <SideBarIcon
+                  actionCode={VANBANDI._CHUAXULY.NAME}
+                  customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                  isHotPick
+                  notifyCount={notifyCount_VBDi_Chuaxuly}
+                />
+                <Text style={SideBarStyle.shortcutBoxTextStyle}>Văn bản đi</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.setCurrentFocus("ListPersonalTaskScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+                <SideBarIcon
+                  actionCode={CONGVIEC._CANHAN.NAME}
+                  customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                  isHotPick
+                  notifyCount={notifyCount_CV_Canhan}
+                />
+                <Text style={SideBarStyle.shortcutBoxTextStyle}>Công việc</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("ExtendKeyFunctionScreen")} style={[SideBarStyle.shortcutBoxStyle]}>
+                <SideBarIcon
+                  actionCode={LICHCONGTAC_LANHDAO._DANHSACH.NAME}
+                  customIconContainerStyle={SideBarStyle.customIconContainerStyle}
+                  isHotPick
+                  notifyCount={maxExtendKeyFunctionNotiCount}
+                />
+                <Text style={SideBarStyle.shortcutBoxTextStyle}>Tiện ích</Text>
+              </TouchableOpacity>
             </View>
+          </View>
 
-            <View style={{ marginTop: moderateScale(10, 1.2), backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
-              <CalendarStrip
-                // locale={{name: "vi"}}
-                calendarAnimation={{ type: 'sequence', duration: 30 }}
-                // daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
-                style={{ height: 100, paddingTop: 20, paddingBottom: 10, borderBottomColor: '#ccc', borderBottomWidth: 0.7 }}
-                calendarHeaderStyle={{ color: '#2F2F2F', fontSize: moderateScale(12, 1.01) }}
-                calendarColor={Colors.WHITE}
-                dateNumberStyle={{ color: Colors.BLACK, fontSize: moderateScale(14, 1.2) }}
-                dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
-                highlightDateNumberStyle={{ color: '#c21421', fontSize: moderateScale(14, 1.2) }}
-                highlightDateNameStyle={{ color: '#c21421', fontSize: moderateScale(13, 1.1) }}
-                // disabledDateNameStyle={{ color: 'grey' }}
-                // disabledDateNumberStyle={{ color: 'grey' }}
-                // datesWhitelist={datesWhitelist}
-                // datesBlacklist={datesBlacklist}
-                // iconLeft={require('./img/left-arrow.png')}
-                // iconRight={require('./img/right-arrow.png')}
-                iconContainer={{ flex: 0.1 }}
-                // showDayNumber={false}
-                onDateSelected={(date) => this.fetchCalendarData(date)}
-                shouldAllowFontScaling={false}
-              />
-              {
-                this.state.calendarData.length > 0
-                  ? this.state.calendarData.map((item, index) => {
-                    const {
-                      ID, NOIDUNG, TEN_NGUOI_CHUTRI, TEN_VAITRO_CHUTRI, TEN_PHONGBAN_CHUTRI,
-                      GIO_CONGTAC, PHUT_CONGTAC, DIADIEM
-                    } = item;
-                    let ChutriString = "", ChutriArr = [],
-                      ThoigianDiadiemString = `${_readableFormat(GIO_CONGTAC)}h${_readableFormat(PHUT_CONGTAC)}${DIADIEM ? ` - ${DIADIEM}` : ""}`;
-                    if (TEN_NGUOI_CHUTRI) {
-                      ChutriArr.push(TEN_NGUOI_CHUTRI.split(" - ").reverse().join(" "));
-                    }
-                    if (TEN_VAITRO_CHUTRI) {
-                      ChutriArr.push(TEN_VAITRO_CHUTRI);
-                    }
-                    if (TEN_PHONGBAN_CHUTRI) {
-                      ChutriArr.push(TEN_PHONGBAN_CHUTRI);
-                    }
-                    if (ChutriArr.length > 0) {
-                      ChutriString = ChutriArr.join(", ");
-                    }
+          <View style={[SideBarStyle.body, { paddingBottom: moderateScale(12, 1.2) }]}>
+            <ScrollView
+              contentContainerStyle={{ paddingTop: moderateScale(12, 1.2) }}
+            >
+              <View style={{ backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                  <View style={{ backgroundColor: Colors.NOT_READ, padding: 10, borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: 15 }}>
+                    <Text style={{ textAlign: "center", color: Colors.WHITE, fontWeight: "bold", fontSize: moderateScale(12, 1.16) }}>Thông báo</Text>
+                  </View>
+                </View>
+                {
+                  this.state.dataUyQuyen.length > 0
+                    ? this.state.dataUyQuyen.map((item, index) => {
+                      return (
+                        <ListItem
+                          key={index.toString()}
+                          containerStyle={{ backgroundColor: "#EBDEF0", borderBottomColor: "#ccc" }}
+                          leftIcon={
+                            <View style={{ marginRight: 10 }}>
+                              <Icon name="transition-masked" type="material-community" color={"#8E44AD"} size={moderateScale(45)} />
+                            </View>
+                          }
+                          hideChevron={true}
+                          title={
+                            <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                              <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} `}</Text><Text style={{ color: "#8E44AD" }}>{`${item.TIEUDE}`}</Text>
+                            </Text>
+                          }
+                          titleStyle={ListNotificationStyle.title}
+                          titleContainerStyle={{
+                            marginHorizontal: '3%',
+                          }}
+                          rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                          rightTitleNumberOfLines={2}
+                          rightTitleStyle={{
+                            textAlign: 'center',
+                            color: Colors.DARK_GRAY,
+                            fontSize: moderateScale(12, 0.9),
+                            fontStyle: 'italic',
+                          }}
+                          rightTitleContainerStyle={{
+                            flex: 0
+                          }}
+                          // subtitle={
+                          //   <Text style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</Text>
+                          // }
+                          // subtitleContainerStyle={{
+                          //   marginHorizontal: '3%'
+                          // }}
+                          titleNumberOfLines={3}
+                          onPress={() => this.props.navigation.navigate("DetailNotiUyQuyenScreen", { id: item.ID })}
+                        />
+                      );
+                    })
+                    : null
+                }
+                {
+                  this.state.notiData.length > 0
+                    ? this.state.notiData.map((item, index) => {
+                      let thisBGColor = Colors.WHITE;
+                      let itemType = item.URL.split('/')[2],
+                        badgeBackgroundColor = Colors.GRAY,
+                        leftTitle = "CV";
+                      //TODO: Replace itemType with userRole (shortname)
+                      switch (itemType) {
+                        case "HSVanBanDi":
+                          badgeBackgroundColor = '#4FC3F7';
+                          leftTitle = "VBTK"
+                          break;
+                        case "QuanLyCongViec":
+                          badgeBackgroundColor = '#4DB6AC';
+                          leftTitle = "CV";
+                          break;
+                        case "HSCV_VANBANDEN":
+                          badgeBackgroundColor = '#5C6BC0';
+                          leftTitle = "VBĐ";
+                          break;
+                        case "QL_LICHHOP":
+                          badgeBackgroundColor = Colors.RANDOM_COLOR_1;
+                          leftTitle = "LH";
+                          break;
+                        case "QL_DANGKY_XE":
+                          badgeBackgroundColor = Colors.RANDOM_COLOR_2;
+                          leftTitle = "DKX";
+                          break;
+                        case "QL_CHUYEN":
+                          badgeBackgroundColor = Colors.DANK_BLUE;
+                          leftTitle = "CX";
+                          break;
+                      }
 
-                    return (
-                      <ListItem
-                        key={index.toString()}
-                        containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
-                        hideChevron
-                        title={
-                          <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
-                            {ThoigianDiadiemString} / Chủ trì: {ChutriString}
-                          </Text>
-                        }
-                        subtitle={
-                          <Text style={[ListNotificationStyle.title, { marginTop: 8 }]}>
-                            <Text>{NOIDUNG}</Text>
-                          </Text>
-                        }
-                        onPress={() => this.onPressCalendar(ID)}
-                      />
-                    );
-                  })
-                  : emptyDataPage()
-              }
-              {
-                this.state.calendarLoading && <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              }
-            </View>
-          </ScrollView>
+                      let noidungArchor = item.NOIDUNG.indexOf("đã"),
+                        noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
+                        noidungMessage = item.NOIDUNG.slice(noidungArchor);
+
+                      let checkReadFont = item.IS_READ ? 'normal' : 'bold',
+                        checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
+
+                      if (index % 2 !== 0) {
+                        thisBGColor = Colors.LIGHT_GRAY_PASTEL;
+                      }
+                      return (
+                        <ListItem
+                          key={index.toString()}
+                          containerStyle={{ backgroundColor: thisBGColor, borderBottomColor: "#ccc" }}
+                          leftIcon={
+                            <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
+                              <Text style={ListNotificationStyle.leftTitleText}>
+                                {
+                                  // item.NOTIFY_ITEM_TYPE == THONGBAO_CONSTANT.CONGVIEC ? "CV" : "VB"
+                                  leftTitle
+                                }
+                              </Text>
+                            </View>
+                          }
+                          hideChevron={true}
+                          title={
+                            <Text style={[ListNotificationStyle.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
+                              <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</Text> {noidungMessage}
+                            </Text>
+                          }
+                          titleStyle={ListNotificationStyle.title}
+                          titleContainerStyle={{
+                            marginHorizontal: '3%',
+                          }}
+                          titleNumberOfLines={3}
+                          rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
+                          rightTitleNumberOfLines={2}
+                          rightTitleStyle={{
+                            textAlign: 'center',
+                            color: Colors.DARK_GRAY,
+                            fontSize: moderateScale(12, 0.9),
+                            fontStyle: 'italic',
+                            fontWeight: checkReadFont,
+                          }}
+                          rightTitleContainerStyle={{
+                            flex: 0
+                          }}
+                          // subtitle={convertDateTimeToTitle(item.NGAYTAO)}
+                          onPress={() => this.onPressNotificationItem(item)}
+                        />
+                      );
+                    })
+                    : emptyDataPage()
+                }
+                {
+                  this.state.birthdayData !== null && <ListItem
+                    containerStyle={{ backgroundColor: "#ffccd7", borderBottomColor: "#ccc" }}
+                    leftIcon={
+                      <View style={{ marginRight: 10 }}>
+                        <Icon name="gift" type="font-awesome" color={"#ff460f"} size={moderateScale(45)} />
+                      </View>
+                    }
+                    hideChevron={true}
+                    title={
+                      <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                        <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{this.state.birthdayData.title}</Text>
+                      </Text>
+                    }
+                    titleStyle={ListNotificationStyle.title}
+                    titleContainerStyle={{
+                      marginHorizontal: '3%',
+                    }}
+                    subtitle={
+                      <Text style={{ color: Colors.BLACK }}>{this.state.birthdayData.body}</Text>
+                    }
+                    subtitleContainerStyle={{
+                      marginHorizontal: '3%'
+                    }}
+                    titleNumberOfLines={3}
+                  />
+                }
+              </View>
+
+              <View style={{ marginTop: moderateScale(10, 1.2), backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
+                <CalendarStrip
+                  // locale={{name: "vi"}}
+                  calendarAnimation={{ type: 'sequence', duration: 30 }}
+                  // daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
+                  style={{ height: 100, paddingTop: 20, paddingBottom: 10, borderBottomColor: '#ccc', borderBottomWidth: 0.7 }}
+                  calendarHeaderStyle={{ color: '#2F2F2F', fontSize: moderateScale(12, 1.01) }}
+                  calendarColor={Colors.WHITE}
+                  dateNumberStyle={{ color: Colors.BLACK, fontSize: moderateScale(14, 1.2) }}
+                  dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
+                  highlightDateNumberStyle={{ color: '#c21421', fontSize: moderateScale(14, 1.2) }}
+                  highlightDateNameStyle={{ color: '#c21421', fontSize: moderateScale(13, 1.1) }}
+                  // disabledDateNameStyle={{ color: 'grey' }}
+                  // disabledDateNumberStyle={{ color: 'grey' }}
+                  // datesWhitelist={datesWhitelist}
+                  // datesBlacklist={datesBlacklist}
+                  // iconLeft={require('./img/left-arrow.png')}
+                  // iconRight={require('./img/right-arrow.png')}
+                  iconContainer={{ flex: 0.1 }}
+                  // showDayNumber={false}
+                  onDateSelected={(date) => this.fetchCalendarData(date)}
+                  shouldAllowFontScaling={false}
+                />
+                {
+                  this.state.calendarData.length > 0
+                    ? this.state.calendarData.map((item, index) => {
+                      const {
+                        ID, NOIDUNG, TEN_NGUOI_CHUTRI, TEN_VAITRO_CHUTRI, TEN_PHONGBAN_CHUTRI,
+                        GIO_CONGTAC, PHUT_CONGTAC, DIADIEM
+                      } = item;
+                      let ChutriString = "", ChutriArr = [],
+                        ThoigianDiadiemString = `${_readableFormat(GIO_CONGTAC)}h${_readableFormat(PHUT_CONGTAC)}${DIADIEM ? ` - ${DIADIEM}` : ""}`;
+                      if (TEN_NGUOI_CHUTRI) {
+                        ChutriArr.push(TEN_NGUOI_CHUTRI.split(" - ").reverse().join(" "));
+                      }
+                      if (TEN_VAITRO_CHUTRI) {
+                        ChutriArr.push(TEN_VAITRO_CHUTRI);
+                      }
+                      if (TEN_PHONGBAN_CHUTRI) {
+                        ChutriArr.push(TEN_PHONGBAN_CHUTRI);
+                      }
+                      if (ChutriArr.length > 0) {
+                        ChutriString = ChutriArr.join(", ");
+                      }
+
+                      return (
+                        <ListItem
+                          key={index.toString()}
+                          containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
+                          hideChevron
+                          title={
+                            <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                              {ThoigianDiadiemString} / Chủ trì: {ChutriString}
+                            </Text>
+                          }
+                          subtitle={
+                            <Text style={[ListNotificationStyle.title, { marginTop: 8 }]}>
+                              <Text>{NOIDUNG}</Text>
+                            </Text>
+                          }
+                          onPress={() => this.onPressCalendar(ID)}
+                        />
+                      );
+                    })
+                    : emptyDataPage()
+                }
+                {
+                  this.state.calendarLoading && <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                }
+              </View>
+            </ScrollView>
+          </View>
+
+          <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
         </View>
-
-        <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
-      </View>
+      </MenuProvider>
     );
   }
 }
