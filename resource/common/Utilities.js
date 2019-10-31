@@ -402,3 +402,17 @@ export function pickerFormat() {
 export function convertStringToDate(dateString) {
     return dateString.split("/").reverse().join("-");
 }
+/**
+ * Kiểm tra xem object truyền vào có phải Mảng (Array) không
+ * @param {any} needCheckObj object cần kiểm tra
+ */
+export function isArray(needCheckObj){
+    return !!needCheckObj && needCheckObj.constructor === Array;
+}
+/**
+ * Kiểm tra xem object truyền vào có phải Đối tượng (Object) không
+ * @param {any} needCheckObj object cần kiểm tra
+ */
+export function isObject(needCheckObj){
+    return !!needCheckObj && needCheckObj.constructor === Object;
+}
