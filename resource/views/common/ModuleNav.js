@@ -114,6 +114,7 @@ import DetailChatter from '../modules/Chat/DetailChatter';
 //màn hình thông báo
 import ListNotification from '../modules/Notification/ListNotification';
 import CreateNotiUyQuyen from '../modules/Notification/CreateNotiUyQuyen';
+import DetailNotiUyQuyen from '../modules/Notification/DetailNotiUyQuyen';
 
 //#region tính năng chuyên biệt (không biết xếp vào đâu)
 import ListReminder from '../modules/Miscs/ListReminder';
@@ -351,7 +352,17 @@ const baseStack = {
 
   CreateNotiUyQuyenScreen: {
     screen: CreateNotiUyQuyen
-  }
+  }, DetailNotiUyQuyenScreen: {
+    screen: DetailNotiUyQuyen
+  },
+
+  AccountInfoScreen: {
+    screen: AccountInfo
+  }, AccountEditorScreen: {
+    screen: AccountEditor
+  }, AccountChangePasswordScreen: {
+    screen: AccountChangePassword
+  },
 };
 
 const notificationStack = StackNavigator(

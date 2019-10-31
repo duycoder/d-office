@@ -27,9 +27,9 @@ const appStack = TabNavigator(
         Notification: {
             screen: notificationStack
         },
-        Account: {
-            screen: accountStack
-        },
+        // Account: {
+        //     screen: accountStack
+        // },
         KeyFunction: {
             screen: keyFunctionStack
         }
@@ -48,10 +48,10 @@ const appStack = TabNavigator(
                         // iconName = `bell${focused ? '' : '-outline'}`;
                         iconName = "bell";
                         break;
-                    case 'Account':
-                        // iconName = `shield-account${focused ? '' : '-outline'}`;
-                        iconName = "shield-account";
-                        break;
+                    // case 'Account':
+                    //     // iconName = `shield-account${focused ? '' : '-outline'}`;
+                    //     iconName = "shield-account";
+                    //     break;
                     case 'KeyFunction':
                         iconName = 'menu';
                         break;
@@ -72,7 +72,7 @@ const appStack = TabNavigator(
                 switch (routeName) {
                     case 'Dashboard': routeLabel = "MH Chính"; break;
                     case 'Notification': routeLabel = "Thông báo"; break;
-                    case 'Account': routeLabel = "Tài khoản"; break;
+                    // case 'Account': routeLabel = "Tài khoản"; break;
                     case 'KeyFunction': routeLabel = "Chức năng"; break;
                 }
                 return focused

@@ -48,6 +48,7 @@ const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
 const userAvatar = require('../../../assets/images/avatar.png');
 
 import Images from '../../../common/Images';
+import GoBackButton from '../../common/GoBackButton';
 
 class AccountInfo extends Component {
   constructor(props) {
@@ -113,7 +114,8 @@ class AccountInfo extends Component {
   }
 
   componentDidMount = () => {
-    this.willFocusListener = this.props.navigation.addListener('didFocus', () => {
+    const navObj = this.props.navigation || this.props.navigator;
+    this.willFocusListener = navObj.addListener('didFocus', () => {
       // StatusBar.setBarStyle('light-content');
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
@@ -136,6 +138,11 @@ class AccountInfo extends Component {
     this.refs.confirm.showModal();
   }
 
+  navigateBack = () => {
+    const navObj = this.props.navigation || this.props.navigator;
+    navObj.goBack();
+  }
+
   render() {
     const {
       fullName, email, dateOfBirth, mobilePhone, address,
@@ -149,6 +156,7 @@ class AccountInfo extends Component {
         <StatusBar barStyle="light-content" />
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
+            <GoBackButton onPress={() => this.navigateBack()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>
