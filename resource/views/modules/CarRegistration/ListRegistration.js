@@ -24,7 +24,7 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -284,6 +284,21 @@ class ListRegistration extends Component {
                   <View style={ItemProportion.rightPart}>
                     <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                       {item.NGUOIDANGKY}
+                    </RnText>
+                  </View>
+                </View>
+              }
+
+              {
+                !!item.TEN_NGUOITAO_TRIP && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <View style={ItemProportion.leftPart}>
+                    <RnText style={{ color: Colors.VERY_DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                      Duyệt bởi:
+                    </RnText>
+                  </View>
+                  <View style={ItemProportion.rightPart}>
+                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                      {`${item.TEN_NGUOITAO_TRIP} (${convertDateToString(item.NGAYTAO_TRIP)})`}
                     </RnText>
                   </View>
                 </View>
