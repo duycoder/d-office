@@ -31,7 +31,7 @@ class DetailEvent extends Component {
     super(props);
 
     this.state = {
-      id: this.props.navigation.state.params.id,
+      id: this.props.navigation.state.params.id || props.extendsNavParams.listIds.pop(),
       data: {},
       loading: false,
     }
