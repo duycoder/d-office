@@ -83,6 +83,7 @@ class Dashboard extends Component {
       birthdayData: null,
       dataUyQuyen: [],
       dataHotline: [],
+      listIds: props.extendsNavParams.listIds || [],
     }
   }
 
@@ -401,63 +402,68 @@ class Dashboard extends Component {
           <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0, height: 120, paddingTop: 35 }}>
             <Left style={{ flex: 5, paddingLeft: 20, alignSelf: "flex-start" }}>
               {
-                // <Menu>
-                //   <MenuTrigger children={
-                //     <View style={{ flexDirection: "row", alignItems: "center" }}>
-                //       <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
-                //       <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
-                //     </View>
-                //   } />
-                //   <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
-                //     <MenuOption
-                //       onSelect={() => Linking.openURL(`tel:0909090`)}
-                //       text={"Cấp cứu - 0983250571"}
-                //       customStyles={HeaderMenuStyle.optionStyles}
-                //     />
-                //     <MenuOption
-                //       onSelect={() => Linking.openURL(`tel:0909090`)}
-                //       text={"Cấp cứu - 0983250571"}
-                //       customStyles={HeaderMenuStyle.optionStyles}
-                //     />
-                //   </MenuOptions>
-                // </Menu>
-              }
-              {
-                (isArray(dataHotline) && dataHotline.length > 0)
-                  ? <Menu>
-                    <MenuTrigger children={
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
-                        <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
-                      </View>
-                    } />
-                    <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
-                      {
-                        dataHotline.map(item => {
-                          return (
-                            <MenuOption
-                              onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
-                              text={item.TEXT}
-                              customStyles={HeaderMenuStyle.optionStyles}
-                            />
-                          );
-                        })
-                      }
-                    </MenuOptions>
-                  </Menu>
-                  : <Text style={{ color: Colors.WHITE }}>
-                    <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
-                  </Text>
+                // (isArray(dataHotline) && dataHotline.length > 0)
+                //   ? <Menu>
+                //     <MenuTrigger children={
+                //       <View style={{ flexDirection: "row", alignItems: "center" }}>
+                //         <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
+                //         <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
+                //       </View>
+                //     } />
+                //     <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                //       {
+                //         dataHotline.map(item => {
+                //           return (
+                //             <MenuOption
+                //               onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
+                //               text={item.TEXT}
+                //               customStyles={HeaderMenuStyle.optionStyles}
+                //             />
+                //           );
+                //         })
+                //       }
+                //     </MenuOptions>
+                //   </Menu>
+                //   : <Text style={{ color: Colors.WHITE }}>
+                //     <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
+                //   </Text>
+                <Text style={{ color: Colors.WHITE }}>
+                  <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
+                </Text>
               }
             </Left>
             <Body />
-            <Right style={{ flex: 1, alignSelf: "flex-start" }}>
-              <TouchableOpacity onPress={() => this.setCurrentFocus("AccountInfoScreen")} style={{ marginRight: 20 }}>
-                <Icon name="shield-account" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-                <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-              </TouchableOpacity>
+            <Right style={{ flex: 2, alignSelf: "flex-start" }}>
+              {
+                (isArray(dataHotline) && dataHotline.length > 0) && <Menu>
+                  <MenuTrigger children={
+                    <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+                      <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Hotline </Text>
+                      <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
+                    </View>
+                  } />
+                  <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                    {
+                      dataHotline.map((item, index) => {
+                        return (
+                          <MenuOption
+                            key={index.toString()}
+                            onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
+                            text={item.TEXT}
+                            customStyles={HeaderMenuStyle.optionStyles}
+                          />
+                        );
+                      })
+                    }
+                  </MenuOptions>
+                </Menu>
+                // <TouchableOpacity onPress={() => this.setCurrentFocus("AccountInfoScreen")} style={{ marginRight: 20 }}>
+                //   <Icon name="shield-account" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+                // </TouchableOpacity>
+                // <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
+                //   <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+                // </TouchableOpacity>
+              }
             </Right>
           </Header>
 
@@ -723,13 +729,15 @@ class Dashboard extends Component {
                         ChutriString = ChutriArr.join(", ");
                       }
 
+                      let isNotiAlertTextColor = this.state.listIds.some(x => x == item.ID) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+
                       return (
                         <ListItem
                           key={index.toString()}
                           containerStyle={{ backgroundColor: Colors.WHITE, borderBottomColor: "#ccc", padding: moderateScale(8, 1.5) }}
                           hideChevron
                           title={
-                            <Text style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
+                            <Text style={[ListNotificationStyle.title, { fontWeight: "bold", color: isNotiAlertTextColor }]}>
                               {ThoigianDiadiemString} / Chủ trì: {ChutriString}
                             </Text>
                           }
@@ -760,7 +768,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    coreNavParams: state.navState.coreNavParams
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams
   }
 }
 

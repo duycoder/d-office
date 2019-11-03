@@ -156,7 +156,9 @@ class AccountInfo extends Component {
         <StatusBar barStyle="light-content" />
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBack()} />
+            {
+              // <GoBackButton onPress={() => this.navigateBack()} />
+            }
           </Left>
 
           <Body style={NativeBaseStyle.body}>

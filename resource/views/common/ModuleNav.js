@@ -356,13 +356,13 @@ const baseStack = {
     screen: DetailNotiUyQuyen
   },
 
-  AccountInfoScreen: {
-    screen: AccountInfo
-  }, AccountEditorScreen: {
-    screen: AccountEditor
-  }, AccountChangePasswordScreen: {
-    screen: AccountChangePassword
-  },
+  // AccountInfoScreen: {
+  //   screen: AccountInfo
+  // }, AccountEditorScreen: {
+  //   screen: AccountEditor
+  // }, AccountChangePasswordScreen: {
+  //   screen: AccountChangePassword
+  // },
 };
 
 const notificationStack = StackNavigator(
