@@ -241,6 +241,13 @@ class AccountInfo extends Component {
               >
                 <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>ĐỔI MẬT KHẨU</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.onLogOut()}
+                style={[LoginStyle.formButtonLogin, AccountStyle.submitButton, { backgroundColor: '#ec391e' }]}
+              >
+                <Text style={[LoginStyle.formButtonText, AccountStyle.submitButtonText]}>ĐĂNG XUẤT</Text>
+              </TouchableOpacity>
             </View>
 
           </Content>
