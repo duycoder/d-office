@@ -68,7 +68,7 @@ class DetailTask extends Component {
 
             fromBrief: this.props.coreNavParams.fromBrief || false,
             check: false,
-            from: this.props.extendsNavParams.from || EMPTY_STRING
+            from: this.props.coreNavParams.from || EMPTY_STRING
         };
         this.onNavigate = this.onNavigate.bind(this);
     }
@@ -189,13 +189,16 @@ class DetailTask extends Component {
 
     navigateBackToList = () => {
         if (this.state.from === "createTask") {
-            this.props.updateExtendsNavParams({ check: this.state.check });
+            this.props.updateExtendsNavParams({ check: true });
             this.props.navigation.pop(2);
         }
-        if (this.state.taskInfo.hasOwnProperty("CongViec")) {
+        else if (this.state.taskInfo.hasOwnProperty("CongViec")) {
             this.props.updateExtendsNavParams({ check: this.state.check });
+            this.props.navigation.goBack();
         }
-        this.props.navigation.goBack();
+        else {
+            this.props.navigation.goBack();
+        }
     }
 
     //mở cuộc hội thoại

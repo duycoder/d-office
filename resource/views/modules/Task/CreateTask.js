@@ -19,7 +19,7 @@ import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
@@ -265,14 +265,6 @@ class CreateTask extends Component {
 
             this.props.updateCoreNavParams(screenParam);
             this.props.navigation.navigate("DetailTaskScreen");
-            // if (fromScreen === "DashboardScreen") {
-            //   // this.props.navigation.navigate("ListPersonalTaskScreen");
-            //   this.navigateBack();
-            // }
-            // else {
-            //   this.props.updateExtendsNavParams({ check: true });
-            //   this.navigateBack();
-            // }
           }
           else {
             this.setState({
