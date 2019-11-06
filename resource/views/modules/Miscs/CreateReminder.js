@@ -259,9 +259,9 @@ class CreateReminder extends Component {
             </Item>
 
             <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-              <Label>Nhắc nhở sau</Label>
+              <Label>Nhắc việc trước</Label>
               <Picker
-                iosHeader='Nhắc nhở sau'
+                iosHeader='Chọn thời gian nhắc việc trước'
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
                 style={{ width: pickerFormat(), justifyContent: 'space-around' }}
