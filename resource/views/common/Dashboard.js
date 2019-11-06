@@ -400,37 +400,10 @@ class Dashboard extends Component {
         <View style={SideBarStyle.container}>
           <StatusBar barStyle="light-content" />
           <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0, height: 120, paddingTop: 35 }}>
-            <Left style={{ flex: 5, paddingLeft: 20, alignSelf: "flex-start" }}>
-              {
-                // (isArray(dataHotline) && dataHotline.length > 0)
-                //   ? <Menu>
-                //     <MenuTrigger children={
-                //       <View style={{ flexDirection: "row", alignItems: "center" }}>
-                //         <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Đường dây nóng </Text>
-                //         <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
-                //       </View>
-                //     } />
-                //     <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
-                //       {
-                //         dataHotline.map(item => {
-                //           return (
-                //             <MenuOption
-                //               onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
-                //               text={item.TEXT}
-                //               customStyles={HeaderMenuStyle.optionStyles}
-                //             />
-                //           );
-                //         })
-                //       }
-                //     </MenuOptions>
-                //   </Menu>
-                //   : <Text style={{ color: Colors.WHITE }}>
-                //     <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
-                //   </Text>
-                <Text style={{ color: Colors.WHITE }}>
-                  <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
-                </Text>
-              }
+            <Left style={{ flex: 6, paddingLeft: 10, alignSelf: "flex-start" }}>
+              <Text style={{ color: Colors.WHITE }}>
+                <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
+              </Text>
             </Left>
             <Body />
             <Right style={{ flex: 2, alignSelf: "flex-start" }}>
@@ -438,8 +411,9 @@ class Dashboard extends Component {
                 (isArray(dataHotline) && dataHotline.length > 0) && <Menu>
                   <MenuTrigger children={
                     <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-                      <Text style={{ fontWeight: "bold", color: Colors.WHITE }}>Hotline </Text>
-                      <Icon name="chevron-down" color={Colors.WHITE} type="material-community" />
+                      <Icon name="phone-in-talk" color={Colors.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
+                      <Text style={{ fontWeight: "bold", color: Colors.WHITE }}> Hotline </Text>
+                      <Icon name="chevron-down" color={Colors.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
                     </View>
                   } />
                   <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
@@ -449,20 +423,19 @@ class Dashboard extends Component {
                           <MenuOption
                             key={index.toString()}
                             onSelect={() => Linking.openURL(`tel:${item.GHICHU}`)}
-                            text={item.TEXT}
                             customStyles={HeaderMenuStyle.optionStyles}
-                          />
+                            style={{ flexDirection: "row" }}
+                          >
+                            <Icon name="phone-in-talk" color={Colors.BLACK} type="material-community" size={moderateScale(12, 1.2)} />
+                            <Text>
+                              {'  ' + item.TEXT}
+                            </Text>
+                          </MenuOption>
                         );
                       })
                     }
                   </MenuOptions>
                 </Menu>
-                // <TouchableOpacity onPress={() => this.setCurrentFocus("AccountInfoScreen")} style={{ marginRight: 20 }}>
-                //   <Icon name="shield-account" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-                // </TouchableOpacity>
-                // <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-                //   <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
-                // </TouchableOpacity>
               }
             </Right>
           </Header>
