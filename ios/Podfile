@@ -15,6 +15,7 @@ target 'EbizOffice' do
     # Pods for testing
     pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
+
   end
 
   target 'EbizOfficeTests' do
