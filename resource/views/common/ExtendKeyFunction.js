@@ -181,30 +181,34 @@ class ExtendKeyFunction extends Component {
                 if (item.MA_CHUCNANG.indexOf("HSCV_TIENICH") < 0) {
                   return null;
                 }
-                return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
-                  {
-                    item.ListThaoTac.map((sItem, sIndex) => {
-                      const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
-                      let elementStyle = SideBarStyle.normalBoxStyle;
-                      if (renderCondition) {
-                        return <TouchableOpacity
-                          style={elementStyle}
-                          key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
-                        >
-                          <SideBarIcon
-                            actionCode={sItem.MA_THAOTAC}
-                            notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
-                          />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
-                        </TouchableOpacity>;
-                      }
-                      else {
-                        return null;
-                      }
-                    })
-                  }
-                </GridPanel>
+                return (
+                  <GridPanel
+                    key={item.DM_CHUCNANG_ID.toString()}
+                    title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
+                  >
+                    {
+                      item.ListThaoTac.map((sItem, sIndex) => {
+                        const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
+                        if (renderCondition) {
+                          return <TouchableOpacity
+                            style={SideBarStyle.normalBoxStyle}
+                            key={sItem.DM_THAOTAC_ID.toString()}
+                            onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
+                          >
+                            <SideBarIcon
+                              actionCode={sItem.MA_THAOTAC}
+                              notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
+                            />
+                            <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
+                          </TouchableOpacity>;
+                        }
+                        else {
+                          return null;
+                        }
+                      })
+                    }
+                  </GridPanel>
+                );
               })
             }
           </ScrollView>
