@@ -47,6 +47,9 @@ import { MenuProvider, MenuOption, MenuOptions, MenuTrigger, Menu } from 'react-
 import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import { getFileExtensionLogo } from '../../../common/Effect';
 import AlertMessage from '../../common/AlertMessage';
+import { lichtrucApi } from '../../../common/Api';
+
+const api = lichtrucApi();
 
 class ListLichtruc extends Component {
   constructor(props) {
@@ -103,25 +106,14 @@ class ListLichtruc extends Component {
     const {
       pageIndex, pageSize, userId, type, filterValue
     } = this.state;
-    const url = `${API_URL}/api/Lichtruc/ListLichtruc/`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+
+    const resultJson = await api.getLichtruc({
       pageSize,
       pageIndex,
       userId,
       type,
       query: filterValue
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-    const resultJson = await result.json();
 
     this.setState({
       //DONE: Filter out duongdanFile if null
@@ -244,7 +236,7 @@ class ListLichtruc extends Component {
   }
 
   renderItem = ({ item, index }) => {
-    const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;    
+    const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
     return (
       <View>
