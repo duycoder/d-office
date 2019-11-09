@@ -18,6 +18,7 @@ import { Colors, API_URL } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { InfoStyle } from '../../../assets/styles';
+import AttachmentItem from '../../common/AttachmentItem';
 
 export default class MainInfoSignDoc extends Component {
     constructor(props) {
@@ -113,50 +114,7 @@ export default class MainInfoSignDoc extends Component {
                             this.state.docInfo && relateDoc
                         }
 
-                        {
-                            this.state.ListTaiLieu && this.state.ListTaiLieu.length > 0
-                                ? <ListItem style={InfoStyle.listItemContainer}
-                                    hideChevron={true}
-                                    title={
-                                        <Text style={InfoStyle.listItemTitleContainer}>
-                                            Đính kèm
-                                        </Text>
-                                    }
-                                    subtitle={
-                                        <View>
-                                            {
-                                                this.state.ListTaiLieu.map((item, index) => {
-                                                    let regExtension = extention(item.DUONGDAN_FILE);
-                                                    let extension = regExtension ? regExtension[0] : "";
-                                                    return <ListItem
-                                                        key={index.toString()}
-                                                        leftIcon={getFileExtensionLogo(extension)}
-                                                        title={item.TENTAILIEU}
-                                                        titleStyle={{
-                                                            marginLeft: 10,
-                                                            color: '#707070',
-                                                            fontWeight: 'bold'
-                                                        }}
-                                                        subtitle={
-                                                            getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
-                                                        }
-                                                        subtitleStyle={{
-                                                            fontWeight: 'normal',
-                                                            color: '#707070',
-                                                            marginLeft: 10,
-                                                        }}
-                                                        rightIcon={
-                                                            <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                                                        }
-                                                        containerStyle={{ borderBottomWidth: 0 }}
-                                                        onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
-                                                    />
-                                                })
-                                            }
-                                        </View>
-                                    } />
-                                : null
-                        }
+                        <AttachmentItem data={this.state.ListTaiLieu} />
 
                         <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
