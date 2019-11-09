@@ -32,7 +32,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 import Panel from './Panel';
 import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL, generateTitle } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -211,86 +211,6 @@ class KeyFunction extends Component {
     return 0;
   }
 
-  generateTitle(maThaotac) {
-    let tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
-    switch (maThaotac) {
-      case VANBANDEN._CHUAXULY.NAME:
-        tenThaotac = VANBANDEN._CHUAXULY.MOBILENAME;
-        break;
-      case VANBANDEN._DAXULY.NAME:
-        tenThaotac = VANBANDEN._DAXULY.MOBILENAME;
-        break;
-      case VANBANDEN._NOIBO_CHUAXULY.NAME:
-        tenThaotac = VANBANDEN._NOIBO_CHUAXULY.MOBILENAME;
-        break;
-      case VANBANDEN._NOIBO_DAXULY.NAME:
-        tenThaotac = VANBANDEN._NOIBO_DAXULY.MOBILENAME;
-        break;
-      case VANBANDEN._THAMGIA_XULY.NAME:
-        tenThaotac = VANBANDEN._THAMGIA_XULY.MOBILENAME;
-        break;
-
-      case VANBANDI._CHUAXULY.NAME:
-        tenThaotac = VANBANDI._CHUAXULY.MOBILENAME;
-        break;
-      case VANBANDI._DAXULY.NAME:
-        tenThaotac = VANBANDI._DAXULY.MOBILENAME;
-        break;
-      case VANBANDI._DA_BANHANH.NAME:
-        tenThaotac = VANBANDI._DA_BANHANH.MOBILENAME;
-        break;
-      case VANBANDI._THAMGIA_XULY.NAME:
-        tenThaotac = VANBANDI._THAMGIA_XULY.MOBILENAME;
-        break;
-
-      case CONGVIEC._CANHAN.NAME:
-        tenThaotac = CONGVIEC._CANHAN.MOBILENAME;
-        break;
-      case CONGVIEC._DUOCGIAO.NAME:
-        tenThaotac = CONGVIEC._DUOCGIAO.MOBILENAME;
-        break;
-      case CONGVIEC._PHOIHOPXULY.NAME:
-        tenThaotac = CONGVIEC._PHOIHOPXULY.MOBILENAME;
-        break;
-      case CONGVIEC._PROCESSED_JOB.NAME:
-        tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
-        break;
-
-      case TIENICH._DS_YEUCAU_XE.NAME:
-        tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
-        break;
-      case TIENICH._DS_CHUYEN.NAME:
-        tenThaotac = TIENICH._DS_CHUYEN.MOBILENAME;
-        break;
-      case TIENICH._DS_LICHHOP.NAME:
-        tenThaotac = TIENICH._DS_LICHHOP.MOBILENAME;
-        break;
-      case TIENICH._DS_UYQUYEN.NAME:
-        tenThaotac = TIENICH._DS_UYQUYEN.MOBILENAME;
-        break;
-      case TIENICH._DS_LICHTRUC.NAME:
-        tenThaotac = TIENICH._DS_LICHTRUC.MOBILENAME;
-        break;
-      case TIENICH._DS_NHACNHO.NAME:
-        tenThaotac = TIENICH._DS_NHACNHO.MOBILENAME;
-        break;
-      case TIENICH._KHAC.NAME:
-        tenThaotac = TIENICH._KHAC.MOBILENAME;
-        break;
-      // case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
-      //   tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
-      //   break;
-
-      // case QUANLY_UYQUYEN._DANHSACH.NAME:
-      //   tenThaotac = QUANLY_UYQUYEN._DANHSACH.MOBILENAME;
-      //   break;
-
-      default:
-        break;
-    }
-    return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
-  }
-
   render() {
     const { notifyCount, userFunctions, onFocusNow } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
@@ -357,7 +277,7 @@ class KeyFunction extends Component {
                             notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
                           // customIconContainerStyle={{ flex: 1, marginBottom: '10%' }}
                           />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                       }
                       else {
