@@ -32,7 +32,8 @@ export default StyleSheet.create({
     height: verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5
+    padding: 5,
+    paddingHorizontal: 10
   }, contentText: {
     color: '#000',
     fontSize: moderateScale(14, 1.2),
@@ -54,5 +55,8 @@ export default StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  }, customFooterText: {
+    fontWeight: 'bold',
+    color: Colors.LITE_BLUE
   }
 })
