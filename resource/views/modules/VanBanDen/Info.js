@@ -18,6 +18,7 @@ import { convertDateToString, _readableFormat, appStoreDataAndNavigate, extentio
 import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { InfoStyle } from '../../../assets/styles';
 
 class MainInfoPublishDoc extends Component {
 
@@ -103,20 +104,20 @@ class MainInfoPublishDoc extends Component {
         }
 
         let sohieu = (
-            <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+            <Text style={InfoStyle.listItemSubTitleContainer}>
                 {info.SOHIEU}
             </Text>
         );
         if (info.SOHIEU === null) {
             sohieu = (
-                <Text style={[DetailPublishDocStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
+                <Text style={[InfoStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
                     Không rõ
                 </Text>
             );
         }
 
         let trungLichHop = (
-            <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>KHÔNG</Text>
+            <Text style={InfoStyle.listItemSubTitleContainer}>KHÔNG</Text>
         );
         if (this.props.info.isDuplicateCalendar) {
             trungLichHop = (
@@ -147,16 +148,16 @@ class MainInfoPublishDoc extends Component {
 
         // render
         return (
-            <View style={DetailPublishDocStyle.container}>
+            <View style={InfoStyle.container}>
                 <ScrollView>
-                    <List containerStyle={DetailPublishDocStyle.listContainer}>
+                    <List containerStyle={InfoStyle.listContainer}>
 
                         {
                             this.state.ListTaiLieu && this.state.ListTaiLieu.length > 0
-                                ? <ListItem style={DetailPublishDocStyle.listItemContainer}
+                                ? <ListItem style={InfoStyle.listItemContainer}
                                     hideChevron={true}
                                     title={
-                                        <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                        <Text style={InfoStyle.listItemTitleContainer}>
                                             Đính kèm
                                         </Text>
                                     }
@@ -199,241 +200,241 @@ class MainInfoPublishDoc extends Component {
                                 : null
                         }
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Trích yếu
                         </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.state.info.TRICHYEU}
                                 </Text>
                             } />
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Số hiệu
                         </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {sohieu}
                                 </Text>
                             } />
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Sổ đi theo số
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.state.info.SODITHEOSO}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Đơn vị gửi
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.nameOfDonViGui}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Loại văn bản
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.nameOfLoaiVanBan}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Lĩnh vực
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.nameOfLinhVucVanBan}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Mức độ quan trọng
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.nameOfDoKhan}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Độ ưu tiên
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.nameOfDoUuTien}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Số trang
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.state.info.SOTRANG}
                                 </Text>
                             } />
 
 
                         {
-                            this.state.info.NGAY_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.NGAY_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Ngày có hiệu lực
                                 </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAY_HIEULUC)}
                                     </Text>
                                 } />
                         }
 
                         {
-                            this.state.info.NGAYHET_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.NGAYHET_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Ngày hết hiệu lực
                                     </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
                                     </Text>
                                 } />
                         }
                         {
-                            this.state.info.NGAYHET_HIEULUC && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.NGAYHET_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Ngày hết hiệu lực
                                 </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
                                     </Text>
                                 } />
                         }
                         {
-                            this.state.info.NGAY_VANBAN && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.NGAY_VANBAN && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Ngày văn bản
                                 </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAY_VANBAN)}
                                     </Text>
                                 } />
                         }
                         {
-                            this.state.info.NGAY_BANHANH && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.NGAY_BANHANH && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Ngày ban hành
                                 </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAY_BANHANH)}
                                     </Text>
                                 } />
                         }
                         {
-                            !!this.state.info.NGUOIKY && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            !!this.state.info.NGUOIKY && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Người ký
                                 </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {`${this.state.info.CHUCVU || ""} ${this.state.info.NGUOIKY}`}
                                     </Text>
                                 } />
                         }
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Nội dung
                                 </Text>
                             }
                             subtitle={
                                 <HTMLView
                                     value={this.state.info.NOIDUNG || EMPTY_STRING}
-                                    stylesheet={{ p: DetailPublishDocStyle.listItemSubTitleContainer }}
+                                    stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
                                 />
                             } />
                         {
-                            this.state.info.hasOwnProperty("NGAYCONGTAC") && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                            this.state.info.hasOwnProperty("NGAYCONGTAC") && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Thời gian công tác
                                     </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailPublishDocStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
                                     </Text>
                                 }
                             />
                         }
 
-                        <ListItem style={DetailPublishDocStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Trùng lịch công tác lãnh đạo
                                 </Text>
                             }
