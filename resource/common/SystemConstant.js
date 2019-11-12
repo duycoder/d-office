@@ -1,9 +1,9 @@
 import { Dimensions } from 'react-native'
 // export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
-export const WEB_URL = 'http://192.168.1.10:8022';// web test
+// export const WEB_URL = 'http://192.168.1.10:8022';// web test
 // export const API_URL = 'http://192.168.1.29:8098';
 // export const API_URL = 'http://101.96.76.204:8999'; //server vnio
-export const API_URL = 'http://192.168.1.10:8111'; //server local
+export const API_URL = 'http://192.168.1.10:8111'; //server local http://123.16.130.9/
 // export const API_URL = 'http://192.168.1.10:8111';
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -457,3 +457,5 @@ export function generateTitle(maThaotac) {
 	}
 	return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
 }
+
+export const EMAIL_VALIDATION = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
