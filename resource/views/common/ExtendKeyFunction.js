@@ -43,9 +43,12 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import GoBackButton from './GoBackButton';
+import { accountApi } from '../../common/Api';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;
+
+const api = accountApi();
 
 class ExtendKeyFunction extends Component {
   constructor(props) {
@@ -66,8 +69,9 @@ class ExtendKeyFunction extends Component {
   }
 
   fetchNotifyCount = async () => {
-    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
-    const result = await fetch(url).then(response => response.json());
+    const result = await api.getNotifyCount([
+      this.state.userInfo.ID
+    ]);
     this.setState({
       notifyCount_Lichhop: result.notifyCount_Lichhop || 0,
       notifyCount_Datxe: result.notifyCount_Datxe || 0,

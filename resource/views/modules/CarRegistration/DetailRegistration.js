@@ -43,6 +43,10 @@ import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import RegistrationInfo from './RegistrationInfo';
 import AlertMessage from '../../common/AlertMessage';
 import TripInfo from './TripInfo';
+import { carApi, tripApi } from '../../../common/Api';
+
+const CarApi = carApi(),
+  TripApi = tripApi();
 
 class DetailRegistration extends Component {
   constructor(props) {
@@ -90,15 +94,18 @@ class DetailRegistration extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/CarRegistration/DetailCarRegistration/${this.state.registrationId}/${this.state.userId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      registrationId, userId
+    } = this.state;
 
-    const tripUrl = `${API_URL}/api/CarTrip/DetailTripByRegistrationId/${this.state.registrationId}/${this.state.userId}`;
-    const tripResult = await fetch(tripUrl);
-    const tripResultJson = await tripResult.json();
-
-    // console.tron.log(tripResultJson)
+    const resultJson = await CarApi.getDetail([
+      registrationId,
+      userId
+    ]);
+    const tripResultJson = await TripApi.getDetailByRegistrationId([
+      registrationId,
+      userId
+    ]);
 
     await asyncDelay();
 
@@ -113,10 +120,11 @@ class DetailRegistration extends Component {
     this.setState({
       loading: true
     });
-
-    const url = `${API_URL}/api/CarTrip/DetailTripByRegistrationId/${this.state.registrationId}/${this.state.userId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    
+    const resultJson = await TripApi.getDetailByRegistrationId([
+      registrationId,
+      userId
+    ]);
 
     await asyncDelay();
 
@@ -182,25 +190,10 @@ class DetailRegistration extends Component {
       executing: true
     });
 
-    const url = `${API_URL}/api/CarRegistration/SendCarRegistration`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await CarApi.sendRegistration({
       registrationId,
       currentUserId: userId
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executing: false
@@ -232,25 +225,10 @@ class DetailRegistration extends Component {
       executing: true
     });
 
-    const url = `${API_URL}/api/CarRegistration/CancelRegistration`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await CarApi.cancelRegistration({
       registrationId,
       currentUserId: userId
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executing: false
@@ -298,7 +276,7 @@ class DetailRegistration extends Component {
   onStartTrip = async () => {
     this.refs.confirmTrip.closeModal();
     const {
-      tripId
+      tripId, userId
     } = this.state;
 
     this.setState({

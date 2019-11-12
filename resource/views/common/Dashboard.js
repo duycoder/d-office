@@ -51,9 +51,12 @@ import { ListNotificationStyle } from '../../assets/styles/ListNotificationStyle
 import { DashboardStyle } from '../../assets/styles/DashboardStyle';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../assets/styles';
+import { accountApi } from '../../common/Api';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;
+
+const api = accountApi();
 
 class Dashboard extends Component {
   constructor(props) {
@@ -106,9 +109,7 @@ class Dashboard extends Component {
   }
 
   fetchHotline = async () => {
-    const url = `${API_URL}/api/Account/GetHotlines/`;
-    const resource = await fetch(url);
-    const result = await resource.json();
+    const result = await api.getHotline();
 
     this.setState({
       dataHotline: result
@@ -116,9 +117,7 @@ class Dashboard extends Component {
   }
 
   fetchDataUyQuyen = async () => {
-    const url = `${API_URL}/api/Account/GetUyQuyenMessages/`;
-    const resource = await fetch(url);
-    const result = await resource.json();
+    const result = await api.getDataUyQuyen();
 
     this.setState({
       dataUyQuyen: result
@@ -126,17 +125,18 @@ class Dashboard extends Component {
   }
 
   fetchBirthdayData = async () => {
-    const url = `${API_URL}/api/Account/GetBirthdayData/`;
-    const result = await fetch(url)
-      .then((response) => response.json());
+    const result = await api.getBirthdayData();
+
     this.setState({
       birthdayData: result.Params || null
     });
   }
 
   fetchNotifyCount = async () => {
-    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
-    const result = await fetch(url).then(response => response.json());
+    const result = await api.getNotifyCount([
+      this.state.userInfo.ID
+    ]);
+
     this.setState({
       notifyCount_VBDen_Chuaxuly: result.notifyCount_VBDen_Chuaxuly || 0,
       notifyCount_VBDi_Chuaxuly: result.notifyCount_VBDi_Chuaxuly || 0,
@@ -160,10 +160,13 @@ class Dashboard extends Component {
     const month = date.split('/')[1];
     const year = date.split('/')[2];
 
-    const url = `${API_URL}/api/LichCongTac/GetLichCongTacNgay/${this.state.userInfo.ID}/${month}/${year}/${day}`;
+    const result = await api.getCalendarData([
+      this.state.userInfo.ID,
+      month,
+      year,
+      day
+    ]);
 
-    const result = await fetch(url)
-      .then((response) => response.json());
     this.setState({
       calendarLoading: false,
       calendarData: result
@@ -185,9 +188,10 @@ class Dashboard extends Component {
   }
 
   fetchRecentNoti = async () => {
-    const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/3/1/false?query=`;
-    const resource = await fetch(url);
-    const result = await resource.json();
+    const result = await api.getRecentNoti([
+      this.state.userInfo.ID,
+      "3/1/false?query="
+    ]);
 
     this.setState({
       notiData: result
@@ -196,19 +200,7 @@ class Dashboard extends Component {
   onPressNotificationItem = async (item) => {
     //update read state for unread noti
     if (!item.IS_READ) {
-      const url = `${API_URL}/api/account/UpdateReadStateOfMessage`;
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      });
-      const body = JSON.stringify({
-        item
-      });
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
+      const result = await api.updateReadStateOfMessage(item);
     }
 
     //navigate to detail

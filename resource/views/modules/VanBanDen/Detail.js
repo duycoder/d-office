@@ -186,10 +186,11 @@ class Detail extends Component {
     onCheckFlow = async (item) => {
         this.setState({ executing: true });
 
-        const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
-        const result = await fetch(url).then(response => response.json());
-
-        await asyncDelay();
+        const result = await api.checkFlow([
+            this.state.userId,
+            this.state.docInfo.WorkFlow.Process.ID,
+            item.ID
+        ]);
 
         this.setState({ executing: false })
 

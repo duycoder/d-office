@@ -18,6 +18,7 @@ import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIn
 
 //util
 import { appNavigate } from '../../common/Utilities';
+import { accountApi } from '../../common/Api';
 
 export default class Confirm extends Component {
     constructor(props) {
@@ -50,19 +51,10 @@ export default class Confirm extends Component {
         const userInfo = JSON.parse(userInfoJSON);
 
         //vô hiệu hóa token hiện tại của thiết bị với người dùng hiện tại
-        const deActiveTokenResult = await fetch(`${API_URL}/api/Account/DeActiveUserToken`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
-            }, body: JSON.stringify({
-                userId: userInfo.ID,
-                token: userInfo.Token || userInfo.DeviceToken
-            })
-        }).then(response => response.json())
-            .then(responseJson => {
-                return responseJson
-            });
+        const deActiveTokenResult = await accountApi().deactivateToken({
+            userId: userInfo.ID,
+            token: userInfo.Token || userInfo.DeviceToken
+        });
 
 
         //xóa các dữ liệu trong storage
@@ -105,7 +97,7 @@ export default class Confirm extends Component {
 
                             <View style={styles.rightFooter}>
                                 <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
-                                    <Text style={[styles.footerText, {color: Colors.RED_PANTONE_186C}]}>
+                                    <Text style={[styles.footerText, { color: Colors.RED_PANTONE_186C }]}>
                                         CÓ
                                     </Text>
                                 </TouchableOpacity>

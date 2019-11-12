@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import * as util from 'lodash';
 import DatePicker from 'react-native-datepicker';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, EMAIL_VALIDATION } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -165,7 +165,7 @@ class AccountEditor extends Component {
       return;
     }
 
-    if (this.state.email != EMPTY_STRING && !this.state.email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+    if (this.state.email != EMPTY_STRING && !this.state.email.match(EMAIL_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {

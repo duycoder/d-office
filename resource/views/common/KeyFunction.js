@@ -43,6 +43,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import GoBackButton from './GoBackButton';
+import { accountApi } from '../../common/Api';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
 const { LichCongTacFunction } = SYSTEM_FUNCTION;
@@ -79,8 +80,9 @@ class KeyFunction extends Component {
   }
 
   fetchNotifyCount = async () => {
-    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
-    const result = await fetch(url).then(response => response.json());
+    const result = await accountApi().getNotifyCount([
+      this.state.userInfo.ID
+    ]);
     this.setState({
       notifyCount_VBDen_Chuaxuly: result.notifyCount_VBDen_Chuaxuly || 0,
       notifyCount_VBDen_Noibo_Chuaxuly: result.notifyCount_VBDen_Noibo_Chuaxuly || 0,
