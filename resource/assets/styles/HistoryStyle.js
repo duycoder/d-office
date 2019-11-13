@@ -139,8 +139,11 @@ export const TimeLineStyle = StyleSheet.create({
     borderColor: '#707070',
     borderLeftWidth: 0.7,
     padding: 10,
-    alignItems: 'center',
-    flexDirection: 'row'
+    // alignItems: 'center',
+    // flexDirection: 'row',
+    flexDirection: 'column', 
+    alignItems: 'flex-start',
+     justifyContent: 'flex-start'
   }, infoDetailValueText: {
     color: Colors.BLACK,
     fontSize: moderateScale(12, 1.3)
@@ -148,5 +151,13 @@ export const TimeLineStyle = StyleSheet.create({
   infoDetailValueNote: {
     fontSize: 10,
     color: '#0D7D23'
+  },
+  infoBtn: {
+    backgroundColor: Colors.OLD_LITE_BLUE,
+    borderRadius: 8, 
+    padding: 8
+  }, infoBtnText: {
+    color: Colors.WHITE, 
+    fontSize: moderateScale(10, .8) 
   }
 })
