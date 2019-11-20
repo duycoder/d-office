@@ -45,7 +45,7 @@ import SideBarIcon from '../../common/Icons';
 import GoBackButton from './GoBackButton';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
-const { LichCongTacFunction } = SYSTEM_FUNCTION;
+const { LichCongTacFunction, TienichFunction } = SYSTEM_FUNCTION;
 
 class ExtendKeyFunction extends Component {
   constructor(props) {
@@ -185,6 +185,14 @@ class ExtendKeyFunction extends Component {
     return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
   }
 
+  moveToSpecialScreen = (screenName, webviewUrl = "", screenTitle = "") => {
+    this.props.updateExtendsNavParams({
+      webviewUrl,
+      screenTitle
+    });
+    this.props.navigation.navigate(screenName);
+  }
+
   render() {
     const { notifyCount, userFunctions, onFocusNow } = this.state;
     // console.tron.log(userFunctions)
@@ -218,6 +226,19 @@ class ExtendKeyFunction extends Component {
                       const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
                       let elementStyle = SideBarStyle.normalBoxStyle;
                       if (renderCondition) {
+                        if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
+                          return <TouchableOpacity
+                            style={elementStyle}
+                            key={sItem.DM_THAOTAC_ID.toString()}
+                            onPress={() => this.moveToSpecialScreen(sItem.MOBILE_SCREEN, sItem.MENU_LINK, sItem.TEN_THAOTAC)}
+                          >
+                            <SideBarIcon
+                              actionCode={TienichFunction.actionCodes[6]}
+                            />
+                            <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
+                          </TouchableOpacity>;
+                        }
+
                         return <TouchableOpacity
                           style={elementStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}

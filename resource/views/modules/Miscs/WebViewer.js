@@ -20,7 +20,7 @@ class WebViewer extends Component {
     super(props);
     this.state = {
       url: props.extendsNavParams.webviewUrl || DEFAULT_URL,
-      title: props.userInfo.Fullname || "Người dùng",
+      title: props.extendsNavParams.screenTitle || props.userInfo.Fullname || "Người dùng",
       // deviceToken: props.userInfo.DeviceToken || EMPTY_STRING,
       userId: props.userInfo.ID || 0,
     }

@@ -143,7 +143,6 @@ export const TimeLineStyle = StyleSheet.create({
     // flexDirection: 'row',
     flexDirection: 'column', 
     alignItems: 'flex-start',
-     justifyContent: 'flex-start'
   }, infoDetailValueText: {
     color: Colors.BLACK,
     fontSize: moderateScale(12, 1.3)
