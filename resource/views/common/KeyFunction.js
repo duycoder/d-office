@@ -291,7 +291,7 @@ class KeyFunction extends Component {
     return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
   }
 
-  moveToSpecialScreen = (screenName, webviewUrl = "", screenTitle = "") => {
+  moveToSpecialScreen = (webviewUrl = "", screenTitle = "", screenName = "WebViewerScreen") => {
     this.props.updateExtendsNavParams({
       webviewUrl,
       screenTitle
@@ -359,7 +359,7 @@ class KeyFunction extends Component {
                           return <TouchableOpacity
                             style={elementStyle}
                             key={sItem.DM_THAOTAC_ID.toString()}
-                            onPress={() => this.moveToSpecialScreen(sItem.MOBILE_SCREEN, sItem.MENU_LINK, sItem.TEN_THAOTAC)}
+                            onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
                           >
                             <SideBarIcon
                               actionCode={TienichFunction.actionCodes[6]}
