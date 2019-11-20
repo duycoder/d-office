@@ -149,6 +149,7 @@ class Login extends Component {
 
     async onLogin() {
         try {
+            Keyboard.dismiss();
             //lấy fcm token
             let deviceToken = await AsyncStorage.getItem('deviceToken');
             //Reactotron.log('========> Device từ Async Storage', deviceToken);
@@ -338,6 +339,7 @@ class Login extends Component {
                                         returnKeyType='done'
                                         returnKeyLabel='Xong'
                                         ref={ref => this.passwordInput = ref}
+                                        textContentType="password"
 
                                     />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
