@@ -50,13 +50,16 @@ class CreateMeetingDay extends Component {
       thoigianBatdau: props.extendsNavParams.thoigianBatdau || EMPTY_STRING,//required
       thoigianKetthuc: EMPTY_STRING,//required
       lichCongtacId: props.extendsNavParams.lichCongtacId || 0,
+      // Chọn phòng họp
+      phonghopId: props.extendsNavParams.phonghopId || 0,
+      phonghopName: props.extendsNavParams.phonghopName || EMPTY_STRING,
 
       chutriName: props.extendsNavParams.chutriName || EMPTY_STRING,
       executing: false,
       focusId: EMPTY_STRING,
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
       loading: false,
-      isVanthu: false,
+      canCreateMeetingForOthers: false,
 
       isSaveBtnPressed: true,
       isSaveIcoPressed: true,
@@ -102,7 +105,7 @@ class CreateMeetingDay extends Component {
 
     this.setState({
       loading: false,
-      isVanthu: resultJson.Status || false
+      canCreateMeetingForOthers: resultJson.Status || false
     });
   }
 
@@ -114,11 +117,24 @@ class CreateMeetingDay extends Component {
 
     this.onNavigate("PickNguoiChutriScreen", targetScreenParam);
   }
-
   clearNguoiChutri = () => {
     this.setState({
       chutriId: 0,
       chutriName: null
+    });
+  }
+
+  onPickPhonghop = () => {
+    const targetScreenParam = {
+      phonghopId: this.state.phonghopId,
+      phonghopName: this.state.phonghopName
+    };
+    this.onNavigate("PickMeetingRoomScreen", targetScreenParam);
+  }
+  clearPhonghop = () => {
+    this.setState({
+      phonghopId,
+      phonghopName
     });
   }
 
@@ -137,7 +153,7 @@ class CreateMeetingDay extends Component {
     });
     const {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId,
-      isVanthu
+      canCreateMeetingForOthers
     } = this.state;
 
     if (!mucdich) {
@@ -201,7 +217,7 @@ class CreateMeetingDay extends Component {
         phutBatdau: thoigianBatdau.split(":")[1],
         gioKetthuc: thoigianKetthuc.split(":")[0],
         phutKetthuc: thoigianKetthuc.split(":")[1],
-        chutriId: isVanthu ? chutriId : userId,
+        chutriId: canCreateMeetingForOthers ? chutriId : userId,
         userId,
         lichCongtacId,
       });
@@ -237,7 +253,7 @@ class CreateMeetingDay extends Component {
             this.props.updateCoreNavParams(screenParam);
             this.props.navigation.navigate("DetailMeetingDayScreen");
           }
-          else{
+          else {
             this.setState({
               isSaveBtnPressed: true,
               isSaveIcoPressed: true
@@ -259,8 +275,9 @@ class CreateMeetingDay extends Component {
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop,
-        loading, focusId, chutriName, isVanthu,
-        isSaveBtnPressed,isSaveIcoPressed
+        loading, focusId, chutriName, canCreateMeetingForOthers,
+        isSaveBtnPressed, isSaveIcoPressed,
+        phonghopId, phonghopName
       } = this.state,
       nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -293,7 +310,7 @@ class CreateMeetingDay extends Component {
               />
             </Item>
             {
-              isVanthu && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
+              canCreateMeetingForOthers && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
                 <Label>
                   Người chủ trì <Text style={{ color: '#f00' }}>*</Text>
                 </Label>
@@ -406,6 +423,27 @@ class CreateMeetingDay extends Component {
                 onFocus={() => this.setState({ focusId: "thamgia" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
+            </Item>
+
+            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "phonghopId" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+              <Label>
+                Phòng họp
+              </Label>
+
+              <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
+                <Button transparent style={{ width: phonghopId > 0 ? '100%' : '90%' }} onPress={() => this.onPickPhonghop()}>
+                  {
+                    !!phonghopName
+                      ? <Text style={{ color: '#ccc' }}>Chọn phòngh họp</Text>
+                      : <Text style={{ color: Colors.BLACK }}>{phonghopName}</Text>
+                  }
+                </Button>
+                {
+                  phonghopId > 0 && <Button transparent onPress={() => this.clearPhonghop()}>
+                    <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
+                  </Button>
+                }
+              </View>
             </Item>
 
             <TouchableOpacity
