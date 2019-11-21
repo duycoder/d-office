@@ -265,14 +265,14 @@ class CreateReminder extends Component {
             {
               isThuky && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
                 <Label>
-                  Người thụ hưởng
+                  Người được nhắc nhở
               </Label>
                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
                   <Button transparent style={{ width: giamdocId > 0 ? '100%' : '90%' }} onPress={() => this.onPickGiamdoc()}>
                     {
                       !!giamdocName
                         ? <Text style={{ color: Colors.BLACK }}>{giamdocName}</Text>
-                        : <Text style={{ color: '#ccc' }}>Chọn người thụ hưởng</Text>
+                        : <Text style={{ color: '#ccc' }}>Chọn người được nhắc nhở</Text>
                     }
                   </Button>
                   {
