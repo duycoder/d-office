@@ -236,15 +236,18 @@ class PickMeetingRoom extends Component {
     }, () => this.filtlerRooms());
   }
 
-  onSelectRoom = (roomId) => {
-    this.setState({ phonghopId: roomId });
+  onSelectRoom = (phonghopId, phonghopName) => {
+    this.setState({ 
+      phonghopId,
+      phonghopName 
+    });
   }
 
   renderRooms = ({ item }) => {
     return (
       <ListItem
         key={item.Value.toString()}
-        onPress={() => this.onSelectRoom(item.Value)}
+        onPress={() => this.onSelectRoom(item.Value, item.Text)}
         style={{ height: 60 }}>
         <Left>
           <Title>
@@ -256,7 +259,7 @@ class PickMeetingRoom extends Component {
 
         <Right>
           <CheckBox
-            onPress={() => this.onSelectRoom(item.Value)}
+            onPress={() => this.onSelectRoom(item.Value, item.Text)}
             checked={(this.state.phonghopId == item.Value)}
             style={{ alignSelf: "center" }}
           />

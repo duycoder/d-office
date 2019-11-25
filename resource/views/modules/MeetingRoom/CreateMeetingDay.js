@@ -154,8 +154,8 @@ class CreateMeetingDay extends Component {
   }
   clearPhonghop = () => {
     this.setState({
-      phonghopId,
-      phonghopName
+      phonghopId: 0,
+      phonghopName: EMPTY_STRING
     });
   }
 
@@ -287,7 +287,7 @@ class CreateMeetingDay extends Component {
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
-
+console.tron.log(phonghopName)
     let relateCalendar = null;
 
     let bodyContent = null;
@@ -437,7 +437,7 @@ class CreateMeetingDay extends Component {
               <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
                 <Button transparent style={{ width: phonghopId > 0 ? '100%' : '90%' }} onPress={() => this.onPickPhonghop()}>
                   {
-                    !!phonghopName
+                    !phonghopName
                       ? <Text style={{ color: '#ccc' }}>Chọn phòng họp</Text>
                       : <Text style={{ color: Colors.BLACK }}>{phonghopName}</Text>
                   }
