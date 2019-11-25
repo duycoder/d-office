@@ -104,27 +104,28 @@ class AccountChangePassword extends Component {
   }
 
   async onSaveChange() {
+    Keyboard.dismiss();
 
     this.setState({
       loading: true
     });
 
-    if (!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/)) {
-      this.setState({
-        loading: false
-      }, () => {
-        Toast.show({
-          text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
-      });
-      return;
-    }
+    // if (!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/)) {
+    //   this.setState({
+    //     loading: false
+    //   }, () => {
+    //     Toast.show({
+    //       text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
+    //       type: 'danger',
+    //       textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+    //       buttonText: "OK",
+    //       buttonStyle: { backgroundColor: Colors.WHITE },
+    //       buttonTextStyle: { color: Colors.LITE_BLUE },
+    //       duration: TOAST_DURATION_TIMEOUT
+    //     });
+    //   });
+    //   return;
+    // }
     if (this.state.TMPpassword !== this.state.password) {
       this.setState({
         loading: false

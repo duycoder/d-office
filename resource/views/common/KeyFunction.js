@@ -46,7 +46,7 @@ import GoBackButton from './GoBackButton';
 import { accountApi } from '../../common/Api';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
-const { LichCongTacFunction } = SYSTEM_FUNCTION;
+const { LichCongTacFunction, TienichFunction } = SYSTEM_FUNCTION;
 
 class KeyFunction extends Component {
   constructor(props) {
@@ -213,6 +213,14 @@ class KeyFunction extends Component {
     return 0;
   }
 
+  moveToSpecialScreen = (webviewUrl = "", screenTitle = "", screenName = "WebViewerScreen") => {
+    this.props.updateExtendsNavParams({
+      webviewUrl,
+      screenTitle
+    });
+    this.props.navigation.navigate(screenName);
+  }
+  
   render() {
     const { notifyCount, userFunctions, onFocusNow } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
@@ -259,34 +267,48 @@ class KeyFunction extends Component {
                 if (item.MA_CHUCNANG.indexOf("HSCV") < 0) {
                   return null;
                 }
-                return (
-                  <GridPanel
-                    title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
-                    key={item.DM_CHUCNANG_ID.toString()}
-                  >
-                    {
-                      item.ListThaoTac.map((sItem, sIndex) => {
-                        const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
-                        if (renderCondition) {
+
+                return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
+                  {
+                    item.ListThaoTac.map((sItem, sIndex) => {
+                      const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
+                      let elementStyle = SideBarStyle.normalBoxStyle;
+                      if (renderCondition) {
+                        // if (count % 3 === 1) {
+                        //   elementStyle = [SideBarStyle.normalBoxStyle, { marginHorizontal: '5%' }];
+                        // }
+                        // count++;
+                        if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
                           return <TouchableOpacity
-                            style={SideBarStyle.normalBoxStyle}
+                            style={elementStyle}
                             key={sItem.DM_THAOTAC_ID.toString()}
-                            onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
+                            onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
                           >
                             <SideBarIcon
-                              actionCode={sItem.MA_THAOTAC}
-                              notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
+                              actionCode={TienichFunction.actionCodes[6]}
                             />
-                            <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
+                            <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
                           </TouchableOpacity>;
                         }
-                        else {
-                          return null;
-                        }
-                      })
-                    }
-                  </GridPanel>
-                );
+                        return <TouchableOpacity
+                          style={elementStyle}
+                          key={sItem.DM_THAOTAC_ID.toString()}
+                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
+                        >
+                          <SideBarIcon
+                            actionCode={sItem.MA_THAOTAC}
+                            notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
+                          // customIconContainerStyle={{ flex: 1, marginBottom: '10%' }}
+                          />
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
+                        </TouchableOpacity>;
+                      }
+                      else {
+                        return null;
+                      }
+                    })
+                  }
+                </GridPanel>
               })
             }
           </ScrollView>

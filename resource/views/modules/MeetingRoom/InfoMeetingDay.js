@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
-import { convertDateToString, _readableFormat, formatLongText } from '../../../common/Utilities';
+import { convertDateToString, _readableFormat, formatLongText, extention, onDownloadFile, convertTimeToString } from '../../../common/Utilities';
 import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
@@ -28,6 +28,12 @@ class RegistrationInfo extends Component {
     this.state = {
       info: this.props.info.entity,
     };
+  }
+
+  getExtension = (filePath = "") => {
+    let regExtension = extention(filePath);
+    let extension = regExtension ? regExtension[0] : "";
+    return extension;
   }
 
   render() {
@@ -81,7 +87,6 @@ class RegistrationInfo extends Component {
                   {thoigianHop}
                 </Text>
               } />
-            
             <ListItem style={InfoStyle.listItemContainer}
               hideChevron={true}
               title={
@@ -110,7 +115,43 @@ class RegistrationInfo extends Component {
                   {info.THANHPHAN_THAMDU}
                 </Text>
               } />
-
+            {
+              !!info.DuongdanFile && <ListItem style={DetailPublishDocStyle.listItemContainer}
+                hideChevron={true}
+                title={
+                  <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                    Đính kèm
+                  </Text>
+                }
+                subtitle={
+                  <View>
+                    <ListItem
+                      key={index.toString()}
+                      leftIcon={getFileExtensionLogo(getExtension(info.itemTailieu.DUONGDAN_FILE))}
+                      title={info.itemTailieu.TENTAILIEU}
+                      titleStyle={{
+                        marginLeft: 10,
+                        color: '#707070',
+                        fontWeight: 'bold'
+                      }}
+                      subtitle={
+                        getFileSize(info.itemTailieu.KICHCO) + " | " + convertDateToString(info.itemTailieu.NGAYTAO) + " " + convertTimeToString(info.itemTailieu.NGAYTAO)
+                      }
+                      subtitleStyle={{
+                        fontWeight: 'normal',
+                        color: '#707070',
+                        marginLeft: 10,
+                      }}
+                      rightIcon={
+                        <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+                      }
+                      containerStyle={{ borderBottomWidth: 0 }}
+                      onPress={() => onDownloadFile(info.itemTailieu.TENTAILIEU, info.itemTailieu.DUONGDAN_FILE, info.itemTailieu.DINHDANG_FILE)}
+                    />
+                  </View>
+                }
+              />
+            }
 
           </List>
         </ScrollView>

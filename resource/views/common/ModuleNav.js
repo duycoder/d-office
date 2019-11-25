@@ -120,6 +120,7 @@ import DetailNotiUyQuyen from '../modules/Notification/DetailNotiUyQuyen';
 import ListReminder from '../modules/Miscs/ListReminder';
 import CreateReminder from '../modules/Miscs/CreateReminder';
 import WebViewer from '../modules/Miscs/WebViewer';
+import PickWhoseReminder from '../modules/Miscs/PickWhoseReminder';
 //#endregion
 
 //test
@@ -348,6 +349,8 @@ const baseStack = {
     screen: CreateReminder
   }, WebViewerScreen: {
     screen: WebViewer
+  }, PickWhoseReminderScreen: {
+    screen: PickWhoseReminder
   },
 
   CreateNotiUyQuyenScreen: {

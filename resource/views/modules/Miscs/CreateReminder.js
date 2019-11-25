@@ -54,9 +54,12 @@ class CreateReminder extends Component {
       focusId: EMPTY_STRING,
       fromScreen: props.extendsNavParams.originScreen || EMPTY_STRING,
       loading: false,
+      giamdocId: props.extendsNavParams.chutriName || 0,
+      giamdocName: props.extendsNavParams.giamdocName || EMPTY_STRING,
 
       isSaveBtnPressed: true,
       isSaveIcoPressed: true,
+      isThuky: false,
     }
   }
 
@@ -68,6 +71,18 @@ class CreateReminder extends Component {
 
   componentWillMount = () => {
     this.fetchData();
+  }
+  componentDidMount = () => {
+    this.willFocusListener = this.props.navigation.addListener('didFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("giamdocId")) {
+        if (this.props.extendsNavParams.giamdocId > 0) {
+          this.setState({
+            giamdocId: this.props.extendsNavParams.giamdocId,
+            giamdocName: this.props.extendsNavParams.giamdocName
+          });
+        }
+      }
+    });
   }
 
   fetchData = async () => {
@@ -84,6 +99,7 @@ class CreateReminder extends Component {
       loading: false,
       period: resultJson != null ? `${resultJson.Params.DefaultPeriod}` : EMPTY_STRING,
       listPeriod: resultJson != null ? resultJson.Params.ListPeriod : [],
+      isThuky: resultJson != null ? resultJson.Params.isThuky : false
     });
   }
 
@@ -101,7 +117,7 @@ class CreateReminder extends Component {
       isSaveIcoPressed: false
     });
     const {
-      noidung, thoigian, period, userId
+      noidung, thoigian, period, userId, giamdocId
     } = this.state;
 
     if (!noidung) {
@@ -134,7 +150,7 @@ class CreateReminder extends Component {
       });
 
       const body = JSON.stringify({
-        userId,
+        userId: giamdocId || userId,
         reminderId: 0,
         noidung,
         ngay: thoigian.split(" ")[0],
@@ -192,13 +208,28 @@ class CreateReminder extends Component {
     this.props.navigation.navigate(screenName);
   }
 
+  onPickGiamdoc = () => {
+    const { giamdocId, giamdocName } = this.state;
+    this.onNavigate("PickWhoseReminderScreen", {
+      giamdocId,
+      giamdocName
+    });
+  }
+  clearGiamdoc = () => {
+    this.setState({
+      giamdocId: 0,
+      giamdocName: null
+    });
+  }
+
   render() {
     const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         noidung, thoigian, period,
         loading, focusId,
-        isSaveBtnPressed, isSaveIcoPressed
+        isSaveBtnPressed, isSaveIcoPressed,
+        giamdocId, giamdocName, isThuky
       } = this.state,
       nothingChangeStatus = !noidung || !thoigian || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -230,6 +261,28 @@ class CreateReminder extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
+
+            {
+              isThuky && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
+                <Label>
+                  Người được nhắc nhở
+              </Label>
+                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
+                  <Button transparent style={{ width: giamdocId > 0 ? '100%' : '90%' }} onPress={() => this.onPickGiamdoc()}>
+                    {
+                      !!giamdocName
+                        ? <Text style={{ color: Colors.BLACK }}>{giamdocName}</Text>
+                        : <Text style={{ color: '#ccc' }}>Chọn người được nhắc nhở</Text>
+                    }
+                  </Button>
+                  {
+                    giamdocId > 0 && <Button transparent onPress={() => this.clearGiamdoc()}>
+                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
+                    </Button>
+                  }
+                </View>
+              </Item>
+            }
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
               <Label>Thời điểm nhắc</Label>

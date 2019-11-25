@@ -17,9 +17,11 @@ import HTMLView from 'react-native-htmlview';
 
 //utilities
 import { convertDateTimeToString, emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
-import { LOADER_COLOR, Colors } from '../../../common/SystemConstant';
+import { LOADER_COLOR, Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 import { verticalScale, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
 import { HistoryStyle, TimeLineStyle } from '../../../assets/styles/HistoryStyle';
+
+const STRIP_HTML_PATTERN = /<[^>]*>?/gm;
 
 export default class TimelineSignDoc extends Component {
     constructor(props) {
@@ -49,6 +51,17 @@ export default class TimelineSignDoc extends Component {
                 identifyColor = TimeLineStyle.fowardStateText;
                 iconName = 'arrow-right-drop-circle-outline';
                 stepName = util.toUpper(item.step.NAME);
+            }
+        }
+        else {
+            if (!!item.MESSAGE) {
+                const stripedMessage = item.MESSAGE.replace(STRIP_HTML_PATTERN, EMPTY_STRING);
+                stepName = stripedMessage;
+                message = stripedMessage;
+            }
+            else {
+                stepName = EMPTY_STRING;
+                message = EMPTY_STRING;
             }
         }
         const isStartNode = index === this.state.logs.length - 1,
@@ -110,18 +123,18 @@ export default class TimelineSignDoc extends Component {
                                             </Text>
                                         </View>
 
-                                        <View style={[TimeLineStyle.infoDetailValue, { flexDirection: 'row', alignItems: 'center' }]}>
+                                        <View style={TimeLineStyle.infoDetailValue}>
                                             <Text style={TimeLineStyle.infoDetailValueText}>
                                                 {item.TenNguoiNhan}
                                             </Text>
                                             {
                                                 item.IsDaXuly
-                                                    ? <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
-                                                        <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã xử lý</Text>
+                                                    ? <View style={TimeLineStyle.infoBtn}>
+                                                        <Text style={TimeLineStyle.infoBtnText}>Đã xử lý</Text>
                                                     </View>
                                                     : item.IsDaNhan
-                                                        ? <View style={{ backgroundColor: Colors.OLD_LITE_BLUE, borderRadius: 8, padding: 8, marginLeft: 5 }}>
-                                                            <Text style={{ color: Colors.WHITE, fontSize: moderateScale(10, .8) }}>Đã nhận</Text>
+                                                        ? <View style={TimeLineStyle.infoBtn}>
+                                                            <Text style={TimeLineStyle.infoBtnText}>Đã nhận</Text>
                                                         </View>
                                                         : null
                                             }
