@@ -187,21 +187,21 @@ class ExtendKeyFunction extends Component {
         <View style={[SideBarStyle.body]}>
           <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
             {
-              // Lấy chức năng của người dùng
               userFunctions && userFunctions.map((item, index) => {
-                // let count = 0;
                 if (item.MA_CHUCNANG.indexOf("HSCV_TIENICH") < 0) {
                   return null;
                 }
-                return <GridPanel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
+                return <GridPanel
+                  title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
+                  key={item.DM_CHUCNANG_ID.toString()}
+                >
                   {
                     item.ListThaoTac.map((sItem, sIndex) => {
                       const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
-                      let elementStyle = SideBarStyle.normalBoxStyle;
                       if (renderCondition) {
                         if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
                           return <TouchableOpacity
-                            style={elementStyle}
+                            style={SideBarStyle.normalBoxStyle}
                             key={sItem.DM_THAOTAC_ID.toString()}
                             onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
                           >
@@ -213,7 +213,7 @@ class ExtendKeyFunction extends Component {
                         }
 
                         return <TouchableOpacity
-                          style={elementStyle}
+                          style={SideBarStyle.normalBoxStyle}
                           key={sItem.DM_THAOTAC_ID.toString()}
                           onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
                         >
