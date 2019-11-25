@@ -43,7 +43,8 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
-
+import {vanbandenApi} from '../../../common/Api';
+const api = vanbandenApi();
 class Detail extends Component {
     constructor(props) {
         super(props);
@@ -98,11 +99,11 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDen/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-        await asyncDelay();
+        const resultJson = await api.getDetail([
+            this.state.docId,
+            this.state.userId,
+            this.state.hasAuthorization
+        ]);
 
         this.setState({
             loading: false,
@@ -185,10 +186,11 @@ class Detail extends Component {
     onCheckFlow = async (item) => {
         this.setState({ executing: true });
 
-        const url = `${API_URL}/api/WorkFlow/CheckCanProcessFlow/${this.state.userId}/${this.state.docInfo.WorkFlow.Process.ID}/${item.ID}`;
-        const result = await fetch(url).then(response => response.json());
-
-        await asyncDelay();
+        const result = await api.checkFlow([
+            this.state.userId,
+            this.state.docInfo.WorkFlow.Process.ID,
+            item.ID
+        ]);
 
         this.setState({ executing: false })
 

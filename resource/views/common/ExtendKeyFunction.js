@@ -32,7 +32,7 @@ import * as SBIcons from '../../assets/styles/SideBarIcons';
 import Panel from './Panel';
 import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL } from '../../common/SystemConstant';
+import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL, generateTitle } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -43,9 +43,12 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import GoBackButton from './GoBackButton';
+import { accountApi } from '../../common/Api';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
 const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
 const { LichCongTacFunction, TienichFunction } = SYSTEM_FUNCTION;
+
+const api = accountApi();
 
 class ExtendKeyFunction extends Component {
   constructor(props) {
@@ -66,8 +69,9 @@ class ExtendKeyFunction extends Component {
   }
 
   fetchNotifyCount = async () => {
-    const url = `${API_URL}/api/Account/GetNumberOfMessagesOfUser/${this.state.userInfo.ID}`;
-    const result = await fetch(url).then(response => response.json());
+    const result = await api.getNotifyCount([
+      this.state.userInfo.ID
+    ]);
     this.setState({
       notifyCount_Lichhop: result.notifyCount_Lichhop || 0,
       notifyCount_Datxe: result.notifyCount_Datxe || 0,
@@ -154,37 +158,6 @@ class ExtendKeyFunction extends Component {
     return 0;
   }
 
-  generateTitle(maThaotac) {
-    let tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
-    switch (maThaotac) {
-
-      case TIENICH._DS_YEUCAU_XE.NAME:
-        tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
-        break;
-      case TIENICH._DS_CHUYEN.NAME:
-        tenThaotac = TIENICH._DS_CHUYEN.MOBILENAME;
-        break;
-      case TIENICH._DS_LICHHOP.NAME:
-        tenThaotac = TIENICH._DS_LICHHOP.MOBILENAME;
-        break;
-      case TIENICH._DS_UYQUYEN.NAME:
-        tenThaotac = TIENICH._DS_UYQUYEN.MOBILENAME;
-        break;
-      case TIENICH._DS_LICHTRUC.NAME:
-        tenThaotac = TIENICH._DS_LICHTRUC.MOBILENAME;
-        break;
-      case TIENICH._DS_NHACNHO.NAME:
-        tenThaotac = TIENICH._DS_NHACNHO.MOBILENAME;
-        break;
-      case TIENICH._KHAC.NAME:
-        tenThaotac = TIENICH._KHAC.MOBILENAME;
-        break;
-      default:
-        break;
-    }
-    return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
-  }
-
   moveToSpecialScreen = (webviewUrl = "", screenTitle = "", screenName = "WebViewerScreen") => {
     this.props.updateExtendsNavParams({
       webviewUrl,
@@ -248,7 +221,7 @@ class ExtendKeyFunction extends Component {
                             actionCode={sItem.MA_THAOTAC}
                             notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
                           />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{this.generateTitle(sItem.MA_THAOTAC)}</Text>
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                       }
                       else {

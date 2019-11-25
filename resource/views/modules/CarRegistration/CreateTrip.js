@@ -44,9 +44,12 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import GoBackButton from '../../common/GoBackButton';
+import { carApi, tripApi } from '../../../common/Api';
+
+const TripApi = tripApi();
+const CarApi = carApi();
 
 class CreateTrip extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -69,6 +72,8 @@ class CreateTrip extends Component {
 
       driverPageIndex: DEFAULT_PAGE_INDEX,
       carPageIndex: DEFAULT_PAGE_INDEX,
+      driverNumber: 5,
+      carNumber: 5,
 
       //hiệu ứng
       searchingInDriver: false,
@@ -87,9 +92,9 @@ class CreateTrip extends Component {
       loadingData: true
     });
 
-    const url = `${API_URL}/api/CarTrip/CreateTrip/${this.state.registrationId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await TripApi.getCreateHelper([
+      this.state.registrationId
+    ]);
 
     this.setState({
       loadingData: false,
@@ -141,28 +146,13 @@ class CreateTrip extends Component {
           executing: true
         });
 
-        const url = `${API_URL}/api/CarRegistration/AcceptCarRegistration`;
-        const headers = new Headers({
-          'Accept': 'application/json',
-          'Content-Type': 'application/json; charset=utf-8'
-        });
-        const body = JSON.stringify({
+        const resultJson = await CarApi.acceptRegistration({
           registrationId,
           carIds: chosenCars.join(","),
           driverIds: chosenDrivers.join(","),
           note: message,
           currentUserId: userId
         });
-
-        const result = await fetch(url, {
-          method: 'POST',
-          headers,
-          body
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
 
         this.setState({
           executing: false
@@ -187,9 +177,15 @@ class CreateTrip extends Component {
   }
 
   filterCars = async () => {
-    const url = `${API_URL}/api/CarTrip/SearchGroupOfCars/${this.state.registrationId}/${this.state.carPageIndex}/5?query=${this.state.carFilterValue}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      registrationId, carPageIndex, carNumber, carFilterValue
+    } = this.state;
+    const resultJson = await TripApi.filterCars([
+      registrationId,
+      carPageIndex,
+      `${carNumber}?query=${carFilterValue}`
+    ]);
+
     this.setState({
       searchingInCar: false,
       loadingMoreInCar: false,
@@ -197,9 +193,15 @@ class CreateTrip extends Component {
     })
   }
   filterDrivers = async () => {
-    const url = `${API_URL}/api/CarTrip/SearchGroupOfDrivers/${this.state.registrationId}/${this.state.driverPageIndex}/5?query=${this.state.driverFilterValue}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      registrationId, driverPageIndex, driverNumber, driverFilterValue
+    } = this.state;
+    const resultJson = await TripApi.filterDrivers([
+      registrationId,
+      driverPageIndex,
+      `${driverNumber}?query=${driverFilterValue}`
+    ])
+
     this.setState({
       searchingInDriver: false,
       loadingMoreInDriver: false,
@@ -451,7 +453,7 @@ class CreateTrip extends Component {
               <Text style={(this.state.currentTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>GHI CHÚ</Text>
             </TabHeading>
           }>
-            <Content contentContainerStyle={{padding: 5}}>
+            <Content contentContainerStyle={{ padding: 5 }}>
               <Form>
                 <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
               </Form>

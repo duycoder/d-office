@@ -51,7 +51,7 @@ export default class AlertMessage extends Component {
                 </Text>
               }
             />
-            <View style={[styles.content, {paddingHorizontal: 10}]}>
+            <View style={styles.content}>
               <Text style={styles.contentText}>
                 {this.props.bodyText}
               </Text>
@@ -61,7 +61,7 @@ export default class AlertMessage extends Component {
               {this.props.children}
               <View style={styles.rightFooter}>
                 <TouchableOpacity onPress={() => this.closeModal()} style={styles.footerButton}>
-                  <Text style={[styles.footerText, { fontWeight: 'bold', color: Colors.LITE_BLUE }]}>
+                  <Text style={[styles.footerText, styles.customFooterText]}>
                     {this.props.exitText}
                   </Text>
                 </TouchableOpacity>

@@ -35,6 +35,9 @@ import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { carApi } from '../../../common/Api';
+
+const api = carApi();
 
 class CreateRegistration extends Component {
   constructor(props) {
@@ -96,11 +99,10 @@ class CreateRegistration extends Component {
     this.setState({
       loading: true
     });
-
-    const url = `${API_URL}/api/CarRegistration/CreateCarRegistration/${this.state.currentUserId}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    
+    const resultJson = await api.getCreateHelper([
+      this.state.currentUserId
+    ]);
 
     this.setState({
       loading: false,
@@ -112,7 +114,7 @@ class CreateRegistration extends Component {
     this.props.navigation.goBack();
   }
 
-  onPickCanbo = async () => {
+  onPickCanbo = () => {
     const targetScreenParam = {
       listCanbo: this.state.baseListCanbo,
       canboId: this.state.canboId,
@@ -194,14 +196,7 @@ class CreateRegistration extends Component {
         executing: true
       });
 
-      const url = `${API_URL}/api/CarRegistration/SaveCarRegistration`;
-
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-
-      const body = JSON.stringify({
+      const resultJson = await api.saveRegistration({
         mucdich,
         noidung,
         ngayXP: ngayXP.split(" ")[0],
@@ -215,16 +210,6 @@ class CreateRegistration extends Component {
         currentUserId,
         lichCongtacId
       });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
 
       this.setState({
         executing: false

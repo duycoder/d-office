@@ -23,6 +23,8 @@ import { API_URL, Colors } from '../../../common/SystemConstant';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import AttachmentItem from '../../common/AttachmentItem';
+import { InfoStyle } from '../../../assets/styles';
 
 export default class TaskDescription extends Component {
     constructor(props) {
@@ -98,15 +100,15 @@ export default class TaskDescription extends Component {
                     const { SOHIEU, TRICHYEU, NGUOIKY, ID } = this.state.docInfo.entityVanBanDen;
                     relateDoc = (
                         <ListItem
-                            style={DetailTaskStyle.listItemContainer}
+                            style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Văn bản đến liên quan
                                 </Text>
                             }
                             subtitle={
-                                <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
+                                <Text style={[InfoStyle.listItemSubTitleContainer, { color: this.state.fromBrief ? '#777' : '#262626' }]}>
                                     <Text>{`Số hiệu: ${SOHIEU}` + "\n"}</Text>
                                     <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
                                     <Text>{`Người ký: ${NGUOIKY}`}</Text>
@@ -126,15 +128,15 @@ export default class TaskDescription extends Component {
                         { STR_DOKHAN, STR_NGUOIKY, STR_DOUUTIEN } = this.state.docInfo;
                     relateDoc = (
                         <ListItem
-                            style={DetailTaskStyle.listItemContainer}
+                            style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Văn bản đi liên quan
                             </Text>
                             }
                             subtitle={
-                                <Text style={[DetailTaskStyle.listItemSubTitleContainer, { color: '#262626' }]}>
+                                <Text style={[InfoStyle.listItemSubTitleContainer, { color: '#262626' }]}>
                                     <Text>{`Trích yếu: ${formatLongText(TRICHYEU, 50)}` + "\n"}</Text>
                                     <Text>{`Người ký: ${STR_NGUOIKY}` + "\n"}</Text>
                                     <Text>{`Độ khẩn: ${STR_DOKHAN}`}</Text>
@@ -155,118 +157,76 @@ export default class TaskDescription extends Component {
             : "N/A";
 
         return (
-            <View style={DetailTaskStyle.container}>
+            <View style={InfoStyle.container}>
                 <ScrollView>
-                    <List containerStyle={DetailTaskStyle.listContainer}>
+                    <List containerStyle={InfoStyle.listContainer}>
                         {
                             this.state.docInfo && relateDoc
                         }
-                        {
-                            (this.state.attachments && this.state.attachments.length > 0)
-                                ? <ListItem style={DetailTaskStyle.listItemContainer}
-                                    hideChevron={true}
-                                    title={
-                                        <Text style={DetailTaskStyle.listItemTitleContainer}>
-                                            Đính kèm
-                                        </Text>
-                                    }
-                                    subtitle={
-                                        <View>
-                                            {
-                                                this.state.attachments.map((item, index) => {
-                                                    let regExtension = extention(item.DUONGDAN_FILE);
-                                                    let extension = regExtension ? regExtension[0] : "";
-                                                    return <ListItem
-                                                        key={index.toString()}
-                                                        leftIcon={getFileExtensionLogo(extension)}
-                                                        title={item.TENTAILIEU}
-                                                        titleStyle={{
-                                                            marginLeft: 10,
-                                                            color: '#707070',
-                                                            fontWeight: 'bold'
-                                                        }}
-                                                        subtitle={
-                                                            getFileSize(item.KICHCO) + " | " + convertDateToString(item.NGAYTAO) + " " + convertTimeToString(item.NGAYTAO)
-                                                        }
-                                                        subtitleStyle={{
-                                                            fontWeight: 'normal',
-                                                            color: '#707070',
-                                                            marginLeft: 10,
-                                                        }}
-                                                        rightIcon={
-                                                            <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                                                        }
-                                                        containerStyle={{ borderBottomWidth: 0 }}
-                                                        onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
-                                                    />
-                                                })
-                                            }
-                                        </View>
-                                    } />
-                                : null
-                        }
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <AttachmentItem data={this.state.attachments} />
+
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Tên công việc
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.CongViec.TENCONGVIEC}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Ngày hoàn thành mong muốn
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {convertDateToString(this.props.info.CongViec.NGAYHOANTHANH_THEOMONGMUON)}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Người giao việc
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.NGUOIGIAOVIEC}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Người xử lý chính
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {util.isEmpty(this.props.info.NGUOIXULYCHINH) ? "Chưa giao việc" : this.props.info.NGUOIXULYCHINH}
                                 </Text>
                             } />
                         {
-                            this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0 && <ListItem style={DetailTaskStyle.listItemContainer}
+                            this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0 && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}
                                 title={
-                                    <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                    <Text style={InfoStyle.listItemTitleContainer}>
                                         Người tham gia
                                     </Text>
                                 }
                                 subtitle={
-                                    <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                    <Text style={InfoStyle.listItemSubTitleContainer}>
                                         {
                                             ListThamgiaStr
                                             // util.isNull(this.props.info.LstNguoiThamGia) || util.isEmpty(this.props.info.LstNguoiThamGia) ? 'N/A' : this.props.info.LstNguoiThamGia.toString()
@@ -275,66 +235,66 @@ export default class TaskDescription extends Component {
                                 } />
                         }
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Nội dung công việc
                                 </Text>
                             }
                             subtitle={
                                 <HTMLView
                                     value={this.props.info.CongViec.NOIDUNGCONGVIEC}
-                                    stylesheet={{ p: DetailTaskStyle.listItemSubTitleContainer }}
+                                    stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
                                 />
                             } />
 
                         {
-                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            // <ListItem style={InfoStyle.listItemContainer}
                             //     hideChevron={true}
                             //     title={
-                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //         <Text style={InfoStyle.listItemTitleContainer}>
                             //             SỐ NGÀY NHẮC VIỆC TRƯỚC HẠN
                             //     </Text>
                             //     }
                             //     subtitle={
-                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //         <Text style={InfoStyle.listItemSubTitleContainer}>
                             //             {this.props.info.CongViec.SONGAYNHACTRUOCHAN || "Không thiết lập"}
                             //         </Text>
                             //     } />
-                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            // <ListItem style={InfoStyle.listItemContainer}
                             //     hideChevron={true}
                             //     title={
-                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //         <Text style={InfoStyle.listItemTitleContainer}>
                             //             NHẮC VIỆC BẰNG EMAIL
                             //     </Text>
                             //     }
                             //     subtitle={
-                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //         <Text style={InfoStyle.listItemSubTitleContainer}>
                             //             {this.props.info.CongViec.IS_EMAIL ? 'Có' : 'Không'}
                             //         </Text>
                             //     } />
-                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            // <ListItem style={InfoStyle.listItemContainer}
                             //     hideChevron={true}
                             //     title={
-                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //         <Text style={InfoStyle.listItemTitleContainer}>
                             //             NHẮC VIỆC BẰNG SMS
                             //     </Text>
                             //     }
                             //     subtitle={
-                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //         <Text style={InfoStyle.listItemSubTitleContainer}>
                             //             {this.props.info.CongViec.IS_SMS ? 'Có' : 'Không'}
                             //         </Text>
                             //     } />
-                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            // <ListItem style={InfoStyle.listItemContainer}
                             //     hideChevron={true}
                             //     title={
-                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //         <Text style={InfoStyle.listItemTitleContainer}>
                             //             NHẮC VIỆC BẰNG TIN THÔNG BÁO
                             //     </Text>
                             //     }
                             //     subtitle={
-                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //         <Text style={InfoStyle.listItemSubTitleContainer}>
                             //             {this.props.info.CongViec.IS_POPUP ? 'Có' : 'Không'}
                             //         </Text>
                             //     } />
@@ -343,55 +303,55 @@ export default class TaskDescription extends Component {
 
                         {
                             // this.props.info.CongViec.IS_HASPLAN &&
-                            // <ListItem style={DetailTaskStyle.listItemContainer}
+                            // <ListItem style={InfoStyle.listItemContainer}
                             //     hideChevron={true}
                             //     title={
-                            //         <Text style={DetailTaskStyle.listItemTitleContainer}>
+                            //         <Text style={InfoStyle.listItemTitleContainer}>
                             //             NGÀY HOÀN THÀNH THEO KẾ HOẠCH
                             //         </Text>
                             //     }
                             //     subtitle={
-                            //         <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                            //         <Text style={InfoStyle.listItemSubTitleContainer}>
                             //             {util.isNull(this.props.info.CongViec.NGAYKETTHUC_KEHOACH) ? "Chưa duyệt kế hoạch" : convertDateToString(this.props.info.CongViec.NGAYKETTHUC_KEHOACH)}
                             //         </Text>
                             //     }
                             // />
                         }
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Độ ưu tiên
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.DOUUTIEN}
                                 </Text>
                             } />
 
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Mức độ quan trọng
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.DOKHAN}
                                 </Text>
                             } />
-                        <ListItem style={DetailTaskStyle.listItemContainer}
+                        <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
                             title={
-                                <Text style={DetailTaskStyle.listItemTitleContainer}>
+                                <Text style={InfoStyle.listItemTitleContainer}>
                                     Trạng thái
                                 </Text>
                             }
                             subtitle={
-                                <Text style={DetailTaskStyle.listItemSubTitleContainer}>
+                                <Text style={InfoStyle.listItemSubTitleContainer}>
                                     {this.props.info.CongViec.PHANTRAMHOANTHANH === 100 ? `Đã hoàn thành vào ${convertDateTimeToTitle(this.props.info.CongViec.NGAYKETTHUC_THUCTE)}` : "Đang thực hiện"}
                                 </Text>
                             } />

@@ -254,7 +254,7 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
     // url = url.replace('\\', '/');
     // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
-    
+
     let regExtension = extention(url);
     let extension = "." + regExtension[0];
     const { config, fs } = RNFetchBlob;
@@ -406,13 +406,20 @@ export function convertStringToDate(dateString) {
  * Kiểm tra xem object truyền vào có phải Mảng (Array) không
  * @param {any} needCheckObj object cần kiểm tra
  */
-export function isArray(needCheckObj){
+export function isArray(needCheckObj) {
     return !!needCheckObj && needCheckObj.constructor === Array;
 }
 /**
  * Kiểm tra xem object truyền vào có phải Đối tượng (Object) không
  * @param {any} needCheckObj object cần kiểm tra
  */
-export function isObject(needCheckObj){
+export function isObject(needCheckObj) {
     return !!needCheckObj && needCheckObj.constructor === Object;
+}
+/**
+ * Kiểm tra xem object truyền vào có rỗng không
+ * @param {*} obj 
+ */
+export function isObjectEmpty(obj = {}) {
+    return Object.keys(obj).length < 1;
 }
