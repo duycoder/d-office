@@ -448,25 +448,25 @@ class DetailTask extends Component {
                 //     }
                 // }
 
-                if (task.CongViec.NGUOIGIAOVIECDAPHANHOI == true) {
-                    if (task.IsNguoiGiaoViec == true
-                        && task.CongViec.PHANTRAMHOANTHANH == 100
-                        && task.CongViec.DATUDANHGIA == true
-                        && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
+                // if (task.CongViec.NGUOIGIAOVIECDAPHANHOI == true) {
+                //     if (task.IsNguoiGiaoViec == true
+                //         && task.CongViec.PHANTRAMHOANTHANH == 100
+                //         && task.CongViec.DATUDANHGIA == true
+                //         && task.CongViec.NGUOIGIAOVIECDANHGIA != true) {
 
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
-                        )
-                    }
+                //         menuActions.push(
+                //             { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
+                //             // <InteractiveButton title={'Duyệt đánh giá công việc'} onPress={() => this.onApproveEvaluationTask()} key={7} />
+                //         )
+                //     }
 
-                    if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>TỰ ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
-                        )
-                    }
-                }
+                //     if (task.IsNguoiThucHienChinh && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.DATUDANHGIA != true) {
+                //         menuActions.push(
+                //             { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onEvaluationTask()}><RnText style={ButtonGroupStyle.buttonText}>TỰ ĐÁNH GIÁ CÔNG VIỆC</RnText></TouchableOpacity> }
+                //             // <InteractiveButton title={'Tự đánh giá công việc'} onPress={() => this.onEvaluationTask()} key={8} />
+                //         )
+                //     }
+                // }
             } else {
                 // Nếu công việc chưa bắt đầu
                 if (task.CongViec.NGUOIXULYCHINH_ID == null) {
@@ -492,12 +492,12 @@ class DetailTask extends Component {
                     // menuActions.push(
                     //     <InteractiveButton title={'THEO DÕI'} key={11} />
                     // )
-                    if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmPlan()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT KẾ HOẠCH</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
-                        )
-                    }
+                    // if (task.CongViec.IS_HASPLAN == true && task.TrangThaiKeHoach == PLANJOB_CONSTANT.DATRINHKEHOACH) {
+                    //     menuActions.push(
+                    //         { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmPlan()}><RnText style={ButtonGroupStyle.buttonText}>DUYỆT KẾ HOẠCH</RnText></TouchableOpacity> }
+                    //         // <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
+                    //     )
+                    // }
                 } else {
                     // if (task.CongViec.IS_HASPLAN == true) {
                     //     // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
