@@ -35,6 +35,9 @@ import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { meetingRoomApi } from '../../../common/Api';
+
+const MeetingRoomApi = meetingRoomApi();
 
 class CreateMeetingDay extends Component {
   constructor(props) {
@@ -78,6 +81,15 @@ class CreateMeetingDay extends Component {
           });
         }
       }
+      if (this.props.extendsNavParams.hasOwnProperty("phonghopId")) {
+        if (this.props.extendsNavParams.phonghopId > 0) {
+          this.setState({
+            phonghopId: this.props.extendsNavParams.phonghopId,
+            phonghopName: this.props.extendsNavParams.phonghopName,
+            fromScreen: EMPTY_STRING
+          })
+        }
+      }
     });
   }
 
@@ -98,10 +110,9 @@ class CreateMeetingDay extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/MeetingRoom/CreateLichhop/${this.state.userId}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await MeetingRoomApi.getCreateHelper([
+      this.state.userId
+    ]);
 
     this.setState({
       loading: false,
@@ -125,9 +136,19 @@ class CreateMeetingDay extends Component {
   }
 
   onPickPhonghop = () => {
+    const {
+      phonghopId, phonghopName, thoigianBatdau, thoigianKetthuc, ngayHop
+    } = this.state;
+
     const targetScreenParam = {
-      phonghopId: this.state.phonghopId,
-      phonghopName: this.state.phonghopName
+      phonghopId: phonghopId,
+      phonghopName: phonghopName,
+      fromScreen: "createMeetingDay",
+      startHour: thoigianBatdau.split(":")[0],
+      startMinute: thoigianBatdau.split(":")[1],
+      endHour: thoigianKetthuc.split(":")[0],
+      endMinute: thoigianKetthuc.split(":")[1],
+      currentDate: ngayHop
     };
     this.onNavigate("PickMeetingRoomScreen", targetScreenParam);
   }
@@ -202,14 +223,7 @@ class CreateMeetingDay extends Component {
         executing: true
       });
 
-      const url = `${API_URL}/api/MeetingRoom/SaveLichhop`;
-
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-
-      const body = JSON.stringify({
+      const resultJson = await MeetingRoomApi.saveCalendar({
         mucdich,
         thamgia,
         ngayHop,
@@ -220,17 +234,7 @@ class CreateMeetingDay extends Component {
         chutriId: canCreateMeetingForOthers ? chutriId : userId,
         userId,
         lichCongtacId,
-      });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
+      })
 
       this.setState({
         executing: false
@@ -434,7 +438,7 @@ class CreateMeetingDay extends Component {
                 <Button transparent style={{ width: phonghopId > 0 ? '100%' : '90%' }} onPress={() => this.onPickPhonghop()}>
                   {
                     !!phonghopName
-                      ? <Text style={{ color: '#ccc' }}>Chọn phòngh họp</Text>
+                      ? <Text style={{ color: '#ccc' }}>Chọn phòng họp</Text>
                       : <Text style={{ color: Colors.BLACK }}>{phonghopName}</Text>
                   }
                 </Button>

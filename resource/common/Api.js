@@ -117,10 +117,33 @@ const tripApi = () => {
   };
 }
 
+const meetingRoomApi = () => {
+  const getRooms = (payloadBody = {}) => api.post("MeetingRoom/SearchPhonghop", payloadBody);
+  const saveRoom = (payloadBody = {}) => api.post("MeetingRoom/SavePhonghop", payloadBody);
+  const getCreateHelper = (params = []) => api.get("MeetingRoom/CreateLichhop", params);
+  const saveCalendar = (payloadBody = {}) => api.post("MeetingRoom/SaveLichhop", payloadBody);
+  const getDetail = (params = []) => api.get("MeetingRoom/DetailLichhop", params);
+  const cancelCalendar = (payloadBody = {}) => api.post("MeetingRoom/CancelLichhop", payloadBody);
+  const getListCalendar = (payloadBody = {}) => api.post("MeetingRoom/ListLichhop", payloadBody);
+  const getNguoichutri = (params = []) => api.get("MeetingRoom/SearchChutriHop", params);
+
+  return {
+    getRooms,
+    saveRoom,
+    getCreateHelper,
+    saveCalendar,
+    getDetail,
+    cancelCalendar,
+    getListCalendar,
+    getNguoichutri
+  };
+}
+
 export {
   lichtrucApi,
   vanbandenApi,
   accountApi,
   carApi,
-  tripApi
+  tripApi,
+  meetingRoomApi
 }

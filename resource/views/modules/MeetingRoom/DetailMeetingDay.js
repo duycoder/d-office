@@ -42,6 +42,9 @@ import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-
 import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import InfoMeetingDay from './InfoMeetingDay';
 import AlertMessage from '../../common/AlertMessage';
+import { meetingRoomApi } from '../../../common/Api';
+
+const MeetingRoomApi = meetingRoomApi();
 
 class DetailMeetingDay extends Component {
   constructor(props) {
@@ -85,11 +88,14 @@ class DetailMeetingDay extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/MeetingRoom/DetailLichhop/${this.state.lichhopId}/${this.state.userId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      lichhopId, userId
+    } = this.state;
 
-    await asyncDelay();
+    const resultJson = await MeetingRoomApi.getDetail([
+      lichhopId,
+      userId
+    ]);
 
     this.setState({
       loading: false,
@@ -139,32 +145,17 @@ class DetailMeetingDay extends Component {
       executing: true
     });
 
-    const url = `${API_URL}/api/CarRegistration/SendCarRegistration`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await MeetingRoomApi.cancelCalendar({
       lichhopId,
       userId
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executing: false
     })
 
     Toast.show({
-      text: 'Huỷ đặt phòng họp ' + resultJson.Status ? 'thành công' : 'thất bại',
+      text: 'Huỷ lịch họp ' + resultJson.Status ? 'thành công' : 'thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -196,16 +187,19 @@ class DetailMeetingDay extends Component {
     }
     else {
       if (canBookingRoom) {
-        if (entity.PHONGHOP_ID) {
-          workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ ĐẶT PHÒNG</RNText></RnButton>
-          })
-        }
-        // else{
+        workflowButtons.push({
+          element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ LỊCH HỌP</RNText></RnButton>
+        })
+        // if (entity.PHONGHOP_ID) {
         //   workflowButtons.push({
-        //     element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSelectRoom()}><RNText style={ButtonGroupStyle.buttonText}>ĐẶT PHÒNG</RNText></RnButton>
+        //     element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ ĐẶT PHÒNG</RNText></RnButton>
         //   })
         // }
+        if (!entity.PHONGHOP_ID) {
+          workflowButtons.push({
+            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSelectRoom()}><RNText style={ButtonGroupStyle.buttonText}>ĐẶT PHÒNG</RNText></RnButton>
+          })
+        }
       }
 
       bodyContent = <DetailContent lichhopInfo={this.state.lichhopInfo} buttons={workflowButtons} />
@@ -235,8 +229,8 @@ class DetailMeetingDay extends Component {
 
         <AlertMessage
           ref="confirmCancelRegistration"
-          title="XÁC NHẬN HUỶ ĐẶT PHÒNG"
-          bodyText="Bạn có chắc chắn muốn hủy đặt phòng họp này?"
+          title="XÁC NHẬN HUỶ LỊCH HỌP"
+          bodyText="Bạn có chắc chắn muốn hủy lịch họp này?"
           exitText="Hủy bỏ"
         >
           <View style={AlertMessageStyle.leftFooter}>

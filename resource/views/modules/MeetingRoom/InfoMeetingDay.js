@@ -116,10 +116,10 @@ class RegistrationInfo extends Component {
                 </Text>
               } />
             {
-              !!info.DuongdanFile && <ListItem style={DetailPublishDocStyle.listItemContainer}
+              !!info.DuongdanFile && <ListItem style={InfoStyle.listItemContainer}
                 hideChevron={true}
                 title={
-                  <Text style={DetailPublishDocStyle.listItemTitleContainer}>
+                  <Text style={InfoStyle.listItemTitleContainer}>
                     Đính kèm
                   </Text>
                 }

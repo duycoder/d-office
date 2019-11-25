@@ -41,6 +41,7 @@ import { indicatorResponsive, moderateScale } from '../../../assets/styles/Scale
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import { meetingRoomApi } from '../../../common/Api';
 
 const TOTAL_TIME_OF_DAY = 86400000;
 
@@ -95,21 +96,10 @@ class MeetingDayList extends Component {
   }
 
   async fetchData(startDate, endDate, chosenTimeStamp) {
-    const url = `${API_URL}/api/MeetingRoom/ListLichhop/`
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await meetingRoomApi().getListCalendar({
       startDate,
       endDate
-    });
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-    const resultJson = await result.json();
+    })
 
     setTimeout(() => {
       for (let i = -15; i < 15; i++) {

@@ -44,6 +44,9 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import GoBackButton from '../../common/GoBackButton';
+import { meetingRoomApi } from '../../../common/Api';
+
+const MeetingRoomApi = meetingRoomApi();
 
 class PickMeetingRoom extends Component {
 
@@ -51,23 +54,33 @@ class PickMeetingRoom extends Component {
     super(props);
     this.state = {
       userId: props.userInfo.ID,
-      lichhopId: this.props.extendsNavParams.lichhopId,
+      lichhopId: props.extendsNavParams.lichhopId || 0,
 
       executing: false,
       loadingData: false,
 
       rooms: [],
 
-      chosenRoom: 0,
+      phonghopId: props.extendsNavParams.phonghopId || 0,
+      phonghopName: props.extendsNavParams.phonghopName || EMPTY_STRING,
 
       roomFilterValue: EMPTY_STRING,
 
       roomPageIndex: DEFAULT_PAGE_INDEX,
+      roomPageSize: DEFAULT_PAGE_SIZE,
 
       //hiệu ứng
       searchingInRoom: false,
       loadingMoreInRoom: false,
-    }
+
+      startHour: props.extendsNavParams.startHour || 0,
+      startMinute: props.extendsNavParams.startMinute || 0,
+      endHour: props.extendsNavParams.endHour || 0,
+      endMinute: props.extendsNavParams.endMinute || 0,
+      currentDate: props.extendsNavParams.currentDate || EMPTY_STRING,
+
+      fromScreen: props.extendsNavParams.fromScreen || "detailMeetingDay", // createMeetingDay OR detailMeetingDay
+    };
   }
 
   componentDidMount = () => {
@@ -79,9 +92,23 @@ class PickMeetingRoom extends Component {
       loadingData: true
     });
 
-    const url = `${API_URL}/api/MeetingRoom/SearchPhonghop/10/${this.state.roomPageIndex}/${this.state.roomFilterValue}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      roomPageIndex, roomPageSize, roomFilterValue, lichhopId,
+      startHour, startMinute, endHour, endMinute, userId, currentDate
+    } = this.state;
+
+    const resultJson = await MeetingRoomApi.getRooms({
+      pageIndex: roomPageIndex,
+      pageSize: roomPageSize,
+      query: roomFilterValue,
+      meetingCalendarId: lichhopId,
+      startHour,
+      startMinute,
+      endHour,
+      endMinute,
+      userId,
+      currentDate
+    });
 
     this.setState({
       loadingData: false,
@@ -93,13 +120,31 @@ class PickMeetingRoom extends Component {
     this.props.navigation.goBack();
   }
 
+  preSaveRoom = () => {
+    const {
+      fromScreen,
+      phonghopName, phonghopId
+    } = this.state;
+
+    if (fromScreen === "detailMeetingDay") {
+      this.saveRoom();
+    }
+    else {
+      this.props.updateExtendsNavParams({
+        phonghopName,
+        phonghopId
+      });
+      this.navigateBack();
+    }
+  }
+
   saveRoom = async () => {
     //validate
     const {
-      rooms, chosenRoom, lichhopId, userId
+      rooms, phonghopId, lichhopId, userId
     } = this.state;
     if (rooms.length > 0) {
-      if (chosenRoom === 0){
+      if (phonghopId === 0) {
         Toast.show({
           text: 'Vui lòng chọn phòng họp',
           type: 'danger',
@@ -113,26 +158,11 @@ class PickMeetingRoom extends Component {
           executing: true
         });
 
-        const url = `${API_URL}/api/MeetingRoom/SavePhonghop`;
-        const headers = new Headers({
-          'Accept': 'application/json',
-          'Content-Type': 'application/json; charset=utf-8'
-        });
-        const body = JSON.stringify({
+        const resultJson = await MeetingRoomApi.saveRoom({
           userId,
           meetingCalendarId: lichhopId,
-          meetingRoomId: chosenRoom
+          meetingRoomId: phonghopId
         });
-
-        const result = await fetch(url, {
-          method: 'POST',
-          headers,
-          body
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
 
         this.setState({
           executing: false
@@ -157,9 +187,24 @@ class PickMeetingRoom extends Component {
   }
 
   filtlerRooms = async () => {
-    const url = `${API_URL}/api/MeetingRoom/SearchPhonghop/10/${this.state.roomPageIndex}/${this.state.roomFilterValue}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      roomPageIndex, roomPageSize, roomFilterValue, lichhopId,
+      startHour, startMinute, endHour, endMinute, currentDate, userId
+    } = this.state;
+
+    const resultJson = await MeetingRoomApi.getRooms({
+      pageIndex: roomPageIndex,
+      pageSize: roomPageSize,
+      query: roomFilterValue,
+      meetingCalendarId: lichhopId,
+      startHour,
+      startMinute,
+      endHour,
+      endMinute,
+      userId,
+      currentDate
+    });
+
     this.setState({
       searchingInRoom: false,
       loadingMoreInRoom: false,
@@ -169,7 +214,7 @@ class PickMeetingRoom extends Component {
 
   onFilter = () => {
     this.setState({
-      chosenRoom: 0,
+      phonghopId: 0,
       searchingInRoom: true,
       roomPageIndex: DEFAULT_PAGE_INDEX
     }, () => this.filtlerRooms());
@@ -192,11 +237,10 @@ class PickMeetingRoom extends Component {
   }
 
   onSelectRoom = (roomId) => {
-    this.setState({ chosenRoom: roomId });
+    this.setState({ phonghopId: roomId });
   }
 
   renderRooms = ({ item }) => {
-    const nameCode = item.Text.split(" - ")
     return (
       <ListItem
         key={item.Value.toString()}
@@ -205,23 +249,15 @@ class PickMeetingRoom extends Component {
         <Left>
           <Title>
             <Text>
-              {nameCode[0]}
+              {item.Text}
             </Text>
           </Title>
         </Left>
 
-        <Body>
-          <Title>
-            <Text>
-              {nameCode[1]}
-            </Text>
-          </Title>
-        </Body>
-
         <Right>
           <CheckBox
             onPress={() => this.onSelectRoom(item.Value)}
-            checked={(this.state.chosenRoom == item.Value)}
+            checked={(this.state.phonghopId == item.Value)}
             style={{ alignSelf: "center" }}
           />
         </Right>
@@ -298,7 +334,7 @@ class PickMeetingRoom extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.saveRoom()}>
+            <Button transparent onPress={() => this.preSaveRoom()}>
               <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
             </Button>
           </Right>

@@ -43,6 +43,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 // import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 // import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
+import { meetingRoomApi } from '../../../common/Api';
 
 
 class PickNguoiChutri extends Component {
@@ -72,18 +73,11 @@ class PickNguoiChutri extends Component {
   }
 
   fetchData = async (isLoadmore = false) => {
-    const {
-      pageIndex, pageSize, keyword
-    } = this.state;
-
-    this.setState({
-      loading: isLoadmore ? false : true
-    });
-    const url = `${API_URL}/api/MeetingRoom/SearchChutriHop/${pageSize}/${pageIndex}/${keyword ? keyword.trim().toLowerCase() : ""}`;
-
-    const result = await fetch(url);
-
-    const resultJson = await result.json();
+    const resultJson = await meetingRoomApi().getNguoichutri([
+      pageSize,
+      pageIndex,
+      keyword ? keyword.trim().toLowerCase() : ""
+    ]);
 
     this.setState({
       data: isLoadmore ? [...this.state.data, ...resultJson.Params] : resultJson.Params,
@@ -119,10 +113,6 @@ class PickNguoiChutri extends Component {
   }
 
   renderMainAssigner = ({ item }) => {
-    // const nameRoleTmp = item.Text.split(" - "),
-    //   nameTmp = nameRoleTmp[0],
-    //   roleTmp = nameRoleTmp[1];
-
     return (
       <NbListItem
         key={item.Value}
@@ -136,17 +126,6 @@ class PickNguoiChutri extends Component {
             </Text>
           </Title>
         </Left>
-
-        {
-          // <Body>
-          //   <Title>
-          //     <Text>
-          //       {item.Group.name}
-          //     </Text>
-          //   </Title>
-          // </Body>
-        }
-
         <Right>
           <CheckBox
             color={Colors.LITE_BLUE}
