@@ -32,6 +32,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { taskApi } from '../../../common/Api';
 
 class CreateSubTask extends Component {
 	constructor(props) {
@@ -94,7 +95,11 @@ class CreateSubTask extends Component {
 	}
 
 	onCreateSubTask = async () => {
-		if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {
+		const {
+			taskId, content, priorityValue, urgencyValue, chosenDate, planValue
+		} = this.state;
+
+		if (util.isNull(content) || util.isEmpty(content)) {
 			Toast.show({
 				text: 'Vui lòng nhập nội dung',
 				type: 'danger',
@@ -102,7 +107,7 @@ class CreateSubTask extends Component {
 				buttonStyle: { backgroundColor: Colors.WHITE },
 				buttonTextStyle: { color: Colors.LITE_BLUE },
 			});
-		} else if (util.isNull(this.state.chosenDate) || util.isEmpty(this.state.chosenDate)) {
+		} else if (util.isNull(chosenDate) || util.isEmpty(chosenDate)) {
 			Toast.show({
 				text: 'Vui lòng nhập thời hạn xử lý',
 				type: 'danger',
@@ -114,32 +119,15 @@ class CreateSubTask extends Component {
 			this.setState({
 				executing: true
 			});
-
-			const url = `${API_URL}/api/HscvCongViec/CreateSubTask`;
-
-			const headers = new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json; charset=utf-8'
+			
+			const resultJson = await taskApi().saveSubTask({
+				beginTaskId: taskId,
+				taskContent: content,
+				priority: priorityValue,
+				urgency: urgencyValue,
+				deadline: chosenDate,
+				isHasPlan: planValue == '1'
 			});
-
-			const body = JSON.stringify({
-				beginTaskId: this.state.taskId,
-				taskContent: this.state.content,
-				priority: this.state.priorityValue,
-				urgency: this.state.urgencyValue,
-				deadline: this.state.chosenDate,
-				isHasPlan: this.state.planValue == '1'
-			});
-
-			const result = await fetch(url, {
-				method: 'POST',
-				headers,
-				body
-			});
-
-			const resultJson = await result.json();
-
-			await asyncDelay();
 
 			this.setState({
 				executing: false

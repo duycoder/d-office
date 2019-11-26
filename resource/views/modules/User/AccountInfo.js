@@ -49,6 +49,7 @@ const userAvatar = require('../../../assets/images/avatar.png');
 
 import Images from '../../../common/Images';
 import GoBackButton from '../../common/GoBackButton';
+import { accountApi } from '../../../common/Api';
 
 class AccountInfo extends Component {
   constructor(props) {
@@ -90,10 +91,9 @@ class AccountInfo extends Component {
   }
 
   fetchData = async () => {
-    const url = `${API_URL}/api/account/GetUserInfo/${this.state.id}`;
-    let result = await fetch(url)
-      .then(response => response.json())
-      .then(responseJson => responseJson);
+    let result = await accountApi().getInfo([
+      this.state.id
+    ]);
 
     this.setState({
       userName: result.TENDANGNHAP || '(Không có)',

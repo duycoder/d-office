@@ -36,6 +36,7 @@ import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { accountApi } from '../../../common/Api';
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
 
@@ -182,38 +183,19 @@ class AccountEditor extends Component {
       return;
     }
 
-    const url = `${API_URL}/api/Account/UpdatePersonalInfo`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-    });
-
-    // let DateFormat = this.state.dateOfBirth.split('/');
-    // let ConvertDateFormat = DateFormat[1] + '/' + DateFormat[0] + '/' + DateFormat[2];
-
-    const body = JSON.stringify({
+    const result = await accountApi().updateInfo({
       ID: this.state.id,
       HOTEN: savedFullname,
       NGAYSINH: savedDateOfBirth,
       DIENTHOAI: savedMobilePhone,
       DIACHI: savedAddress,
-      EMAIL: savedEmail,
+      EMAIL: savedEmail
     });
 
-    await asyncDelay();
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          loading: false
-        });
-        return responseJson;
+      this.setState({
+        loading: false
       });
+
     if (result.Status) {
       this.props.updateExtendsNavParams({ check: true });
       Toast.show({

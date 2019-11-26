@@ -43,6 +43,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 // import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 // import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
+import { carApi } from '../../../common/Api';
 
 
 class PickCanbo extends Component {
@@ -79,11 +80,12 @@ class PickCanbo extends Component {
     this.setState({
       loading: isLoadmore ? false : true
     });
-    const url = `${API_URL}/api/CarRegistration/CreateCarRegistrationHelper/${pageSize}/${pageIndex}/${keyword ? keyword.trim().toLowerCase() : ""}`;
 
-    const result = await fetch(url);
-
-    const resultJson = await result.json();
+    const resultJson = await carApi().getCreateHelper([
+      pageSize,
+      pageIndex,
+      keyword ? keyword.trim().toLowerCase() : EMPTY_STRING,
+    ]);
 
     this.setState({
       data: isLoadmore ? [...this.state.data, ...resultJson.Params] : resultJson.Params,

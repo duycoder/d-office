@@ -41,6 +41,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import GoBackButton from '../../common/GoBackButton';
+import { reminderApi } from '../../../common/Api';
 
 class PickWhoseReminder extends Component {
   constructor(props) {
@@ -76,11 +77,12 @@ class PickWhoseReminder extends Component {
     this.setState({
       loading: isLoadmore ? false : true
     });
-    const url = `${API_URL}/api/Reminder/SearchWhoseReminder/${pageSize}/${pageIndex}/${keyword ? keyword.trim().toLowerCase() : ""}`;
 
-    const result = await fetch(url);
-
-    const resultJson = await result.json();
+    const resultJson = await reminderApi().getWhoseReminder([
+      pageSize,
+      pageIndex,
+      keyword ? keyword.trim().toLowerCase() : ""
+    ]);
 
     this.setState({
       data: isLoadmore ? [...this.state.data, ...resultJson.Params] : resultJson.Params,

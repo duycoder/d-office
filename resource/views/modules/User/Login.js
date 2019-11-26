@@ -37,6 +37,7 @@ import firebase from 'react-native-firebase';
 
 //debug
 import Reactotron from 'reactotron-react-native'
+import { accountApi } from '../../../common/Api';
 
 //images
 const uriBackground = require('../../../assets/images/background.png');
@@ -167,27 +168,11 @@ class Login extends Component {
                 loading: true
             });
 
-            const url = `${API_URL}/api/Account/Login`;
-            const headers = new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
-            });
-
-            const body = JSON.stringify({
+            const resultJson = await accountApi().postLogin({
                 UserName: this.state.userName,
                 Password: this.state.password,
                 DeviceToken: deviceToken
             });
-
-            const result = await fetch(url, {
-                method: 'POST',
-                headers,
-                body
-            });
-
-            const resultJson = await result.json();
-
-            await asyncDelay();
 
             if (resultJson != null) {
                 if (resultJson.hasOwnProperty("Message")) {

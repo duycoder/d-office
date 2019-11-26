@@ -35,6 +35,9 @@ import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { reminderApi } from '../../../common/Api';
+
+const ReminderApi = reminderApi();
 
 class CreateReminder extends Component {
   constructor(props) {
@@ -90,10 +93,9 @@ class CreateReminder extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/Reminder/CreateReminder/${this.state.userId}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await ReminderApi.getCreateHelper([
+      this.state.userId
+    ]);
 
     this.setState({
       loading: false,
@@ -142,14 +144,7 @@ class CreateReminder extends Component {
         executing: true
       });
 
-      const url = `${API_URL}/api/Reminder/SaveReminder`;
-
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-
-      const body = JSON.stringify({
+      const resultJson = await ReminderApi.saveReminder({
         userId: giamdocId || userId,
         reminderId: 0,
         noidung,
@@ -158,16 +153,6 @@ class CreateReminder extends Component {
         phut: thoigian.split(" ")[1].split(":")[1],
         period: period
       });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
 
       this.setState({
         executing: false

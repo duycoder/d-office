@@ -44,6 +44,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import GoBackButton from '../../common/GoBackButton';
+import { tripApi } from '../../../common/Api';
 
 class ReturnTrip extends Component {
   constructor(props) {
@@ -63,31 +64,18 @@ class ReturnTrip extends Component {
 
   saveReturn = async () => {
     const {
-      tripId, ghichu
+      tripId, ghichu, userId
     } = this.state;
+    
     this.setState({
       executing: true
     });
 
-    const url = `${API_URL}/api/CarTrip/CheckReturnTrip?tripId=${tripId}&ghichu=${ghichu}`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await tripApi().returnTrip({
+      userId,
       tripId,
       ghichu
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executing: false

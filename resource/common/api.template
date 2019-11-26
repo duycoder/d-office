@@ -1,0 +1,9 @@
+const templateApi = ()  => {
+  const getFunc = (params = []) => api.get("", params);
+  const postFunc = (payloadBody={})=>api.post("",payloadBody);
+
+  return {
+    getFunc,
+    postFunc
+  };
+}

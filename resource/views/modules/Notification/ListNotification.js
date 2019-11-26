@@ -26,6 +26,9 @@ import renderIf from 'render-if';
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import { accountApi } from '../../../common/Api';
+
+const AccountApi = accountApi();
 
 class ListNotification extends Component {
     constructor(props) {
@@ -48,19 +51,7 @@ class ListNotification extends Component {
     onPressNotificationItem = async (item) => {
         //update read state for unread noti
         if (!item.IS_READ) {
-            const url = `${API_URL}/api/account/UpdateReadStateOfMessage`;
-            const headers = new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            });
-            const body = JSON.stringify({
-                item
-            });
-            const result = await fetch(url, {
-                method: 'POST',
-                headers,
-                body
-            });
+            const result = await AccountApi.updateReadStateOfMessage(item);
 
             this.setState({
                 isRefreshNotiList: true,
@@ -192,9 +183,7 @@ class ListNotification extends Component {
     }
 
     fetchDataUyQuyen = async () => {
-        const url = `${API_URL}/api/Account/GetUyQuyenMessages/`;
-        const resource = await fetch(url);
-        const result = await resource.json();
+        const result = await AccountApi.getListNotiUyquyen();
 
         this.setState({
             loading: false,
@@ -203,9 +192,15 @@ class ListNotification extends Component {
     }
 
     fetchData = async () => {
-        const url = `${API_URL}/api/Account/GetMessagesOfUser/${this.state.userInfo.ID}/${this.state.pageSize}/${this.state.pageIndex}/true?query=`;
-        const resource = await fetch(url);
-        const result = await resource.json();
+        const {
+            userInfo, pageSize, pageIndex
+        } = this.state;
+        const result = await AccountApi.getRecentNoti([
+            userInfo.ID,
+            pageSize,
+            pageIndex,
+            "true?query="
+        ]);
 
         this.setState({
             loading: false,

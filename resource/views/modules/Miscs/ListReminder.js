@@ -44,9 +44,12 @@ import { ListNotificationStyle } from '../../../assets/styles/ListNotificationSt
 import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
+import { reminderApi } from '../../../common/Api';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
+
+  const ReminderApi = reminderApi();
 
 class ListReminder extends Component {
   constructor(props) {
@@ -101,22 +104,11 @@ class ListReminder extends Component {
   }
 
   async fetchData(startDate, endDate, chosenTimestamp) {
-    const url = `${API_URL}/api/Reminder/ListReminder/`
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-    const body = JSON.stringify({
+    const resultJson = await ReminderApi.getList({
       startDate,
       endDate,
       userId: this.state.userId
     });
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-    const resultJson = await result.json();
 
     setTimeout(() => {
       let tmpItems = {};
@@ -170,27 +162,11 @@ class ListReminder extends Component {
     this.setState({
       executingLoading: true
     });
-    const url = `${API_URL}/api/Reminder/DeleteReminder`;
-
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-
-    const body = JSON.stringify({
+    
+    const resultJson = await ReminderApi.deleteReminder({
       userId: this.state.userId,
       reminderId: this.state.confirmReminderId,
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executingLoading: false
@@ -239,27 +215,11 @@ class ListReminder extends Component {
     this.setState({
       executingLoading: true
     });
-    const url = `${API_URL}/api/Reminder/ToggleReminder`;
 
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
-    });
-
-    const body = JSON.stringify({
+    const resultJson = await ReminderApi.toggleReminder({
       userId: this.state.userId,
-      reminderId: this.state.confirmReminderId,
+      reminderId: this.state.confirmReminderId
     });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executingLoading: false

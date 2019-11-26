@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -35,6 +35,7 @@ import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { accountApi } from '../../../common/Api';
 
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
@@ -45,6 +46,8 @@ const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
 const showPasswordIcon = require('../../../assets/images/visible-eye.png');
 const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
 const userAvatar = require('../../../assets/images/avatar.png');
+
+const AccountApi = accountApi();
 
 class AccountChangePassword extends Component {
   constructor(props) {
@@ -110,7 +113,7 @@ class AccountChangePassword extends Component {
       loading: true
     });
 
-    // if (!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/)) {
+    // if (!this.state.password.match(PASSWD_VALIDATION)) {
     //   this.setState({
     //     loading: false
     //   }, () => {
@@ -143,34 +146,17 @@ class AccountChangePassword extends Component {
       return;
     }
 
-    const url = `${API_URL}/api/Account/UpdatePersonalInfo`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
-    });
+    await asyncDelay();
 
-    const body = JSON.stringify({
+    const result = await AccountApi.updateInfo({
       ID: this.state.id,
       MATKHAU: this.state.password
     });
 
-    await asyncDelay();
+    this.setState({
+      loading: false
+    });
 
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          loading: false
-        });
-        console.log(responseJson);
-        return responseJson;
-      });
-
-    console.log('something = ', result);
     if (result.Status) {
       Toast.show({
         text: 'Đổi mật khẩu thành công',
@@ -202,20 +188,7 @@ class AccountChangePassword extends Component {
     const userInfo = JSON.parse(userInfoJSON);
 
     //vô hiệu hóa token hiện tại của thiết bị với người dùng hiện tại
-    const deActiveTokenResult = await fetch(`${API_URL}/api/Account/DeActiveUserToken`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      }, body: JSON.stringify({
-        userId: userInfo.ID,
-        token: userInfo.Token
-      })
-    }).then(response => response.json())
-      .then(responseJson => {
-        return responseJson
-      });
-
+    const deActiveTokenResult = await AccountApi.deactivateToken();
 
     //xóa dữ liệu storage of người dùng trên thiết bị
     AsyncStorage.removeItem('userInfo').then(() => {
@@ -224,18 +197,18 @@ class AccountChangePassword extends Component {
   }
 
   onCheckPassword = () => {
-    if (!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/)) {
-      Toast.show({
-        text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
-        type: 'danger',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      });
-      return;
-    }
+    // if (!this.state.password.match(PASSWD_VALIDATION)) {
+    //   Toast.show({
+    //     text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
+    //     type: 'danger',
+    //     textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+    //     buttonText: "OK",
+    //     buttonStyle: { backgroundColor: Colors.WHITE },
+    //     buttonTextStyle: { color: Colors.LITE_BLUE },
+    //     duration: TOAST_DURATION_TIMEOUT
+    //   });
+    //   return;
+    // }
     Toast.show({
       text: 'Mật khẩu hợp lệ',
       type: 'success',

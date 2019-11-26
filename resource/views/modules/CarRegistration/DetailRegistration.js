@@ -283,24 +283,10 @@ class DetailRegistration extends Component {
       executing: true
     });
 
-    const url = `${API_URL}/api/CarTrip/CheckStartTrip?tripId=${tripId}`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8'
+    const resultJson = await TripApi.startTrip({
+      tripId,
+      userId
     });
-    const body = JSON.stringify({
-      tripId
-    });
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    });
-
-    const resultJson = await result.json();
-
-    await asyncDelay();
 
     this.setState({
       executing: false

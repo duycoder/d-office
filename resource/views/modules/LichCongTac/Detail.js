@@ -25,6 +25,7 @@ import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
+import { calendarApi } from '../../../common/Api';
 
 class DetailEvent extends Component {
   constructor(props) {
@@ -58,9 +59,10 @@ class DetailEvent extends Component {
       loading: true
     })
 
-    const url = `${API_URL}/api/LichCongTac/GetDetail/${this.state.id}`;
-    const result = await fetch(url)
-      .then((response) => response.json());
+    const result = await calendarApi().getDetail([
+      this.state.id
+    ]);
+    
     this.setState({
       loading: false,
       data: result

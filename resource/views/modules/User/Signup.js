@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION, EMAIL_VALIDATION } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -34,6 +34,7 @@ import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { accountApi } from '../../../common/Api';
 
 //fcm
 //import FCM, { FCMEvent } from 'react-native-fcm';
@@ -155,12 +156,15 @@ class Signup extends Component {
   }
 
   async onSignup() {
+    const {
+      fullName, userName, password, email
+    } = this.state;
 
     this.setState({
       loading: true
     });
 
-    if (this.state.fullName.length < 0) {
+    if (fullName.length < 0) {
       this.setState({
         loading: false
       }, () => {
@@ -176,7 +180,7 @@ class Signup extends Component {
       return;
     }
 
-    if (this.state.userName.length < 6 || this.state.userName.length > 16) {
+    if (userName.length < 6 || userName.length > 16) {
       this.setState({
         loading: false
       }, () => {
@@ -193,7 +197,7 @@ class Signup extends Component {
       return;
     }
 
-    if (!this.state.email.match(/\S+@\S+\.\S+/)) {
+    if (!email.match(EMAIL_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
@@ -210,7 +214,7 @@ class Signup extends Component {
       return;
     }
 
-    if (!this.state.password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/)) {
+    if (!password.match(PASSWD_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
@@ -227,34 +231,17 @@ class Signup extends Component {
       return;
     }
 
-    const url = `${API_URL}/api/account/SignUp`;
-    const headers = new Headers({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json; charset=utf-8',
+    const result = await accountApi().postSignup({
+      EMAIL: email,
+      HOTEN: fullName,
+      MATKHAU: password,
+      TENDANGNHAP: userName
     });
 
-    const body = JSON.stringify({
-      EMAIL: this.state.email,
-      HOTEN: this.state.fullName,
-      MATKHAU: this.state.password,
-      TENDANGNHAP: this.state.userName,
+    this.setState({
+      loading: false
     });
 
-    await asyncDelay();
-
-    const result = await fetch(url, {
-      method: 'POST',
-      headers,
-      body
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          loading: false
-        });
-        console.log(responseJson);
-        return responseJson;
-      });
     if (result.Status) {
       Toast.show({
         text: 'Đăng ký tài khoản thành công',
@@ -294,7 +281,7 @@ class Signup extends Component {
       <Container>
         <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBackToLogin()}/>
+            <GoBackButton onPress={() => this.navigateBackToLogin()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>

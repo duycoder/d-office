@@ -10,6 +10,7 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
 import { Colors, API_URL } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
+import { accountApi } from '../../../common/Api';
 
 class DetailNotiUyQuyen extends Component {
   constructor(props) {
@@ -45,9 +46,9 @@ class DetailNotiUyQuyen extends Component {
       loading: true
     })
 
-    const url = `${API_URL}/api/account/GetDetailNoti/${this.state.id}`;
-    const result = await fetch(url)
-      .then((response) => response.json());
+    const result = await accountApi().getDetailNotiUyquyen([
+      this.state.id
+    ]);
     this.setState({
       loading: false,
       data: result

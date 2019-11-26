@@ -43,6 +43,9 @@ import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import RegistrationInfo from './RegistrationInfo';
 import AlertMessage from '../../common/AlertMessage';
 import TripInfo from './TripInfo';
+import { tripApi } from '../../../common/Api';
+
+const TripApi = tripApi();
 
 class DetailTrip extends Component {
   constructor(props) {

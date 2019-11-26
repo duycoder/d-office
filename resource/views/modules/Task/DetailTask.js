@@ -48,6 +48,9 @@ import { HeaderMenuStyle } from '../../../assets/styles/index';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { taskApi } from '../../../common/Api';
+
+const TaskApi = taskApi();
 
 class DetailTask extends Component {
     constructor(props) {
@@ -82,9 +85,14 @@ class DetailTask extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/HscvCongViec/JobDetail/${this.state.taskId}/${this.state.userId}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        const {
+            taskId, userId
+        } = this.state;
+
+        const resultJson = await TaskApi.getDetail([
+            taskId,
+            userId
+        ]);
 
         this.setState({
             loading: false,
@@ -119,27 +127,14 @@ class DetailTask extends Component {
             executing: true
         });
 
-        const url = `${API_URL}/api/HscvCongViec/BeginProcess`;
+        const {
+            userId, taskId
+        } = this.state;
 
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
+        const resultJson = await TaskApi.startTask({
+            userId,
+            taskId
         });
-
-        const body = JSON.stringify({
-            userId: this.state.userId,
-            taskId: this.state.taskId
-        });
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers,
-            body
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
 
         this.setState({
             executing: false

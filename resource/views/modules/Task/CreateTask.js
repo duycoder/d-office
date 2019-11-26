@@ -37,7 +37,9 @@ import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { taskApi } from '../../../common/Api';
 
+const TaskApi = taskApi();
 
 class CreateTask extends Component {
   constructor(props) {
@@ -145,12 +147,11 @@ class CreateTask extends Component {
       userId, docId, docType
     } = this.state;
 
-    const url = `${API_URL}/api/HscvCongViec/GetTaskCreationHelper/${userId}/${docType}/${docId}/`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
-
-    await asyncDelay();
+    const resultJson = await TaskApi.getCreateHelper([
+      userId,
+      docType,
+      docId
+    ]);
 
     this.setState({
       loading: false,
@@ -211,14 +212,7 @@ class CreateTask extends Component {
         executing: true
       });
 
-      const url = `${API_URL}/api/HscvCongViec/CreateTask`;
-
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-
-      const body = JSON.stringify({
+      const resultJson = await TaskApi.saveTask({
         title,
         purpose,
         content,
@@ -233,16 +227,6 @@ class CreateTask extends Component {
         userId,
         reminderDays: +reminderDays || 1,
       });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
 
       this.setState({
         executing: false

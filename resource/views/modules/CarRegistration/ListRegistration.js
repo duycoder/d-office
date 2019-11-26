@@ -40,6 +40,7 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { ItemProportion } from '../../../assets/styles/ListLayoutStyles';
+import { carApi } from '../../../common/Api';
 
 class ListRegistration extends Component {
   constructor(props) {
@@ -89,10 +90,15 @@ class ListRegistration extends Component {
   }
 
   async fetchData() {
-    const url = `${API_URL}/api/CarRegistration/ListCarRegistration/${this.state.pageSize}/${this.state.pageIndex}/${this.state.userId}?query=${this.state.filterValue}`;
+    const {
+      pageSize, pageIndex, userId, filterValue
+    } = this.state;
 
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await carApi().getList([
+      pageSize,
+      pageIndex,
+      `${userId}?query=${filterValue}`
+    ])
 
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,

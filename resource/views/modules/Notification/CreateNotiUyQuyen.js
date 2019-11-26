@@ -35,6 +35,7 @@ import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { accountApi } from '../../../common/Api';
 
 class CreateNotiUyQuyen extends Component {
   constructor(props) {
@@ -103,29 +104,12 @@ class CreateNotiUyQuyen extends Component {
         executing: true
       });
 
-      const url = `${API_URL}/api/account/SaveNotiUyQuyen`;
-
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-
-      const body = JSON.stringify({
+      const resultJson = await accountApi().saveNotiUyquyen({
         tieude,
         noidung,
         showUntil,
         userId
       });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
 
       this.setState({
         executing: false

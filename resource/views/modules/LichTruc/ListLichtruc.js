@@ -185,25 +185,10 @@ class ListLichtruc extends Component {
     } = this.state;
 
     if (tempKehoachId !== null) {
-      const url = `${API_URL}/api/Lichtruc/PheduyetLichtruc/`;
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
-      });
-      const body = JSON.stringify({
+      const resultJson = await api.approveLichtruc({
         userId,
         kehoachId: tempKehoachId
       });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      await asyncDelay();
 
       this.setState({
         executing: false

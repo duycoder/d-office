@@ -40,6 +40,7 @@ import { indicatorResponsive, moderateScale } from '../../../assets/styles/Scale
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
+import { tripApi } from '../../../common/Api';
 
 class ListTrip extends Component {
   constructor(props) {
@@ -87,10 +88,15 @@ class ListTrip extends Component {
   }
 
   async fetchData() {
-    const url = `${API_URL}/api/CarTrip/ListCarTrips/${this.state.pageIndex}/${this.state.pageSize}/${this.state.userId}?query=${this.state.filterValue}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const {
+      pageIndex, pageSize, userId, filterValue
+    } = this.state;
+    
+    const resultJson = await tripApi().getList([
+      pageIndex,
+      pageSize,
+      `${userId}?query=${filterValue}`
+    ]);
 
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
@@ -212,8 +218,8 @@ class ListTrip extends Component {
         <View style={{ paddingBottom: 10, paddingLeft: 10, paddingRight: 10, flexDirection: 'row' }}>
           <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
             <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-            <RnText style={{ fontWeight: 'bold' }}>Tên xe:</RnText>
-            <RnText>
+              <RnText style={{ fontWeight: 'bold' }}>Tên xe:</RnText>
+              <RnText>
                 {' ' + item.TENXE}
               </RnText>
             </RnText>
