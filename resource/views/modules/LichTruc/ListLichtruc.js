@@ -107,7 +107,7 @@ class ListLichtruc extends Component {
       pageIndex, pageSize, userId, type, filterValue
     } = this.state;
 
-    const resultJson = await api.getLichtruc({
+    const resultJson = await api.getList({
       pageSize,
       pageIndex,
       userId,
