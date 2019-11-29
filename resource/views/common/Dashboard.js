@@ -332,14 +332,14 @@ class Dashboard extends Component {
       <MenuProvider backHandler>
         <View style={SideBarStyle.container}>
           <StatusBar barStyle="light-content" />
-          <Header style={{ backgroundColor: Colors.LITE_BLUE, borderBottomWidth: 0, height: 120, paddingTop: 35 }}>
-            <Left style={{ flex: 6, paddingLeft: 10, alignSelf: "flex-start" }}>
+          <Header style={SideBarStyle.dashboardHeader}>
+            <Left style={SideBarStyle.dashboardHeaderLeft}>
               <Text style={{ color: Colors.WHITE }}>
                 <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
               </Text>
             </Left>
             <Body />
-            <Right style={{ flex: 2, alignSelf: "flex-start" }}>
+            <Right style={SideBarStyle.dashboardHeaderRight}>
               {
                 (isArray(dataHotline) && dataHotline.length > 0) && <Menu>
                   <MenuTrigger children={

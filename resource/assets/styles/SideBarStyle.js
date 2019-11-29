@@ -191,4 +191,20 @@ export const SideBarStyle = StyleSheet.create({
         flex: 1,
     },
 
+    dashboardHeader: {
+        backgroundColor: Colors.LITE_BLUE,
+        borderBottomWidth: 0,
+        height: 120,
+        paddingTop: 35
+    }, dashboardHeaderLeft: {
+        flex: 6,
+        paddingLeft: 10,
+        alignSelf: "flex-start",
+        width: "80%"
+    }, dashboardHeaderRight: {
+        flex: 2,
+        alignSelf: "flex-start",
+        width: "20%"
+    },
+
 });
