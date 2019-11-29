@@ -170,7 +170,7 @@ const meetingRoomApi = () => {
 }
 
 const reminderApi = () => {
-  const getList = (payloadBody = {}) => api.get("Reminder/ListReminder", payloadBody);
+  const getList = (payloadBody = {}) => api.post("Reminder/ListReminder", payloadBody);
   const getCreateHelper = (params = []) => api.get("Reminder/CreateReminder", params);
   const saveReminder = (payloadBody = {}) => api.post("Reminder/SaveReminder", payloadBody);
   const deleteReminder = (payloadBody = {}) => api.post("Reminder/DeleteReminder", payloadBody);
