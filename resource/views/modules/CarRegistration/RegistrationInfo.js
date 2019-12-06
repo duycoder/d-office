@@ -216,6 +216,21 @@ class RegistrationInfo extends Component {
                 </Text>
               } />
 
+            {
+              !!info.LYDO_TUCHOI && <ListItem style={InfoStyle.listItemContainer}
+                hideChevron={true}
+                title={
+                  <Text style={InfoStyle.listItemTitleContainer}>
+                    Lý do huỷ/ từ chồi
+                  </Text>
+                }
+                subtitle={
+                  <Text style={InfoStyle.listItemSubTitleContainer}>
+                    {info.LYDO_TUCHOI}
+                  </Text>
+                } />
+            }
+
           </List>
         </ScrollView>
       </View>
