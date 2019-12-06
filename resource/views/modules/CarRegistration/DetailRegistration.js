@@ -120,7 +120,7 @@ class DetailRegistration extends Component {
     this.setState({
       loading: true
     });
-    
+
     const resultJson = await TripApi.getDetailByRegistrationId([
       registrationId,
       userId
@@ -176,6 +176,9 @@ class DetailRegistration extends Component {
       case 2:
         this.refs.confirmCancelRegistration.showModal();
         break;
+      case 3:
+        this.refs.confirmCheckRegistration.showModal();
+        break;
       default:
         break;
     }
@@ -201,6 +204,41 @@ class DetailRegistration extends Component {
 
     Toast.show({
       text: resultJson.Status ? 'Gửi yêu cầu đăng ký xe thành công' : 'Gửi yêu cầu đăng ký xe thất bại',
+      type: resultJson.Status ? 'success' : 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      duration: TOAST_DURATION_TIMEOUT,
+      onClose: () => {
+        if (resultJson.Status) {
+          this.setState({
+            check: true
+          }, () => this.fetchData());
+        }
+      }
+    });
+  }
+  onCheckRegistration = async () => {
+    this.refs.confirmCheckRegistration.closeModal();
+    const {
+      userId, registrationId
+    } = this.state;
+
+    this.setState({
+      executing: true
+    });
+
+    const resultJson = await CarApi.sendRegistration({
+      registrationId,
+      userId
+    });
+
+    this.setState({
+      executing: false
+    })
+
+    Toast.show({
+      text: resultJson.Status ? 'Duyệt yêu cầu đăng ký xe thành công' : 'Duyệt yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
       buttonStyle: { backgroundColor: Colors.WHITE },
@@ -358,26 +396,34 @@ class DetailRegistration extends Component {
       }
       else if (this.state.registrationInfo) {
         const {
-          canSendRegistration, canRecieveRegistratiion
+          canSendRegistration, canRecieveRegistratiion, canCheckRegistration,
         } = this.state.registrationInfo;
+
+        //TODO: fetch `canCancelRegistration` and `canCheckRegistration` from API
+        const canCancelRegistration = this.state.registrationInfo.entity.NGUOITAO === this.state.userId && this.state.registrationInfo.entity.TRANGTHAI != DATXE_CONSTANT.DATXE_STATUS.DA_HUY && this.state.registrationInfo.entity.TRANGTHAI < DATXE_CONSTANT.DATXE_STATUS.DANG_THUC_HIEN;
 
         if (canSendRegistration) {
           workflowButtons.push({
             element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(1)}><RNText style={ButtonGroupStyle.buttonText}>GỬI YÊU CẦU</RNText></RnButton>
-          })
+          });
+        }
+        else if (canCheckRegistration) {
+          workflowButtons.push({
+            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(3)}><RNText style={ButtonGroupStyle.buttonText}>DUYỆT XE</RNText></RnButton>
+          });
         }
         else if (canRecieveRegistratiion) {
           workflowButtons.push({
             element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCreateTrip()}><RNText style={ButtonGroupStyle.buttonText}>TIẾP NHẬN</RNText></RnButton>
-          })
+          });
           workflowButtons.push({
             element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCancelTrip()}><RNText style={ButtonGroupStyle.buttonText}>KHÔNG TIẾP NHẬN</RNText></RnButton>
-          })
+          });
         }
-        if (this.state.registrationInfo.entity.NGUOITAO === this.state.userId && this.state.registrationInfo.entity.TRANGTHAI != DATXE_CONSTANT.DATXE_STATUS.DA_HUY && this.state.registrationInfo.entity.TRANGTHAI < DATXE_CONSTANT.DATXE_STATUS.DANG_THUC_HIEN) {
+        if (canCancelRegistration) {
           workflowButtons.push({
             element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
-          })
+          });
         }
         bodyContent = <DetailContent registrationInfo={this.state.registrationInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
       }
@@ -411,6 +457,19 @@ class DetailRegistration extends Component {
           ref="confirmSendRegistration"
           title="XÁC NHẬN GỬI YÊU CẦU"
           bodyText="Bạn có chắc chắn muốn gửi yêu cầu đăng ký xe này?"
+          exitText="Hủy bỏ"
+        >
+          <View style={AlertMessageStyle.leftFooter}>
+            <RnButton onPress={() => this.onSendRegistration()} style={AlertMessageStyle.footerButton}>
+              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
+            </RnButton>
+          </View>
+        </AlertMessage>
+
+        <AlertMessage
+          ref="confirmCheckRegistration"
+          title="XÁC NHẬN DUYỆT YÊU CẦU"
+          bodyText="Bạn có chắc chắn muốn duyệt yêu cầu đăng ký xe này?"
           exitText="Hủy bỏ"
         >
           <View style={AlertMessageStyle.leftFooter}>

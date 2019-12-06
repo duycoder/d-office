@@ -111,6 +111,8 @@ const carApi = () => {
   const cancelRegistration = (payloadBody = {}) => api.post("CarRegistration/CancelRegistration", payloadBody);
   const getList = (params = []) => api.get("CarRegistration/ListCarRegistration", params);
   const getCanbo = (params = []) => api.get("CarRegistration/CreateCarRegistrationHelper", params);
+  //TODO: fill out checkRegistration API URL
+  const checkRegistration = (payloadBody = {}) => api.post("", payloadBody);
 
   return {
     getCreateHelper,
@@ -122,6 +124,7 @@ const carApi = () => {
     cancelRegistration,
     getList,
     getCanbo,
+    checkRegistration
   };
 }
 
@@ -209,7 +212,7 @@ const taskApi = () => {
   const saveTask = (payloadBody = {}) => api.post("HscvCongViec/CreateTask", payloadBody);
   const saveSubTask = (payloadBody = {}) => api.post("HscvCongViec/CreateSubTask", payloadBody);
   const getDetail = (params = []) => api.get("HscvCongViec/JobDetail", params);
-  const startTask = (payloadBody={})=>api.post("HscvCongViec/BeginProcess",payloadBody);
+  const startTask = (payloadBody = {}) => api.post("HscvCongViec/BeginProcess", payloadBody);
   //TODO: added plan to deprecated
 
   return {

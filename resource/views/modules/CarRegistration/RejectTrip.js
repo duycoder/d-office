@@ -75,11 +75,11 @@ class RejectTrip extends Component {
         registrationId,
         reason,
         currentUserId: userId
-      })
+      });
 
       this.setState({
         executing: false
-      })
+      });
 
       Toast.show({
         text: resultJson.Status ? 'Bỏ tiếp nhận thành công' : 'Bỏ tiếp nhận thất bại',
