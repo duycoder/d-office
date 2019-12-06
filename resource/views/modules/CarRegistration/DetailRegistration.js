@@ -228,7 +228,7 @@ class DetailRegistration extends Component {
       executing: true
     });
 
-    const resultJson = await CarApi.sendRegistration({
+    const resultJson = await CarApi.checkRegistration({
       registrationId,
       userId
     });
@@ -288,6 +288,13 @@ class DetailRegistration extends Component {
       }
     });
   }
+  onCancelRegistration_New = () => {
+    const targetScreenParam = {
+      registrationId: this.state.registrationId,
+    };
+    this.onNavigate("CancelRegistrationScreen", targetScreenParam);
+  }
+
   onCreateTrip = () => {
     const targetScreenParam = {
       registrationId: this.state.registrationId,
@@ -396,11 +403,8 @@ class DetailRegistration extends Component {
       }
       else if (this.state.registrationInfo) {
         const {
-          canSendRegistration, canRecieveRegistratiion, canCheckRegistration,
+          canSendRegistration, canRecieveRegistratiion, canCheckRegistration, canCancelRegistration
         } = this.state.registrationInfo;
-
-        //TODO: fetch `canCancelRegistration` and `canCheckRegistration` from API
-        const canCancelRegistration = this.state.registrationInfo.entity.NGUOITAO === this.state.userId && this.state.registrationInfo.entity.TRANGTHAI != DATXE_CONSTANT.DATXE_STATUS.DA_HUY && this.state.registrationInfo.entity.TRANGTHAI < DATXE_CONSTANT.DATXE_STATUS.DANG_THUC_HIEN;
 
         if (canSendRegistration) {
           workflowButtons.push({
@@ -422,7 +426,8 @@ class DetailRegistration extends Component {
         }
         if (canCancelRegistration) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
+            // element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
+            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCancelRegistration_New()}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
           });
         }
         bodyContent = <DetailContent registrationInfo={this.state.registrationInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />

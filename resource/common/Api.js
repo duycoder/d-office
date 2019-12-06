@@ -112,7 +112,7 @@ const carApi = () => {
   const getList = (params = []) => api.get("CarRegistration/ListCarRegistration", params);
   const getCanbo = (params = []) => api.get("CarRegistration/CreateCarRegistrationHelper", params);
   //TODO: fill out checkRegistration API URL
-  const checkRegistration = (payloadBody = {}) => api.post("", payloadBody);
+  const checkRegistration = (payloadBody = {}) => api.post("CarRegistration/CheckCarRegistration", payloadBody);
 
   return {
     getCreateHelper,

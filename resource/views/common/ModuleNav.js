@@ -85,6 +85,7 @@ import DetailRegistration from '../modules/CarRegistration/DetailRegistration';
 import ListTrip from '../modules/CarRegistration/ListTrip';
 import CreateTrip from '../modules/CarRegistration/CreateTrip';
 import RejectTrip from '../modules/CarRegistration/RejectTrip';
+import CancelRegistration from '../modules/CarRegistration/CancelRegistration';
 import DetailTrip from '../modules/CarRegistration/DetailTrip';
 import ReturnTrip from '../modules/CarRegistration/ReturnTrip';
 import PickCanbo from '../modules/CarRegistration/PickCanbo';
@@ -325,6 +326,8 @@ const baseStack = {
     screen: ReturnTrip
   }, PickCanboScreen: {
     screen: PickCanbo
+  }, CancelRegistrationScreen: {
+    screen: CancelRegistration
   },
 
   ListLichtrucScreen: {
