@@ -4,7 +4,7 @@ export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
 // export const API_URL = 'http://192.168.1.29:8098';
 export const API_URL = 'http://101.96.76.204:8999'; //server vnio
 // export const API_URL = 'http://222.252.27.60:8111'; //server local
-// export const API_URL = 'http://192.168.1.10:8111'; http://222.252.27.60:8111/
+// export const API_URL = 'http://192.168.1.10:8111';
 
 export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;

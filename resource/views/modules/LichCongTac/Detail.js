@@ -62,7 +62,7 @@ class DetailEvent extends Component {
     const result = await calendarApi().getDetail([
       this.state.id
     ]);
-    
+
     this.setState({
       loading: false,
       data: result
@@ -113,7 +113,7 @@ class DetailEvent extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, loading } = this.state;
 
     let chutriStr = "", chutriArr = [];
     if (data.TEN_NGUOI_CHUTRI) {
@@ -282,8 +282,10 @@ class DetailEvent extends Component {
               </View>
             </View>
 
-
-
+            {
+              dataLoading(loading)
+            }
+          
           </Content>
           {
             actionButtons.length > 0 && <ButtonGroup

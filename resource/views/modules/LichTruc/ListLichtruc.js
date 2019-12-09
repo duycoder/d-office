@@ -220,6 +220,11 @@ class ListLichtruc extends Component {
     }
   }
 
+  navigateToScreen = (screenName, screenParams) => {
+    this.props.updateExtendsNavParams(screenParams);
+    this.props.navigation.navigate(screenName);
+  }
+
   renderItem = ({ item, index }) => {
     const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
@@ -228,6 +233,8 @@ class ListLichtruc extends Component {
         <ListItem
           containerStyle={{ borderBottomColor: Colors.GRAY }}
 
+          onPress={() => this.navigateToScreen("DetailLichtrucScreen", { id: item.ID })}
+          
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
               {item.KEHOACH}

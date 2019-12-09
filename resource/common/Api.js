@@ -44,10 +44,12 @@ const api = baseApi();
 const lichtrucApi = () => {
   const getList = (payloadBody = {}) => api.post("Lichtruc/ListLichtruc", payloadBody);
   const approveLichtruc = (payloadBody = {}) => api.post("Lichtruc/PheduyetLichtruc", payloadBody);
+  const getDetail = (params = []) => api.get("Lichtruc/DetailLichtruc", params);
 
   return {
     getList,
-    approveLichtruc
+    approveLichtruc,
+    getDetail
   };
 };
 

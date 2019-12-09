@@ -93,6 +93,7 @@ import PickCanbo from '../modules/CarRegistration/PickCanbo';
 
 //#region màn hình lịch trực/ lịch khám
 import ListLichtruc from '../modules/LichTruc/ListLichtruc';
+import DetailLichtruc from '../modules/LichTruc/DetailLichtruc';
 //#endregion
 
 //#region màn hình lịch họp/ phòng họp
@@ -332,6 +333,8 @@ const baseStack = {
 
   ListLichtrucScreen: {
     screen: ListLichtruc
+  }, DetailLichtrucScreen: {
+    screen: DetailLichtruc
   },
 
   MeetingDayListScreen: {
