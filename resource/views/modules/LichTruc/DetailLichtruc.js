@@ -77,7 +77,7 @@ class DetailLichtruc extends Component {
   render() {
     const { data, userFullname, loading } = this.state;
 
-    const bodyContent = null;
+    let bodyContent = null;
     if (loading) {
       bodyContent = dataLoading(loading);
     }
@@ -131,12 +131,6 @@ class DetailLichtruc extends Component {
         <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
           {bodyContent}
         </Content>
-        {
-          actionButtons.length > 0 && <ButtonGroup
-            containerStyle={ButtonGroupStyle.container}
-            buttons={actionButtons}
-          />
-        }
       </Container>
     );
   }
@@ -156,4 +150,4 @@ const mapStateToProps = (state) => {
 //   }
 // }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailLichtruc);
+export default connect(mapStateToProps, null)(DetailLichtruc);
