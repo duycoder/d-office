@@ -43,7 +43,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
-import {vanbandenApi} from '../../../common/Api';
+import { vanbandenApi } from '../../../common/Api';
 const api = vanbandenApi();
 class Detail extends Component {
     constructor(props) {
@@ -230,6 +230,16 @@ class Detail extends Component {
         }
     }
 
+    onSendCC() {
+        const targetScreenParam = {
+            // processId: this.state.docInfo.WorkFlow.Process.ID,
+            // stepId: 0,
+            idItem: this.state.docInfo.WorkFlow.Process.ITEM_ID,
+            itemType: this.state.docInfo.WorkFlow.Process.ITEM_TYPE
+        };
+        this.onNavigate("WorkflowCCScreen", targetScreenParam);
+    }
+
     onNavigate(targetScreenName, targetScreenParam) {
         if (!util.isNull(targetScreenParam)) {
             this.props.updateExtendsNavParams(targetScreenParam);
@@ -273,6 +283,13 @@ class Detail extends Component {
                     }
                 }
             }
+
+            if (this.state.docInfo.canChuyenPhoihopXuly) {
+                workflowButtons.push({
+                    element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSendCC()}><RNText style={ButtonGroupStyle.buttonText}>CHUYỂN XỬ LÝ</RNText></RnButton>
+                });
+            }
+
             bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} hasAuthorization={this.state.hasAuthorization} navigateToEvent={this.navigateToEvent} />
         }
 

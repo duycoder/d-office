@@ -56,10 +56,16 @@ const lichtrucApi = () => {
 const vanbandenApi = () => {
   const getDetail = (params = []) => api.get("VanBanDen/GetDetail", params);
   const checkFlow = (params = []) => api.get("WorkFlow/CheckCanProcessFlow", params);
+  const getFlowCCHelper = (params = []) => api.get("WorkFlow/GetFlowCCHelper", params);
+  const filterFlowCCReceiver = (params = []) => api.get("WorkFlow/GetFlowCCReceiver", params);
+  const saveFlowCC = (payloadBody = {}) => api.post("WorkFlow/SaveFlowCC", payloadBody);
 
   return {
     getDetail,
-    checkFlow
+    checkFlow,
+    saveFlowCC,
+    getFlowCCHelper,
+    filterFlowCCReceiver
   };
 }
 

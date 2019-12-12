@@ -76,6 +76,7 @@ import WorkflowRequestReview from '../modules/Workflow/WorkflowRequestReview';
 import WorkflowStreamProcess from '../modules/Workflow/WorkflowStreamProcess';
 import WorkflowStreamProcessUsers from '../modules/Workflow/WorkflowStreamProcessUsers';
 import WorkflowRequestReviewUsers from '../modules/Workflow/WorkflowRequestReviewUsers';
+import WorkflowCC from '../modules/Workflow/WorkflowCC';
 //#endregion
 
 //#region màn hình đăng ký & quản lý chuyến xe
@@ -188,6 +189,9 @@ const baseStack = {
   },
   WorkflowStreamProcessScreen: {
     screen: WorkflowStreamProcess
+  },
+  WorkflowCCScreen: {
+    screen: WorkflowCC
   },
   ListAssignedTaskScreen: {
     screen: ListAssignedTask
