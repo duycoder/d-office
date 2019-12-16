@@ -221,6 +221,7 @@ const taskApi = () => {
   const saveSubTask = (payloadBody = {}) => api.post("HscvCongViec/CreateSubTask", payloadBody);
   const getDetail = (params = []) => api.get("HscvCongViec/JobDetail", params);
   const startTask = (payloadBody = {}) => api.post("HscvCongViec/BeginProcess", payloadBody);
+  const getTaskAssigner = (payloadBody = {}) => api.post("HscvCongViec/GetListGiaoviec", payloadBody);
   //TODO: added plan to deprecated
 
   return {
@@ -228,7 +229,8 @@ const taskApi = () => {
     saveTask,
     saveSubTask,
     getDetail,
-    startTask
+    startTask,
+    getTaskAssigner,
   };
 }
 

@@ -43,7 +43,9 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
+import { taskApi } from '../../../common/Api';
 
+const api = taskApi();
 
 class PickTaskAssigner extends Component {
 	constructor(props) {
@@ -76,32 +78,19 @@ class PickTaskAssigner extends Component {
 		this.setState({
 			loading: isLoadmore ? false : true
 		});
-		const url = `${API_URL}/api/HscvCongViec/GetListGiaoviec`;
-		const headers = new Headers({
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		});
 
 		const {
 			userId, listRole,
 			keyword, pageIndex, pageSize
 		} = this.state;
 
-		const body = JSON.stringify({
+		const resultJson = await api.getTaskAssigner({
 			userId,
 			listRole,
 			keyword: keyword ? keyword.trim().toLowerCase() : EMPTY_STRING,
 			pageIndex,
 			pageSize,
 		});
-
-		const result = await fetch(url, {
-			method: 'POST',
-			headers,
-			body
-		});
-
-		const resultJson = await result.json();
 
 		this.setState({
 			data: isLoadmore ? [...this.state.data, ...resultJson] : resultJson,

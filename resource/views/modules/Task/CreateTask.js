@@ -74,6 +74,7 @@ class CreateTask extends Component {
 
       listRole: EMPTY_STRING,
       isGiamdoc: false,
+      isThuky: false,
       vanbanDenLienquan: {},
       vanbanDiLienquan: {},
       vanbanDiDokhan: EMPTY_STRING,
@@ -166,6 +167,7 @@ class CreateTask extends Component {
       vanbanDenId: resultJson.VanbanDenId,
       vanbanDiId: resultJson.VanbanDiId,
       vanbanDiDokhan: resultJson.VanbanDiDokhan,
+      isThuky: resultJson.IsThuky
     });
   }
 
@@ -179,7 +181,7 @@ class CreateTask extends Component {
       title, deadline, content,
       purpose, priorityValue, urgencyValue, startDate,
       planValue, docId, docType, giaoviecId, userId, reminderDays,
-      fromScreen
+      fromScreen, isThuky
     } = this.state;
 
     if (util.isNull(title) || util.isEmpty(title)) {
@@ -226,6 +228,7 @@ class CreateTask extends Component {
         giaoviecId,
         userId,
         reminderDays: +reminderDays || 1,
+        isThuky,
       });
 
       this.setState({
@@ -274,7 +277,7 @@ class CreateTask extends Component {
         title, content, deadline,
         purpose, priorityValue, urgencyValue, startDate, reminderDays,
         vanbanDenId, vanbanDiId, fromScreen, loading, giaoviecName, giaoviecId,
-        focusId, isGiamdoc,
+        focusId, isGiamdoc, isThuky,
         isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
       nothingChangeStatus = !title || !content || !deadline || !isSaveBtnPressed || !isSaveIcoPressed,
@@ -356,7 +359,7 @@ class CreateTask extends Component {
               />
             </Item>
             {
-              isGiamdoc === false && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
+              (isGiamdoc === false && isThuky === false) && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
                 <Label>
                   Người giao việc
                 </Label>
@@ -365,6 +368,27 @@ class CreateTask extends Component {
                     {
                       !giaoviecName
                         ? <Text style={{ color: '#ccc' }}>Chọn người giao việc</Text>
+                        : <Text style={{ color: Colors.BLACK }}>{giaoviecName}</Text>
+                    }
+                  </Button>
+                  {
+                    giaoviecId > 0 && <Button transparent onPress={() => this.clearTaskAssigner()}>
+                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
+                    </Button>
+                  }
+                </View>
+              </Item>
+            }
+            {
+              isThuky === true && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
+                <Label>
+                  Giao việc thay cho
+                </Label>
+                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
+                  <Button transparent style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
+                    {
+                      !giaoviecName
+                        ? <Text style={{ color: '#ccc' }}>Chọn người giao việc thay</Text>
                         : <Text style={{ color: Colors.BLACK }}>{giaoviecName}</Text>
                     }
                   </Button>
