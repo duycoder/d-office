@@ -32,7 +32,7 @@ class DetailLichtruc extends Component {
     super(props);
 
     this.state = {
-      id: props.extendsNavParams.id,
+      id: props.coreNavParams.id,
       userId: this.props.userInfo.ID,
       userFullname: props.userInfo.Fullname || "Người dùng",
       data: [],
@@ -139,15 +139,9 @@ class DetailLichtruc extends Component {
 const mapStateToProps = (state) => {
   return {
     extendsNavParams: state.navState.extendsNavParams,
+    coreNavParams: state.navState.coreNavParams,
     userInfo: state.userState.userInfo,
   }
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     updateCoreNavParams: (extendsNavParams) => dispatch(navAction.updateCoreNavParams(extendsNavParams)),
-//     updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams)),
-//   }
-// }
 
 export default connect(mapStateToProps, null)(DetailLichtruc);

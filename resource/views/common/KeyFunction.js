@@ -178,7 +178,6 @@ class KeyFunction extends Component {
         return notifyCount_VBDen_Noibo_Chuaxuly;
       case VANBANDEN._THAMGIA_XULY.NAME:
         return notifyCount_VBDen_Thamgiaxuly;
-        break;
 
       case VANBANDI._CHUAXULY.NAME:
         return notifyCount_VBDi_Chuaxuly;

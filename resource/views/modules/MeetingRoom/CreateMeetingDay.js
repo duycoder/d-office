@@ -66,6 +66,7 @@ class CreateMeetingDay extends Component {
 
       isSaveBtnPressed: true,
       isSaveIcoPressed: true,
+      isFromCalendar: props.extendsNavParams.isFromCalendar || false,
     }
   }
 
@@ -173,8 +174,8 @@ class CreateMeetingDay extends Component {
       isSaveIcoPressed: false
     });
     const {
-      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId,
-      canCreateMeetingForOthers
+      mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
+      canCreateMeetingForOthers,
     } = this.state;
 
     if (!mucdich) {
@@ -231,10 +232,11 @@ class CreateMeetingDay extends Component {
         phutBatdau: thoigianBatdau.split(":")[1],
         gioKetthuc: thoigianKetthuc.split(":")[0],
         phutKetthuc: thoigianKetthuc.split(":")[1],
-        chutriId: canCreateMeetingForOthers ? chutriId : userId,
+        chutriId: isFromCalendar ? chutriId : (canCreateMeetingForOthers ? chutriId : userId),
         userId,
         lichCongtacId,
-      })
+        phonghopId
+      });
 
       this.setState({
         executing: false

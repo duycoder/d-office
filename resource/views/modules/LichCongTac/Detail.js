@@ -102,6 +102,7 @@ class DetailEvent extends Component {
       thamgia: THANHPHAN_THAMDU,
       chutriId: !!NGUOICHUTRI_ID ? NGUOICHUTRI_ID.split(",").shift() : EMPTY_STRING,
       chutriName: !!TEN_NGUOI_CHUTRI ? TEN_NGUOI_CHUTRI.split(",").shift() : EMPTY_STRING,
+      isFromCalendar: true,
     });
     this.props.navigation.navigate("CreateMeetingDayScreen");
   }
@@ -155,6 +156,79 @@ class DetailEvent extends Component {
         itemId: data.MEETING_ID,
         type: 'MEETING'
       });
+    }
+
+    let bodyContent = dataLoading(loading);
+    if (!loading) {
+      bodyContent = (
+        <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
+          <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
+            <View style={{ width: "65%" }}>
+              <View style={GridPanelStyle.titleContainer}>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+              </View>
+              <View style={{ marginTop: "0.5%" }}>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
+              </View>
+            </View>
+            <View style={{ width: "35%" }}>
+              <View style={GridPanelStyle.titleContainer}>
+                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+              </View>
+              <View style={{ marginTop: "0.5%" }}>
+                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
+              </View>
+            </View>
+          </View>
+
+          {
+            // <View style={GridPanelStyle.container}>
+            //   <View style={GridPanelStyle.titleContainer}>
+            //     <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+            //   </View>
+            //   <View style={{ marginTop: "0.5%" }}>
+            //     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
+            //   </View>
+            // </View>
+          }
+
+          <View style={GridPanelStyle.container}>
+            <View style={GridPanelStyle.titleContainer}>
+              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
+            </View>
+            <View style={{ marginTop: "0.5%" }}>
+              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
+            </View>
+          </View>
+
+          <View style={GridPanelStyle.container}>
+            <View style={GridPanelStyle.titleContainer}>
+              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
+            </View>
+            <View style={{ marginTop: "0.5%" }}>
+              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
+            </View>
+          </View>
+
+          <View style={GridPanelStyle.container}>
+            <View style={GridPanelStyle.titleContainer}>
+              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
+            </View>
+            <View style={{ marginTop: "0.5%" }}>
+              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.CHUANBI}</Text>
+            </View>
+          </View>
+
+          <View style={GridPanelStyle.container}>
+            <View style={GridPanelStyle.titleContainer}>
+              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
+            </View>
+            <View style={{ marginTop: "0.5%" }}>
+              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.THANHPHAN_THAMDU}</Text>
+            </View>
+          </View>
+        </Content>
+      );
     }
 
     //TODO: add menu provider 
@@ -215,78 +289,8 @@ class DetailEvent extends Component {
             </Right>
           </Header>
 
-          <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
-            <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-              <View style={{ width: "65%" }}>
-                <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
-                </View>
-                <View style={{ marginTop: "0.5%" }}>
-                  <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
-                </View>
-              </View>
-              <View style={{ width: "35%" }}>
-                <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
-                </View>
-                <View style={{ marginTop: "0.5%" }}>
-                  <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
-                </View>
-              </View>
-            </View>
+          {bodyContent}
 
-            {
-              // <View style={GridPanelStyle.container}>
-              //   <View style={GridPanelStyle.titleContainer}>
-              //     <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
-              //   </View>
-              //   <View style={{ marginTop: "0.5%" }}>
-              //     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
-              //   </View>
-              // </View>
-            }
-
-            <View style={GridPanelStyle.container}>
-              <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
-              </View>
-              <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
-              </View>
-            </View>
-
-            <View style={GridPanelStyle.container}>
-              <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
-              </View>
-              <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
-              </View>
-            </View>
-
-            <View style={GridPanelStyle.container}>
-              <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
-              </View>
-              <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.CHUANBI}</Text>
-              </View>
-            </View>
-
-            <View style={GridPanelStyle.container}>
-              <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
-              </View>
-              <View style={{ marginTop: "0.5%" }}>
-                <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.THANHPHAN_THAMDU}</Text>
-              </View>
-            </View>
-
-            {
-              dataLoading(loading)
-            }
-          
-          </Content>
           {
             actionButtons.length > 0 && <ButtonGroup
               containerStyle={ButtonGroupStyle.container}
