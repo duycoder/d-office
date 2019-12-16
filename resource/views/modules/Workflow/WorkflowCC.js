@@ -215,7 +215,7 @@ class WorkflowCC extends Component {
   renderDrivers = ({ item }) => {
     return (
       <ListItem
-        key={item.Value.toString()}
+        key={item.userId.toString()}
         onPress={() => this.onSelectDrivers(item.userId)}
         style={{ height: 60 }}>
         <Left>
