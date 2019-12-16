@@ -373,6 +373,11 @@ class Loading extends Component {
                     tripId: itemId,
                 };
                 break;
+            case "KeHoachKhoa":
+                screenParam = {
+                    id: itemId,
+                };
+                break;
             default:
                 break;
         }

@@ -221,7 +221,7 @@ class ListLichtruc extends Component {
   }
 
   navigateToScreen = (screenName, screenParams) => {
-    this.props.updateExtendsNavParams(screenParams);
+    this.props.updateCoreNavParams(screenParams);
     this.props.navigation.navigate(screenName);
   }
 
