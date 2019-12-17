@@ -426,7 +426,6 @@ class DetailRegistration extends Component {
         }
         if (canCancelRegistration) {
           workflowButtons.push({
-            // element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(2)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
             element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCancelRegistration_New()}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
           });
         }
@@ -478,7 +477,7 @@ class DetailRegistration extends Component {
           exitText="Hủy bỏ"
         >
           <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onSendRegistration()} style={AlertMessageStyle.footerButton}>
+            <RnButton onPress={() => this.onCheckRegistration()} style={AlertMessageStyle.footerButton}>
               <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
             </RnButton>
           </View>
