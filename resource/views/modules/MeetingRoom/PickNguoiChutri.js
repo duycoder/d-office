@@ -73,6 +73,10 @@ class PickNguoiChutri extends Component {
   }
 
   fetchData = async (isLoadmore = false) => {
+    this.setState({
+      loading: true
+    });
+
     const { pageIndex, pageSize, keyword } = this.state;
 
     const resultJson = await meetingRoomApi().getNguoichutri([
@@ -159,7 +163,6 @@ class PickNguoiChutri extends Component {
   }
 
   render() {
-    // console.tron.log(this.state.chutriId)
     let unsubmitableCondition = this.state.chutriId === 0,
       checkButtonStyle = unsubmitableCondition ? { opacity: 0.6 } : { opacity: 1 };
 

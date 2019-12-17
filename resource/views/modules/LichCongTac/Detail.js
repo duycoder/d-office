@@ -32,7 +32,8 @@ class DetailEvent extends Component {
     super(props);
 
     this.state = {
-      id: this.props.navigation.state.params.id || props.extendsNavParams.listIds.pop(),
+      id: props.navigation.state.params.id || props.extendsNavParams.listIds.pop(),
+      userId: props.userInfo.ID,
       data: {},
       loading: false,
       canRegistCar: false,
@@ -59,16 +60,23 @@ class DetailEvent extends Component {
   fetchData = async () => {
     this.setState({
       loading: true
-    })
+    });
+
+    const {
+      id, userId
+    } = this.state;
 
     const result = await calendarApi().getDetail([
-      this.state.id
+      id,
+      userId
     ]);
 
     this.setState({
       loading: false,
-      data: result
-    })
+      data: result.calendarData,
+      canRegistCar: result.canRegistCar || false,
+      canRegistMeeting: result.canRegistMeeting || false,
+    });
   }
 
   componentWillMount = () => {
@@ -307,7 +315,8 @@ class DetailEvent extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    extendsNavParams: state.navState.extendsNavParams
+    userInfo: state.userState.userInfo,
+    extendsNavParams: state.navState.extendsNavParams,
   }
 }
 
