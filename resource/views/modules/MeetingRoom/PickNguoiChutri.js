@@ -73,6 +73,8 @@ class PickNguoiChutri extends Component {
   }
 
   fetchData = async (isLoadmore = false) => {
+    const { pageIndex, pageSize, keyword } = this.state;
+
     const resultJson = await meetingRoomApi().getNguoichutri([
       pageSize,
       pageIndex,
