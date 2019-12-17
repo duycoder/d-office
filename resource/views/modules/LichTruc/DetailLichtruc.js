@@ -32,7 +32,7 @@ class DetailLichtruc extends Component {
     super(props);
 
     this.state = {
-      id: props.coreNavParams.id,
+      id: props.extendsNavParams.listIds ? props.extendsNavParams.listIds.pop() : props.coreNavParams.id,
       userId: this.props.userInfo.ID,
       userFullname: props.userInfo.Fullname || "Người dùng",
       data: [],

@@ -35,6 +35,8 @@ class DetailEvent extends Component {
       id: this.props.navigation.state.params.id || props.extendsNavParams.listIds.pop(),
       data: {},
       loading: false,
+      canRegistCar: false,
+      canRegistMeeting: false,
     }
   }
 
@@ -114,7 +116,7 @@ class DetailEvent extends Component {
   }
 
   render() {
-    const { data, loading } = this.state;
+    const { data, loading, canRegistCar, canRegistMeeting } = this.state;
 
     let chutriStr = "", chutriArr = [];
     if (data.TEN_NGUOI_CHUTRI) {
@@ -131,13 +133,13 @@ class DetailEvent extends Component {
     }
 
     let actionButtons = [];
-    if (!data.IS_OLD_WEEK) {
+    if (!data.IS_OLD_WEEK && canRegistCar) {
       if (!data.IS_REGISTERED_CAR) {
         actionButtons.push({
           element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRegistCar()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT XE</Text></TouchableOpacity>
         });
       }
-      if (!data.IS_LICH_HOP) {
+      if (!data.IS_LICH_HOP && canRegistMeeting) {
         actionButtons.push({
           element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateLichHop()}><Text style={ButtonGroupStyle.buttonText}>ĐẶT LỊCH HỌP</Text></TouchableOpacity>
         });
