@@ -175,7 +175,7 @@ class CreateMeetingDay extends Component {
     });
     const {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
-      canCreateMeetingForOthers,
+      canCreateMeetingForOthers, isFromCalendar,
     } = this.state;
 
     if (!mucdich) {
@@ -253,7 +253,7 @@ class CreateMeetingDay extends Component {
           if (resultJson.Status) {
             const screenParam = {
               lichhopId: resultJson.Params,
-              from: "createMeetingDay",
+              from: this.state.isFromCalendar ? "createMeetingDayViaCalendar" : "createMeetingDay",
             };
 
             this.props.updateCoreNavParams(screenParam);

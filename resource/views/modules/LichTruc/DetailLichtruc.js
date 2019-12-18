@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 
 import {
   Container, Header, Left, Button,
@@ -8,7 +8,7 @@ import {
 } from 'native-base';
 
 import {
-  Icon as RneIcon, ButtonGroup
+  Icon as RneIcon, ButtonGroup, List, ListItem,
 } from 'react-native-elements';
 
 import { connect } from 'react-redux';
@@ -26,6 +26,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { lichtrucApi } from '../../../common/Api';
+import { InfoStyle } from '../../../assets/styles';
 
 class DetailLichtruc extends Component {
   constructor(props) {
@@ -85,15 +86,35 @@ class DetailLichtruc extends Component {
       if (!!data && data.length > 0) {
         const listDate = data.map(x => `- ${x}`).join(`\n`);
         bodyContent = (
-          <View style={GridPanelStyle.container}>
-            <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
-            </View>
-            <View style={{ marginTop: "0.5%" }}>
-              <Text style={{ fontSize: moderateScale(12, 1.2) }}>{listDate}</Text>
-            </View>
+          <View style={InfoStyle.container}>
+            <ScrollView>
+              <List containerStyle={InfoStyle.listContainer}>
+                <ListItem style={InfoStyle.listItemContainer}
+                  hideChevron={true}
+                  title={
+                    <Text style={InfoStyle.listItemTitleContainer}>
+                      Thời gian
+                    </Text>
+                  }
+                  subtitle={
+                    <Text style={InfoStyle.listItemSubTitleContainer}>
+                      {listDate}
+                    </Text>
+                  } />
+              </List>
+            </ScrollView>
           </View>
         );
+        // bodyContent = (
+        //   <View style={GridPanelStyle.container}>
+        //     <View style={GridPanelStyle.titleContainer}>
+        //       <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+        //     </View>
+        //     <View style={{ marginTop: "0.5%" }}>
+        //       <Text style={{ fontSize: moderateScale(12, 1.2) }}>{listDate}</Text>
+        //     </View>
+        //   </View>
+        // );
       }
       else {
         bodyContent = (

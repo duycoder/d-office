@@ -401,7 +401,7 @@ class DetailRegistration extends Component {
           <DetailContent registrationInfo={this.state.registrationInfo} tripInfo={this.state.tripInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
         );
       }
-      else if (this.state.registrationInfo) {
+      if (this.state.registrationInfo) {
         const {
           canSendRegistration, canRecieveRegistratiion, canCheckRegistration, canCancelRegistration
         } = this.state.registrationInfo;

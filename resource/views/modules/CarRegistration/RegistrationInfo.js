@@ -211,7 +211,7 @@ class RegistrationInfo extends Component {
                 </Text>
               }
               subtitle={
-                <Text style={[InfoStyle.listItemSubTitleContainer, { color: info.MAU_TRANGTHAI.toString() }]}>
+                <Text style={[InfoStyle.listItemSubTitleContainer, { color: info.MAU_TRANGTHAI + "" }]}>
                   {info.TEN_TRANGTHAI}
                 </Text>
               } />

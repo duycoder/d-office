@@ -108,7 +108,7 @@ class DetailMeetingDay extends Component {
       if (this.state.from === "list") {
         this.props.updateExtendsNavParams({ check: this.state.check })
       }
-      else if (this.state.from === "createMeetingDay") {
+      else if (this.state.from === "createMeetingDay" || this.state.from === "createMeetingDayViaCalendar") {
         this.props.updateExtendsNavParams({ check: true });
         this.props.navigation.pop(2);
       }
