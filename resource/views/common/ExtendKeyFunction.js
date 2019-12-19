@@ -65,6 +65,7 @@ class ExtendKeyFunction extends Component {
       notifyCount_Chuyenxe: 0,
       notifyCount_Uyquyen: 0,
       notifyCount_Lichtruc: 0,
+      notifyCount_Nhacviec: 0,
     }
   }
 
@@ -78,6 +79,7 @@ class ExtendKeyFunction extends Component {
       notifyCount_Chuyenxe: result.notifyCount_Chuyenxe || 0,
       notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
       notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
+      notifyCount_Nhacviec: result.notifyCount_Nhacviec || 0,
     });
   }
 
@@ -136,7 +138,7 @@ class ExtendKeyFunction extends Component {
 
   generateNotifyCount = (maThaotac) => {
     const {
-      notifyCount_Lichhop, notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichtruc, notifyCount_Uyquyen
+      notifyCount_Lichhop, notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec,
     } = this.state;
 
     switch (maThaotac) {
@@ -151,6 +153,8 @@ class ExtendKeyFunction extends Component {
         return notifyCount_Uyquyen;
       case TIENICH._DS_LICHTRUC.NAME:
         return notifyCount_Lichtruc;
+      case TIENICH._DS_NHACNHO.NAME:
+        return notifyCount_Nhacviec;
       default:
         break;
     }

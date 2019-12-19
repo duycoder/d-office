@@ -76,6 +76,7 @@ class KeyFunction extends Component {
       notifyCount_Chuyenxe: 0,
       notifyCount_Uyquyen: 0,
       notifyCount_Lichtruc: 0,
+      notifyCount_Nhacviec: 0,
     }
   }
 
@@ -102,6 +103,7 @@ class KeyFunction extends Component {
       notifyCount_Chuyenxe: result.notifyCount_Chuyenxe || 0,
       notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
       notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
+      notifyCount_Nhacviec: result.notifyCount_Nhacviec || 0,
     });
   }
 
@@ -168,7 +170,7 @@ class KeyFunction extends Component {
       notifyCount_VBDen_Chuaxuly, notifyCount_VBDen_Noibo_Chuaxuly, notifyCount_VBDen_Thamgiaxuly,
       notifyCount_VBDi_Chuaxuly, notifyCount_VBDi_Dabanhanh, notifyCount_VBDi_Thamgiaxuly,
       notifyCount_CV_Canhan, notifyCount_CV_Choxacnhan, notifyCount_CV_Duocgiao, notifyCount_CV_Phoihopxuly,
-      notifyCount_Lichhop, notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichtruc, notifyCount_Uyquyen
+      notifyCount_Lichhop, notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec
     } = this.state;
 
     switch (maThaotac) {
@@ -205,6 +207,8 @@ class KeyFunction extends Component {
         return notifyCount_Uyquyen;
       case TIENICH._DS_LICHTRUC.NAME:
         return notifyCount_Lichtruc;
+      case TIENICH._DS_NHACNHO.NAME:
+        return notifyCount_Nhacviec;
       default:
         break;
     }

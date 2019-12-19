@@ -82,6 +82,7 @@ class Dashboard extends Component {
       notifyCount_Chuyenxe: 0,
       notifyCount_Uyquyen: 0,
       notifyCount_Lichtruc: 0,
+      notifyCount_Nhacviec: 0,
 
       birthdayData: null,
       dataUyQuyen: [],
@@ -147,6 +148,7 @@ class Dashboard extends Component {
       notifyCount_Chuyenxe: result.notifyCount_Chuyenxe || 0,
       notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
       notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
+      notifyCount_Nhacviec: result.notifyCount_Nhacviec || 0,
     })
   }
 
@@ -323,11 +325,11 @@ class Dashboard extends Component {
     const {
       notifyCount, userFunctions, onFocusNow,
       notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan,
-      notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen,
+      notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec,
       dataHotline
     } = this.state;
 
-    let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen]);
+    let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec]);
 
     return (
       <MenuProvider backHandler>
