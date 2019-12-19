@@ -89,18 +89,18 @@ class DetailLichtruc extends Component {
           <View style={InfoStyle.container}>
             <ScrollView>
               <List containerStyle={InfoStyle.listContainer}>
-                <ListItem style={InfoStyle.listItemContainer}
-                  hideChevron={true}
-                  title={
-                    <Text style={InfoStyle.listItemTitleContainer}>
-                      Thời gian
-                    </Text>
-                  }
-                  subtitle={
-                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                      {listDate}
-                    </Text>
-                  } />
+                {
+                  data.map(x => (
+                    <ListItem style={InfoStyle.listItemContainer}
+                      hideChevron
+                      title={
+                        <Text style={InfoStyle.listItemTitleContainer}>
+                          {x}
+                        </Text>
+                      }
+                    />
+                  ))
+                }
               </List>
             </ScrollView>
           </View>
