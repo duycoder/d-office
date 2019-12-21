@@ -30,6 +30,7 @@ import VanBanDenBrief from '../modules/VanBanDen/Brief';
 import ListAssignedTask from '../modules/Task/ListAssignedTask';
 import ListCombinationTask from '../modules/Task/ListCombinationTask';
 import ListPersonalTask from '../modules/Task/ListPersonalTask';
+import ListCommandingTask from '../modules/Task/ListCommandingTask';
 import ListProcessedTask from '../modules/Task/ListProcessedTask';
 import ListPendingConfirmTask from '../modules/Task/ListPendingConfirmTask';
 import ListFilterTask from '../modules/Task/ListFilterTask';
@@ -202,6 +203,9 @@ const baseStack = {
   },
   ListPersonalTaskScreen: {
     screen: ListPersonalTask
+  },
+  ListCommandingTaskScreen: {
+    screen: ListCommandingTask
   },
   ListProcessedTaskScreen: {
     screen: ListProcessedTask

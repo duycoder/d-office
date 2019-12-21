@@ -101,11 +101,12 @@ class ListPersonalLichtruc extends Component {
   }
 
   async fetchData(startDate, endDate, chosenTimestamp) {
-    const resultJson = await lichtrucApi().getPersonalList([
+    const { userId } = this.state;
+    const resultJson = await lichtrucApi().getPersonalList({
       startDate,
       endDate,
-      this.state.userId
-    ]);
+      userId
+    });
 
     setTimeout(() => {
       let tmpItems = {};
