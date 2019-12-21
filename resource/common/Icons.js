@@ -115,6 +115,9 @@ export default class SideBarIcon extends Component {
           iconName = congviecIcons.cho_xac_nhan;
           iconColor = "#004D40";
           break;
+        case CongViecFunction.actionCodes[4]:
+          iconName = congviecIcons.cua_thu_ky;
+          break;
         //#endregion
 
         //#region Tiẹn ích
@@ -138,6 +141,9 @@ export default class SideBarIcon extends Component {
           break;
         case TienichFunction.actionCodes[6]:
           iconName = otherIcons.khac;
+          break;
+        case TienichFunction.actionCodes[7]:
+          iconName = otherIcons.lich_truc_ca_nhan;
           break;
         //#endregion
 

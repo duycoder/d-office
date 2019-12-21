@@ -74,7 +74,8 @@ export const CONGVIEC_CONSTANT = {
 	DUOC_GIAO: 2,
 	PHOIHOP_XULY: 3,
 	DAGIAO_XULY: 4,
-	CHO_XACNHAN: 5
+	CHO_XACNHAN: 5,
+	CUA_THUKY: 6,
 }
 
 //thông báo
@@ -186,7 +187,8 @@ export const SYSTEM_FUNCTION = {
 			'CONGVIEC_CANHAN',
 			'CONGVIEC_DUOCGIAO',
 			'CONGVIEC_PHOIHOPXULY',
-			'PROCESSED_JOB'
+			'PROCESSED_JOB',
+			'CONGVIEC_THEOCHIDAO'
 		]
 	},
 
@@ -199,7 +201,8 @@ export const SYSTEM_FUNCTION = {
 			'DS_UYQUYEN',
 			'DS_LICHTRUC',
 			'DS_NHACNHO',
-			'KHAC'
+			'KHAC',
+			'DS_LICHTRUC_CANHAN',
 		]
 	},
 	LichCongTacFunction: {
@@ -308,7 +311,11 @@ export const DM_FUNCTIONS = {
 			NAME: 'PROCESSED_JOB',
 			IDTHAOTAC: 46,
 			MOBILENAME: 'CHỜ XÁC NHẬN'
-		}
+		},
+		_THEOCHIDAO: {
+			NAME: 'CONGVIEC_THEOCHIDAO',
+			MOBILENAME: 'THEO CHỈ ĐẠO'
+		},
 	},
 	LICHCONGTAC_LANHDAO: {
 		_DANHSACH: {
@@ -353,6 +360,10 @@ export const DM_FUNCTIONS = {
 		_KHAC: {
 			NAME: 'KHAC',
 			MOBILENAME: 'Khác'
+		},
+		_DS_LICHTRUC_CANHAN: {
+			NAME: 'DS_LICHTRUC_CANHAN',
+			MOBILENAME: 'Lịch trực cá nhân'
 		}
 	}
 }
@@ -422,6 +433,9 @@ export function generateTitle(maThaotac) {
 		case CONGVIEC._PROCESSED_JOB.NAME:
 			tenThaotac = CONGVIEC._PROCESSED_JOB.MOBILENAME;
 			break;
+		case CONGVIEC._THEOCHIDAO.NAME:
+			tenThaotac = CONGVIEC._THEOCHIDAO.MOBILENAME;
+			break;
 
 		case TIENICH._DS_YEUCAU_XE.NAME:
 			tenThaotac = TIENICH._DS_YEUCAU_XE.MOBILENAME;
@@ -444,7 +458,9 @@ export function generateTitle(maThaotac) {
 		case TIENICH._KHAC.NAME:
 			tenThaotac = TIENICH._KHAC.MOBILENAME;
 			break;
-
+		case TIENICH._DS_LICHTRUC_CANHAN.NAME:
+			tenThaotac = TIENICH._DS_LICHTRUC_CANHAN.MOBILENAME;
+			break;
 		case LICHCONGTAC_LANHDAO._DANHSACH.NAME:
 			tenThaotac = LICHCONGTAC_LANHDAO._DANHSACH.MOBILENAME;
 			break;

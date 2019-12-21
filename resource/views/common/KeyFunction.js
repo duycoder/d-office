@@ -70,6 +70,7 @@ class KeyFunction extends Component {
       notifyCount_CV_Duocgiao: 0,
       notifyCount_CV_Choxacnhan: 0,
       notifyCount_CV_Phoihopxuly: 0,
+      notifyCount_CV_Theochidao: 0,
 
       notifyCount_Lichhop: 0,
       notifyCount_Datxe: 0,
@@ -104,6 +105,7 @@ class KeyFunction extends Component {
       notifyCount_Uyquyen: result.notifyCount_Uyquyen || 0,
       notifyCount_Lichtruc: result.notifyCount_Lichtruc || 0,
       notifyCount_Nhacviec: result.notifyCount_Nhacviec || 0,
+      notifyCount_CV_Theochidao: result.notifyCount_CV_Theochidao || 0,
     });
   }
 
@@ -196,6 +198,8 @@ class KeyFunction extends Component {
         return notifyCount_CV_Phoihopxuly;
       case CONGVIEC._PROCESSED_JOB.NAME:
         return notifyCount_CV_Choxacnhan;
+      case CONGVIEC._THEOCHIDAO.NAME:
+        return notifyCount_CV_Theochidao;
 
       case TIENICH._DS_YEUCAU_XE.NAME:
         return notifyCount_Datxe;
@@ -300,7 +304,7 @@ class KeyFunction extends Component {
                             actionCode={sItem.MA_THAOTAC}
                             notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
                           />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                       }
                       else {

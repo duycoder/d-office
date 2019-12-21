@@ -22,6 +22,7 @@ const images = {
     cho_xac_nhan: require('../assets/images/Dashboard_icon/cong_viec/cho_xac_nhan.png'),
     phoi_hop_xu_ly: require('../assets/images/Dashboard_icon/cong_viec/phoi_hop_xu_ly.png'),
     them_moi: require('../assets/images/Dashboard_icon/cong_viec/them_moi.png'),
+    cua_thu_ky: require('../assets/images/Dashboard_icon/cong_viec/cua_thu_ky.png'),
   },
   otherIcons: {
     lich_cong_tac: require('../assets/images/Dashboard_icon/tien_ich/lich_cong_tac.png'),
@@ -32,6 +33,7 @@ const images = {
     uy_quyen: require('../assets/images/Dashboard_icon/tien_ich/uy_quyen.png'),
     nhac_nho: require('../assets/images/Dashboard_icon/tien_ich/nhac_nho.png'),
     khac: require('../assets/images/Dashboard_icon/tien_ich/khac.png'),
+    lich_truc_ca_nhan: require('../assets/images/Dashboard_icon/tien_ich/lich_truc_ca_nhan.png'),
   },
   hotPickIcons: {
     van_ban_den: require('../assets/images/Dashboard_icon/hot_pick/van_ban_den_chua_xu_ly.png'),

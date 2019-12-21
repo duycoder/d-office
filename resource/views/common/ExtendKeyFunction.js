@@ -225,7 +225,7 @@ class ExtendKeyFunction extends Component {
                             actionCode={sItem.MA_THAOTAC}
                             notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
                           />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{generateTitle(sItem.MA_THAOTAC)}</Text>
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
                         </TouchableOpacity>;
                       }
                       else {
