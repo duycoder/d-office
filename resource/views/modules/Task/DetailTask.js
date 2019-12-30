@@ -493,7 +493,7 @@ class DetailTask extends Component {
                     //         // <InteractiveButton title={'DUYỆT KẾ HOẠCH'} key={12} />
                     //     )
                     // }
-                } else {
+                } else if (task.CongViec.NGUOIXULYCHINH_ID == this.state.userId) {
                     // if (task.CongViec.IS_HASPLAN == true) {
                     //     // Nếu công việc yêu cầu lập kế hoạch trước khi bắt đầu thực hiện
                     //     if (task.TrangThaiKeHoach == PLANJOB_CONSTANT.CHUATRINHKEHOACH) {
