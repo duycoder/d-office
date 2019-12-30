@@ -254,6 +254,12 @@ class Dashboard extends Component {
             tripId: itemId,
           };
           break;
+        case "KeHoachKhoa":
+          screenName = "ListLichtrucScreen";
+          screenParam = {
+            listIds: [itemId],
+          };
+          break;
         default:
           outOfSwitch = true;
           break;
@@ -537,7 +543,10 @@ class Dashboard extends Component {
                           hideChevron={true}
                           title={
                             <Text style={[ListNotificationStyle.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
-                              <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</Text> {noidungMessage}
+                              {
+                                // <Text style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</Text> {noidungMessage}
+                                item.NOIDUNG
+                              }
                             </Text>
                           }
                           titleStyle={ListNotificationStyle.title}

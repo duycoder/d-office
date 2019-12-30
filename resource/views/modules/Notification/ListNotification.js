@@ -107,6 +107,12 @@ class ListNotification extends Component {
                         tripId: itemId,
                     };
                     break;
+                case "KeHoachKhoa":
+                    screenName = "ListLichtrucScreen";
+                    screenParam = {
+                        listIds: [itemId],
+                    };
+                    break;
                 default:
                     outOfSwitch = true;
                     break;
@@ -261,7 +267,10 @@ class ListNotification extends Component {
                 hideChevron={true}
                 title={
                     <RNText style={[styles.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
-                        <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</RNText> {noidungMessage}
+                        {
+                            // <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</RNText> {noidungMessage}
+                            item.NOIDUNG
+                        }
                     </RNText>
                 }
                 titleStyle={styles.title}

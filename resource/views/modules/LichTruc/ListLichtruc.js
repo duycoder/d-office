@@ -69,7 +69,7 @@ class ListLichtruc extends Component {
       executing: false,
       tempKehoachId: null,
 
-      listIds: props.extendsNavParams.listIds || []
+      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || []
     }
   }
 
@@ -233,7 +233,7 @@ class ListLichtruc extends Component {
         <ListItem
           containerStyle={{ borderBottomColor: Colors.GRAY }}
 
-          onPress={() => this.navigateToScreen("DetailLichtrucScreen", { id: item.ID })}
+          onPress={() => this.navigateToScreen("ListPersonalLichtrucScreen")}
           
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
