@@ -5,16 +5,17 @@ import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 export const ListNotificationStyle = StyleSheet.create({
   leftTitleCircle: {
     backgroundColor: Colors.GRAY,
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: moderateScale(48, 1.13),
+    height: moderateScale(48, 1.13),
+    borderRadius: moderateScale(23, 1.13),
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
+    marginRight: scale(10),
   },
   leftTitleText: {
     fontWeight: 'bold',
-    color: Colors.WHITE
+    color: Colors.WHITE,
+    fontSize: moderateScale(15, 1.1)
   },
   title: {
     color: Colors.VERY_DANK_GRAY,

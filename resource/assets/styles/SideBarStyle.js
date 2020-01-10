@@ -5,7 +5,7 @@
  */
 'use strict';
 import React, { Component } from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 import { Colors } from '../../common/SystemConstant';
@@ -129,7 +129,7 @@ export const SideBarStyle = StyleSheet.create({
         // shadowRadius: 3.84,
 
         // elevation: 5,
-        paddingVertical: moderateScale(12, 0.8),
+        paddingVertical: moderateScale(10, 0.8),
         flex: 1,
         flexDirection: 'column',
         alignItems: 'center',
@@ -143,6 +143,7 @@ export const SideBarStyle = StyleSheet.create({
         textAlign: 'center',
         // fontWeight: 'bold',
         fontSize: moderateScale(10, 0.8),
+        marginTop: moderateScale(4, 1.2),
         // flexWrap: 'wrap',
         // flex: 1,
     }, customIconContainerStyle: {
@@ -206,5 +207,14 @@ export const SideBarStyle = StyleSheet.create({
         alignSelf: "flex-start",
         width: "20%"
     },
-
+    hotPickBoxContainer: {
+        flex: 1,
+        backgroundColor: Colors.WHITE,
+        borderRadius: 10,
+        marginHorizontal: moderateScale(8, 1.2),
+        marginTop: Platform.isPad ? -20 : -50,
+        borderColor: '#ccc',
+        borderWidth: .7,
+        // minHeight: moderateScale(20),
+    },
 });

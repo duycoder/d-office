@@ -1,9 +1,9 @@
 import { Dimensions } from 'react-native'
-// export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
-export const WEB_URL = 'http://192.168.1.10:8022/'; //local web test
+export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
+// export const WEB_URL = 'http://192.168.1.10:8022/'; //local web test
 // export const WEB_URL = 'http://222.252.27.60:8022';//remote web test
-// export const API_URL = 'http://101.96.76.204:8999'; //api vnio
-export const API_URL = 'http://192.168.1.10:8111'; //local api test
+export const API_URL = 'http://101.96.76.204:8999'; //api vnio
+// export const API_URL = 'http://192.168.1.10:8111'; //local api test
 // export const API_URL = 'http://222.252.27.60:8111'; //remote api test
 
 export const DEFAULT_PAGE_SIZE = 20;
@@ -476,3 +476,54 @@ export function generateTitle(maThaotac) {
 
 export const EMAIL_VALIDATION = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export const PASSWD_VALIDATION = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/;
+
+export function generateBadgeIconNoti(itemType) {
+	let badgeBackgroundColor = Colors.GRAY,
+		leftTitle = "CV";
+
+	switch (itemType) {
+		case "HSVanBanDi":
+			badgeBackgroundColor = '#4FC3F7';
+			leftTitle = "VBTK"
+			break;
+		case "QuanLyCongViec":
+			badgeBackgroundColor = '#4DB6AC';
+			leftTitle = "CV";
+			break;
+		case "HSCV_VANBANDEN":
+			badgeBackgroundColor = '#5C6BC0';
+			leftTitle = "VBĐ";
+			break;
+		case "QL_LICHHOP":
+			badgeBackgroundColor = Colors.RANDOM_COLOR_1;
+			leftTitle = "LH";
+			break;
+		case "QL_DANGKY_XE":
+			badgeBackgroundColor = Colors.RANDOM_COLOR_2;
+			leftTitle = "DKX";
+			break;
+		case "QL_CHUYEN":
+			badgeBackgroundColor = Colors.DANK_BLUE;
+			leftTitle = "CX";
+			break;
+	}
+
+	return {
+		badgeBackgroundColor,
+		leftTitle
+	};
+}
+
+export function generateReadFontStyleAndColor(isRead = false) {
+	let checkReadFont = 'bold',
+		checkReadColor = Colors.NOT_READ;
+	
+	if (isRead) {
+		checkReadFont = 'normal';
+		checkReadColor = Colors.HAS_DONE;
+	}
+	return {
+		checkReadFont,
+		checkReadColor,
+	}
+}
