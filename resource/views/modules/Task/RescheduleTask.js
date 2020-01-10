@@ -35,6 +35,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
 import AccountStyle from '../../../assets/styles/AccountStyle';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 
 class RescheduleTask extends Component {
@@ -165,7 +166,7 @@ class RescheduleTask extends Component {
                         <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
                             <Label>Xin lùi tới ngày <Text style={{ color: '#f00' }}>*</Text></Label>
                             <DatePicker
-                                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                                style={DatePickerCustomStyle.containerStyle}
                                 date={this.state.chosenDate}
                                 mode="date"
                                 placeholder='Lùi tới ngày'

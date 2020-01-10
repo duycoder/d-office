@@ -33,6 +33,7 @@ import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 class CreateSubTask extends Component {
 	constructor(props) {
@@ -233,7 +234,7 @@ class CreateSubTask extends Component {
 						<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
 							<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
 							<DatePicker
-								style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+								style={DatePickerCustomStyle.containerStyle}
 								date={this.state.chosenDate}
 								mode="date"
 								placeholder='Hạn hoàn thành'

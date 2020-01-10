@@ -36,6 +36,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { reminderApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 const ReminderApi = reminderApi();
 
@@ -273,7 +274,7 @@ class CreateReminder extends Component {
               <Label>Thời điểm nhắc</Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={thoigian}
                 mode="datetime"
                 placeholder='Chọn thời điểm'

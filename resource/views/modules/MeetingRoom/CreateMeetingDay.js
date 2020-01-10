@@ -36,6 +36,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { meetingRoomApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 const MeetingRoomApi = meetingRoomApi();
 
@@ -340,7 +341,7 @@ class CreateMeetingDay extends Component {
               <Label>Ngày họp <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={ngayHop}
                 mode="date"
                 placeholder='Chọn ngày họp'
@@ -367,7 +368,7 @@ class CreateMeetingDay extends Component {
               <Label>Thời gian bắt đầu <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={thoigianBatdau}
                 mode="time"
                 placeholder='Chọn thời gian bắt đầu'
@@ -394,7 +395,7 @@ class CreateMeetingDay extends Component {
               <Label>Thời gian dự kiến kết thúc <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={thoigianKetthuc}
                 mode="time"
                 placeholder='Chọn thời gian dự kiến kết thúc'

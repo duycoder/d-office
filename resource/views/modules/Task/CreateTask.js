@@ -38,6 +38,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles/index';
 
 const TaskApi = taskApi();
 
@@ -407,7 +408,7 @@ class CreateTask extends Component {
                 iosHeader='Chọn độ ưu tiên'
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                style={{ width: pickerFormat(), justifyContent: 'space-around' }}
+                style={{ width: '100%', justifyContent: 'space-around' }}
                 selectedValue={priorityValue} //sai chinh ta @@
                 onValueChange={this.handleChange("priorityValue")}>
                 {
@@ -424,7 +425,7 @@ class CreateTask extends Component {
                 iosHeader='Chọn mức quan trọng'
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                style={{ width: pickerFormat(), justifyContent: 'space-around' }}
+                style={{ width: '100%', justifyContent: 'space-around' }}
                 selectedValue={urgencyValue}
                 onValueChange={this.handleChange("urgencyValue")}>
                 {
@@ -456,7 +457,7 @@ class CreateTask extends Component {
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
               <Label>Ngày nhận việc</Label>
               <DatePicker
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={startDate}
                 mode="date"
                 placeholder='Chọn ngày nhận việc'
@@ -482,7 +483,7 @@ class CreateTask extends Component {
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
               <Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={deadline}
                 mode="date"
                 placeholder='Chọn hạn hoàn thành'

@@ -31,6 +31,7 @@ import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 class CreateTaskPlan extends Component {
   constructor(props) {
@@ -177,7 +178,7 @@ class CreateTaskPlan extends Component {
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
               <Label>Dự kiến bắt đầu <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={startDate}
                 mode="date"
                 placeholder='Chọn ngày'
@@ -203,7 +204,7 @@ class CreateTaskPlan extends Component {
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
               <Label>Dự kiến kết thúc <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={endDate}
                 mode="date"
                 placeholder='Chọn ngày'

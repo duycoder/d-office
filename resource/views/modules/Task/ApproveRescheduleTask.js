@@ -36,6 +36,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import GoBackButton from '../../common/GoBackButton';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 class ApproveRescheduleTask extends Component {
     constructor(props) {
@@ -144,7 +145,7 @@ class ApproveRescheduleTask extends Component {
                         <Item stackedLabel style={{ height: verticalScale(100), alignItems: 'center', justifyContent: 'center' }}>
                             <Label>Ngày lãnh đạo đồng ý cho lùi hạn</Label>
                             <DatePicker
-                                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                                style={DatePickerCustomStyle.containerStyle}
                                 date={new Date(this.state.deadlineApprove)}
                                 mode="date"
                                 placeholder='Ngày lãnh đạo đồng ý cho lùi hạn'

@@ -36,6 +36,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { carApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 const api = carApi();
 
@@ -332,7 +333,7 @@ class CreateRegistration extends Component {
               <Label>Thời gian xuất phát</Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={ngayXP}
                 mode="datetime"
                 placeholder='Chọn ngày giờ xuất phát'

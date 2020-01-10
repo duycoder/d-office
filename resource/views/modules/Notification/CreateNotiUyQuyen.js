@@ -36,6 +36,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { accountApi } from '../../../common/Api';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 class CreateNotiUyQuyen extends Component {
   constructor(props) {
@@ -178,7 +179,7 @@ class CreateNotiUyQuyen extends Component {
               <Label>Hạn hiển thị <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
-                style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                style={DatePickerCustomStyle.containerStyle}
                 date={showUntil}
                 mode="date"
                 placeholder='Chọn hạn hiển thị thông báo'
