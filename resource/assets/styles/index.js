@@ -17,6 +17,7 @@ import TabStyle from "./TabStyle";
 import TaskStyle from "./TaskStyle";
 import GridPanelStyle from "./GridPanelStyle";
 import InfoStyle from './InfoStyle';
+import { DatePickerCustomStyle } from './InputStyle';
 
 export {
   AlertMessageStyle,
@@ -37,5 +38,6 @@ export {
   TabStyle,
   TaskStyle,
   GridPanelStyle,
-  InfoStyle
+  InfoStyle,
+  DatePickerCustomStyle,
 }

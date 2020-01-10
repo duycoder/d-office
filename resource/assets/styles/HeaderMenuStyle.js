@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform, Dimensions } from 'react-native';
 
 //constant
 import { Colors } from '../../common/SystemConstant'
-import { moderateScale } from './ScaleIndicator';
+import { moderateScale, scale } from './ScaleIndicator';
+
+const {width} = Dimensions.get('window');
 
 const optionsStyles = {
   optionsContainer: {
     // backgroundColor: 'green',
     // padding: 5,
     // marginTop: 15
+    width: width / 2
   },
   optionsWrapper: {
     // backgroundColor: 'purple',
@@ -38,7 +41,7 @@ const optionStyles = {
   optionWrapper: {
     borderBottomWidth: 1,
     borderBottomColor: '#bbb',
-    padding: 15,
+    padding: scale(15),
   },
   optionText: {
     // color: 'black',

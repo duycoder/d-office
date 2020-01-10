@@ -15,7 +15,7 @@ import Loading from '../common/Loading';
 
 // các stack điều hướng
 import { accountStack, notificationStack, dashboardStack, keyFunctionStack, authStack } from "./ModuleNav";
-import { moderateScale } from '../../assets/styles/ScaleIndicator';
+import { moderateScale, scale, verticalScale } from '../../assets/styles/ScaleIndicator';
 import NotiTabBarIcon from './NotiTabBarIcon';
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 
@@ -59,8 +59,8 @@ const appStack = TabNavigator(
 
                 // You can return any component that you like here! We usually use an
                 // icon component from react-native-vector-icons
-                return <View>
-                    <Icon name={iconName} size={moderateScale(25, 1.3)} color={tintColor} type="material-community" />
+                return <View style={{minWidth: scale(40), height: verticalScale(60), flexDirection: 'column', justifyContent: 'center'}}>
+                    <Icon name={iconName} size={moderateScale(25, 1.25)} color={tintColor} type="material-community" />
                     {
                         routeName === "Notification" && <NotiTabBarIcon customStyle={{right: -10}} />
                     }
@@ -80,7 +80,7 @@ const appStack = TabNavigator(
                     : null;
             },
         }),
-        tabBarComponent: TabBarBottom,
+        tabBarComponent: props => <TabBarBottom {...props} style={{height: verticalScale(50)}} />,
         tabBarPosition: 'bottom',
         tabBarOptions: {
             // activeTintColor: Colors.WHITE,
