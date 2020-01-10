@@ -34,6 +34,7 @@ import * as action from '../../../redux/modules/UyQuyen/Action';
 import VanBanDenUyQuyen from './VanBanDenUyQuyen';
 import VanBanDiUyQuyen from './VanBanDiUyQuyen';
 import GoBackButton from '../../common/GoBackButton';
+import { DatePickerCustomStyle } from '../../../assets/styles';
 
 
 class EditUyQuyen extends Component {
@@ -359,7 +360,7 @@ class EditUyQuyen extends Component {
                     renderIf(!this.state.loadingData)(
                         <Content>
                             <Tabs
-                                renderTabBar={() => <ScrollableTab />}
+                                // renderTabBar={() => <ScrollableTab />}
                                 initialPage={this.state.currentTabIndex}
                                 tabBarUnderlineStyle={TabStyle.underLineStyle}
                                 onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
@@ -432,7 +433,7 @@ class EditUyQuyen extends Component {
                                             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
                                                 <Label>Ngày bắt đầu <Text style={{ color: 'red', fontWeight: 'bold' }}>*</Text></Label>
                                                 <DatePicker
-                                                    style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                                                    style={DatePickerCustomStyle.containerStyle}
                                                     date={this.convertDate(this.state.entity.NGAY_BATDAU)}
                                                     mode="date"
                                                     placeholder='Ngày bắt đầu'
@@ -458,7 +459,7 @@ class EditUyQuyen extends Component {
                                             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
                                                 <Label>Ngày kết thúc <Text style={{ color: 'red', fontWeight: 'bold' }}>*</Text></Label>
                                                 <DatePicker
-                                                    style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
+                                                    style={DatePickerCustomStyle.containerStyle}
                                                     date={this.convertDate(this.state.entity.NGAY_KETTHUC)}
                                                     mode="date"
                                                     placeholder='Ngày kết thúc'

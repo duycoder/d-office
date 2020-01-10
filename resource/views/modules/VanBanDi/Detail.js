@@ -434,7 +434,7 @@ class DetailContent extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <Tabs
-                    renderTabBar={() => <ScrollableTab />}
+                    // renderTabBar={() => <ScrollableTab  />}
                     initialPage={this.state.currentTabIndex}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>

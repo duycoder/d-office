@@ -304,7 +304,8 @@ class WorkflowStreamProcess extends Component {
             } else {
                 if (this.state.flowData.HasUserExecute && this.state.flowData.HasUserJoinExecute) {
                     bodyContent = (
-                        <Tabs renderTabBar={() => <ScrollableTab />}
+                        <Tabs
+                            // renderTabBar={() => <ScrollableTab />}
                             initialPage={this.state.currentTabIndex}
                             onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
