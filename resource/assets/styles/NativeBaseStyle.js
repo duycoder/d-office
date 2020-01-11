@@ -1,17 +1,59 @@
 import React, { Component } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
+import { moderateScale } from './ScaleIndicator';
+import { Colors } from '../../common/SystemConstant';
 
-export const NativeBaseStyle = StyleSheet.create({
+const NativeBaseStyle = StyleSheet.create({
+    container: {
+        height: moderateScale(62),
+        backgroundColor: Colors.LITE_BLUE,
+    },
     left: {
         flex: 1,
-    }, body: {
-        flex: 3, 
+    }, 
+    body: {
+        flex: 3,
         alignItems: 'center'
     }, bodyTitle: {
-        color: '#fff',
-        fontWeight: 'bold'
-    }, right: {
+        color: Colors.WHITE,
+        fontWeight: 'bold',
+        fontSize: moderateScale(15, 0.82),
+    }, minorBodyTitle: {
+        color: Colors.WHITE,
+        fontWeight: 'bold',
+        fontSize: moderateScale(12, 0.76),
+    }, 
+    right: {
         flex: 1,
         alignItems: 'center'
     }
-})
+});
+
+const AddButtonStyle = StyleSheet.create({
+    container: {
+        marginRight: 50,
+    }, button: {
+        width: moderateScale(48, 0.76),
+        height: moderateScale(48, 0.76),
+        borderRadius: moderateScale(24, 0.76),
+        backgroundColor: Colors.MENU_BLUE,
+    }
+});
+const addBtnIconSize = moderateScale(30, 1.2);
+
+const MoreButtonStyle = StyleSheet.create({
+    button: {
+        backgroundColor: Colors.BLUE_PANTONE_640C,
+        height: moderateScale(42, 1.03),
+    }, buttonText: {
+        color: Colors.WHITE,
+        fontSize: moderateScale(13, 1.11),
+    },
+});
+
+export {
+    NativeBaseStyle,
+    AddButtonStyle,
+    addBtnIconSize,
+    MoreButtonStyle,
+}

@@ -438,7 +438,7 @@ class Dashboard extends Component {
                 }
                 {
                   this.state.notiData.length > 0
-                    ? this.state.notiData.map((item, index) => (<RecentNoti item={item} index={index} key={index.toString()} />))
+                    ? this.state.notiData.map((item, index) => (<RecentNoti item={item} index={index} key={index.toString()} onPressNotificationItem={this.onPressNotificationItem} />))
                     : emptyDataPage()
                 }
                 <BirthdayNoti birthdayData={this.state.birthdayData} />

@@ -13,7 +13,9 @@ import { Icon } from 'react-native-elements';
 
 export function authenticateLoading(isVisible) {
     return (
-        <Modal onRequestClose={() => { }}
+        <Modal
+            supportedOrientations={['portrait', 'landscape']}
+            onRequestClose={() => { }}
             animationTyal='fade'
             transparent={true}
             visible={isVisible}>
@@ -32,7 +34,9 @@ export function authenticateLoading(isVisible) {
 
 export function executeLoading(isVisible) {
     return (
-        <Modal onRequestClose={() => { }}
+        <Modal
+            supportedOrientations={['portrait', 'landscape']}
+            onRequestClose={() => { }}
             animationTyal='fade'
             transparent={true}
             visible={isVisible}>
@@ -71,8 +75,8 @@ export function getFileSize(fileSize) {
 
 export function getFileExtensionLogo(extension) {
     const imageExtensions = ['image/jpg', 'image/jpeg', 'image/png', 'png', 'jpg', 'jpeg'];
-    const docExtension = ['doc','docx'];
-    const excelExtension = ['xls','xlsx'];
+    const docExtension = ['doc', 'docx'];
+    const excelExtension = ['xls', 'xlsx'];
     const pdfExtension = ['pdf', 'application/pdf'];
     const txtExtesion = ['txt'];
 
@@ -80,7 +84,7 @@ export function getFileExtensionLogo(extension) {
     let isIcon = false;
     let iconName = null;
     let extText = null;
-    if(extension){
+    if (extension) {
         extension = extension.toLowerCase();
     }
     if (imageExtensions.includes(extension)) {

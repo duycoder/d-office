@@ -31,7 +31,9 @@ class NetworkStatus extends Component {
 
     render() {
         return (
-            <Modal animationType='slide'
+            <Modal
+                supportedOrientations={['portrait', 'landscape']}
+                animationType='slide'
                 visible={!this.props.isConnected}
                 transparent={true}
                 onRequestClose={() => console.log('Đã đóng')}>
@@ -40,9 +42,9 @@ class NetworkStatus extends Component {
                         <Header
                             leftComponent={
                                 <Icon name='signal-wifi-off' type='MaterialIcons'
-                                    size={moderateScale(40)} color={Colors.WHITE} />
+                                    size={moderateScale(30)} color={Colors.WHITE} />
                             }
-                            outerContainerStyle={styles.headerOuter}
+                            outerContainerStyles={styles.headerOuter}
                             centerComponent={
                                 <Text style={styles.headerTitle}>
                                     THÔNG BÁO NGOẠI TUYẾN
@@ -52,8 +54,8 @@ class NetworkStatus extends Component {
 
                         <View style={styles.content}>
                             <Text style={styles.bodyTitle}>
-                                Thiết bị hiện đang ở trạng thái ngoại tuyến! 
-                                Vui lòng kiểm tra lại kết nối của bạn.
+                                Thiết bị hiện đang ở trạng thái ngoại tuyến!
+                                {'\n'}Vui lòng kiểm tra lại kết nối của bạn.
                             </Text>
                         </View>
                     </View>
@@ -71,15 +73,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(52, 52, 52, 0.8)',
     }, body: {
         borderRadius: 15,
-        width: scale(300),
-        height: verticalScale(200),
+        width: scale(280),
+        minHeight: verticalScale(200),
         borderRadius: 3,
         backgroundColor: Colors.WHITE,
     }, headerOuter: {
-        backgroundColor: Colors.BLUE_PANTONE_640C,
-        height: verticalScale(50),
+        backgroundColor: Colors.DANK_BLUE,
+        height: verticalScale(60),
         width: '100%',
-        borderRadius: 15
+        // borderRadius: 15
     }, headerTitle: {
         color: Colors.WHITE,
         fontWeight: 'bold',
@@ -92,7 +94,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: Colors.WHITE
+        backgroundColor: Colors.WHITE,
+        paddingHorizontal: scale(5)
     }
 })
 

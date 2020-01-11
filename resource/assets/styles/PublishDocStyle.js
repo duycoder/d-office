@@ -9,7 +9,7 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '../../common/SystemConstant'
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
-export const ListPublishDocStyle = StyleSheet.create({
+const ListPublishDocStyle = StyleSheet.create({
     emtpyContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -49,7 +49,7 @@ export const ListPublishDocStyle = StyleSheet.create({
     }
 });
 
-export const DetailPublishDocStyle = StyleSheet.create({
+const DetailPublishDocStyle = StyleSheet.create({
     container: {
         flex: 1,
     },
@@ -98,3 +98,8 @@ export const DetailPublishDocStyle = StyleSheet.create({
         fontWeight: 'bold'
     }
 });
+
+export {
+    ListPublishDocStyle,
+    DetailPublishDocStyle,
+}

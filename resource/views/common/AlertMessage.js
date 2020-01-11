@@ -8,7 +8,7 @@ import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIn
 import styles from '../../assets/styles/AlertMessageStyle';
 
 export default class AlertMessage extends Component {
-  static defaultProps = { 
+  static defaultProps = {
     title: "",
     exitText: "KHÔNG",
     bodyText: "",
@@ -37,6 +37,7 @@ export default class AlertMessage extends Component {
   render() {
     return (
       <Modal
+        supportedOrientations={['portrait', 'landscape']}
         animationType={'fade'}
         transparent={true}
         visible={this.state.isVisible}

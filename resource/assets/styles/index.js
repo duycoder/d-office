@@ -6,8 +6,8 @@ import * as HeaderMenuStyle from "./HeaderMenuStyle";
 import HistoryStyle from "./HistoryStyle";
 import LoginStyle from "./LoginStyle";
 import MenuPopUpStyle from "./MenuPopUpStyle";
-import NativeBaseStyle from "./NativeBaseStyle";
-import PanelStyle from "./PanelStyle";
+import { NativeBaseStyle, AddButtonStyle, MoreButtonStyle } from "./NativeBaseStyle";
+import { PanelStyle } from "./PanelStyle";
 import PublishDocStyle from "./PublishDocStyle";
 import ScaleIndicator from "./ScaleIndicator";
 import SideBarIcons from "./SideBarIcons";
@@ -40,4 +40,6 @@ export {
   GridPanelStyle,
   InfoStyle,
   DatePickerCustomStyle,
+  AddButtonStyle,
+  MoreButtonStyle,
 }

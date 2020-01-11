@@ -195,8 +195,8 @@ export const SideBarStyle = StyleSheet.create({
     dashboardHeader: {
         backgroundColor: Colors.LITE_BLUE,
         borderBottomWidth: 0,
-        height: 120,
-        paddingTop: 35
+        height: moderateScale(110, 0.9),
+        paddingTop: verticalScale(35)
     }, dashboardHeaderLeft: {
         flex: 6,
         paddingLeft: 10,
@@ -212,7 +212,7 @@ export const SideBarStyle = StyleSheet.create({
         backgroundColor: Colors.WHITE,
         borderRadius: 10,
         marginHorizontal: moderateScale(8, 1.2),
-        marginTop: Platform.isPad ? -20 : -50,
+        marginTop: moderateScale(-52, 0.89),
         borderColor: '#ccc',
         borderWidth: .7,
         // minHeight: moderateScale(20),

@@ -66,6 +66,7 @@ export default class Confirm extends Component {
     render() {
         return (
             <Modal
+                supportedOrientations={['portrait', 'landscape']}
                 animationType={'fade'}
                 transparent={true}
                 visible={this.state.isVisible}
@@ -125,7 +126,8 @@ const styles = StyleSheet.create({
         borderColor: '#ececec'
     }, headerCenterTitle: {
         color: Colors.LITE_BLUE,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        fontSize: moderateScale(15, 1.18),
     }, headerOuter: {
         height: verticalScale(50),
         borderBottomColor: Colors.LITE_BLUE,
@@ -153,7 +155,8 @@ const styles = StyleSheet.create({
     }, rightFooter: {
         flex: 1,
     }, footerText: {
-        color: '#000'
+        color: '#000',
+        fontSize: moderateScale(15, 1.18),
     }, footerButton: {
         flex: 1,
         justifyContent: 'center',
