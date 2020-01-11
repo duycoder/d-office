@@ -297,7 +297,7 @@ class ListChatter extends Component {
     const commentSendableIcon = (this.state.avatarSource !== EMPTY_STRING || this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
     return (
       <Container>
-        <Header hasTabs searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header hasTabs searchBar rounded style={NativeBaseStyle.container}>
           <Item style={{ backgroundColor: Colors.WHITE }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên công việc'

@@ -33,6 +33,7 @@ export const GridPanelStyle = StyleSheet.create({
     backgroundColor: Colors.LIGHT_GRAY_PASTEL
   }, listItemTitle: {
     fontWeight: 'bold',
+    fontSize: moderateScale(11, 0.76)
     // color: '#595959'
   }
 });

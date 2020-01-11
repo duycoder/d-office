@@ -508,7 +508,7 @@ class ListComment extends Component {
     const commentSendableIcon = (this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.navigateToDetail()} />
           </Left>

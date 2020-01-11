@@ -143,7 +143,7 @@ class RescheduleTask extends Component {
     render() {
         return (
             <Container>
-                <Header style={{ backgroundColor: Colors.LITE_BLUE }} hasTabs>
+                <Header style={NativeBaseStyle.container} hasTabs>
                     <Left style={NativeBaseStyle.left}>
                         <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>

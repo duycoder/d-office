@@ -425,7 +425,7 @@ class GroupSubTask extends Component {
     render() {
         return (
             <Container>
-                <Header searchBar style={{ backgroundColor: Colors.LITE_BLUE }}>
+                <Header searchBar style={NativeBaseStyle.container}>
                     <Left style={NativeBaseStyle.left}>
                         <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>

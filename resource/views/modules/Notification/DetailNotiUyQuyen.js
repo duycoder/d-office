@@ -63,7 +63,7 @@ class DetailNotiUyQuyen extends Component {
     const { data, loading } = this.state;
     return (
       <Container style={{ backgroundColor: '#f1f1f1' }}>
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.navigateBack()} />
           </Left>

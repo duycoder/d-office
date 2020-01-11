@@ -42,6 +42,8 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { meetingRoomApi } from '../../../common/Api';
+import GoBackButton from '../../common/GoBackButton';
+import { AddButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000;
 
@@ -78,7 +80,7 @@ class MeetingDayList extends Component {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
             // loadingData: true,
-            items : {},
+            items: {},
           }, () => {
             let currentDate = new Date(),
               startDate = currentDate.getTime() - 15 * TOTAL_TIME_OF_DAY,
@@ -142,7 +144,7 @@ class MeetingDayList extends Component {
     navObj.goBack();
   }
 
-  navigateToDetail = (lichhopId) => {
+  navigateToDetail = (lichhopId = 0) => {
     const navObj = this.props.navigation || this.props.navigator;
     if (lichhopId > 0) {
       let targetScreenParam = {
@@ -258,14 +260,11 @@ class MeetingDayList extends Component {
   }
 
   render() {
-    // console.tron.log(this.state.items)
     return (
       <Container>
-        <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
-              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
-            </TouchableOpacity>
+            <GoBackButton onPress={() => this.navigateBack()} />
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
@@ -278,34 +277,16 @@ class MeetingDayList extends Component {
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
-          {
-            // renderIf(this.state.loadingData)(
-            //   <View style={{ flex: 1, justifyContent: 'center' }}>
-            //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-            //   </View>
-            // )
-          }
-
-          {
-            <Agenda
-              items={this.state.items}
-              loadItemsForMonth={this.loadItems.bind(this)}
-              selected={this.state.currentDay}
-              renderItem={this.renderItem.bind(this)}
-              renderEmptyDate={this.renderEmptyDate.bind(this)}
-              rowHasChanged={this.rowHasChanged.bind(this)}
-            />
-          }
+          <Agenda
+            items={this.state.items}
+            loadItemsForMonth={this.loadItems.bind(this)}
+            selected={this.state.currentDay}
+            renderItem={this.renderItem.bind(this)}
+            renderEmptyDate={this.renderEmptyDate.bind(this)}
+            rowHasChanged={this.rowHasChanged.bind(this)}
+          />
         </Content>
-        <Fab
-          active={true}
-          direction="up"
-          containerStyle={{}}
-          style={{ backgroundColor: Colors.MENU_BLUE }}
-          position="bottomRight"
-          onPress={() => this.navigateToDetail(0)}>
-          <Icon name="add" />
-        </Fab>
+        <AddButton createFunc={this.navigateToDetail} />
       </Container>
     );
   }

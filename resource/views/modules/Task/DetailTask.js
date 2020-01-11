@@ -551,7 +551,7 @@ class DetailTask extends Component {
         return (
             <MenuProvider backHandler={true}>
                 <Container>
-                    <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+                    <Header style={NativeBaseStyle.container}>
                         <Left style={NativeBaseStyle.left}>
                             <GoBackButton onPress={() => this.navigateBackToList()} />
                         </Left>

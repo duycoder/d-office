@@ -74,7 +74,7 @@ class EventList extends Component {
   render() {
     return (
       <Container>
-        <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header hasTabs style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={()=>this.navigateBack()} />
           </Left>

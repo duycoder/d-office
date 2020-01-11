@@ -381,7 +381,7 @@ class ReplyComment extends Component {
     const buttonSendColor = this.state.commentContent.trim() === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.navigateToListComment()} />
           </Left>

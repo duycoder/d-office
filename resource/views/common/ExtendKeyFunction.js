@@ -176,12 +176,12 @@ class ExtendKeyFunction extends Component {
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="light-content" />
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.props.navigation.goBack()} buttonStyle='100%' />
           </Left>
           <Body style={{ alignItems: 'center', flex: 5 }}>
-            <Title style={{ color: Colors.WHITE }}>
+            <Title style={NativeBaseStyle.bodyTitle}>
               TIỆN ÍCH
             </Title>
           </Body>

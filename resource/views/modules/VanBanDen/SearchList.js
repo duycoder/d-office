@@ -215,7 +215,7 @@ class ListFilterPublishDoc extends Component {
     render() {
         return (
             <Container>
-                <Header searchBar rounded style={{ backgroundColor: HEADER_COLOR }}>
+                <Header searchBar rounded style={NativeBaseStyle.container}>
                         <Item  style={{ backgroundColor: Colors.WHITE }}>
                             <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
                             <Input placeholder="Mã hiệu hoặc trích yếu"

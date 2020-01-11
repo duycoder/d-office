@@ -245,7 +245,7 @@ class BaseList extends Component {
   render() {
     return (
       <Container>
-        <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={{ flex: 1 }}>
             <GoBackButton onPress={() => this.props.navigator.goBack()} buttonStyle='100%' />
           </Left>

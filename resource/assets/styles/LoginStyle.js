@@ -30,11 +30,12 @@ export const LoginStyle = StyleSheet.create({
         color: '#221f1f'
     }, formHeaderSoftwareTitle: {
         fontWeight: 'bold',
-        color: '#007cc2'
+        color: '#007cc2',
+        fontSize: moderateScale(13, 1.05),
     }, formHeaderSoftwareName: {
         color: Colors.LITE_BLUE,
         fontWeight: 'bold',
-        fontSize: moderateScale(25,1.5)
+        fontSize: moderateScale(25, 1.5)
     }, formHeaderNothing: {
         marginTop: verticalScale(30)
     },
@@ -80,9 +81,9 @@ export const LoginStyle = StyleSheet.create({
         borderRadius: moderateScale(5),
         backgroundColor: '#f7f7f7',
         color: '#666666',
-        height: moderateScale(40,2),
+        height: moderateScale(36, 1.2),
         paddingLeft: scale(10),
-        // fontSize: moderateScale(18, 1.5),
+        fontSize: moderateScale(14, 1.23),
         alignSelf: 'stretch'
     }, formPasswordVisibility: {
         position: 'absolute',
@@ -118,13 +119,13 @@ export const LoginStyle = StyleSheet.create({
         position: 'relative',
         alignSelf: 'stretch',
         justifyContent: 'center',
-        height: moderateScale(40,2),
+        minHeight: moderateScale(36, 1.32),
         borderRadius: moderateScale(5, 1.2),
         padding: moderateScale(10)
     }, formButtonText: {
         fontWeight: 'bold',
-        fontSize: moderateScale(18, 1.5),
-        textAlign:'center'
+        fontSize: moderateScale(18, 1.23),
+        textAlign: 'center'
     }, formIconContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -133,5 +134,12 @@ export const LoginStyle = StyleSheet.create({
         fontSize: moderateScale(16),
         textAlign: 'center',
         fontWeight: 'bold'
-    }
+    },
+
+    registerInputForm: {
+        marginTop: verticalScale(8),
+        marginLeft: scale(5),
+        fontSize: moderateScale(14, 1.23),
+        minHeight: moderateScale(28, 1.4),
+    },
 });

@@ -273,13 +273,11 @@ class Login extends Component {
                         LoginStyle.formHeader
                     ]}>
 
-                        <Text style={[LoginStyle.formHeaderSoftwareTitle,
-                        { display: this.state.headerComponentsDisplayStatus }]}>
+                        <Text style={[LoginStyle.formHeaderSoftwareTitle, { display: this.state.headerComponentsDisplayStatus }]}>
                             PHẦN MỀM QUẢN LÝ ĐIỀU HÀNH VĂN BẢN
                         </Text>
 
-                        <Text style={[LoginStyle.formHeaderSoftwareName,
-                        { display: this.state.headerComponentsDisplayStatus }]}>
+                        <Text style={[LoginStyle.formHeaderSoftwareName, { display: this.state.headerComponentsDisplayStatus }]}>
                             EofficeVNEH
                         </Text>
                     </Animated.View>
@@ -344,13 +342,12 @@ class Login extends Component {
                                     <Text style={[LoginStyle.formButtonText, toggleLoginStyleText]}>ĐĂNG NHẬP</Text>
                                 </TouchableOpacity>
                             </View>
-                            <View style={[LoginStyle.formInputs, LoginStyle.formButton]}>
-                                <TouchableOpacity
-                                    onPress={this.onSignupPress}
-                                >
-                                    <Text style={[LoginStyle.formButtonText, { color: Colors.GRAY, fontSize: moderateScale(16, 1.2) }]}>Chưa có tài khoản?</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity
+                                onPress={this.onSignupPress}
+                                style={[LoginStyle.formInputs, LoginStyle.formButton]}
+                            >
+                                <Text style={[LoginStyle.formButtonText, { color: Colors.GRAY, fontSize: moderateScale(16, 1.2) }]}>Chưa có tài khoản?</Text>
+                            </TouchableOpacity>
                         </View>
                     </ImageBackground>
                     {

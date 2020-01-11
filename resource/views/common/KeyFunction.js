@@ -255,10 +255,10 @@ class KeyFunction extends Component {
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="light-content" />
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={{ flex: 1 }} />
           <Body style={{ alignItems: 'center', flex: 8 }}>
-            <Title style={{ color: Colors.WHITE }}>
+            <Title style={NativeBaseStyle.bodyTitle}>
               CHỨC NĂNG CHÍNH
             </Title>
           </Body>

@@ -145,7 +145,7 @@ class BaseCalendar extends Component {
 
     return (
       <Container>
-        <Header hasTabs style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header hasTabs style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.props.navigation.goBack()} />
           </Left>
@@ -299,7 +299,9 @@ class BaseCalendar extends Component {
 
             //     </PopupDialog>
           }
-          <Modal animationType={"slide"} visible={this.state.isOpened} transparent>
+          <Modal
+            supportedOrientations={['portrait', 'landscape']}
+            animationType={"slide"} visible={this.state.isOpened} transparent>
             <View style={{ backgroundColor: '#fafafa', position: 'absolute', bottom: 0, left: 0, right: 0 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}>
                 <TouchableOpacity onPress={this.togglePicker}>

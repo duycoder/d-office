@@ -363,7 +363,7 @@ class ListRegistration extends Component {
   render() {
     return (
       <Container>
-        <Header searchBar rounded style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
               <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />

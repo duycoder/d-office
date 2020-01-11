@@ -59,7 +59,7 @@ class ListFilterTask extends Component {
         }
     }
 
-    componentDidMount = ()=> {
+    componentDidMount = () => {
         this.fetchData();
     }
 
@@ -74,11 +74,11 @@ class ListFilterTask extends Component {
 
         let apiUrlParam = 'PersonalWork';
 
-        if(this.state.filterType == 2){
+        if (this.state.filterType == 2) {
             apiUrlParam = 'AssignedWork'
-        }else if(this.state.filterType == 3){
+        } else if (this.state.filterType == 3) {
             apiUrlParam = 'CombinationWork'
-        }else if(this.state.filterType == 4){
+        } else if (this.state.filterType == 4) {
             apiUrlParam = 'ProcessedJob'
         }
 
@@ -113,13 +113,13 @@ class ListFilterTask extends Component {
 
     onFilter = () => {
         //tìm kiếm
-        if(util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)){
+        if (util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)) {
             Toast.show({
                 text: 'Vui lòng nhập tên công việc',
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: '#fff' },
-                buttonTextStyle: { color: '#FF0033'},
+                buttonTextStyle: { color: '#FF0033' },
                 duration: 2000
             });
         } else {
@@ -127,7 +127,7 @@ class ListFilterTask extends Component {
                 data: [],
                 pageIndex: DEFAULT_PAGE_INDEX,
                 pageSize: DEFAULT_PAGE_SIZE
-            }, ()=> {
+            }, () => {
                 this.fetchData();
             })
         }
@@ -136,21 +136,21 @@ class ListFilterTask extends Component {
     renderItem = ({ item }) => {
         let content = [];
 
-        if(item == this.state.data[0]){
+        if (item == this.state.data[0]) {
             content.push(
                 <ListItem key={-1}
                     leftIcon={
-                        <Text style={{color: '#9E9E9E'}}>
+                        <Text style={{ color: '#9E9E9E' }}>
                             KẾT QUẢ
                         </Text>
                     }
 
                     rightIcon={
-                        <Text style={{color: '#000', fontWeight: 'bold'}}>
+                        <Text style={{ color: '#000', fontWeight: 'bold' }}>
                             {this.state.data.length}
                         </Text>
                     }
-                    containerStyle={{height: 40, backgroundColor: '#EEE', justifyContent: 'center'}}
+                    containerStyle={{ height: 40, backgroundColor: '#EEE', justifyContent: 'center' }}
                 />
             )
         }
@@ -178,7 +178,7 @@ class ListFilterTask extends Component {
 
                     subtitle={
                         <Text style={[item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal, ListTaskStyle.abridgment]}>
-                            {'Hạn xử lý: ' +  convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
+                            {'Hạn xử lý: ' + convertDateToString(item.NGAYHOANTHANH_THEOMONGMUON)}
                         </Text>
                     }
                 />
@@ -195,7 +195,7 @@ class ListFilterTask extends Component {
         }
     }
 
-    handleRefresh = ()=> {
+    handleRefresh = () => {
         this.setState({
             refreshing: true,
             pageIndex: DEFAULT_PAGE_INDEX,
@@ -205,14 +205,14 @@ class ListFilterTask extends Component {
         });
     }
 
-    navigateToList(){
+    navigateToList() {
         let screenName = 'ListPersonalTaskScreen';
 
-        if(this.state.filterType == 2){
+        if (this.state.filterType == 2) {
             screenName = 'ListAssignedTaskScreen'
-        }else if(this.state.filterType == 3){
+        } else if (this.state.filterType == 3) {
             screenName = 'ListCombinationTaskScreen'
-        }else if(this.state.filterType == 4){
+        } else if (this.state.filterType == 4) {
             screenName = 'ListProcessedTaskScreen'
         }
         this.props.navigation.navigate(screenName);
@@ -221,13 +221,13 @@ class ListFilterTask extends Component {
     render() {
         return (
             <Container>
-                <Header searchBar rounded style={{ backgroundColor: HEADER_COLOR }}>
+                <Header searchBar rounded style={NativeBaseStyle.container}>
                     <Item style={{ backgroundColor: Colors.WHITE }}>
                         <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
                         <Input placeholder="Tên công việc"
-                                    value={this.state.filterValue}
-                                    onChangeText={(filterValue) => this.setState({ filterValue })}
-                                    onSubmitEditing={() => this.onFilter()} />
+                            value={this.state.filterValue}
+                            onChangeText={(filterValue) => this.setState({ filterValue })}
+                            onSubmitEditing={() => this.onFilter()} />
                         <Icon name="ios-close" onPress={() => this.clearFilterValue()} />
                     </Item>
                 </Header>
@@ -251,7 +251,7 @@ class ListFilterTask extends Component {
                         }
 
                         refreshControl={
-                            <RefreshControl 
+                            <RefreshControl
                                 onRefresh={this.handleRefresh}
                                 refreshing={this.state.refreshing}
                                 colors={[LOADER_COLOR]}

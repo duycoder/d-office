@@ -8,7 +8,7 @@ import {
 import {
     API_URL,
     EMPTY_STRING, THONGBAO_CONSTANT,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
+    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors, generateReadFontStyleAndColor, generateBadgeIconNoti
 } from '../../../common/SystemConstant';
 import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate, convertDateToString } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
@@ -27,6 +27,9 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { accountApi } from '../../../common/Api';
+import { RecentNoti, AuthorizeNoti } from '../../common/DashboardCommon';
+import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
+import { AddButton, MoreButton } from '../../common';
 
 const AccountApi = accountApi();
 
@@ -215,85 +218,7 @@ class ListNotification extends Component {
             data: this.state.loadingMore ? this.state.data.concat(result) : result
         })
     }
-    renderItem = ({ item }) => {
-        let itemType = item.URL.split('/')[2],
-            badgeBackgroundColor = Colors.GRAY,
-            leftTitle = "CV";
-        switch (itemType) {
-            case "HSVanBanDi":
-                badgeBackgroundColor = '#4FC3F7';
-                leftTitle = "VBTK"
-                break;
-            case "QuanLyCongViec":
-                badgeBackgroundColor = '#4DB6AC';
-                leftTitle = "CV";
-                break;
-            case "HSCV_VANBANDEN":
-                badgeBackgroundColor = '#5C6BC0';
-                leftTitle = "VBĐ";
-                break;
-            case "QL_LICHHOP":
-                badgeBackgroundColor = Colors.RANDOM_COLOR_1;
-                leftTitle = "LH";
-                break;
-            case "QL_DANGKY_XE":
-                badgeBackgroundColor = Colors.RANDOM_COLOR_2;
-                leftTitle = "DKX";
-                break;
-            case "QL_CHUYEN":
-                badgeBackgroundColor = Colors.DANK_BLUE;
-                leftTitle = "CX";
-                break;
-        }
-
-        let noidungArchor = item.NOIDUNG.indexOf("đã"),
-            noidungSender = item.NOIDUNG.slice(0, noidungArchor - 1),
-            noidungMessage = item.NOIDUNG.slice(noidungArchor);
-
-        let checkReadFont = item.IS_READ ? 'normal' : 'bold',
-            checkReadColor = item.IS_READ ? Colors.HAS_DONE : Colors.NOT_READ;
-
-        return (
-            <ListItem
-                leftIcon={
-                    <View style={[styles.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
-                        <RNText style={styles.leftTitleText}>
-                            {
-                                leftTitle
-                            }
-                        </RNText>
-                    </View>
-                }
-                hideChevron={true}
-                title={
-                    <RNText style={[styles.title, { fontWeight: checkReadFont, color: checkReadColor }]}>
-                        {
-                            // <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{noidungSender}</RNText> {noidungMessage}
-                            item.NOIDUNG
-                        }
-                    </RNText>
-                }
-                titleStyle={styles.title}
-                titleContainerStyle={{
-                    marginHorizontal: '3%',
-                }}
-                titleNumberOfLines={3}
-                rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
-                rightTitleNumberOfLines={2}
-                rightTitleStyle={{
-                    textAlign: 'center',
-                    color: Colors.DARK_GRAY,
-                    fontSize: moderateScale(12, 0.9),
-                    fontStyle: 'italic',
-                    fontWeight: checkReadFont,
-                }}
-                rightTitleContainerStyle={{
-                    flex: 0
-                }}
-                onPress={() => this.onPressNotificationItem(item)}
-            />
-        );
-    }
+    renderItem = ({ item, index }) => (<RecentNoti item={item} index={index} key={index.toString()} onPressNotificationItem={this.onPressNotificationItem} />)
 
     createNotiUyQuyen = () => {
         this.props.navigation.navigate("CreateNotiUyQuyenScreen");
@@ -303,10 +228,10 @@ class ListNotification extends Component {
         return (
             <Container>
                 <StatusBar barStyle="light-content" />
-                <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+                <Header style={NativeBaseStyle.container}>
                     <Left style={{ flex: 1 }} />
                     <Body style={{ alignItems: 'center', flex: 8 }}>
-                        <Title style={{ color: Colors.WHITE }}>
+                        <Title style={NativeBaseStyle.bodyTitle}>
                             THÔNG BÁO
                         </Title>
                     </Body>
@@ -323,46 +248,7 @@ class ListNotification extends Component {
                     {
                         renderIf(!this.state.loading)(
                             renderIf(this.state.dataUyQuyen.length > 0)(
-                                this.state.dataUyQuyen.map((item, index) => {
-                                    return (
-                                        <ListItem
-                                            key={index.toString()}
-                                            containerStyle={{ backgroundColor: "#EBDEF0", borderBottomColor: "#ccc" }}
-                                            leftIcon={
-                                                <RNEIcon name="transition-masked" type="material-community" color={"#8E44AD"} size={moderateScale(45)} />
-                                            }
-                                            hideChevron={true}
-                                            title={
-                                                <RNText style={[ListNotificationStyle.title, { fontWeight: "bold" }]}>
-                                                    <RNText style={{ fontWeight: 'bold', color: Colors.BLACK }}>{`${item.TEN_NGUOIGUI} `}</RNText><RNText style={{ color: "#8E44AD" }}>{`${item.TIEUDE}`}</RNText>
-                                                </RNText>
-                                            }
-                                            titleStyle={ListNotificationStyle.title}
-                                            titleContainerStyle={{
-                                                marginHorizontal: '3%',
-                                            }}
-                                            rightTitle={convertDateTimeToTitle(item.NGAYTAO, true)}
-                                            rightTitleNumberOfLines={2}
-                                            rightTitleStyle={{
-                                                textAlign: 'center',
-                                                color: Colors.DARK_GRAY,
-                                                fontSize: moderateScale(12, 0.9),
-                                                fontStyle: 'italic',
-                                            }}
-                                            rightTitleContainerStyle={{
-                                                flex: 0
-                                            }}
-                                            // subtitle={
-                                            //     <RNText style={{ color: Colors.BLACK }}>{`${item.NOIDUNG}, hạn tới ${convertDateToString(item.SHOW_UNTIL)}`}</RNText>
-                                            // }
-                                            // subtitleContainerStyle={{
-                                            //     marginHorizontal: '3%'
-                                            // }}
-                                            titleNumberOfLines={3}
-                                            onPress={() => this.props.navigation.navigate("DetailNotiUyQuyenScreen", { id: item.ID })}
-                                        />
-                                    );
-                                })
+                                this.state.dataUyQuyen.map((item, index) => (<AuthorizeNoti key={index.toString()} item={item} index={index} />))
                             )
                         )
                     }
@@ -387,57 +273,22 @@ class ListNotification extends Component {
                                 ListEmptyComponent={() =>
                                     emptyDataPage()
                                 }
-                                ListFooterComponent={() => this.state.loadingMore ?
-                                    <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                    (
-                                        this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                                            <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.onLoadingMore()}>
-                                                <Text>
-                                                    TẢI THÊM
-                                                </Text>
-                                            </Button>
-                                            : null
-                                    )
-                                }
+                                ListFooterComponent={() => (<MoreButton
+                                    isLoading={this.state.loadingMore}
+                                    isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                                    loadmoreFunc={this.onLoadingMore} />)}
                             />
                         )
                     }
                 </Content>
-                {
-                    !!this.state.userInfo.CanUyQuyen && <Fab
-                        active={true}
-                        direction="up"
-                        containerStyle={{}}
-                        style={{ backgroundColor: Colors.MENU_BLUE }}
-                        position="bottomRight"
-                        onPress={() => this.createNotiUyQuyen()}>
-                        <Icon name="add" />
-                    </Fab>
-                }
+                <AddButton
+                    hasPermission={this.state.userInfo.CanUyQuyen}
+                    createFunc={this.createNotiUyQuyen}
+                />
             </Container>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    leftTitleCircle: {
-        backgroundColor: Colors.GRAY,
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 10,
-    },
-    leftTitleText: {
-        fontWeight: 'bold',
-        color: Colors.WHITE
-    },
-    title: {
-        color: Colors.BLACK,
-        fontSize: moderateScale(12, 1.2)
-    }
-});
 
 const mapStateToProps = (state) => {
     return {

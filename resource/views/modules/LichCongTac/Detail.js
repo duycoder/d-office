@@ -245,7 +245,7 @@ class DetailEvent extends Component {
     return (
       <MenuProvider backHandler>
         <Container style={{ backgroundColor: '#f1f1f1' }}>
-          <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+          <Header style={NativeBaseStyle.container}>
             <Left style={NativeBaseStyle.left}>
               <GoBackButton onPress={() => this.navigateBack()} />
             </Left>
@@ -254,7 +254,7 @@ class DetailEvent extends Component {
               <Title style={NativeBaseStyle.bodyTitle}>
                 CHI TIẾT LỊCH CÔNG TÁC
             </Title>
-              <Subtitle style={NativeBaseStyle.bodyTitle}>
+              <Subtitle style={NativeBaseStyle.minorBodyTitle}>
                 NGÀY {convertDateToString(data.NGAY_CONGTAC)}
               </Subtitle>
             </Body>

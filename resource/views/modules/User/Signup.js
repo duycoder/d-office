@@ -279,7 +279,7 @@ class Signup extends Component {
     const toggleLoginStyleText = (userName !== EMPTY_STRING && fullName !== EMPTY_STRING && email !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
     return (
       <Container>
-        <Header style={{ backgroundColor: Colors.LITE_BLUE }}>
+        <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.navigateBackToLogin()} />
           </Left>
@@ -298,37 +298,41 @@ class Signup extends Component {
                 <Image source={dojiBigIcon} />
               </View> */}
               <Item stackedLabel>
-                <Label>Họ và tên</Label>
+                <Label style={LoginStyle.formLabelText}>Họ và tên</Label>
                 <Input
                   onChangeText={(fullName) => this.onChangeFullNameText(fullName)}
                   value={this.state.fullName}
                   autoCorrect={false}
+                  style={LoginStyle.registerInputForm}
                 />
               </Item>
               <Item stackedLabel>
-                <Label>Tên đăng nhập</Label>
+                <Label style={LoginStyle.formLabelText}>Tên đăng nhập</Label>
                 <Input
                   onChangeText={(userName) => this.onChangeUserNameText(userName)}
                   value={this.state.userName}
                   autoCorrect={false}
+                  style={LoginStyle.registerInputForm}
                 />
               </Item>
               <Item stackedLabel>
-                <Label>Email</Label>
+                <Label style={LoginStyle.formLabelText}>Email</Label>
                 <Input
                   onChangeText={(email) => this.onChangeEmailText(email)}
                   value={this.state.email}
                   keyboardType={'email-address'}
                   autoCorrect={false}
+                  style={LoginStyle.registerInputForm}
                 />
               </Item>
               <Item stackedLabel last>
-                <Label>Mật khẩu</Label>
+                <Label style={LoginStyle.formLabelText}>Mật khẩu</Label>
                 <Input
                   onChangeText={(password) => this.onChangePasswordText(password)}
                   value={this.state.password}
                   secureTextEntry={this.state.isHidePassword}
                   autoCorrect={false}
+                  style={LoginStyle.registerInputForm}
                 />
               </Item>
               <View style={[LoginStyle.formInputs, LoginStyle.formButton]}>
