@@ -33,7 +33,7 @@ import {
   VANBANDI_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
-import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
 
 
 //styles
@@ -41,6 +41,7 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { SearchSection, MoreButton } from '../../common';
 
 class BaseList extends Component {
   constructor(props) {
@@ -190,7 +191,7 @@ class BaseList extends Component {
           containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .5 }}
           leftIcon={
             <View style={{ alignSelf: 'flex-start', justifyContent: 'center', flexDirection: 'column' }}>
-              <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: dokhanBgColor, width: 36, height: 36, borderRadius: 18 }]}>
+              <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: dokhanBgColor, width: moderateScale(36, 0.86), height: moderateScale(36, 0.86), borderRadius: moderateScale(18, 0.86) }]}>
                 <RnText style={ListNotificationStyle.leftTitleText}>{loaiVanbanStr}</RnText>
               </View>
               {
@@ -239,13 +240,19 @@ class BaseList extends Component {
               <RnText style={[ListNotificationStyle.rightTitleText, { fontSize: moderateScale(9, .8) }]}>
                 {convertDateTimeToTitle(item.Update_At, true)}
               </RnText>
-              <RNEIcon name='flag' size={26} color={dokhanBgColor} type='material-community' />
+              <RNEIcon name='flag' size={moderateScale(26, 0.64)} color={dokhanBgColor} type='material-community' />
             </View>
           }
           onPress={() => this.navigateToDocDetail(item.ID)}
         />
       </View>
     );
+  }
+
+  _handleFieldNameChange = fieldName => text => {
+    this.setState({
+      [fieldName]: text
+    });
   }
 
   render() {
@@ -255,19 +262,12 @@ class BaseList extends Component {
           <Left style={NativeBaseStyle.left}>
             <GoBackButton onPress={() => this.props.navigator.goBack()} buttonStyle='100%' />
           </Left>
-
-          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
-            <Icon name='ios-search' />
-            <Input placeholder='Mã hiệu, trích yếu'
-              value={this.state.filterValue}
-              onChangeText={(filterValue) => this.setState({ filterValue })}
-              onSubmitEditing={() => this.onFilter()} />
-            {
-              this.state.filterValue !== EMPTY_STRING
-                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
-                : null
-            }
-          </Item>
+          <SearchSection
+            filterFunc={this.onFilter}
+            handleChangeFunc={this._handleFieldNameChange}
+            filterValue={this.state.filterValue}
+            clearFilterFunc={this.onClearFilter}
+          />
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
@@ -298,18 +298,10 @@ class BaseList extends Component {
                 ListEmptyComponent={() =>
                   this.state.loadingData ? null : emptyDataPage()
                 }
-                ListFooterComponent={() => this.state.loadingMoreData ?
-                  <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                  (
-                    this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                      <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                        <Text>
-                          TẢI THÊM
-                          </Text>
-                      </Button>
-                      : null
-                  )
-                }
+                ListFooterComponent={() => (<MoreButton
+                  isLoading={this.state.loadingMoreData}
+                  isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                  loadmoreFunc={this.loadingMore} />)}
               />
             )
           }

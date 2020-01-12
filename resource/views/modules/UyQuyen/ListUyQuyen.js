@@ -36,6 +36,7 @@ import { executeLoading } from '../../../common/Effect';
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { NativeBaseStyle } from '../../../assets/styles';
 
 class ListUyQuyen extends Component {
     constructor(props) {

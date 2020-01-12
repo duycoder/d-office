@@ -7,11 +7,14 @@ import { MoreButtonStyle } from '../../assets/styles';
 
 class MoreButton extends React.Component {
   static defaultProps = {
-    isTrigger: false,
     isLoading: false,
+    isTrigger: false,
   }
   render() {
-    const { isTrigger, loadmoreFunc, isLoading } = this.props;
+    const {
+      isLoading, isTrigger,
+      loadmoreFunc
+    } = this.props;
     let bodyContent = null;
     if (isLoading) {
       bodyContent = <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />

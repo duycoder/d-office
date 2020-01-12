@@ -573,7 +573,7 @@ class DetailTask extends Component {
                                     <MenuOption onSelect={() => this.onGetGroupSubTask()} text="Các công việc con" customStyles={HeaderMenuStyle.optionStyles} />
                                     <MenuOption onSelect={() => this.onGetProgressHistory()} text="Theo dõi tiến độ" customStyles={HeaderMenuStyle.optionStyles} />
                                     <MenuOption onSelect={() => this.onGetRescheduleHistory()} text="Lịch sử lùi hạn" customStyles={HeaderMenuStyle.optionStyles} />
-                                    <MenuOption onSelect={() => this.onGetEvaluationHistory()} text="Lịch sử phản hồi" />
+                                    <MenuOption onSelect={() => this.onGetEvaluationHistory()} text="Lịch sử phản hồi" customStyles={HeaderMenuStyle.optionStyles} />
                                 </MenuOptions>
                             </Menu>
                             {/*<Button transparent onPress={this.onOpenComment}>
@@ -671,7 +671,8 @@ class TaskContent extends Component {
         if (this.state.info.PhieuDanhGia != null) {
             bodyContent = (
                 <Tabs
-                    initialPage={0}
+              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+              initialPage={0}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}>
                     <Tab heading={

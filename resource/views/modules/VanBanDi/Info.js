@@ -14,7 +14,7 @@ import HTMLView from 'react-native-htmlview';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //common
 import { convertDateToString, asyncDelay, formatLongText, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
-import { Colors, API_URL } from '../../../common/SystemConstant';
+import { Colors, API_URL, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { InfoStyle } from '../../../assets/styles';
@@ -267,10 +267,12 @@ export default class MainInfoSignDoc extends Component {
                                 </Text>
                                 }
                                 subtitle={
-                                    <HTMLView
-                                        value={this.state.info.NOIDUNG}
-                                        stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
-                                    />
+                                    this.state.info.NOIDUNG.match(HTML_STRIP_PATTERN)
+                                        ? <HTMLView
+                                            value={this.state.info.NOIDUNG}
+                                            stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
+                                        />
+                                        : <Text style={InfoStyle.listItemSubTitleContainer}>{this.state.info.NOIDUNG}</Text>
                                 } />
                         }
 

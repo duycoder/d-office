@@ -42,6 +42,7 @@ import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { formatLongText, closeSideBar, openSideBar, getUserInfo, convertDateToString } from '../../../common/Utilities';
 
 import * as util from 'lodash';
+import { NativeBaseStyle } from '../../../assets/styles';
 
 class ListFilterTask extends Component {
     constructor(props) {

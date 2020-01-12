@@ -105,7 +105,7 @@ class MeetingDayList extends Component {
 
     setTimeout(() => {
       for (let i = -15; i < 15; i++) {
-        const time = chosenTimeStamp + i * 24 * 60 * 60 * 1000;
+        const time = chosenTimeStamp + i * TOTAL_TIME_OF_DAY;
         const strTime = this.timeToString(time);
 
         // if (!this.state.items[strTime]) {

@@ -350,7 +350,7 @@ class Detail extends Component {
                                 <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
                                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                                     <MenuOption onSelect={() => this.onOpenComment()} text="Bình luận" customStyles={HeaderMenuStyle.optionStyles} />
-                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" />
+                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
                                 </MenuOptions>
                             </Menu>
                             {
@@ -435,7 +435,8 @@ class DetailContent extends Component {
             <View style={{ flex: 1 }}>
                 <Tabs
                     // renderTabBar={() => <ScrollableTab  />}
-                    initialPage={this.state.currentTabIndex}
+              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+              initialPage={this.state.currentTabIndex}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
                     <Tab heading={

@@ -312,7 +312,7 @@ class Detail extends Component {
                                 <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
                                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                                     <MenuOption onSelect={() => this.navigateToBrief()} text="Hồ sơ văn bản" customStyles={HeaderMenuStyle.optionStyles} />
-                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" />
+                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
                                 </MenuOptions>
                             </Menu>
                             {
@@ -370,10 +370,11 @@ class DetailContent extends Component {
                     // renderTabBar={() => <ScrollableTab />}
                     initialPage={this.state.currentTabIndex}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
+                    tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                     onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-information-circle-outline' style={TabStyle.activeText} />
+                            <Icon name='ios-information-circle-outline' style={TabStyle.iconStyle} />
                             <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 THÔNG TIN
                                 </Text>
@@ -397,7 +398,7 @@ class DetailContent extends Component {
 
                     <Tab heading={
                         <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
+                            <RneIcon name='clock' size={moderateScale(16, 1.1)} color={Colors.DANK_BLUE} type='feather' />
                             <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
                                 LỊCH SỬ XỬ LÝ
                             </Text>
@@ -411,6 +412,8 @@ class DetailContent extends Component {
                     renderIf(!util.isEmpty(this.props.buttons))(
                         <ButtonGroup
                             containerStyle={ButtonGroupStyle.container}
+                            buttonStyle={ButtonGroupStyle.button}
+                            textStyle={ButtonGroupStyle.buttonText}
                             buttons={this.props.buttons}
                         />
                     )

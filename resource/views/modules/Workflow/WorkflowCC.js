@@ -251,6 +251,7 @@ class WorkflowCC extends Component {
         <Tabs
           initialPage={this.state.currentTabIndex}
           onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
+          tabContainerStyle={{ height: moderateScale(47, 0.97) }}
           tabBarUnderlineStyle={TabStyle.underLineStyle}>
           <Tab heading={
             <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>

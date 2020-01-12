@@ -32,8 +32,8 @@ export default StyleSheet.create({
     height: verticalScale(100),
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 5,
-    paddingHorizontal: 10
+    paddingHorizontal: scale(10),
+    paddingVertical: verticalScale(5),
   }, contentText: {
     color: '#000',
     fontSize: moderateScale(14, 1.2),
@@ -50,13 +50,15 @@ export default StyleSheet.create({
   }, rightFooter: {
     flex: 1,
   }, footerText: {
-    color: '#000'
+    color: '#000',
+    fontSize: moderateScale(14, 1.2),
   }, footerButton: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   }, customFooterText: {
     fontWeight: 'bold',
-    color: Colors.LITE_BLUE
+    color: Colors.LITE_BLUE,
+    fontSize: moderateScale(14, 1.2),
   }
 })

@@ -23,6 +23,7 @@ import { asyncDelay, isImage, emptyDataPage, convertDateToString,
     convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
+import { NativeBaseStyle } from '../../../assets/styles';
 export default class AttachPublishDoc extends Component {
     constructor(props) {
         super(props);

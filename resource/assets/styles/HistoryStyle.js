@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { moderateScale } from './ScaleIndicator';
+import { moderateScale, scale, verticalScale } from './ScaleIndicator';
 import { Colors } from '../../common/SystemConstant';
 
 
 export const HistoryStyle = StyleSheet.create({
-  container: { backgroundColor: Colors.WHITE, borderRadius: 6, padding: 3 },
-  titleText: { fontSize: moderateScale(16), fontWeight: 'bold' },
+  container: {
+    backgroundColor: Colors.WHITE,
+    borderRadius: 6,
+    padding: scale(3)
+  },
+  titleText: {
+    fontSize: moderateScale(15, 1.03),
+    fontWeight: 'bold'
+  },
   minorTitleText: {
-    fontSize: moderateScale(13), fontWeight: 'bold'
+    fontSize: moderateScale(12, 0.98),
+    fontWeight: 'bold'
   },
   normalText: {
-    fontSize: moderateScale(13)
+    fontSize: moderateScale(12, 0.98)
   }
 });
 
@@ -22,20 +30,21 @@ export const TimeLineStyle = StyleSheet.create({
     // paddingTop: 20,
     // paddingBottom: 20,
     flexDirection: 'row',
-    paddingRight: 5,
-    paddingLeft: 5
+    // paddingRight: 5,
+    // paddingLeft: 5,
+    paddingHorizontal: scale(5),
   },
   timeSection: {
     flex: 2,
   },
   timeSectionDate: {
     fontWeight: 'bold',
-    fontSize: 13,
+    fontSize: moderateScale(12, 0.91),
     textAlign: 'left',
     color: Colors.BLACK
   },
   timeSectionHour: {
-    fontSize: 10,
+    fontSize: moderateScale(10, 0.85),
     color: '#707070',
     textAlign: 'left'
   },
@@ -44,18 +53,18 @@ export const TimeLineStyle = StyleSheet.create({
     alignItems: 'center',
   },
   iconCircle: {
-    height: 36,
-    width: 36,
+    height: moderateScale(36, 1.18),
+    width: moderateScale(36, 1.18),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 18,
+    borderRadius: moderateScale(18, 1.18),
     // backgroundColor: Colors.OLD_LITE_BLUE
   }, innerIconCircle: {
-    height: 26,
-    width: 26,
+    height: moderateScale(26, 1.14),
+    width: moderateScale(26, 1.14),
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 13,
+    borderRadius: moderateScale(13, 1.14),
     // backgroundColor: Colors.MENU_BLUE
   },
   initState: {
@@ -77,18 +86,18 @@ export const TimeLineStyle = StyleSheet.create({
     color: '#FF0000'
   },
   iconLine: {
-    width: 4,
+    width: scale(4),
     position: 'absolute',
-    top: 38,
+    top: moderateScale(37, 1.13),
     bottom: 0,
     backgroundColor: '#eaeaea'
   },
   infoSection: {
     flex: 8,
-    marginLeft: 10
+    marginLeft: scale(10)
   },
   infoHeader: {
-    height: 50,
+    height: moderateScale(45, 1.16),
     width: '100%',
     justifyContent: 'center'
   },
@@ -106,7 +115,7 @@ export const TimeLineStyle = StyleSheet.create({
     borderRightWidth: 0.7,
     borderLeftWidth: 0.7,
     borderColor: '#707070',
-    marginVertical: 15,
+    marginVertical: verticalScale(15),
     // borderRadius: 7,
     // padding: 5
   },
@@ -114,14 +123,14 @@ export const TimeLineStyle = StyleSheet.create({
     borderBottomWidth: 0.7,
     borderBottomColor: '#707070',
     width: '100%',
-    minHeight: 40,
+    minHeight: moderateScale(37, 1.02),
     // padding: 10,
     flexDirection: 'row'
   }, infoDetailLabel: {
     flex: 3,
     // alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    padding: 10,
+    padding: moderateScale(10, 0.59),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start'
@@ -129,7 +138,7 @@ export const TimeLineStyle = StyleSheet.create({
   infoDetailLabelText: {
     color: Colors.DANK_GRAY,
     fontSize: moderateScale(11, 0.9),
-    
+
     // fontWeight: 'bold'
   },
   infoDetailValue: {
@@ -138,25 +147,25 @@ export const TimeLineStyle = StyleSheet.create({
     justifyContent: 'flex-start',
     borderColor: '#707070',
     borderLeftWidth: 0.7,
-    padding: 10,
+    padding: moderateScale(10, 0.54),
     // alignItems: 'center',
     // flexDirection: 'row',
-    flexDirection: 'column', 
+    flexDirection: 'column',
     alignItems: 'flex-start',
   }, infoDetailValueText: {
     color: Colors.BLACK,
-    fontSize: moderateScale(12, 1.3)
+    fontSize: moderateScale(12, 1.25)
   },
   infoDetailValueNote: {
-    fontSize: 10,
+    fontSize: moderateScale(10, 0.83),
     color: '#0D7D23'
   },
   infoBtn: {
     backgroundColor: Colors.OLD_LITE_BLUE,
-    borderRadius: 8, 
-    padding: 8
+    borderRadius: 8,
+    padding: moderateScale(8, 0.73),
   }, infoBtnText: {
-    color: Colors.WHITE, 
-    fontSize: moderateScale(10, .8) 
+    color: Colors.WHITE,
+    fontSize: moderateScale(10, .8)
   }
 })

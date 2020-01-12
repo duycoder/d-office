@@ -48,6 +48,8 @@ import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import { getFileExtensionLogo } from '../../../common/Effect';
 import AlertMessage from '../../common/AlertMessage';
 import { lichtrucApi } from '../../../common/Api';
+import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 const api = lichtrucApi();
 
@@ -234,7 +236,7 @@ class ListLichtruc extends Component {
           containerStyle={{ borderBottomColor: Colors.GRAY }}
 
           onPress={() => this.navigateToScreen("ListPersonalLichtrucScreen")}
-          
+
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
               {item.KEHOACH}
@@ -334,9 +336,7 @@ class ListLichtruc extends Component {
         <Container>
           <Header searchBar rounded style={NativeBaseStyle.container}>
             <Left style={NativeBaseStyle.left}>
-              <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
-                <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
-              </TouchableOpacity>
+              <GoBackButton onPress={() => this.navigateBack()} buttonStyle='100%' />
             </Left>
 
             <Body style={[NativeBaseStyle.body, { flex: 5 }]}>
@@ -399,16 +399,11 @@ class ListLichtruc extends Component {
                   ListEmptyComponent={() =>
                     this.state.loadingData ? null : emptyDataPage()
                   }
-                  ListFooterComponent={() => this.state.loadingMoreData ?
-                    <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                    (
-                      this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE
-                        ? <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                          <Text>TẢI THÊM</Text>
-                        </Button>
-                        : null
-                    )
-                  }
+                  ListFooterComponent={() => (<MoreButton
+                    isLoading={this.state.loadingMoreData}
+                    isTrigger={this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE}
+                    loadmoreFunc={this.loadingMore}
+                  />)}
                 />
               )
             }

@@ -45,11 +45,13 @@ import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
 import { reminderApi } from '../../../common/Api';
+import { AddButton, ColumnedListItem } from '../../common';
+import GoBackButton from '../../common/GoBackButton';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
 
-  const ReminderApi = reminderApi();
+const ReminderApi = reminderApi();
 
 class ListReminder extends Component {
   constructor(props) {
@@ -162,7 +164,7 @@ class ListReminder extends Component {
     this.setState({
       executingLoading: true
     });
-    
+
     const resultJson = await ReminderApi.deleteReminder({
       userId: this.state.userId,
       reminderId: this.state.confirmReminderId,
@@ -299,8 +301,8 @@ class ListReminder extends Component {
   renderItem(item) {
     let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     let iconActive = item.isActive
-      ? <RNEIcon name='bell-ring' size={verticalScale(35)} color={Colors.BLACK} type='material-community' />
-      : <RNEIcon name='bell-off' size={verticalScale(35)} color={Colors.DANK_GRAY} type='material-community' />;
+      ? <RNEIcon name='bell-ring' size={moderateScale(35, 1.04)} color={Colors.BLACK} type='material-community' />
+      : <RNEIcon name='bell-off' size={moderateScale(35, 1.04)} color={Colors.DANK_GRAY} type='material-community' />;
 
     return (
       <ListItem
@@ -314,32 +316,22 @@ class ListReminder extends Component {
 
         subtitle={
           <View style={{ marginTop: 8 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ width: "35%" }}>
-                <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                  Thời điểm:
-                </RnText>
-              </View>
-              <View style={{ width: "65%" }}>
-                <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                  {`${item.thoidiem}`}
-                </RnText>
-              </View>
-            </View>
-            {
-              !!item.reminderAfter && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Nhắc việc trước:
-                  </RnText>
-                </View>
-                <View style={{ width: "65%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {`${item.reminderAfter}`}
-                  </RnText>
-                </View>
-              </View>
-            }
+            <ColumnedListItem
+              leftText='Thời điểm:'
+              rightText={item.thoidiem}
+              customLeftContainer={{ width: "35%" }}
+              customRightContainer={{ width: "65%" }}
+              customLeftText={{ color: Colors.DANK_GRAY }}
+            />
+
+            <ColumnedListItem
+              isRender={!!item.reminderAfter}
+              leftText='Nhắc việc trước:'
+              rightText={item.reminderAfter}
+              customLeftContainer={{ width: "35%" }}
+              customRightContainer={{ width: "65%" }}
+              customLeftText={{ color: Colors.DANK_GRAY }}
+            />
           </View>
         }
         // hideChevron
@@ -351,7 +343,7 @@ class ListReminder extends Component {
               }
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.onDeleteReminder(item.id)}>
-              <RNEIcon name='delete' size={verticalScale(35)} color={Colors.RED_PANTONE_186C} type='material-community' />
+              <RNEIcon name='delete' size={moderateScale(33, 1.04)} color={Colors.RED_PANTONE_186C} type='material-community' />
             </TouchableOpacity>
           </View>
         }
@@ -382,9 +374,7 @@ class ListReminder extends Component {
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
-              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
-            </TouchableOpacity>
+            <GoBackButton onPress={() => this.navigateBack()} buttonStyle='100%' />
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
@@ -419,15 +409,7 @@ class ListReminder extends Component {
             )
           }
         </Content>
-        <Fab
-          active={true}
-          direction="up"
-          containerStyle={{}}
-          style={{ backgroundColor: Colors.MENU_BLUE }}
-          position="bottomRight"
-          onPress={() => this.createReminder(0)}>
-          <Icon name="add" />
-        </Fab>
+        <AddButton createFunc={this.createReminder} />
 
         <AlertMessage
           ref="confirm"

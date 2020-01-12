@@ -15,7 +15,7 @@ import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
 import { convertDateToString, _readableFormat, appStoreDataAndNavigate, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING, API_URL, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { InfoStyle } from '../../../assets/styles';
@@ -152,7 +152,7 @@ class MainInfoPublishDoc extends Component {
             <View style={InfoStyle.container}>
                 <ScrollView>
                     <List containerStyle={InfoStyle.listContainer}>
-                        <AttachmentItem data={this.state.ListTaiLieu}/>
+                        <AttachmentItem data={this.state.ListTaiLieu} />
 
                         <ListItem style={InfoStyle.listItemContainer}
                             hideChevron={true}
@@ -356,19 +356,24 @@ class MainInfoPublishDoc extends Component {
                                 } />
                         }
 
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Nội dung
+                        {
+                            !!this.state.info.NOIDUNG && <ListItem style={InfoStyle.listItemContainer}
+                                hideChevron={true}
+                                title={
+                                    <Text style={InfoStyle.listItemTitleContainer}>
+                                        Nội dung
                                 </Text>
-                            }
-                            subtitle={
-                                <HTMLView
-                                    value={this.state.info.NOIDUNG || EMPTY_STRING}
-                                    stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
-                                />
-                            } />
+                                }
+                                subtitle={
+                                    this.state.info.NOIDUNG.match(HTML_STRIP_PATTERN)
+                                        ? <HTMLView
+                                            value={this.state.info.NOIDUNG || EMPTY_STRING}
+                                            stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
+                                        />
+                                        : <Text style={InfoStyle.listItemSubTitleContainer}>{this.state.info.NOIDUNG}</Text>
+                                } />
+                        }
+
                         {
                             this.state.info.hasOwnProperty("NGAYCONGTAC") && <ListItem style={InfoStyle.listItemContainer}
                                 hideChevron={true}

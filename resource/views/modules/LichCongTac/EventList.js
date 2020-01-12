@@ -92,7 +92,8 @@ class EventList extends Component {
           {
             this.state.loading ? dataLoading(this.state.loading) :
               <Tabs
-                initialPage={this.state.currentTabIndex}
+              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+              initialPage={this.state.currentTabIndex}
                 tabBarUnderlineStyle={TabStyle.underLineStyle}
                 onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
                 <Tab heading={

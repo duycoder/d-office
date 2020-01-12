@@ -550,6 +550,7 @@ class DetailContent extends Component {
         {
           this.state.tripInfo
             ? <Tabs
+              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
               initialPage={0}
               tabBarUnderlineStyle={TabStyle.underLineStyle}
               onChangeTab={({ selectedTabIndex }) => this.setState({ selectedTabIndex })}>

@@ -6,7 +6,7 @@ import { ListItem, Icon } from 'react-native-elements';
 import { isArray, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../common/Utilities';
 import { InfoStyle } from '../../assets/styles';
 import { Colors } from '../../common/SystemConstant';
-import { verticalScale } from '../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 import { getFileSize, getFileExtensionLogo } from '../../common/Effect';
 
 export default class AttachmentItem extends Component {
@@ -61,12 +61,14 @@ const styles = StyleSheet.create({
   titleStyle: {
     marginLeft: 10,
     color: '#707070',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: moderateScale(14, 0.8),
   },
   subTitleStyle: {
     marginLeft: 10,
     color: '#707070',
     fontWeight: 'normal',
+    fontSize: moderateScale(14, 0.8),
   },
   containerStyle: {
     borderBottomWidth: 0

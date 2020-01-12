@@ -1,33 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
-  View, Text, StyleSheet
+  View, Text
 } from 'react-native';
+import { ColumnedItemStyle } from '../../assets/styles';
 
-class ColumnedListItem extends Component {
-  constructor() {
-    
+class ColumnedListItem extends React.Component {
+  static defaultProps = {
+    isRender: true,
+    leftText: '',
+    rightText: '',
+    customContainer: {},
+    customLeftContainer: {},
+    customRightContainer: {},
+    customLeftText: {},
+    customRightText: {},
   }
-
   render() {
-    <View style={{ marginTop: 8 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{ width: "35%" }}>
-          <Text style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-            Mục đích:
-                </Text>
+    const {
+      isRender,
+      leftText, rightText,
+      customContainer, customLeftContainer, customLeftText, customRightContainer, customRightText,
+    } = this.props;
+    if (isRender) {
+      return (
+        <View style={[ColumnedItemStyle.container, customContainer]}>
+          <View style={[ColumnedItemStyle.leftContainer, customLeftContainer]}>
+            <Text style={[ColumnedItemStyle.leftText, customLeftText]}>{leftText}</Text>
+          </View>
+          <View style={[ColumnedItemStyle.rightContainer, customRightContainer]}>
+            <Text style={[ColumnedItemStyle.rightText, customRightText]}>{rightText}</Text>
+          </View>
         </View>
-        <View style={{ width: "65%" }}>
-          <Text style={{ fontSize: moderateScale(12, 1.1) }}>
-            {item.MUCDICH}
-          </Text>
-        </View>
-      </View>
-    </View>
+      );
+    }
+    return null;
   }
 }
-
-const styles = StyleSheet.create({
-
-});
 
 export default ColumnedListItem;

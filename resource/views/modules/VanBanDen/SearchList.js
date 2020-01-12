@@ -41,6 +41,7 @@ import * as util from 'lodash';
 
 //redũx
 import { connect } from 'react-redux';
+import { NativeBaseStyle } from '../../../assets/styles';
 
 class ListFilterPublishDoc extends Component {
     constructor(props){

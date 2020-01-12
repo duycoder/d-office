@@ -67,12 +67,12 @@ class WorkflowRequestReview extends Component {
 	}
 
 	componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
+		// backHandlerConfig(true, this.navigateBackToDetail);
+	}
 
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
-    }
+	componentWillUnmount = () => {
+		// backHandlerConfig(false, this.navigateBackToDetail);
+	}
 
 	componentWillMount() {
 		this.fetchData();
@@ -85,7 +85,7 @@ class WorkflowRequestReview extends Component {
 
 		const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack ? 1 : 0}/${this.state.hasAuthorization}`;
 		console.log('đường dẫn', url);
-		
+
 		const result = await fetch(url);
 		const resultJson = await result.json();
 
@@ -242,6 +242,7 @@ class WorkflowRequestReview extends Component {
 				{
 					renderIf(!this.state.loading)(
 						<Tabs initialPage={this.state.currentTabIndex}
+							tabContainerStyle={{ height: moderateScale(47, 0.97) }}
 							onChangeTab={({ currentTabIndex }) => this.setState({
 								currentTabIndex
 							})}

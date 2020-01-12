@@ -1,6 +1,6 @@
 import React, { Component } from 'react-native';
 import { StyleSheet, Platform } from 'react-native';
-import { moderateScale } from './ScaleIndicator';
+import { moderateScale, verticalScale, scale } from './ScaleIndicator';
 import { Colors } from '../../common/SystemConstant';
 
 const NativeBaseStyle = StyleSheet.create({
@@ -10,7 +10,7 @@ const NativeBaseStyle = StyleSheet.create({
     },
     left: {
         flex: 1,
-    }, 
+    },
     body: {
         flex: 3,
         alignItems: 'center'
@@ -22,7 +22,7 @@ const NativeBaseStyle = StyleSheet.create({
         color: Colors.WHITE,
         fontWeight: 'bold',
         fontSize: moderateScale(12, 0.76),
-    }, 
+    },
     right: {
         flex: 1,
         alignItems: 'center'
@@ -51,9 +51,24 @@ const MoreButtonStyle = StyleSheet.create({
     },
 });
 
+const SearchSectionStyle = StyleSheet.create({
+    container: {
+        backgroundColor: Colors.WHITE,
+        flex: 10,
+        height: moderateScale(28, 0.88),
+    },
+    leftIcon: {
+        marginLeft: scale(8),
+    },
+    rightIcon: {
+        marginRight: scale(8),
+    },
+});
+
 export {
     NativeBaseStyle,
     AddButtonStyle,
     addBtnIconSize,
     MoreButtonStyle,
+    SearchSectionStyle,
 }

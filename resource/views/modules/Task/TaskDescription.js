@@ -17,7 +17,7 @@ import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import * as util from 'lodash';
 
 import HTMLView from 'react-native-htmlview';
-import { API_URL, Colors } from '../../../common/SystemConstant';
+import { API_URL, Colors, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
@@ -243,10 +243,12 @@ export default class TaskDescription extends Component {
                                 </Text>
                             }
                             subtitle={
-                                <HTMLView
-                                    value={this.props.info.CongViec.NOIDUNGCONGVIEC}
-                                    stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
-                                />
+                                (!!this.props.info.CongViec.NOIDUNGCONGVIEC && this.props.info.CongViec.NOIDUNGCONGVIEC.match(HTML_STRIP_PATTERN))
+                                    ? <HTMLView
+                                        value={this.props.info.CongViec.NOIDUNGCONGVIEC}
+                                        stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
+                                    />
+                                    : <Text style={InfoStyle.listItemSubTitleContainer}>{this.props.info.CongViec.NOIDUNGCONGVIEC}</Text>
                             } />
 
                         {

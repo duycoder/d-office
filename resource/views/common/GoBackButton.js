@@ -12,8 +12,9 @@ export default class GoBackButton extends Component {
     buttonStyle: '50%'
   }
   render() {
+    const { buttonStyle, onPress } = this.props;
     return (
-      <TouchableOpacity onPress={this.props.onPress} style={{ width: this.props.buttonStyle }}>
+      <TouchableOpacity onPress={onPress} style={{ width: buttonStyle }}>
         <Icon name='ios-arrow-back' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
       </TouchableOpacity>
     );

@@ -30,7 +30,7 @@ import * as util from 'lodash';
 import { Colors } from '../../../common/SystemConstant'
 
 //style
-import {verticalScale} from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class AssignTaskJoinProcessUsers extends Component {
     constructor(props) {
@@ -54,7 +54,7 @@ class AssignTaskJoinProcessUsers extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {mainProcessUser, joinProcessUsers, data} = this.state;
+        const { mainProcessUser, joinProcessUsers, data } = this.state;
 
         if (nextProps.mainProcessUser !== mainProcessUser) {
             // for heightAnimation
@@ -166,26 +166,29 @@ class AssignTaskJoinProcessUsers extends Component {
                         this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
                             <NbListItem
                                 key={item.ID}
-                                style={{height: this.state.rowItemHeight}}
+                                style={{ height: this.state.rowItemHeight }}
                                 onPress={() => this.onSelectUser(item.ID)}>
                                 <Left>
                                     <Title>
-                                        <NbText>
+                                        <NbText style={styles.listItemMinorTitle}>
                                             {item.HOTEN}
                                         </NbText>
                                     </Title>
                                 </Left>
 
                                 <Body>
-                                    <NbText>
+                                    <NbText style={styles.listItemMinorTitle}>
                                         {item.ChucVu}
                                     </NbText>
                                 </Body>
 
                                 <Right>
-                                    <CheckBox color={Colors.LITE_BLUE}
+                                    <CheckBox
+                                        style={styles.checkBoxStyle}
+                                        color={Colors.LITE_BLUE}
                                         checked={this.state.joinProcessUsers.indexOf(item.ID) > -1}
-                                        onPress={() => this.onSelectUser(item.ID)} />
+                                        onPress={() => this.onSelectUser(item.ID)}
+                                    />
                                 </Right>
                             </NbListItem>
                         ))
@@ -232,7 +235,14 @@ const styles = StyleSheet.create({
     },
     listItemTitle: {
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#fff',
+        fontSize: moderateScale(15, 0.86),
+    }, listItemMinorTitle: {
+        fontSize: moderateScale(15, 0.82),
+    }, checkBoxStyle: {
+        width: moderateScale(18, 1.12),
+        height: moderateScale(18, 1.12),
+        borderRadius: moderateScale(9, 1.12),
     },
     body: {
         overflow: 'scroll'

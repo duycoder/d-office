@@ -118,7 +118,7 @@ class ListChatter extends Component {
   }
 
   renderAllItem = ({ item }) => {
-    const {id, avatar, name, email, message, status, numberOfMessages, IS_READ, level, phone } = item;
+    const { id, avatar, name, email, message, status, numberOfMessages, IS_READ, level, phone } = item;
 
     const avatarSource = (avatar !== EMPTY_STRING) ? avatar : default_Avatar;
     const avatarStatus = status ? ListChatterStyle.onlineAvatarContainer : ListChatterStyle.offlineAvatarContainer;
@@ -191,14 +191,14 @@ class ListChatter extends Component {
           }
           containerStyle={ListChatterStyle.containerStyle}
           onPress={
-            ()=>this.props.navigation.navigate('ChatterScreen', {
+            () => this.props.navigation.navigate('ChatterScreen', {
               id: id,
               avatar: avatar,
               name: name,
               email: email,
               level: level,
               phone: phone
-          })}
+            })}
         />
       </View>
     )
@@ -277,14 +277,14 @@ class ListChatter extends Component {
             }
             containerStyle={ListChatterStyle.containerStyle}
             onPress={
-              ()=>this.props.navigation.navigate('ChatterScreen', {
+              () => this.props.navigation.navigate('ChatterScreen', {
                 id: id,
                 avatar: avatar,
                 name: name,
                 email: email,
                 level: level,
                 phone: phone
-            })}
+              })}
           />
         </View>
       )
@@ -310,7 +310,9 @@ class ListChatter extends Component {
 
         {
           renderIf(!this.state.loading)(
-            <Tabs initialPage={this.state.currentTabIndex}
+            <Tabs
+              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+              initialPage={this.state.currentTabIndex}
               onChangeTab={({ currentTabIndex }) => this.setState({
                 currentTabIndex
               })}

@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-	ActivityIndicator, FlatList
+	ActivityIndicator, FlatList, TouchableOpacity
 } from 'react-native'
 //lib
 import {
@@ -43,6 +43,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton, SearchSection } from '../../common';
 
 
 class AssignTask extends Component {
@@ -132,6 +133,8 @@ class AssignTask extends Component {
 			joinProcessPageIndex: DEFAULT_PAGE_INDEX,
 		}, () => this.filterData());
 	}
+	onFilterMain = () => this.onFilter(true);
+	onFilterJoin = () => this.onFilter(false);
 
 	loadingMore = (isMainProcess) => {
 		this.setState({
@@ -142,6 +145,8 @@ class AssignTask extends Component {
 			joinProcessPageIndex: (!isMainProcess ? this.state.joinProcessPageIndex + 1 : this.state.joinProcessPageIndex)
 		}, () => this.filterData());
 	}
+	loadingMoreMain = () => this.loadingMore(true);
+	loadingMoreJoin = () => this.loadingMore(false);
 
 	filterData = async () => {
 		const url = `${API_URL}/api/HscvCongViec/GetUserToAssignTask`;
@@ -261,6 +266,12 @@ class AssignTask extends Component {
 		}
 	}
 
+	_handleFieldNameChange = fieldName => text => {
+    this.setState({
+      [fieldName]: text
+    });
+  }
+
 	render() {
 		let bodyContent = null;
 
@@ -272,12 +283,14 @@ class AssignTask extends Component {
 		else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (
-					<Segment style={{ backgroundColor: Colors.LITE_BLUE }}>
-						<Button first
+					<Segment style={{ backgroundColor: Colors.LITE_BLUE, height: moderateScale(48, 1.12) }}>
+						<Button
+							style={{ height: moderateScale(28, 1.16) }}
+							first
 							active={(this.state.selectedSegmentIndex == 0)}
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
-								fontSize: moderateScale(13, 1.3),
+								fontSize: moderateScale(13, 1.26),
 								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								{
@@ -287,10 +300,11 @@ class AssignTask extends Component {
 						</Button>
 
 						<Button last
+							style={{ height: moderateScale(28, 1.16) }}
 							active={(this.state.selectedSegmentIndex == 1)}
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
-								fontSize: moderateScale(13, 1.3),
+								fontSize: moderateScale(13, 1.26),
 								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								TOÀN BỆNH VIỆN
@@ -302,6 +316,7 @@ class AssignTask extends Component {
 
 			bodyContent = (
 				<Tabs initialPage={0}
+					tabContainerStyle={{ height: moderateScale(47, 0.97) }}
 					onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}
 					tabBarUnderlineStyle={TabStyle.underLineStyle}>
 					<Tab heading={
@@ -336,19 +351,11 @@ class AssignTask extends Component {
 										keyExtractor={(item, index) => index.toString()}
 										renderItem={this.renderMainProcessItem}
 										ListEmptyComponent={emptyDataPage()}
-										ListFooterComponent={
-											this.state.loadingMoreMainProcess ?
-												<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-												(
-													this.state.dataMainProcessUsers.length >= 5 ?
-														<Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-															<Text>
-																TẢI THÊM
-															</Text>
-														</Button>
-														: null
-												)
-										} />
+										ListFooterComponent={() => (<MoreButton
+											isLoading={this.state.loadingMoreMainProcess}
+											isTrigger={this.state.dataMainProcessUsers.length >= 5}
+											loadmoreFunc={this.loadingMoreMain}
+										/>)} />
 								)
 							}
 						</Content>
@@ -386,19 +393,11 @@ class AssignTask extends Component {
 										keyExtractor={(item, index) => index.toString()}
 										renderItem={this.renderJoinProcessItem}
 										ListEmptyComponent={emptyDataPage()}
-										ListFooterComponent={
-											this.state.loadingMoreJoinProcess ?
-												<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-												(
-													this.state.dataJoinProcessUsers.length >= 5 ?
-														<Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
-															<Text>
-																TẢI THÊM
-															</Text>
-														</Button>
-														: null
-												)
-										} />
+										ListFooterComponent={() => (<MoreButton
+											isLoading={this.state.loadingMoreJoinProcess}
+											isTrigger={this.state.dataJoinProcessUsers.length >= 5}
+											loadmoreFunc={this.loadingMoreJoin}
+										/>)} />
 								)
 							}
 						</Content>
@@ -421,9 +420,9 @@ class AssignTask extends Component {
 					</Body>
 
 					<Right style={NativeBaseStyle.right}>
-						<Button transparent onPress={() => this.onAssginTask()}>
-							<RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<TouchableOpacity onPress={() => this.onAssginTask()}>
+							<RneIcon name='md-send' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
+						</TouchableOpacity>
 					</Right>
 				</Header>
 

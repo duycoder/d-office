@@ -31,6 +31,7 @@ import {
 } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
+import { NativeBaseStyle } from '../../../assets/styles';
 
 export default class AttachSignDoc extends Component {
     constructor(props) {

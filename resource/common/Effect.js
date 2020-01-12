@@ -107,15 +107,15 @@ export function getFileExtensionLogo(extension) {
         iconName = 'file'
     }
     return <View style={{
-        width: 40, height: 40,
+        width: moderateScale(35, 1.2), height: moderateScale(35, 1.2),
         backgroundColor,
-        padding: 5,
+        padding: moderateScale(5),
         justifyContent: 'center',
         alignItems: 'center'
     }}>
         {
             isIcon ? <Icon name={iconName} color={Colors.WHITE} size={verticalScale(25)} type='material-community' /> :
-                <Text style={{ color: Colors.WHITE, fontWeight: 'bold', }}>{extText}</Text>
+                <Text style={{ color: Colors.WHITE, fontWeight: 'bold', fontSize: moderateScale(14, 0.78) }}>{extText}</Text>
         }
     </View>
 }

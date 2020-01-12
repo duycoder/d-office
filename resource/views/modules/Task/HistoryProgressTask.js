@@ -216,14 +216,15 @@ class HistoryProgressTask extends Component {
 
 
 				<PopupDialog
-					dialogTitle={<DialogTitle title='THÔNG TIN CẬP NHẬT TIẾN ĐỘ'
+					dialogTitle={<DialogTitle 
+						title='THÔNG TIN CẬP NHẬT TIẾN ĐỘ'
 						titleStyle={{
 							...Platform.select({
 								android: {
 									height: verticalScale(50),
 									justifyContent: 'center',
 								}
-							})
+							}),
 						}} />}
 					ref={(popupDialog) => { this.popupDialog = popupDialog }}
 					width={0.8}
@@ -249,7 +250,7 @@ class HistoryProgressTask extends Component {
 							}}
 							text="ĐÓNG"
 							textStyle={{
-								fontSize: moderateScale(14, 1.5),
+								fontSize: moderateScale(14, 1.12),
 								color: '#fff',
 								textAlign: 'center'
 							}}
@@ -316,6 +317,7 @@ const styles = StyleSheet.create({
 	},
 	rowLabel: {
 		color: '#000',
+		fontSize: moderateScale(16, 0.98),
 	},
 	rowInfo: {
 		color: '#000',
@@ -326,8 +328,11 @@ const styles = StyleSheet.create({
 	dialogLabel: {
 		fontWeight: 'bold',
 		color: '#000',
-		fontSize: moderateScale(14, 1.4)
-	}
+		fontSize: moderateScale(11, 1.02),
+	},
+	dialogText: {
+		fontSize: moderateScale(12, 1.14),
+	},
 });
 
 const mapStateToProps = (state) => {

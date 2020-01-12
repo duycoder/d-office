@@ -29,7 +29,8 @@ import {
     LOADER_COLOR, CONGVIEC_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
     Colors,
-    DOKHAN_CONSTANT
+    DOKHAN_CONSTANT,
+    HTML_STRIP_PATTERN
 } from '../../../common/SystemConstant';
 
 //utilities
@@ -41,6 +42,8 @@ import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appSto
 import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { NativeBaseStyle } from '../../../assets/styles';
+import { SearchSection, MoreButton, AddButton } from '../../common';
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -107,7 +110,7 @@ class BaseTaskList extends Component {
             apiUrlParam = 'ProcessedJob';
         } else if (taskType == CONGVIEC_CONSTANT.CHO_XACNHAN) {
             apiUrlParam = 'PendingConfirmWork'
-        } else if (taskType == CONGVIEC_CONSTANT.CUA_THUKY){
+        } else if (taskType == CONGVIEC_CONSTANT.CUA_THUKY) {
             apiUrlParam = 'CommandingWork';
         }
 
@@ -161,7 +164,7 @@ class BaseTaskList extends Component {
         })
     }
 
-    navigateToDetail = async (taskId) => {
+    navigateToDetail = async (taskId = 0) => {
         // let { navigation } = this.props;
         // let currentScreenName = "ListPersonalTaskScreen";
 
@@ -306,14 +309,14 @@ class BaseTaskList extends Component {
                                     </View>
                                     <View style={{ width: "65%" }}>
                                         {
-                                            item.NOIDUNGCONGVIEC.indexOf("<p>") < 0
-                                                ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                                                    {' ' + item.NOIDUNGCONGVIEC}
-                                                </RnText>
-                                                : <HTMLView
+                                            item.NOIDUNGCONGVIEC.match(HTML_STRIP_PATTERN)
+                                                ? <HTMLView
                                                     value={item.NOIDUNGCONGVIEC}
                                                     stylesheet={{ p: [DetailTaskStyle.listItemSubTitleContainer, { fontSize: moderateScale(12, 1.1), marginHorizontal: 3 }] }}
                                                 />
+                                                : <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
+                                                    {' ' + item.NOIDUNGCONGVIEC}
+                                                </RnText>
                                         }
                                     </View>
                                 </View>
@@ -340,7 +343,7 @@ class BaseTaskList extends Component {
                     }
                     rightIcon={
                         <View style={{ flexDirection: 'column' }}>
-                            <RNEIcon name='flag' size={26} color={dokhanBgColor} type='material-community' />
+                            <RNEIcon name='flag' size={moderateScale(26, 0.64)} color={dokhanBgColor} type='material-community' />
                             {
                                 item.HAS_FILE == true && <RNEIcon name='ios-attach' size={26} type='ionicon' />
                             }
@@ -368,6 +371,12 @@ class BaseTaskList extends Component {
         );
     }
 
+    _handleFieldNameChange = fieldName => text => {
+        this.setState({
+            [fieldName]: text
+        });
+    }
+
     render() {
         return (
             <Container>
@@ -376,19 +385,13 @@ class BaseTaskList extends Component {
                         <GoBackButton onPress={() => this.props.navigator.goBack()} buttonStyle='100%' />
                     </Left>
 
-                    <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
-                        <Icon name='ios-search' />
-                        <Input placeholder='Tên công việc'
-                            value={this.state.filterValue}
-                            onChangeText={(filterValue) => this.setState({ filterValue })}
-                            onSubmitEditing={() => this.onFilter()}
-                        />
-                        {
-                            this.state.filterValue !== EMPTY_STRING
-                                ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
-                                : null
-                        }
-                    </Item>
+                    <SearchSection
+                        placeholderText='Tên công việc'
+                        filterFunc={this.onFilter}
+                        handleChangeFunc={this._handleFieldNameChange}
+                        filterValue={this.state.filterValue}
+                        clearFilterFunc={this.onClearFilter}
+                    />
                 </Header>
 
                 <Content contentContainerStyle={{ flex: 1 }}>
@@ -416,19 +419,10 @@ class BaseTaskList extends Component {
                                         titleColor={Colors.RED}
                                     />
                                 }
-                                ListFooterComponent={
-                                    this.state.loadingMoreData ?
-                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                        (
-                                            this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.onLoadingMore()}>
-                                                    <Text>
-                                                        TẢI THÊM
-                                                        </Text>
-                                                </Button>
-                                                : null
-                                        )
-                                }
+                                ListFooterComponent={() => (<MoreButton
+                                    isLoading={this.state.loadingMoreData}
+                                    isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                                    loadmoreFunc={this.onLoadingMore} />)}
 
                                 ListEmptyComponent={() => emptyDataPage()}
                             />
@@ -440,18 +434,11 @@ class BaseTaskList extends Component {
                     }
 
                 </Content>
-                {
-                    this.state.taskType === CONGVIEC_CONSTANT.CA_NHAN &&
-                    <Fab
-                        active={true}
-                        direction="up"
-                        containerStyle={{}}
-                        style={{ backgroundColor: Colors.MENU_BLUE }}
-                        position="bottomRight"
-                        onPress={() => this.navigateToDetail(0)}>
-                        <Icon name="add" />
-                    </Fab>
-                }
+
+                <AddButton
+                    hasPermission={this.state.taskType === CONGVIEC_CONSTANT.CA_NHAN}
+                    createFunc={this.navigateToDetail}
+                />
             </Container>
         )
     }

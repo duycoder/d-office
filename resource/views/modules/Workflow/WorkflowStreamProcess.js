@@ -272,6 +272,7 @@ class WorkflowStreamProcess extends Component {
             if (this.state.flowData.IsBack == true) {
                 bodyContent = (
                     <Tabs
+                        tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                         initialPage={this.state.currentTabIndex}
                         onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
                         tabBarUnderlineStyle={TabStyle.underLineStyle}>
@@ -306,6 +307,7 @@ class WorkflowStreamProcess extends Component {
                     bodyContent = (
                         <Tabs
                             // renderTabBar={() => <ScrollableTab />}
+                            tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                             initialPage={this.state.currentTabIndex}
                             onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
@@ -439,6 +441,7 @@ class WorkflowStreamProcess extends Component {
                         <Tabs
                             initialPage={this.state.currentTabIndex}
                             onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
+                            tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>
@@ -514,6 +517,7 @@ class WorkflowStreamProcess extends Component {
                         <Tabs
                             initialPage={this.state.currentTabIndex}
                             onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
+                            tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
 
                             <Tab heading={
@@ -589,6 +593,7 @@ class WorkflowStreamProcess extends Component {
                         <Tabs
                             initialPage={this.state.currentTabIndex}
                             onChangeTab={({ currentTabIndex }) => this.setState({ currentTabIndex })}
+                            tabContainerStyle={{ height: moderateScale(47, 0.97) }}
                             tabBarUnderlineStyle={TabStyle.underLineStyle}>
                             <Tab heading={
                                 <TabHeading style={(this.state.currentTabIndex == 0) ? TabStyle.activeTab : TabStyle.inActiveTab}>

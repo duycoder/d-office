@@ -10,6 +10,25 @@ const ItemProportion = StyleSheet.create({
   }
 });
 
+const ColumnedItemStyle = StyleSheet.create({
+  container: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between'
+  },
+  leftContainer: {
+    width: '30%',
+  }, leftText: {
+    color: Colors.DANK_GRAY, 
+    fontSize: moderateScale(11, 1.1)
+  },
+  rightContainer: {
+    width: '70%'
+  }, rightText: {
+    fontSize: moderateScale(12, 1.1)
+  },
+});
+
 export {
-  ItemProportion
+  ItemProportion,
+  ColumnedItemStyle,
 }
