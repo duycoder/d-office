@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon } from 'react-native-elements';
 import {
     ListItem as NbListItem, Text as NbText,
     Left, Right, Title, Body, Radio, CheckBox
@@ -20,7 +20,8 @@ import {
 import * as util from 'lodash';
 
 //utilities
-import { WORKFLOW_PROCESS_TYPE, Colors } from '../../../common/SystemConstant';
+import { WORKFLOW_PROCESS_TYPE, Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class WorkflowStreamMainProcessUsers extends Component {
     constructor(props) {
@@ -32,8 +33,8 @@ class WorkflowStreamMainProcessUsers extends Component {
             flowData: props.flowData,
 
             expanded: true,
-            rowItemHeight: 60,
-            heightAnimation: new Animated.Value(60 * (props.users.length > 0 ? (props.users.length + 1) : 1)),
+            rowItemHeight: customWorkflowListHeight,
+            heightAnimation: new Animated.Value(customWorkflowListHeight * (props.users.length > 0 ? (props.users.length + 1) : 1)),
             rotateAnimation: new Animated.Value(0)
         }
     }
@@ -181,13 +182,14 @@ const styles = StyleSheet.create({
     titleContainer: {
     },
     listItemContainer: {
-        height: 60,
+        height: customWorkflowListHeight,
         backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemTitle: {
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#fff',
+        fontSize: moderateScale(14.5, 0.89),
     },
     body: {
 

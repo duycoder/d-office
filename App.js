@@ -10,6 +10,8 @@ import { SafeAreaView } from 'react-navigation';
 import { Root } from 'native-base';
 import { CommonDrawerNavigator } from './resource/views/common/CommonDrawerNavigator';
 import { Colors } from './resource/common/SystemConstant';
+import { StyleProvider } from 'native-base';
+import getTheme from './native-base-theme/components';
 
 //redux
 import { Provider } from 'react-redux';
@@ -26,11 +28,13 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={globalStore}>
-        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.DANK_BLUE, padding: 0 }} forceInset={{bottom: 'never', top: 'never'}}>
-          <Root>
-            <CommonDrawerNavigator />
-            <NetworkStatus />
-          </Root>
+        <SafeAreaView style={{ flex: 1, backgroundColor: Colors.DANK_BLUE, padding: 0 }} forceInset={{ bottom: 'never', top: 'never' }}>
+          <StyleProvider style={getTheme()}>
+            <Root>
+              <CommonDrawerNavigator />
+              <NetworkStatus />
+            </Root>
+          </StyleProvider>
         </SafeAreaView>
       </Provider>
     );

@@ -9,6 +9,7 @@ const BirthdayNotiStyles = StyleSheet.create({
   },
   leftIconContainer: {
     marginRight: scale(10),
+    justifyContent: 'center',
   },
   titleContainerStyle: {
     marginHorizontal: '3%',
@@ -20,11 +21,12 @@ const BirthdayNotiStyles = StyleSheet.create({
   subTitleContainerStyle: {
     marginHorizontal: '3%'
   }, subTitleStyle: {
-    color: Colors.BLACK
+    color: Colors.BLACK,
+    fontSize: moderateScale(10, 0.95),
   },
 });
 
-const iconSize = moderateScale(45);
+const iconSize = moderateScale(42, 1.2);
 const iconColor = '#ff460f';
 
 export {

@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-	ActivityIndicator, FlatList
+	ActivityIndicator, FlatList, TouchableOpacity
 } from 'react-native'
 //lib
 import {
@@ -44,6 +44,7 @@ import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
 import { taskApi } from '../../../common/Api';
+import { MoreButton } from '../../common';
 
 const api = taskApi();
 
@@ -134,14 +135,14 @@ class PickTaskAssigner extends Component {
 			>
 				<Left>
 					<Title>
-						<Text>
+						<Text style={{ fontSize: moderateScale(15.4, 0.88) }}>
 							{item.HOTEN}
 						</Text>
 					</Title>
 				</Left>
 
 				<Body>
-					<Text>
+					<Text style={{ fontSize: moderateScale(15.4, 0.88) }}>
 						{item.ChucVu}
 					</Text>
 				</Body>
@@ -202,26 +203,16 @@ class PickTaskAssigner extends Component {
 						}
 					</Item>
 
-					{
-
-					}
-
 					<FlatList
 						data={this.state.data}
 						keyExtractor={(item, index) => index.toString()}
 						renderItem={this.renderMainAssigner}
 						ListEmptyComponent={emptyDataPage()}
-						ListFooterComponent={
-							this.state.isLoadmore ?
-								<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-								(
-									this.state.data.length >= 5 ?
-										<Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-											<Text>TẢI THÊM</Text>
-										</Button>
-										: null
-								)
-						}
+						ListFooterComponent={() => (<MoreButton
+							isLoading={this.state.isLoadmore}
+							isTrigger={this.state.data.length >= 5}
+							loadmoreFunc={this.loadingMore}
+						/>)}
 					/>
 				</Content>
 			);
@@ -241,9 +232,9 @@ class PickTaskAssigner extends Component {
 					</Body>
 
 					<Right style={NativeBaseStyle.right}>
-						<Button transparent onPress={() => this.onPickAssigner()} style={checkButtonStyle} disabled={unsubmitableCondition}>
-							<RneIcon name='md-checkmark' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<TouchableOpacity onPress={() => this.onPickAssigner()} style={checkButtonStyle} disabled={unsubmitableCondition}>
+							<RneIcon name='md-checkmark' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
+						</TouchableOpacity>
 					</Right>
 				</Header>
 				{

@@ -48,6 +48,7 @@ export const LoginStyle = StyleSheet.create({
         marginTop: verticalScale(35),
         marginHorizontal: scale(10),
         borderRadius: moderateScale(10),
+        marginBottom: verticalScale(35),
     }, formContainerImageBackground: {
         flex: 6,
         width: '100%',
@@ -119,12 +120,12 @@ export const LoginStyle = StyleSheet.create({
         position: 'relative',
         alignSelf: 'stretch',
         justifyContent: 'center',
-        minHeight: moderateScale(36, 1.32),
+        minHeight: moderateScale(34.5, 1.28),
         borderRadius: moderateScale(5, 1.2),
         padding: moderateScale(10)
     }, formButtonText: {
         fontWeight: 'bold',
-        fontSize: moderateScale(18, 1.23),
+        fontSize: moderateScale(17.5, 1.21),
         textAlign: 'center'
     }, formIconContainer: {
         flex: 1,

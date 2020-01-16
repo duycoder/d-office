@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native'
+import { moderateScale } from '../assets/styles/ScaleIndicator';
 export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
 // export const WEB_URL = 'http://192.168.1.10:8022/'; //local web test
 // export const WEB_URL = 'http://222.252.27.60:8022';//remote web test
@@ -528,3 +529,5 @@ export function generateReadFontStyleAndColor(isRead = false) {
 		checkReadColor,
 	}
 }
+
+export const customWorkflowListHeight = moderateScale(58.25, 1.15);

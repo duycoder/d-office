@@ -38,7 +38,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
-import { DatePickerCustomStyle } from '../../../assets/styles/index';
+import { DatePickerCustomStyle, InputCreateStyle, PickerCreateStyle, CustomStylesDatepicker } from '../../../assets/styles/index';
 
 const TaskApi = taskApi();
 
@@ -343,13 +343,13 @@ class CreateTask extends Component {
     else {
       bodyContent = (
         <KeyboardAwareScrollView contentContainerStyle={{ margin: 5, padding: 5 }}>
-          <Form style={{ marginVertical: 10 }}>
+          <Form style={{ marginVertical: verticalScale(10) }}>
             {
               (this.state.vanbanDenId > 0 || this.state.vanbanDiId > 0) && relateDoc
             }
-            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "title" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-              <Label>
-                Tên công việc <Text style={{ color: '#f00' }}>*</Text>
+            <Item stackedLabel style={[InputCreateStyle.container, focusId === "title" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+              <Label style={InputCreateStyle.label}>
+                Tên công việc <Text style={InputCreateStyle.label, [{ color: '#f00' }]}>*</Text>
               </Label>
 
               <Input
@@ -357,59 +357,62 @@ class CreateTask extends Component {
                 onChangeText={this.handleChange("title")}
                 onFocus={() => this.setState({ focusId: "title" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
+                style={InputCreateStyle.input}
               />
             </Item>
             {
-              (isGiamdoc === false && isThuky === false) && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
-                <Label>
+              (isGiamdoc === false && isThuky === false) && <Item stackedLabel style={[InputCreateStyle.container]}>
+                <Label style={InputCreateStyle.label}>
                   Người giao việc
                 </Label>
-                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                  <Button transparent style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
+                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around", marginTop: verticalScale(10) }}>
+                  <TouchableOpacity style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
                     {
                       !giaoviecName
-                        ? <Text style={{ color: '#ccc' }}>Chọn người giao việc</Text>
-                        : <Text style={{ color: Colors.BLACK }}>{giaoviecName}</Text>
+                        ? <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: '#ccc' }]}>Chọn người giao việc</Text>
+                        : <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: Colors.BLACK }]}>{giaoviecName}</Text>
                     }
-                  </Button>
+                  </TouchableOpacity>
                   {
-                    giaoviecId > 0 && <Button transparent onPress={() => this.clearTaskAssigner()}>
-                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                    </Button>
+                    giaoviecId > 0 && <TouchableOpacity onPress={() => this.clearTaskAssigner()}>
+                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C, fontSize: moderateScale(22, 0.88) }} />
+                    </TouchableOpacity>
                   }
                 </View>
               </Item>
             }
             {
-              isThuky === true && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
-                <Label>
+              isThuky === true && <Item stackedLabel style={[InputCreateStyle.container]}>
+                <Label style={InputCreateStyle.label}>
                   Giao việc thay cho
                 </Label>
                 <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                  <Button transparent style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
+                  <TouchableOpacity style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
                     {
                       !giaoviecName
-                        ? <Text style={{ color: '#ccc' }}>Chọn người giao việc thay</Text>
-                        : <Text style={{ color: Colors.BLACK }}>{giaoviecName}</Text>
+                        ? <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: '#ccc' }]}>Chọn người giao việc thay</Text>
+                        : <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: Colors.BLACK }]}>{giaoviecName}</Text>
                     }
-                  </Button>
+                  </TouchableOpacity>
                   {
-                    giaoviecId > 0 && <Button transparent onPress={() => this.clearTaskAssigner()}>
+                    giaoviecId > 0 && <TouchableOpacity onPress={() => this.clearTaskAssigner()}>
                       <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                    </Button>
+                    </TouchableOpacity>
                   }
                 </View>
               </Item>
             }
 
-            <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-              <Label>Độ ưu tiên</Label>
+            <Item stackedLabel style={PickerCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>Độ ưu tiên</Label>
               <Picker
                 iosHeader='Chọn độ ưu tiên'
+                headerBackButtonText='Quay lại'
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                style={{ width: '100%', justifyContent: 'space-around' }}
-                selectedValue={priorityValue} //sai chinh ta @@
+                textStyle={{ fontSize: moderateScale(14.3, 0.78) }}
+                style={PickerCreateStyle.picker}
+                selectedValue={priorityValue}
                 onValueChange={this.handleChange("priorityValue")}>
                 {
                   this.state.listPriority.map((item, index) => (
@@ -419,13 +422,15 @@ class CreateTask extends Component {
               </Picker>
             </Item>
 
-            <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-              <Label>Mức độ quan trọng</Label>
+            <Item stackedLabel style={PickerCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>Mức độ quan trọng</Label>
               <Picker
                 iosHeader='Chọn mức quan trọng'
+                headerBackButtonText='Quay lại'
                 mode='dropdown'
                 iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                style={{ width: '100%', justifyContent: 'space-around' }}
+                textStyle={{ fontSize: moderateScale(14.3, 0.78) }}
+                style={PickerCreateStyle.picker}
                 selectedValue={urgencyValue}
                 onValueChange={this.handleChange("urgencyValue")}>
                 {
@@ -454,8 +459,8 @@ class CreateTask extends Component {
               // </Item>
             }
 
-            <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Ngày nhận việc</Label>
+            <Item stackedLabel style={InputCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>Ngày nhận việc</Label>
               <DatePicker
                 style={DatePickerCustomStyle.containerStyle}
                 date={startDate}
@@ -465,23 +470,13 @@ class CreateTask extends Component {
                 minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("startDate")}
               />
             </Item>
 
-            <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
+            <Item stackedLabel style={InputCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>Hạn hoàn thành <Text style={[InputCreateStyle.label, { color: '#f00' }]}>*</Text></Label>
               <DatePicker
                 style={DatePickerCustomStyle.containerStyle}
                 date={deadline}
@@ -491,28 +486,18 @@ class CreateTask extends Component {
                 minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("deadline")}
               />
             </Item>
 
-            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "reminderDays" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-              <Label>
+            <Item stackedLabel style={[InputCreateStyle.container, focusId === "reminderDays" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+              <Label style={InputCreateStyle.label}>
                 Nhắc việc trước (ngày)
               </Label>
 
               <Input
-                style={{ textAlign: 'center' }}
+                style={[InputCreateStyle.input, { textAlign: 'center' }]}
                 value={reminderDays}
                 onChangeText={this.handleChange("reminderDays")}
                 onFocus={() => this.setState({ focusId: "reminderDays" })}
@@ -521,9 +506,9 @@ class CreateTask extends Component {
               />
             </Item>
 
-            <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
-              <Label>
-                Nội dung <Text style={{ color: '#f00' }}>*</Text>
+            <Item stackedLabel style={InputCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>
+                Nội dung <Text style={[InputCreateStyle.label, InputCreateStyle.labelMust]}>*</Text>
               </Label>
 
               <Textarea
@@ -531,15 +516,15 @@ class CreateTask extends Component {
                 bordered
                 value={this.state.content}
                 onChangeText={this.handleChange("content")}
-                style={[{ width: '100%', marginTop: 20 }, focusId === "content" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
+                style={[InputCreateStyle.input, InputCreateStyle.textarea, focusId === "content" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
                 onFocus={() => this.setState({ focusId: "content" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
 
             </Item>
 
-            <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
-              <Label>
+            <Item stackedLabel style={InputCreateStyle.container}>
+              <Label style={InputCreateStyle.label}>
                 Mục tiêu
               </Label>
 
@@ -548,7 +533,7 @@ class CreateTask extends Component {
                 bordered
                 value={purpose}
                 onChangeText={this.handleChange("purpose")}
-                style={[{ width: '100%', marginTop: 20 }, focusId === "purpose" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
+                style={[InputCreateStyle.input, InputCreateStyle.textarea, focusId === "purpose" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
                 onFocus={() => this.setState({ focusId: "purpose" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
@@ -563,219 +548,6 @@ class CreateTask extends Component {
             </TouchableOpacity>
           </Form>
         </KeyboardAwareScrollView>
-        // <ScrollView
-        //   contentContainerStyle={[{ margin: 5, padding: 5, paddingBottom: paddingKeyboardToggle }]}
-        //   ref="scrollview"
-        // // onContentSizeChange={(width, height) => this.refs.scrollview.scrollTo({ y: height })}
-        // >
-        //   {
-        //     // <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={-70} enabled>
-        //   }
-        //   <Form>
-        //     {
-        //       (this.state.vanbanDenId > 0 || this.state.vanbanDiId > 0) && relateDoc
-        //     }
-        //     <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "title" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-        //       <Label>
-        //         Tên công việc <Text style={{ color: '#f00' }}>*</Text>
-        //       </Label>
-
-        //       <Input
-        //         value={title}
-        //         onChangeText={this.handleChange("title")}
-        //         onFocus={() => this.setState({ focusId: "title" })}
-        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
-        //         onTouchStart={(evt) => this.setCurrentVerticalPosition(evt.nativeEvent.pageY)}
-
-        //       />
-        //     </Item>
-        //     {
-        //       isGiamdoc === false && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
-        //         <Label>
-        //           Người giao việc
-        //         </Label>
-        //         <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-        //           <Button transparent style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
-        //             {
-        //               !giaoviecName
-        //                 ? <Text style={{ color: '#ccc' }}>Chọn người giao việc</Text>
-        //                 : <Text style={{ color: Colors.BLACK }}>{giaoviecName}</Text>
-        //             }
-        //           </Button>
-        //           {
-        //             giaoviecId > 0 && <Button transparent onPress={() => this.clearTaskAssigner()}>
-        //               <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-        //             </Button>
-        //           }
-        //         </View>
-        //       </Item>
-        //     }
-
-        //     <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-        //       <Label>Độ ưu tiên</Label>
-        //       <Picker
-        //         iosHeader='Chọn độ ưu tiên'
-        //         mode='dropdown'
-        //         iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-        //         style={{ width: pickerFormat(), justifyContent: 'space-around' }}
-        //         selectedValue={priorityValue} //sai chinh ta @@
-        //         onValueChange={this.handleChange("priorityValue")}>
-        //         {
-        //           this.state.listPriority.map((item, index) => (
-        //             <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-        //           ))
-        //         }
-        //       </Picker>
-        //     </Item>
-
-        //     <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-        //       <Label>Mức độ quan trọng</Label>
-        //       <Picker
-        //         iosHeader='Chọn mức quan trọng'
-        //         mode='dropdown'
-        //         iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-        //         style={{ width: pickerFormat(), justifyContent: 'space-around' }}
-        //         selectedValue={urgencyValue}
-        //         onValueChange={this.handleChange("urgencyValue")}>
-        //         {
-        //           this.state.listUrgency.map((item, index) => (
-        //             <Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-        //           ))
-        //         }
-        //       </Picker>
-        //     </Item>
-
-        //     {
-        //       //   <Item stackedLabel>
-        //       //   <Label>Lập kế hoạch</Label>
-        //       //   <Picker
-        //       //     iosHeader='Chọn mức quan trọng'
-        //       //     mode='dropdown'
-        //       //     iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-        //       //     style={{ width: pickerFormat() }}
-        //       //     // itemTextStyle={{marginHorizontal:20}}
-        //       //     // itemStyle={{marginHorizontal:40}}
-        //       //     selectedValue={this.state.planValue}
-        //       //     onValueChange={this.handleChange("planValue")}>
-        //       //     <Picker.Item value="1" label="Có" />
-        //       //     <Picker.Item value="0" label="Không" />
-        //       //   </Picker>
-        //       // </Item>
-        //     }
-
-        //     <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-        //       <Label>Ngày nhận việc</Label>
-        //       <DatePicker
-        //         style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
-        //         date={startDate}
-        //         mode="date"
-        //         placeholder='Chọn ngày nhận việc'
-        //         format='DD/MM/YYYY'
-        //         minDate={new Date()}
-        //         confirmBtnText='CHỌN'
-        //         cancelBtnText='BỎ'
-        //         customStyles={{
-        //           dateIcon: {
-        //             position: 'absolute',
-        //             left: 0,
-        //             top: 4,
-        //             marginLeft: 0
-        //           },
-        //           dateInput: {
-        //             marginLeft: scale(36),
-        //           }
-        //         }}
-        //         onDateChange={this.handleChange("startDate")}
-        //       />
-        //     </Item>
-
-        //     <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-        //       <Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
-        //       <DatePicker
-        //         style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
-        //         date={deadline}
-        //         mode="date"
-        //         placeholder='Chọn hạn hoàn thành'
-        //         format='DD/MM/YYYY'
-        //         minDate={new Date()}
-        //         confirmBtnText='CHỌN'
-        //         cancelBtnText='BỎ'
-        //         customStyles={{
-        //           dateIcon: {
-        //             position: 'absolute',
-        //             left: 0,
-        //             top: 4,
-        //             marginLeft: 0
-        //           },
-        //           dateInput: {
-        //             marginLeft: scale(36),
-        //           }
-        //         }}
-        //         onDateChange={this.handleChange("deadline")}
-        //       />
-        //     </Item>
-
-        //     <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "reminderDays" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-        //       <Label>
-        //         Nhắc việc trước (ngày)
-        //       </Label>
-
-        //       <Input
-        //         style={{ textAlign: 'center' }}
-        //         value={reminderDays}
-        //         onChangeText={this.handleChange("reminderDays")}
-        //         onFocus={() => this.setState({ focusId: "reminderDays" })}
-        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
-        //         keyboardType="number-pad"
-        //         onTouchStart={(evt) => this.setCurrentVerticalPosition(evt.nativeEvent.pageY)}
-        //       />
-        //     </Item>
-
-        //     <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
-        //       <Label>
-        //         Nội dung <Text style={{ color: '#f00' }}>*</Text>
-        //       </Label>
-
-        //       <Textarea
-        //         rowSpan={3}
-        //         bordered
-        //         value={this.state.content}
-        //         onChangeText={this.handleChange("content")}
-        //         style={[{ width: '100%', marginTop: 20 }, focusId === "content" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
-        //         onFocus={() => this.setState({ focusId: "content" })}
-        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
-        //         onTouchStart={(evt) => this.setCurrentVerticalPosition(evt.nativeEvent.pageY)}
-
-        //       />
-
-        //     </Item>
-
-        //     <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
-        //       <Label>
-        //         Mục tiêu
-        //       </Label>
-
-        //       <Textarea
-        //         rowSpan={3}
-        //         bordered
-        //         value={purpose}
-        //         onChangeText={this.handleChange("purpose")}
-        //         style={[{ width: '100%', marginTop: 20 }, focusId === "purpose" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
-        //         onFocus={() => this.setState({ focusId: "purpose" })}
-        //         onBlur={() => this.setState({ focusId: EMPTY_STRING })}
-        //         onTouchStart={(evt) => this.setCurrentVerticalPosition(evt.nativeEvent.pageY)}
-        //       />
-        //     </Item>
-
-        //     <TouchableOpacity
-        //       onPress={() => this.saveTask()}
-        //       style={[AccountStyle.submitButton, submitableButtonBackground]}
-        //       disabled={nothingChangeStatus}
-        //     >
-        //       <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
-        //     </TouchableOpacity>
-        //   </Form>
-        // </ScrollView>
       );
     }
 
@@ -794,7 +566,7 @@ class CreateTask extends Component {
 
           <Right style={NativeBaseStyle.right}>
             <TouchableOpacity onPress={() => this.saveTask()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
-              <RneIcon name='save' size={30} color={Colors.WHITE} />
+              <RneIcon name='save' size={moderateScale(28, 1.03)} color={Colors.WHITE} />
             </TouchableOpacity>
           </Right>
         </Header>

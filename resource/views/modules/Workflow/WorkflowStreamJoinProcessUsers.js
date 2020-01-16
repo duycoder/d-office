@@ -13,13 +13,14 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon } from 'react-native-elements';
 import {
     ListItem as NbListItem, Text as NbText,
     Right, Left, Title, Body, Radio, CheckBox, Toast
 } from 'native-base';
 import * as util from 'lodash';
-import { Colors } from '../../../common/SystemConstant';
+import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class WorkflowStreamJoinProcessUsers extends Component {
     constructor(props) {
@@ -31,8 +32,8 @@ class WorkflowStreamJoinProcessUsers extends Component {
             flowData: props.flowData,
 
             expanded: true,
-            rowItemHeight: 60,
-            heightAnimation: new Animated.Value(60 * (props.users.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.users.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
+            rowItemHeight: customWorkflowListHeight,
+            heightAnimation: new Animated.Value(customWorkflowListHeight * (props.users.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.users.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
             rotateAnimation: new Animated.Value(0),
             joinProcessUsers: this.props.joinProcessUsers,
             mainProcessUser: this.props.mainProcessUser
@@ -40,7 +41,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {mainProcessUser, joinProcessUsers, users} = this.state;
+        const { mainProcessUser, joinProcessUsers, users } = this.state;
 
         if (nextProps.mainProcessUser !== mainProcessUser) {
             // for heightAnimation
@@ -53,7 +54,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
 
             this.setState({
                 mainProcessUser: nextProps.mainProcessUser,
-                heightAnimation: new Animated.Value(60 * heightFactor),
+                heightAnimation: new Animated.Value(customWorkflowListHeight * heightFactor),
                 joinProcessUsers: this.props.joinProcessUsers
             });
         }
@@ -209,13 +210,14 @@ const styles = StyleSheet.create({
     titleContainer: {
     },
     listItemContainer: {
-        height: 60,
+        height: customWorkflowListHeight,
         backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemTitle: {
         fontWeight: 'bold',
-        color: '#fff'
+        color: '#fff',
+        fontSize: moderateScale(14.5, 0.89),
     },
     body: {
 

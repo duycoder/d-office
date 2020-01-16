@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text as RnText, FlatList } from 'react-native';
+import { ActivityIndicator, View, Text as RnText, FlatList, TouchableOpacity } from 'react-native';
 
 //utilites
 import {
@@ -14,7 +14,7 @@ import {
     MODULE_CONSTANT,
     TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -26,7 +26,6 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
-
 
 //lib
 import {
@@ -45,7 +44,10 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import WorkflowStreamMainProcessUsers from './WorkflowStreamMainProcessUsers';
 import WorkflowStreamJoinProcessUsers from './WorkflowStreamJoinProcessUsers';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton, MoreButton } from '../../common';
+import { vanbandenApi } from '../../../common/Api';
+
+const api = vanbandenApi();
 
 class WorkflowStreamProcess extends Component {
 
@@ -95,14 +97,23 @@ class WorkflowStreamProcess extends Component {
         // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
-    async fetchData() {
+    fetchData = async () => {
         this.setState({
             loadingData: true
         });
 
-        const url = `${API_URL}/api/WorkFlow/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack == true ? 1 : 0}/${this.state.logId}/${this.state.hasAuthorization}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        const {
+            userId, processId, stepId, isStepBack, logId, hasAuthorization
+        } = this.state;
+
+        const resultJson = await api.getFlow([
+            userId,
+            processId,
+            stepId,
+            isStepBack ? 1 : 0,
+            logId,
+            hasAuthorization
+        ]);
 
         ;
         this.setState({
@@ -132,34 +143,20 @@ class WorkflowStreamProcess extends Component {
                 executing: true
             });
 
-            const url = `${API_URL}/api/WorkFlow/SaveFlow`;
-            const headers = new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
+            const {
+                userId, processId, stepId, mainProcessUser, joinProcessUsers, message, isStepBack, logId
+            } = this.state;
+
+            const resultJson = await api.saveFlow({
+                userId,
+                processID: processId,
+                stepID: stepId,
+                mainUser: mainProcessUser,
+                joinuser: joinProcessUsers,
+                message,
+                IsBack: isStepBack ? 1 : 0,
+                LogID: logId,
             });
-            const body = JSON.stringify({
-                userId: this.state.userId,
-                processID: this.state.processId,
-                stepID: this.state.stepId,
-                mainUser: this.props.mainProcessUser,
-                joinUser: this.props.joinProcessUsers.toString(),
-                message: this.state.message,
-                IsBack: this.state.isStepBack ? 1 : 0,
-                LogID: this.state.logId
-            });
-
-            // console.log(body);
-            // return;
-
-            const result = await fetch(url, {
-                method: 'POST',
-                headers,
-                body
-            });
-
-            const resultJson = await result.json();
-
-            await asyncDelay();
 
             this.setState({
                 executing: false
@@ -193,10 +190,14 @@ class WorkflowStreamProcess extends Component {
             query = this.state.joinProcessFilterValue;
             pageIndex = this.state.joinProcessPageIndex;
         }
-        const url = `${API_URL}/api/WorkFlow/SearchUserInFlow/${this.state.userId}/${this.state.stepId}/${pageIndex}?query=${query}`;
 
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        const { userId, stepId } = this.state;
+
+        const resultJson = await api.getUserInFlow([
+            userId,
+            stepId,
+            `${pageIndex}?query=${query}`,
+        ]);
 
         if (isMainProcess) {
             this.setState({
@@ -239,7 +240,7 @@ class WorkflowStreamProcess extends Component {
         })
     }
 
-    loadingMore = (isMainProcess) => {
+    loadingMore = (isMainProcess = false) => {
         if (isMainProcess) {
             this.setState({
                 loadingMoreInMain: true,
@@ -252,6 +253,8 @@ class WorkflowStreamProcess extends Component {
             }, () => this.filterData(isMainProcess))
         }
     }
+    loadingMoreMain = () => this.loadingMore(true);
+    loadingMoreJoin = () => this.loadingMore(false);
 
     renderMainProcessUsers = ({ item }) => {
         return (
@@ -349,19 +352,11 @@ class WorkflowStreamProcess extends Component {
                                                 ListEmptyComponent={
                                                     this.state.loadingData ? null : emptyDataPage()
                                                 }
-                                                ListFooterComponent={
-                                                    this.state.loadingMoreInMain ?
-                                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                                        (
-                                                            this.state.mainProcessUsers.length >= 5 ?
-                                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-                                                                    <Text>
-                                                                        TẢI THÊM
-                                                                </Text>
-                                                                </Button>
-                                                                : null
-                                                        )
-                                                }
+                                                ListFooterComponent={() => (<MoreButton
+                                                    isLoading={this.state.loadingMoreInMain}
+                                                    isTrigger={this.state.mainProcessUsers.length >= 5}
+                                                    loadmoreFunc={this.loadingMoreMain}
+                                                />)}
                                             />
                                         )
                                     }
@@ -401,19 +396,11 @@ class WorkflowStreamProcess extends Component {
                                                 ListEmptyComponent={
                                                     this.state.loadingData ? null : emptyDataPage()
                                                 }
-                                                ListFooterComponent={
-                                                    this.state.loadingMoreInJoin ?
-                                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                                        (
-                                                            this.state.joinProcessUsers.length >= 5 ?
-                                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
-                                                                    <Text>
-                                                                        TẢI THÊM
-                                                                </Text>
-                                                                </Button>
-                                                                : null
-                                                        )
-                                                }
+                                                ListFooterComponent={() => (<MoreButton
+                                                    isLoading={this.state.loadingMoreInJoin}
+                                                    isTrigger={this.state.joinProcessUsers.length >= 5}
+                                                    loadmoreFunc={this.loadingMoreJoin}
+                                                />)}
                                             />
                                         )
                                     }
@@ -430,7 +417,12 @@ class WorkflowStreamProcess extends Component {
                             }>
                                 <Content>
                                     <Form>
-                                        <Textarea rowSpan={5} bordered placeholder='Nội dung ghi chú' onChangeText={(message) => this.setState({ message })} />
+                                        <Textarea
+                                            rowSpan={5}
+                                            bordered
+                                            placeholder='Nội dung ghi chú'
+                                            onChangeText={(message) => this.setState({ message })}
+                                        />
                                     </Form>
                                 </Content>
                             </Tab>
@@ -477,19 +469,11 @@ class WorkflowStreamProcess extends Component {
                                                 ListEmptyComponent={
                                                     this.state.loadingData ? null : emptyDataPage()
                                                 }
-                                                ListFooterComponent={
-                                                    this.state.loadingMoreInMain ?
-                                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                                        (
-                                                            this.state.mainProcessUsers.length >= 5 ?
-                                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-                                                                    <Text>
-                                                                        TẢI THÊM
-                                                        </Text>
-                                                                </Button>
-                                                                : null
-                                                        )
-                                                }
+                                                ListFooterComponent={() => (<MoreButton
+                                                    isLoading={this.state.loadingMoreInMain}
+                                                    isTrigger={this.state.mainProcessUsers.length >= 5}
+                                                    loadmoreFunc={this.loadingMoreMain}
+                                                />)}
                                             />
                                         )
                                     }
@@ -553,19 +537,11 @@ class WorkflowStreamProcess extends Component {
                                                 ListEmptyComponent={
                                                     this.state.loadingData ? null : emptyDataPage()
                                                 }
-                                                ListFooterComponent={
-                                                    this.state.loadingMoreInJoin ?
-                                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                                        (
-                                                            this.state.joinProcessUsers.length >= 5 ?
-                                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
-                                                                    <Text>
-                                                                        TẢI THÊM
-                                                                    </Text>
-                                                                </Button>
-                                                                : null
-                                                        )
-                                                }
+                                                ListFooterComponent={() => (<MoreButton
+                                                    isLoading={this.state.loadingMoreInJoin}
+                                                    isTrigger={this.state.joinProcessUsers.length >= 5}
+                                                    loadmoreFunc={this.loadingMoreJoin}
+                                                />)}
                                             />
                                         )
                                     }
@@ -629,9 +605,9 @@ class WorkflowStreamProcess extends Component {
                     </Body>
 
                     <Right style={NativeBaseStyle.right}>
-                        <Button transparent onPress={() => this.saveFlow()}>
-                            <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <TouchableOpacity onPress={() => this.saveFlow()}>
+                            <RneIcon name='md-send' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
+                        </TouchableOpacity>
                     </Right>
                 </Header>
                 {

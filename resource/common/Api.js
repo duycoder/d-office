@@ -61,13 +61,19 @@ const vanbandenApi = () => {
   const getFlowCCHelper = (params = []) => api.get("WorkFlow/GetFlowCCHelper", params);
   const filterFlowCCReceiver = (params = []) => api.get("WorkFlow/GetFlowCCReceiver", params);
   const saveFlowCC = (payloadBody = {}) => api.post("WorkFlow/SaveFlowCC", payloadBody);
+  const getFlow = (params = []) => api.get("WorkFlow/GetFlow", params);
+  const saveFlow = (payloadBody={})=>api.post("WorkFlow/SaveFlow",payloadBody);
+  const getUserInFlow = (params=[])=>api.get("WorkFlow/SearchUserInFlow",params);
 
   return {
     getDetail,
     checkFlow,
     saveFlowCC,
     getFlowCCHelper,
-    filterFlowCCReceiver
+    filterFlowCCReceiver,
+    getFlow,
+    saveFlow,
+    getUserInFlow,
   };
 }
 

@@ -282,7 +282,7 @@ class Login extends Component {
                         </Text>
                     </Animated.View>
                     <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
-                        <View style={LoginStyle.formContainer}>
+                        <ScrollView style={LoginStyle.formContainer}>
                             <View style={LoginStyle.formTitle}>
                                 <Text style={LoginStyle.formTitleText}>
                                     ĐĂNG NHẬP HỆ THỐNG
@@ -323,7 +323,7 @@ class Login extends Component {
                                         returnKeyLabel='Xong'
                                         ref={ref => this.passwordInput = ref}
                                         textContentType="password"
-
+                                        onSubmitEditing={() => this.onLogin()}
                                     />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
                                         <Image source={(this.state.isHidePassword) ? showPasswordIcon : hidePasswordIcon}
@@ -348,7 +348,7 @@ class Login extends Component {
                             >
                                 <Text style={[LoginStyle.formButtonText, { color: Colors.GRAY, fontSize: moderateScale(16, 1.2) }]}>Chưa có tài khoản?</Text>
                             </TouchableOpacity>
-                        </View>
+                        </ScrollView>
                     </ImageBackground>
                     {
                         //<Animated.View style={[LoginStyle.formFooter, { display: this.state.footerAnimation }]}></Animated.View>

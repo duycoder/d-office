@@ -5,7 +5,7 @@ import { Colors } from '../../common/SystemConstant';
 
 const NativeBaseStyle = StyleSheet.create({
     container: {
-        height: moderateScale(62),
+        // height: moderateScale(62),
         backgroundColor: Colors.LITE_BLUE,
     },
     left: {
