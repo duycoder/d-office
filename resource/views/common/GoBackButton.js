@@ -5,9 +5,6 @@ import { Colors } from '../../common/SystemConstant';
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
 
 export default class GoBackButton extends Component {
-  constructor(props) {
-    super(props);
-  }
   static defaultProps = {
     buttonStyle: '50%'
   }

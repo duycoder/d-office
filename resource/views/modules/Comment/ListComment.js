@@ -49,6 +49,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 const android = RNFetchBlob.android;
 
@@ -548,18 +549,11 @@ class ListComment extends Component {
                 ListEmptyComponent={() =>
                   this.state.loading ? null : emptyDataPage()
                 }
-                ListFooterComponent={() => this.state.loadingMore ?
-                  <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                  (
-                    this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                      <Button small full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                        <NbText>
-                          TẢI THÊM BÌNH LUẬN
-                          </NbText>
-                      </Button>
-                      : null
-                  )
-                }
+                ListFooterComponent={() => (<MoreButton
+                  isLoading={this.state.loadingMore}
+                  isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                  loadmoreFunc={this.loadingMore}
+                />)}
               />
             )
           }

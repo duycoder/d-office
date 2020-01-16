@@ -33,12 +33,12 @@ export default {
   // Badge
   badgeBg: "#ED1727",
   badgeColor: "#fff",
-  badgePadding: platform === "ios" ? 3 : 0,
+  badgePadding: platform === "ios" ? moderateScale(2.83, 1.025) : 0,
 
   // Button
   btnFontFamily: platform === "ios" ? "System" : "Roboto_medium",
   btnDisabledBg: "#b5b5b5",
-  buttonPadding: 6,
+  buttonPadding: moderateScale(5.85, 1.03),
   get btnPrimaryBg() {
     return this.brandPrimary;
   },
@@ -182,6 +182,7 @@ export default {
   inputSuccessBorderColor: "#2b8339",
   inputErrorBorderColor: "#ed2f2f",
   inputHeightBase: moderateScale(46, 1.02),
+  inputPaddingHorizontal: moderateScale(4.95, 0.91),
   get inputColor() {
     return this.textColor;
   },
@@ -266,7 +267,7 @@ export default {
   deviceHeight,
   isIphoneX,
   inputGroupRoundedBorderRadius: 30,
-  labelFontSize: moderateScale(15, 0.86),
+  labelFontSize: moderateScale(13.45, 0.83),
 
   //iPhoneX SafeArea
   Inset: {

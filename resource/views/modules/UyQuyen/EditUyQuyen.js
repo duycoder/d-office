@@ -35,6 +35,7 @@ import VanBanDenUyQuyen from './VanBanDenUyQuyen';
 import VanBanDiUyQuyen from './VanBanDiUyQuyen';
 import GoBackButton from '../../common/GoBackButton';
 import { DatePickerCustomStyle } from '../../../assets/styles';
+import { MoreButton } from '../../common';
 
 
 class EditUyQuyen extends Component {
@@ -361,8 +362,8 @@ class EditUyQuyen extends Component {
                         <Content>
                             <Tabs
                                 // renderTabBar={() => <ScrollableTab />}
-              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
-              initialPage={this.state.currentTabIndex}
+                                tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+                                initialPage={this.state.currentTabIndex}
                                 tabBarUnderlineStyle={TabStyle.underLineStyle}
                                 onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
                                 <Tab heading={
@@ -402,19 +403,11 @@ class EditUyQuyen extends Component {
                                                     ListEmptyComponent={
                                                         this.state.loadingData ? null : emptyDataPage()
                                                     }
-                                                    ListFooterComponent={
-                                                        this.state.loadingMoreData ?
-                                                            <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                                            (
-                                                                this.state.users.length >= 2 ?
-                                                                    <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={this.onLoadingMore}>
-                                                                        <Text>
-                                                                            TẢI THÊM
-                                                                        </Text>
-                                                                    </Button>
-                                                                    : null
-                                                            )
-                                                    }
+                                                    ListFooterComponent={() => (<MoreButton
+                                                        isLoading={this.state.loadingMoreData}
+                                                        isTrigger={this.state.users.length >= 2}
+                                                        loadmoreFunc={this.onLoadingMore}
+                                                    />)}
                                                 />
                                             )
                                         }

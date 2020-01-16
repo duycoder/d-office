@@ -1,12 +1,13 @@
 // @flow
 
 import variable from "./../variables/platform";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const platform = variables.platform;
 
   const segmentTheme = {
-    height: 45,
+    height: moderateScale(48, 1.12),
     borderColor: variables.segmentBorderColorMain,
     flexDirection: "row",
     justifyContent: "center",
@@ -16,7 +17,7 @@ export default (variables /*: * */ = variable) => {
       borderRadius: 0,
       paddingTop: 3,
       paddingBottom: 3,
-      height: 30,
+      height: moderateScale(28, 1.16),
       backgroundColor: "transparent",
       borderWidth: 1,
       borderLeftWidth: 0,
@@ -42,7 +43,7 @@ export default (variables /*: * */ = variable) => {
       },
       "NativeBase.Text": {
         color: variables.segmentTextColor,
-        fontSize: 14
+        fontSize: moderateScale(13, 1.26)
       },
       "NativeBase.Icon": {
         fontSize: 22,

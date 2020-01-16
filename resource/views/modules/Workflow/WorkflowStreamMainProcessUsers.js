@@ -22,6 +22,7 @@ import * as util from 'lodash';
 //utilities
 import { WORKFLOW_PROCESS_TYPE, Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { GroupListStyle } from '../../../assets/styles';
 
 class WorkflowStreamMainProcessUsers extends Component {
     constructor(props) {
@@ -35,7 +36,8 @@ class WorkflowStreamMainProcessUsers extends Component {
             expanded: true,
             rowItemHeight: customWorkflowListHeight,
             heightAnimation: new Animated.Value(customWorkflowListHeight * (props.users.length > 0 ? (props.users.length + 1) : 1)),
-            rotateAnimation: new Animated.Value(0)
+            rotateAnimation: new Animated.Value(0),
+            iconName: 'ios-arrow-up',
         }
     }
 
@@ -60,7 +62,8 @@ class WorkflowStreamMainProcessUsers extends Component {
         const finalRotation = this.state.expanded ? 0 : 1
 
         this.setState({
-            expanded: !this.state.expanded
+            expanded: !this.state.expanded,
+            iconName: this.state.expanded ? 'ios-arrow-down' : 'ios-arrow-up',
         })
 
         this.state.heightAnimation.setValue(initialHeight);
@@ -104,22 +107,22 @@ class WorkflowStreamMainProcessUsers extends Component {
         }
 
         return (
-            <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
-                <View style={styles.titleContainer} onLayout={this.setMinHeight}>
+            <Animated.View style={[GroupListStyle.container, { height: this.state.heightAnimation }]}>
+                <View style={GroupListStyle.titleContainer} onLayout={this.setMinHeight}>
                     <TouchableOpacity onPress={this.toggle}>
                         <ListItem
-                            containerStyle={styles.listItemContainer}
+                            containerStyle={GroupListStyle.listItemContainer}
                             hideChevron={this.state.users.length <= 0}
                             title={util.toUpper(this.state.title)}
-                            titleStyle={styles.listItemTitle}
+                            titleStyle={GroupListStyle.listItemTitle}
                             rightIcon={
-                                <Animated.Image source={this.icon} style={iconRotationStyle} />
+                                <Icon name={this.state.iconName} type='ionicon' size={moderateScale(26, 0.73)} color='#fff' />
                             }
                         />
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.body} onLayout={this.setMaxHeight}>
+                <View style={GroupListStyle.body} onLayout={this.setMaxHeight}>
                     {
                         this.state.users.map((item, index) => (
                             <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)}
@@ -170,28 +173,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkflowStreamMainProcessUsers);
-
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    container: {
-        overflow: 'scroll',
-    },
-    titleContainer: {
-    },
-    listItemContainer: {
-        height: customWorkflowListHeight,
-        backgroundColor: Colors.LITE_BLUE,
-        justifyContent: 'center'
-    },
-    listItemTitle: {
-        fontWeight: 'bold',
-        color: '#fff',
-        fontSize: moderateScale(14.5, 0.89),
-    },
-    body: {
-
-    }
-});

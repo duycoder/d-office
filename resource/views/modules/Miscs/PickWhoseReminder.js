@@ -42,6 +42,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { reminderApi } from '../../../common/Api';
+import { MoreButton } from '../../common';
 
 class PickWhoseReminder extends Component {
   constructor(props) {
@@ -98,10 +99,10 @@ class PickWhoseReminder extends Component {
   onPickGiamdoc = () => {
     const {
       giamdocId, giamdocName
-    }=this.state;
+    } = this.state;
     if (giamdocId === 0) {
       Toast.show({
-        text: 'Vui lòng chọn người thụ hưởng',
+        text: 'Vui lòng chọn được nhắc nhở',
         type: 'danger',
         buttonText: "OK",
         buttonStyle: { backgroundColor: Colors.WHITE },
@@ -201,17 +202,11 @@ class PickWhoseReminder extends Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={this.renderMainAssigner}
             ListEmptyComponent={emptyDataPage()}
-            ListFooterComponent={
-              this.state.isLoadmore ?
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                (
-                  this.state.data.length >= 5 ?
-                    <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                      <Text>TẢI THÊM</Text>
-                    </Button>
-                    : null
-                )
-            }
+            ListFooterComponent={() => (<MoreButton
+              isLoading={this.state.isLoadmore}
+              isTrigger={this.state.data.length >= 5}
+              loadmoreFunc={this.loadingMore}
+            />)}
           />
         </Content>
       );
@@ -226,7 +221,7 @@ class PickWhoseReminder extends Component {
 
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
-              CHỌN NGƯỜI THỤ HƯỞNG
+              CHỌN NGƯỜI ĐƯỢC NHẮC NHỞ
 						</Title>
           </Body>
 

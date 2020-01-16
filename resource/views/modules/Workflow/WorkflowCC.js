@@ -44,6 +44,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { vanbandenApi } from '../../../common/Api';
+import { HeaderRightButton, MoreButton } from '../../common';
 
 const api = vanbandenApi();
 
@@ -113,7 +114,7 @@ class WorkflowCC extends Component {
       drivers, chosenDrivers,
       processId, message, userId, stepId
     } = this.state;
-    
+
     if (drivers.length > 0) {
       if (chosenDrivers.length === 0) {
         Toast.show({
@@ -289,17 +290,11 @@ class WorkflowCC extends Component {
                     ListEmptyComponent={
                       this.state.loadingData ? null : emptyDataPage()
                     }
-                    ListFooterComponent={
-                      this.state.loadingMoreInDriver ?
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                        (
-                          this.state.drivers.length >= 5 ?
-                            <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-                              <Text>TẢI THÊM</Text>
-                            </Button>
-                            : null
-                        )
-                    }
+                    ListFooterComponent={() => (<MoreButton
+                      isLoading={this.state.loadingMoreInDriver}
+                      isTrigger={this.state.drivers.length >= 5}
+                      loadmoreFunc={this.loadingMore}
+                    />)}
                   />
                 )
               }
@@ -336,9 +331,7 @@ class WorkflowCC extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.saveTiepnhan()}>
-              <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton onPress={() => this.saveTiepnhan()} />
           </Right>
         </Header>
         {

@@ -36,7 +36,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { meetingRoomApi } from '../../../common/Api';
-import { DatePickerCustomStyle } from '../../../assets/styles';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
+import { CustomPickerButton, HeaderRightButton } from '../../common';
 
 const MeetingRoomApi = meetingRoomApi();
 
@@ -315,27 +316,16 @@ class CreateMeetingDay extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
-            {
-              canCreateMeetingForOthers && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
-                <Label>
-                  Người chủ trì <Text style={{ color: '#f00' }}>*</Text>
-                </Label>
-                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                  <Button transparent style={{ width: chutriId > 0 ? '100%' : '90%' }} onPress={() => this.onPickChutri()}>
-                    {
-                      !chutriName
-                        ? <Text style={{ color: '#ccc' }}>Chọn người chủ trì</Text>
-                        : <Text style={{ color: Colors.BLACK }}>{chutriName}</Text>
-                    }
-                  </Button>
-                  {
-                    chutriId > 0 && <Button transparent onPress={() => this.clearNguoiChutri()}>
-                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                    </Button>
-                  }
-                </View>
-              </Item>
-            }
+
+            <CustomPickerButton
+              isRender={canCreateMeetingForOthers}
+              labelText='Người chủ trì'
+              placeholderText='Chọn người chủ trì'
+              valueId={chutriId}
+              valueName={chutriName}
+              pickFunc={() => this.onPickChutri()}
+              clearFunc={() => this.clearNguoiChutri()}
+            />
 
             <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
               <Label>Ngày họp <Text style={{ color: '#f00' }}>*</Text></Label>
@@ -349,17 +339,7 @@ class CreateMeetingDay extends Component {
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("ngayHop")}
               />
             </Item>
@@ -376,17 +356,7 @@ class CreateMeetingDay extends Component {
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("thoigianBatdau")}
               />
             </Item>
@@ -403,17 +373,7 @@ class CreateMeetingDay extends Component {
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("thoigianKetthuc")}
               />
             </Item>
@@ -431,26 +391,14 @@ class CreateMeetingDay extends Component {
               />
             </Item>
 
-            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "phonghopId" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-              <Label>
-                Phòng họp
-              </Label>
-
-              <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                <Button transparent style={{ width: phonghopId > 0 ? '100%' : '90%' }} onPress={() => this.onPickPhonghop()}>
-                  {
-                    !phonghopName
-                      ? <Text style={{ color: '#ccc' }}>Chọn phòng họp</Text>
-                      : <Text style={{ color: Colors.BLACK }}>{phonghopName}</Text>
-                  }
-                </Button>
-                {
-                  phonghopId > 0 && <Button transparent onPress={() => this.clearPhonghop()}>
-                    <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                  </Button>
-                }
-              </View>
-            </Item>
+            <CustomPickerButton
+              labelText='Phòng họp'
+              placeholderText='Chọn phòng họp'
+              valueId={phonghopId}
+              valueName={phonghopName}
+              pickFunc={() => this.onPickPhonghop()}
+              clearFunc={() => this.clearPhonghop()}
+            />
 
             <TouchableOpacity
               onPress={() => this.saveLichhop()}
@@ -478,9 +426,12 @@ class CreateMeetingDay extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={() => this.saveLichhop()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
-              <RneIcon name='save' size={30} color={Colors.WHITE} />
-            </TouchableOpacity>
+            <HeaderRightButton
+              iconName='save' iconType='material'
+              onPress={() => this.saveLichhop()}
+              btnStyle={headerSubmitButtonStyle}
+              btnDisabled={nothingChangeStatus}
+            />
           </Right>
         </Header>
         {bodyContent}
@@ -508,16 +459,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateMeetingDay);
-
-const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderColor: Colors.GRAY,
-    borderWidth: 1,
-    padding: 5,
-    width: '100%'
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
-})

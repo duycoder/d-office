@@ -39,6 +39,7 @@ import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
 import { DatePickerCustomStyle, InputCreateStyle, PickerCreateStyle, CustomStylesDatepicker } from '../../../assets/styles/index';
+import { CustomPickerButton } from '../../common';
 
 const TaskApi = taskApi();
 
@@ -360,48 +361,26 @@ class CreateTask extends Component {
                 style={InputCreateStyle.input}
               />
             </Item>
-            {
-              (isGiamdoc === false && isThuky === false) && <Item stackedLabel style={[InputCreateStyle.container]}>
-                <Label style={InputCreateStyle.label}>
-                  Người giao việc
-                </Label>
-                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around", marginTop: verticalScale(10) }}>
-                  <TouchableOpacity style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
-                    {
-                      !giaoviecName
-                        ? <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: '#ccc' }]}>Chọn người giao việc</Text>
-                        : <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: Colors.BLACK }]}>{giaoviecName}</Text>
-                    }
-                  </TouchableOpacity>
-                  {
-                    giaoviecId > 0 && <TouchableOpacity onPress={() => this.clearTaskAssigner()}>
-                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C, fontSize: moderateScale(22, 0.88) }} />
-                    </TouchableOpacity>
-                  }
-                </View>
-              </Item>
-            }
-            {
-              isThuky === true && <Item stackedLabel style={[InputCreateStyle.container]}>
-                <Label style={InputCreateStyle.label}>
-                  Giao việc thay cho
-                </Label>
-                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                  <TouchableOpacity style={{ width: giaoviecId > 0 ? '100%' : '90%' }} onPress={() => this.onPickTaskAssigner()}>
-                    {
-                      !giaoviecName
-                        ? <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: '#ccc' }]}>Chọn người giao việc thay</Text>
-                        : <Text style={[{ fontSize: moderateScale(14.3, 0.86), color: Colors.BLACK }]}>{giaoviecName}</Text>
-                    }
-                  </TouchableOpacity>
-                  {
-                    giaoviecId > 0 && <TouchableOpacity onPress={() => this.clearTaskAssigner()}>
-                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                    </TouchableOpacity>
-                  }
-                </View>
-              </Item>
-            }
+            
+            <CustomPickerButton
+              isRender={isGiamdoc === false && isThuky === false}
+              labelText='Người giao việc'
+              placeholderText='Chọn người giao việc'
+              valueId={giaoviecId}
+              valueName={giaoviecName}
+              pickFunc={() => this.onPickTaskAssigner()}
+              clearFunc={() => this.clearTaskAssigner()}
+            />
+
+            <CustomPickerButton
+              isRender={isThuky === true}
+              labelText='Giao việc thay cho'
+              placeholderText='Chọn người giao việc thay'
+              valueId={giaoviecId}
+              valueName={giaoviecName}
+              pickFunc={() => this.onPickTaskAssigner()}
+              clearFunc={() => this.clearTaskAssigner()}
+            />
 
             <Item stackedLabel style={PickerCreateStyle.container}>
               <Label style={InputCreateStyle.label}>Độ ưu tiên</Label>
@@ -409,8 +388,7 @@ class CreateTask extends Component {
                 iosHeader='Chọn độ ưu tiên'
                 headerBackButtonText='Quay lại'
                 mode='dropdown'
-                iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                textStyle={{ fontSize: moderateScale(14.3, 0.78) }}
+                iosIcon={<Icon name='ios-arrow-down' type="Ionicons" style={{ fontSize: moderateScale(15.15, 0.85) }} />}
                 style={PickerCreateStyle.picker}
                 selectedValue={priorityValue}
                 onValueChange={this.handleChange("priorityValue")}>
@@ -428,8 +406,7 @@ class CreateTask extends Component {
                 iosHeader='Chọn mức quan trọng'
                 headerBackButtonText='Quay lại'
                 mode='dropdown'
-                iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-                textStyle={{ fontSize: moderateScale(14.3, 0.78) }}
+                iosIcon={<Icon name='ios-arrow-down' type="Ionicons" style={{ fontSize: moderateScale(15.15, 0.85) }} />}
                 style={PickerCreateStyle.picker}
                 selectedValue={urgencyValue}
                 onValueChange={this.handleChange("urgencyValue")}>

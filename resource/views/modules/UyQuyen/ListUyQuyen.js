@@ -37,6 +37,7 @@ import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { NativeBaseStyle } from '../../../assets/styles';
+import { MoreButton, SearchSection } from '../../common';
 
 class ListUyQuyen extends Component {
     constructor(props) {
@@ -80,7 +81,7 @@ class ListUyQuyen extends Component {
         });
     }
 
-    navigateToDetail = (authorizedId) => {
+    navigateToDetail = (authorizedId = 0) => {
         let currentScreenName = "ListUyQuyenScreen";
         let targetScreenParam = {
             authorizedId,
@@ -244,29 +245,16 @@ class ListUyQuyen extends Component {
                                     ListEmptyComponent={() =>
                                         this.state.loadingData ? null : emptyDataPage()
                                     }
-                                    ListFooterComponent={() => this.state.loadingMoreData ?
-                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                        (
-                                            this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                                                    <Text>
-                                                        TẢI THÊM
-                                                </Text>
-                                                </Button>
-                                                : null
-                                        )
-                                    }
+                                    ListFooterComponent={() => (<MoreButton
+                                        isLoading={this.state.loadingMoreData}
+                                        isTrigger={this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE}
+                                        loadmoreFunc={this.loadingMore}
+                                    />)}
                                 />
 
-                                <Fab
-                                    active={true}
-                                    direction="up"
-                                    containerStyle={{}}
-                                    style={{ backgroundColor: Colors.LITE_BLUE }}
-                                    position="bottomRight"
-                                    onPress={() => this.navigateToDetail(0)}>
-                                    <Icon name="add" />
-                                </Fab>
+                                <AddButton
+                                    createFunc={this.navigateToDetail}
+                                />
                             </View>
                         )
                     }

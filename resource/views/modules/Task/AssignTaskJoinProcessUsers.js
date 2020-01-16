@@ -22,15 +22,16 @@ import {
     Toast
 } from 'native-base';
 import {
-    ListItem
+    ListItem, Icon
 } from 'react-native-elements';
 import * as util from 'lodash';
 
 //utilities
-import { Colors } from '../../../common/SystemConstant'
+import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant'
 
 //style
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { GroupListStyle } from '../../../assets/styles';
 
 class AssignTaskJoinProcessUsers extends Component {
     constructor(props) {
@@ -42,12 +43,13 @@ class AssignTaskJoinProcessUsers extends Component {
             data: props.data,
 
             expanded: true,
-            rowItemHeight: verticalScale(70),
-            heightAnimation: new Animated.Value(verticalScale(70) * (props.data.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.data.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
+            rowItemHeight: customWorkflowListHeight,
+            heightAnimation: new Animated.Value(customWorkflowListHeight * (props.data.filter(x => x.ID !== this.props.mainProcessUser).length > 0 ? (props.data.filter(x => x.ID !== this.props.mainProcessUser).length + 1) : 1)),
             rotateAnimation: new Animated.Value(0),
 
             joinProcessUsers: props.joinProcessUsers,
-            mainProcessUser: props.mainProcessUser
+            mainProcessUser: props.mainProcessUser,
+            iconName: 'ios-arrow-up',
         };
 
         this.toggle = this.toggle.bind(this);
@@ -67,7 +69,7 @@ class AssignTaskJoinProcessUsers extends Component {
 
             this.setState({
                 mainProcessUser: nextProps.mainProcessUser,
-                heightAnimation: new Animated.Value(verticalScale(70) * heightFactor),
+                heightAnimation: new Animated.Value(customWorkflowListHeight * heightFactor),
                 joinProcessUsers: this.props.joinProcessUsers
             });
         }
@@ -85,7 +87,8 @@ class AssignTaskJoinProcessUsers extends Component {
         const finalRotation = this.state.expanded ? 0 : 1
 
         this.setState({
-            expanded: !this.state.expanded
+            expanded: !this.state.expanded,
+            iconName: this.state.expanded ? 'ios-arrow-down' : 'ios-arrow-up',
         })
 
         this.state.heightAnimation.setValue(initialHeight);
@@ -146,22 +149,22 @@ class AssignTaskJoinProcessUsers extends Component {
         }
 
         return (
-            <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
-                <View style={styles.titleContainer} onLayout={this.setMinHeight} >
-                    <TouchableOpacity onPress={this.toggle}>
+            <Animated.View style={[GroupListStyle.body, { height: this.state.heightAnimation }]}>
+                <View style={GroupListStyle.titleContainer} onLayout={this.setMinHeight}>
+                    <TouchableOpacity onPress={() => this.toggle()}>
                         <ListItem
-                            containerStyle={styles.listItemContainer}
+                            containerStyle={GroupListStyle.listItemContainer}
                             hideChevron={this.state.data.filter(x => x.ID !== this.state.mainProcessUser).length <= 0}
                             title={util.toUpper(this.state.title)}
-                            titleStyle={styles.listItemTitle}
+                            titleStyle={GroupListStyle.listItemTitle}
                             rightIcon={
-                                <Animated.Image source={this.icon} style={iconRotationStyle} />
+                                <Icon name={this.state.iconName} type='ionicon' size={moderateScale(26, 0.73)} color='#fff' />
                             }
                         />
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.body} onPress={this.setMaxHeight}>
+                <View style={GroupListStyle.container} onPress={this.setMaxHeight}>
                     {
                         this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
                             <NbListItem
@@ -170,21 +173,20 @@ class AssignTaskJoinProcessUsers extends Component {
                                 onPress={() => this.onSelectUser(item.ID)}>
                                 <Left>
                                     <Title>
-                                        <NbText style={styles.listItemMinorTitle}>
+                                        <NbText>
                                             {item.HOTEN}
                                         </NbText>
                                     </Title>
                                 </Left>
 
                                 <Body>
-                                    <NbText style={styles.listItemMinorTitle}>
+                                    <NbText>
                                         {item.ChucVu}
                                     </NbText>
                                 </Body>
 
                                 <Right>
                                     <CheckBox
-                                        style={styles.checkBoxStyle}
                                         color={Colors.LITE_BLUE}
                                         checked={this.state.joinProcessUsers.indexOf(item.ID) > -1}
                                         onPress={() => this.onSelectUser(item.ID)}
@@ -214,37 +216,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignTaskJoinProcessUsers);
-
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    container: {
-
-    },
-    titleContainer: {
-    },
-    listItemRow: {
-        height: verticalScale(70)
-    },
-    listItemContainer: {
-        height: verticalScale(70),
-        backgroundColor: Colors.LITE_BLUE,
-        justifyContent: 'center'
-    },
-    listItemTitle: {
-        fontWeight: 'bold',
-        color: '#fff',
-        fontSize: moderateScale(15, 0.86),
-    }, listItemMinorTitle: {
-        fontSize: moderateScale(15, 0.82),
-    }, checkBoxStyle: {
-        width: moderateScale(18, 1.12),
-        height: moderateScale(18, 1.12),
-        borderRadius: moderateScale(9, 1.12),
-    },
-    body: {
-        overflow: 'scroll'
-    }
-});

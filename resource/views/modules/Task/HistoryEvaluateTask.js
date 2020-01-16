@@ -40,6 +40,7 @@ import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 class HistoryEvaluateTask extends Component {
     constructor(props) {
@@ -195,20 +196,11 @@ class HistoryEvaluateTask extends Component {
                                 keyExtractor={(item, index) => index.toString()}
                                 renderItem={this.renderItem}
                                 ListEmptyComponent={() => emptyDataPage()}
-                                ListFooterComponent={() =>
-                                    this.state.loadingMore ?
-                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-                                        :
-                                        (
-                                            this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
-                                                    <Text>
-                                                        TẢI THÊM
-										  			</Text>
-                                                </Button>
-                                                : null
-                                        )
-                                }
+                                ListFooterComponent={() => (<MoreButton
+                                    isLoading={this.state.loadingMore}
+                                    isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                                    loadmoreFunc={this.loadMore}
+                                />)}
 
                                 refreshControl={
                                     <RefreshControl

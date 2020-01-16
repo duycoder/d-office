@@ -44,6 +44,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 // import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
 import { carApi } from '../../../common/Api';
+import { MoreButton } from '../../common';
 
 
 class PickCanbo extends Component {
@@ -211,17 +212,11 @@ class PickCanbo extends Component {
             keyExtractor={(item, index) => index.toString()}
             renderItem={this.renderMainAssigner}
             ListEmptyComponent={emptyDataPage()}
-            ListFooterComponent={
-              this.state.isLoadmore ?
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                (
-                  this.state.data.length >= 5 ?
-                    <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                      <Text>TẢI THÊM</Text>
-                    </Button>
-                    : null
-                )
-            }
+            ListFooterComponent={() => (<MoreButton
+              isLoading={this.state.isLoadmore}
+              isTrigger={this.state.data.length >= 5}
+              loadmoreFunc={this.loadingMore}
+              />)}
           />
         </Content>
       );

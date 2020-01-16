@@ -33,7 +33,7 @@ import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
-import { DatePickerCustomStyle } from '../../../assets/styles';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
 
 class CreateSubTask extends Component {
 	constructor(props) {
@@ -120,7 +120,7 @@ class CreateSubTask extends Component {
 			this.setState({
 				executing: true
 			});
-			
+
 			const resultJson = await taskApi().saveSubTask({
 				beginTaskId: taskId,
 				taskContent: content,
@@ -231,7 +231,7 @@ class CreateSubTask extends Component {
 							// </Item>
 						}
 
-						<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
+						<Item stackedLabel style={{ justifyContent: 'center' }}>
 							<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
 							<DatePicker
 								style={DatePickerCustomStyle.containerStyle}
@@ -242,17 +242,7 @@ class CreateSubTask extends Component {
 								minDate={new Date()}
 								confirmBtnText='CHỌN'
 								cancelBtnText='BỎ'
-								customStyles={{
-									dateIcon: {
-										position: 'absolute',
-										left: 0,
-										top: 4,
-										marginLeft: 0
-									},
-									dateInput: {
-										marginLeft: scale(36),
-									}
-								}}
+								customStyles={CustomStylesDatepicker}
 								onDateChange={this.setDate}
 							/>
 						</Item>
@@ -266,103 +256,6 @@ class CreateSubTask extends Component {
 						</Button>
 					</Form>
 				</KeyboardAwareScrollView>
-				{
-					// <Content contentContainerStyle={AccountStyle.mainContainer}>
-					// 	<Form style={{ marginVertical: 10 }}>
-					// 		<Item stackedLabel>
-					// 			<Label>
-					// 				Nội dung công việc <Text style={{ color: '#f00' }}>*</Text>
-					// 			</Label>
-
-					// 			<Input value={this.state.content} onChangeText={(content) => this.setState({ content })} />
-					// 		</Item>
-
-					// 		<Item stackedLabel>
-					// 			<Label>Độ ưu tiên</Label>
-					// 			<Picker
-					// 				iosHeader='Chọn độ ưu tiên'
-					// 				mode='dropdown'
-					// 				iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-					// 				style={{ width: pickerFormat() }}
-					// 				selectedValue={this.state.priorityValue} //sai chinh ta @@
-					// 				onValueChange={this.onPriorityValueChange.bind(this)}>
-					// 				{
-					// 					this.state.listPriority.map((item, index) => (
-					// 						<Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-					// 					))
-					// 				}
-					// 			</Picker>
-					// 		</Item>
-
-					// 		<Item stackedLabel>
-					// 			<Label>Mức độ quan trọng</Label>
-					// 			<Picker
-					// 				iosHeader='Chọn mức quan trọng'
-					// 				mode='dropdown'
-					// 				iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-					// 				style={{ width: pickerFormat() }}
-					// 				selectedValue={this.state.urgencyValue}
-					// 				onValueChange={this.onUrgencyValueChange.bind(this)}>
-					// 				{
-					// 					this.state.listUrgency.map((item, index) => (
-					// 						<Picker.Item value={item.Value.toString()} label={item.Text.toString()} key={index} />
-					// 					))
-					// 				}
-					// 			</Picker>
-					// 		</Item>
-
-					// 		{
-					// 			// <Item stackedLabel>
-					// 			// 	<Label>Lập kế hoạch</Label>
-					// 			// 	<Picker
-					// 			// 		iosHeader='Chọn mức quan trọng'
-					// 			// 		mode='dropdown'
-					// 			// 		iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-					// 			// 		style={{ width: pickerFormat() }}
-					// 			// 		selectedValue={this.state.planValue}
-					// 			// 		onValueChange={this.onPlanValueChange.bind(this)}>
-					// 			// 		<Picker.Item value="1" label="Có" />
-					// 			// 		<Picker.Item value="0" label="Không" />
-					// 			// 	</Picker>
-					// 			// </Item>
-					// 		}
-
-					// 		<Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center' }}>
-					// 			<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>
-					// 			<DatePicker
-					// 				style={{ width: scale(300), alignSelf: 'center', marginTop: verticalScale(30) }}
-					// 				date={this.state.chosenDate}
-					// 				mode="date"
-					// 				placeholder='Hạn hoàn thành'
-					// 				format='DD/MM/YYYY'
-					// 				minDate={new Date()}
-					// 				confirmBtnText='CHỌN'
-					// 				cancelBtnText='BỎ'
-					// 				customStyles={{
-					// 					dateIcon: {
-					// 						position: 'absolute',
-					// 						left: 0,
-					// 						top: 4,
-					// 						marginLeft: 0
-					// 					},
-					// 					dateInput: {
-					// 						marginLeft: scale(36),
-					// 					}
-					// 				}}
-					// 				onDateChange={this.setDate}
-					// 			/>
-					// 		</Item>
-
-					// 		<Button block danger
-					// 			style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
-					// 			onPress={() => this.onCreateSubTask()}>
-					// 			<Text>
-					// 				TẠO CÔNG VIỆC CON
-					// 		</Text>
-					// 		</Button>
-					// 	</Form>
-					// </Content>
-				}
 				{
 					executeLoading(this.state.executing)
 				}

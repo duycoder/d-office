@@ -3,6 +3,7 @@
 import { PixelRatio, StatusBar } from "react-native";
 
 import variable from "./../variables/platform";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -10,7 +11,7 @@ export default (variables /*: * */ = variable) => {
 
   const headerTheme = {
     ".span": {
-      height: 128,
+      height: moderateScale(126, 1.15),
       "NativeBase.Left": {
         alignSelf: "flex-start"
       },
@@ -18,7 +19,7 @@ export default (variables /*: * */ = variable) => {
         alignSelf: "flex-end",
         alignItems: "flex-start",
         justifyContent: "center",
-        paddingBottom: 26
+        paddingBottom: moderateScale(24, 1.01)
       },
       "NativeBase.Right": {
         alignSelf: "flex-start"
@@ -27,7 +28,7 @@ export default (variables /*: * */ = variable) => {
     ".hasSubtitle": {
       "NativeBase.Body": {
         "NativeBase.Title": {
-          fontSize: variables.titleFontSize - 2,
+          fontSize: variables.titleFontSize - moderateScale(2, 0.815),
           fontFamily: variables.titleFontfamily,
           textAlign: "center",
           fontWeight: "500",
@@ -177,7 +178,7 @@ export default (variables /*: * */ = variable) => {
       "NativeBase.Button": {
         ".hasText": {
           marginLeft: -10,
-          height: 30,
+          height: moderateScale(28.5, 1.03),
           "NativeBase.Icon": {
             color: variables.toolbarBtnColor,
             fontSize: variables.iconHeaderSize,
@@ -187,9 +188,9 @@ export default (variables /*: * */ = variable) => {
           },
           "NativeBase.Text": {
             color: variables.toolbarBtnTextColor,
-            fontSize: platform === "ios" ? 17 : 0,
-            marginLeft: 7,
-            lineHeight: 19.5
+            fontSize: platform === "ios" ? moderateScale(16.5, 1.02) : 0,
+            marginLeft: moderateScale(6.65, 0.89),
+            lineHeight: moderateScale(19, 1.02)
           },
           "NativeBase.IconNB": {
             color: variables.toolbarBtnColor,
@@ -226,7 +227,7 @@ export default (variables /*: * */ = variable) => {
           },
           "NativeBase.Text": {
             color: variables.toolbarBtnTextColor,
-            fontSize: platform === "ios" ? 17 : 0,
+            fontSize: platform === "ios" ? moderateScale(16.5, 0.75) : 0,
             top: platform === "ios" ? 1 : -1.5,
             paddingLeft:
               platform === "ios" && platformStyle !== "material" ? 2 : 5,

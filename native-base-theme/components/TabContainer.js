@@ -2,6 +2,7 @@
 
 import variable from "./../variables/platform";
 import { Platform } from "react-native";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -9,7 +10,7 @@ export default (variables /*: * */ = variable) => {
 
   const tabContainerTheme = {
     elevation: 3,
-    height: 50,
+    height: moderateScale(47, 0.97),
     flexDirection: "row",
     shadowColor: platformStyle === "material" ? "#000" : undefined,
     shadowOffset: platformStyle === "material"

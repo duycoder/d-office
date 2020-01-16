@@ -1,6 +1,7 @@
 // @flow
 
 import variable from "./../variables/platform";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const platform = variables.platform;
@@ -22,7 +23,7 @@ export default (variables /*: * */ = variable) => {
     },
     "NativeBase.Icon": {
       color: variables.topTabBarTextColor,
-      fontSize: platform === "ios" ? 26 : undefined
+      fontSize: platform === "ios" ? moderateScale(27, 0.79) : undefined
     },
     ".active": {
       "NativeBase.Text": {

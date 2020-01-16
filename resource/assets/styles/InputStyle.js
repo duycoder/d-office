@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from "./ScaleIndicator";
 import { Colors } from '../../common/SystemConstant';
+import { pickerFormat } from '../../common/Utilities';
 
 const DatePickerCustomStyle = StyleSheet.create({
   containerStyle: {
@@ -12,7 +13,7 @@ const DatePickerCustomStyle = StyleSheet.create({
 
 const InputCreateStyle = StyleSheet.create({
   container: {
-    marginHorizontal: verticalScale(18),
+    marginHorizontal: moderateScale(17.5, 0.85),
   },
   label: {
     fontSize: moderateScale(15, 0.86),
@@ -35,7 +36,7 @@ const PickerCreateStyle = StyleSheet.create({
     marginRight: verticalScale(18)
   },
   picker: {
-    width: '100%',
+    width: pickerFormat(),
     justifyContent: 'space-around'
   },
 });

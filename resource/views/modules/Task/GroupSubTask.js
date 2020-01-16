@@ -46,6 +46,7 @@ import { AlertMessageStyle } from "../../../assets/styles/index";
 
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 class GroupSubTask extends Component {
     constructor(props) {
@@ -474,19 +475,11 @@ class GroupSubTask extends Component {
                                     />
                                 }
                                 ListEmptyComponent={() => emptyDataPage()}
-                                ListFooterComponent={
-                                    this.state.loadingMore ?
-                                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                                        (
-                                            this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                                                <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMoreData()}>
-                                                    <Text>
-                                                        TẢI THÊM
-                                                    </Text>
-                                                </Button>
-                                                : null
-                                        )
-                                }
+                                ListFooterComponent={() => (<MoreButton
+                                    isLoading={this.state.loadingMore}
+                                    isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                                    loadmoreFunc={this.loadMoreData}
+                                />)}
                             />
                         )
                     }

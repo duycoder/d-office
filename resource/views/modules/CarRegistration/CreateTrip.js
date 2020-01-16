@@ -12,7 +12,8 @@ import {
   API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
   MODULE_CONSTANT,
-  TOAST_DURATION_TIMEOUT
+  TOAST_DURATION_TIMEOUT,
+  customWorkflowListHeight
 } from '../../../common/SystemConstant';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -45,6 +46,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { carApi, tripApi } from '../../../common/Api';
+import { MoreButton, HeaderRightButton } from '../../common';
 
 const TripApi = tripApi();
 const CarApi = carApi();
@@ -258,6 +260,8 @@ class CreateTrip extends Component {
       }, () => this.filterCars())
     }
   }
+  loadingMoreDriver = () => this.loadingMore(true);
+  loadingMoreCars = () => this.loadingMore(false);
 
   onSelectDrivers = (driverId) => {
     const tmpChosen = this.state.chosenDrivers,
@@ -287,7 +291,7 @@ class CreateTrip extends Component {
       <ListItem
         key={item.Value.toString()}
         onPress={() => this.onSelectDrivers(item.Value)}
-        style={{ height: 60 }}>
+        style={{ height: customWorkflowListHeight }}>
         <Left>
           <Title>
             <Text>
@@ -313,7 +317,7 @@ class CreateTrip extends Component {
       <ListItem
         key={item.Value.toString()}
         onPress={() => this.onSelectCars(item.Value)}
-        style={{ height: 60 }}>
+        style={{ height: customWorkflowListHeight }}>
         <Left>
           <Title>
             <Text>
@@ -380,17 +384,11 @@ class CreateTrip extends Component {
                     ListEmptyComponent={
                       this.state.loadingData ? null : emptyDataPage()
                     }
-                    ListFooterComponent={
-                      this.state.loadingMoreInDriver ?
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                        (
-                          this.state.drivers.length >= 5 ?
-                            <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-                              <Text>TẢI THÊM</Text>
-                            </Button>
-                            : null
-                        )
-                    }
+                    ListFooterComponent={()=>(<MoreButton
+                      isLoading={this.state.loadingMoreInDriver}
+                      isTrigger={this.state.drivers.length >= 5}
+                      loadmoreFunc={this.loadingMoreDriver}
+                      />)}
                   />
                 )
               }
@@ -431,17 +429,11 @@ class CreateTrip extends Component {
                     ListEmptyComponent={
                       this.state.loadingData ? null : emptyDataPage()
                     }
-                    ListFooterComponent={
-                      this.state.loadingMoreInCar ?
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                        (
-                          this.state.cars.length >= 5 ?
-                            <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(false)}>
-                              <Text>TẢI THÊM</Text>
-                            </Button>
-                            : null
-                        )
-                    }
+                    ListFooterComponent={() => (<MoreButton
+                      isLoading={this.state.loadingMoreInCar}
+                      isTrigger={this.state.cars.length >= 5}
+                      loadmoreFunc={this.loadingMoreCars}
+                    />)}
                   />
                 )
               }
@@ -478,9 +470,7 @@ class CreateTrip extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.saveTiepnhan()}>
-              <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton onPress={() => this.saveTiepnhan()} />
           </Right>
         </Header>
         {

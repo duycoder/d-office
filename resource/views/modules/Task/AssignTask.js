@@ -283,14 +283,12 @@ class AssignTask extends Component {
 		else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (
-					<Segment style={{ backgroundColor: Colors.LITE_BLUE, height: moderateScale(48, 1.12) }}>
+					<Segment style={{ backgroundColor: Colors.LITE_BLUE }}>
 						<Button
-							style={{ height: moderateScale(28, 1.16) }}
 							first
 							active={(this.state.selectedSegmentIndex == 0)}
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
-								fontSize: moderateScale(13, 1.26),
 								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								{
@@ -300,11 +298,9 @@ class AssignTask extends Component {
 						</Button>
 
 						<Button last
-							style={{ height: moderateScale(28, 1.16) }}
 							active={(this.state.selectedSegmentIndex == 1)}
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
-								fontSize: moderateScale(13, 1.26),
 								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : Colors.WHITE
 							}}>
 								TOÀN BỆNH VIỆN

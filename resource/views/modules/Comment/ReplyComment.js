@@ -48,6 +48,7 @@ import { dataLoading, executeLoading } from '../../../common/Effect';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 const android = RNFetchBlob.android;
 
@@ -463,18 +464,11 @@ class ReplyComment extends Component {
                     renderItem={this.renderItem}
                     data={this.state.data}
                     keyExtractor={(item, index) => index.toString()}
-                    ListFooterComponent={() => this.state.loadingMore ?
-                      <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                      (
-                        this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                          <Button small full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                            <NbText>
-                              TẢI THÊM BÌNH LUẬN
-                          </NbText>
-                          </Button>
-                          : null
-                      )
-                    }
+                    ListFooterComponent={() => (<MoreButton
+                      isLoading={this.state.loadingMore}
+                      isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+                      loadmoreFunc={this.loadingMore}
+                    />)}
                   />
                 )
               }

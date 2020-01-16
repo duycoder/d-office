@@ -41,6 +41,7 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { tripApi } from '../../../common/Api';
+import { MoreButton } from '../../common';
 
 class ListTrip extends Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class ListTrip extends Component {
     const {
       pageIndex, pageSize, userId, filterValue
     } = this.state;
-    
+
     const resultJson = await tripApi().getList([
       pageIndex,
       pageSize,
@@ -289,16 +290,11 @@ class ListTrip extends Component {
                 ListEmptyComponent={() =>
                   this.state.loadingData ? null : emptyDataPage()
                 }
-                ListFooterComponent={() => this.state.loadingMoreData ?
-                  <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                  (
-                    this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE
-                      ? <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
-                        <Text>TẢI THÊM</Text>
-                      </Button>
-                      : null
-                  )
-                }
+                ListFooterComponent={() => (<MoreButton
+                  isLoading={this.state.loadingMoreData}
+                  isTrigger={this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE}
+                  loadmoreFunc={this.loadingMore}
+                />)}
               />
             )
           }

@@ -33,7 +33,7 @@ import renderIf from 'render-if';
 
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
-import {indicatorResponsive} from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //utilities
 import { formatLongText, closeSideBar, openSideBar } from '../../../common/Utilities';
@@ -44,7 +44,7 @@ import { connect } from 'react-redux';
 import { NativeBaseStyle } from '../../../assets/styles';
 
 class ListFilterPublishDoc extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             userId: this.props.userInfo.ID,
@@ -68,7 +68,7 @@ class ListFilterPublishDoc extends Component {
         }
 
         const url = `${API_URL}/api/VanBanDen/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-		console.log('url123', url);
+        console.log('url123', url);
         let result = await fetch(url).then(response => {
             return response.json();
         }).then(responseJson => {
@@ -99,23 +99,23 @@ class ListFilterPublishDoc extends Component {
     }
 
     onFilter = () => {
-        if(util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)){
+        if (util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)) {
             Toast.show({
                 text: 'Vui lòng nhập mã hiệu hoặc trích yếu',
                 type: 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: '#fff' },
-                buttonTextStyle: { color: '#FF0033'},
+                buttonTextStyle: { color: '#FF0033' },
                 duration: 2000
             });
         } else {
-             //tìm kiếm
+            //tìm kiếm
             this.setState({
                 data: [],
                 pageIndex: DEFAULT_PAGE_INDEX,
                 pageSize: DEFAULT_PAGE_SIZE,
-            }, ()=> {
-                if(!util.isEmpty(this.state.filterValue)){
+            }, () => {
+                if (!util.isEmpty(this.state.filterValue)) {
                     this.fetchData();
                 }
             })
@@ -125,21 +125,21 @@ class ListFilterPublishDoc extends Component {
     renderItem = ({ item }) => {
         let content = [];
 
-        if(item == this.state.data[0]){
+        if (item == this.state.data[0]) {
             content.push(
                 <ListItem key={-1}
                     leftIcon={
-                        <Text style={{color: '#9E9E9E'}}>
+                        <Text style={{ color: '#9E9E9E' }}>
                             KẾT QUẢ
                         </Text>
                     }
 
                     rightIcon={
-                        <Text style={{color: '#000', fontWeight: 'bold'}}>
+                        <Text style={{ color: '#000', fontWeight: 'bold' }}>
                             {this.state.data.length}
                         </Text>
                     }
-                    containerStyle={{height: 40, backgroundColor: '#EEE', justifyContent: 'center'}}
+                    containerStyle={{ height: 40, backgroundColor: '#EEE', justifyContent: 'center' }}
                 />
             )
         }
@@ -150,16 +150,16 @@ class ListFilterPublishDoc extends Component {
             })}>
                 <ListItem key={item.ID}
                     hideChevron={true}
-                    badge={{ 
-                        value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG': 'THƯỜNG'), 
-                        textStyle: { 
+                    badge={{
+                        value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
+                        textStyle: {
                             color: '#fff',
-                            fontWeight: 'bold' 
-                        }, 
-                        containerStyle: { 
-                            backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? '#FF0033' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? '#FF6600': '#337321') ,
+                            fontWeight: 'bold'
+                        },
+                        containerStyle: {
+                            backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? '#FF0033' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? '#FF6600' : '#337321'),
                             borderRadius: 3,
-                        } 
+                        }
                     }}
                     leftIcon={
                         <View style={ListPublishDocStyle.leftSide}>
@@ -185,7 +185,7 @@ class ListFilterPublishDoc extends Component {
                 />
             </TouchableOpacity>
         )
-    
+
 
         return (content);
     }
@@ -207,24 +207,24 @@ class ListFilterPublishDoc extends Component {
             this.fetchData();
         });
     }
-	
-	navigateToList (){
-		let screenName = 'ListIsPublishedScreen';
+
+    navigateToList() {
+        let screenName = 'ListIsPublishedScreen';
         this.props.navigation.navigate(screenName);
-	}
+    }
 
     render() {
         return (
             <Container>
                 <Header searchBar rounded style={NativeBaseStyle.container}>
-                        <Item  style={{ backgroundColor: Colors.WHITE }}>
-                            <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
-                            <Input placeholder="Mã hiệu hoặc trích yếu"
-                                    value={this.state.filterValue}
-                                    onChangeText={(filterValue) => this.setState({ filterValue })}
-                                    onSubmitEditing={() => this.onFilter()} />
-                            <Icon name="ios-close" onPress={() => this.clearFilterValue()} />
-                        </Item>
+                    <Item style={{ backgroundColor: Colors.WHITE }}>
+                        <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
+                        <Input placeholder="Mã hiệu hoặc trích yếu"
+                            value={this.state.filterValue}
+                            onChangeText={(filterValue) => this.setState({ filterValue })}
+                            onSubmitEditing={() => this.onFilter()} />
+                        <Icon name="ios-close" onPress={() => this.clearFilterValue()} />
+                    </Item>
                 </Header>
                 <Content>
                     <FlatList

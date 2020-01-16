@@ -36,7 +36,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { accountApi } from '../../../common/Api';
-import { DatePickerCustomStyle } from '../../../assets/styles';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
 
 class CreateNotiUyQuyen extends Component {
   constructor(props) {
@@ -161,8 +161,8 @@ class CreateNotiUyQuyen extends Component {
     else {
       bodyContent = (
         <KeyboardAwareScrollView contentContainerStyle={{ margin: 5, padding: 5 }}>
-          <Form style={{ marginVertical: 10 }}>
-            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "tieude" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+          <Form style={{ marginVertical: 10, paddingHorizontal: moderateScale(12, .9) }}>
+            <Item stackedLabel style={[focusId === "tieude" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
               <Label>
                 Tiêu đề <Text style={{ color: '#f00' }}>*</Text>
               </Label>
@@ -170,12 +170,13 @@ class CreateNotiUyQuyen extends Component {
               <Input
                 value={tieude}
                 onChangeText={this.handleChange("tieude")}
+                autoCorrect={false}
                 onFocus={() => this.setState({ focusId: "tieude" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
 
-            <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
+            <Item stackedLabel style={{ justifyContent: 'center' }}>
               <Label>Hạn hiển thị <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
@@ -187,22 +188,12 @@ class CreateNotiUyQuyen extends Component {
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("showUntil")}
               />
             </Item>
 
-            <Item stackedLabel style={{ marginHorizontal: verticalScale(18) }}>
+            <Item stackedLabel>
               <Label>
                 Nội dung
               </Label>

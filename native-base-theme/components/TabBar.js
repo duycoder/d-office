@@ -1,6 +1,7 @@
 // @flow
 
 import variable from "./../variables/platform";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const tabBarTheme = {
@@ -8,7 +9,7 @@ export default (variables /*: * */ = variable) => {
       height: undefined
     },
     ".vertical": {
-      height: 60
+      height: moderateScale(58, 0.94)
     },
     "NativeBase.Button": {
       ".transparent": {
@@ -42,7 +43,7 @@ export default (variables /*: * */ = variable) => {
       borderBottomColor: "transparent",
       backgroundColor: variables.tabBgColor
     },
-    height: 45,
+    height: moderateScale(43, 0.94),
     flexDirection: "row",
     justifyContent: "space-around",
     borderWidth: 1,

@@ -43,6 +43,7 @@ import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
+import { MoreButton } from '../../common';
 
 class HistoryRescheduleTask extends Component {
 	constructor(props) {
@@ -294,18 +295,11 @@ class HistoryRescheduleTask extends Component {
 								}
 								ListEmptyComponent={() => emptyDataPage()}
 
-								ListFooterComponent={() => this.state.loadingMore ?
-									<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-									(
-										this.state.data.length >= DEFAULT_PAGE_SIZE ?
-											<Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
-												<Text>
-													TẢI THÊM
-										  		</Text>
-											</Button>
-											: null
-									)
-								}
+								ListFooterComponent={() => (<MoreButton
+									isLoading={this.state.loadingMore}
+									isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+									loadmoreFunc={this.loadMore}
+								/>)}
 							/>
 						)
 					}

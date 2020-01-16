@@ -1,6 +1,7 @@
 // @flow
 
 import variable from "./../variables/platform";
+import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
 
 export default (variables /*: * */ = variable) => {
   const platformStyle = variables.platformStyle;
@@ -287,24 +288,24 @@ export default (variables /*: * */ = variable) => {
     },
 
     ".small": {
-      height: 30,
+      height: moderateScale(28.5, 1.06),
       "NativeBase.Text": {
-        fontSize: 14
+        fontSize: moderateScale(13.87, 1.02)
       },
       "NativeBase.Icon": {
-        fontSize: 20,
+        fontSize: moderateScale(19, 0.89),
         paddingTop: 0
       },
       "NativeBase.IconNB": {
-        fontSize: 20,
+        fontSize: moderateScale(19, 0.89),
         paddingTop: 0
       }
     },
 
     ".large": {
-      height: 60,
+      height: moderateScale(58.25, 1.15),
       "NativeBase.Text": {
-        fontSize: 22,
+        fontSize: moderateScale(21, 0.95),
       }
     },
 
@@ -321,21 +322,21 @@ export default (variables /*: * */ = variable) => {
       marginRight: 0,
       color: variables.inverseTextColor,
       fontSize: variables.btnTextSize,
-      paddingHorizontal: 16,
+      paddingHorizontal: moderateScale(15, 1.07),
       backgroundColor: "transparent"
       // childPosition: 1
     },
 
     "NativeBase.Icon": {
       color: variables.inverseTextColor,
-      fontSize: 24,
-      marginHorizontal: 16,
+      fontSize: moderateScale(23, 0.86),
+      marginHorizontal: moderateScale(15, 1.07),
       paddingTop: platform === "ios" ? 2 : undefined
     },
     "NativeBase.IconNB": {
       color: variables.inverseTextColor,
-      fontSize: 24,
-      marginHorizontal: 16,
+      fontSize: moderateScale(23, 0.86),
+      marginHorizontal: moderateScale(15, 1.07),
       paddingTop: platform === "ios" ? 2 : undefined
     },
 
@@ -345,11 +346,11 @@ export default (variables /*: * */ = variable) => {
       },
       "NativeBase.IconNB": {
         marginRight: 0,
-        marginLeft: 16
+        marginLeft: moderateScale(15, 1.07)
       },
       "NativeBase.Icon": {
         marginRight: 0,
-        marginLeft: 16
+        marginLeft: moderateScale(15, 1.07)
       }
     },
     ".iconRight": {
@@ -358,17 +359,17 @@ export default (variables /*: * */ = variable) => {
       },
       "NativeBase.IconNB": {
         marginLeft: 0,
-        marginRight: 16
+        marginRight: moderateScale(15, 1.07)
       },
       "NativeBase.Icon": {
         marginLeft: 0,
-        marginRight: 16
+        marginRight: moderateScale(15, 1.07)
       }
     },
     ".picker": {
       "NativeBase.Text": {
         ".note": {
-          fontSize: 16,
+          fontSize: moderateScale(15.85, 0.86),
           lineHeight: null
         }
       }
@@ -380,7 +381,7 @@ export default (variables /*: * */ = variable) => {
     borderRadius: variables.borderRadiusBase,
     borderColor: variables.btnPrimaryBg,
     borderWidth: null,
-    height: 45,
+    height: moderateScale(44.65, 1.02),
     alignSelf: "flex-start",
     flexDirection: "row",
     elevation: 2,

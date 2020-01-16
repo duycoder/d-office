@@ -38,6 +38,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import WorkflowRequestReviewUsers from './WorkflowRequestReviewUsers';
 import GoBackButton from '../../common/GoBackButton';
+import { HeaderRightButton } from '../../common';
 
 class WorkflowRequestReview extends Component {
 	constructor(props) {
@@ -135,7 +136,6 @@ class WorkflowRequestReview extends Component {
 	}
 
 	saveRequestReview = async () => {
-
 		if (this.props.reviewUsers.length <= 0) {
 			Toast.show({
 				text: 'Vui lòng chọn người cần gửi',
@@ -227,9 +227,7 @@ class WorkflowRequestReview extends Component {
 					</Body>
 
 					<Right style={NativeBaseStyle.right}>
-						<Button transparent onPress={() => this.saveRequestReview()}>
-							<RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-						</Button>
+						<HeaderRightButton onPress={() => this.saveRequestReview()} />
 					</Right>
 				</Header>
 
@@ -281,19 +279,11 @@ class WorkflowRequestReview extends Component {
 												ListEmptyComponent={
 													this.state.loading ? null : emptyDataPage()
 												}
-												ListFooterComponent={
-													this.state.loadingMore ?
-														<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-														(
-															this.state.groupMainProcessors.length >= 5 ?
-																<Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
-																	<Text>
-																		TẢI THÊM
-																	</Text>
-																</Button>
-																: null
-														)
-												}
+												ListFooterComponent={() => (<MoreButton
+													isLoading={this.state.loadingMore}
+													isTrigger={this.state.groupMainProcessors.length >= 5}
+													loadmoreFunc={this.loadMore}
+												/>)}
 											/>
 										)
 									}

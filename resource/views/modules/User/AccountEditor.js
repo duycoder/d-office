@@ -248,9 +248,6 @@ class AccountEditor extends Component {
             </Title>
           </Body>
           <Right style={NativeBaseStyle.right}>
-            {/* <Button transparent onPress={() => this.navigateToEditAccount()}>
-              <Icon name='ios-save' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button> */}
           </Right>
         </Header>
         <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
@@ -276,11 +273,11 @@ class AccountEditor extends Component {
                   onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />
               </Item>
-              <Item stackedLabel style={[{ alignItems: 'flex-start' }, this.state.focusId === 'dateOfBirth' ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-                <Label style={AccountStyle.labelTitle}>Ngày sinh</Label>
+              <Item stackedLabel style={[{ justifyContent: 'center' }, this.state.focusId === 'dateOfBirth' ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+                <Label>Ngày sinh</Label>
                 <DatePicker
                   // style={{ width: scale(300), alignSelf: 'center', marginVertical: 30 }}
-                  style={{ width: '100%' }}
+                  style={{ width: '100%', marginTop: moderateScale(10, 0.98) }}
                   date={(dateOfBirth ? dateOfBirth : convertDateToString(TMPdateOfBirth))}
                   mode='date'
                   placeholder={TMPdateOfBirth ? convertDateToString(TMPdateOfBirth) : 'Chọn ngày sinh'}
@@ -297,10 +294,10 @@ class AccountEditor extends Component {
                       alignItems: 'flex-start',
                       flex: 1,
                     }, dateText: {
-                      fontSize: 17
+                      fontSize: moderateScale(15.45, 1.01)
                     },
                     placeholderText: {
-                      fontSize: 17,
+                      fontSize: moderateScale(15.45, 1.01),
                       color: Colors.BLACK
                     },
                     // datePicker: {

@@ -53,11 +53,14 @@ export function executeLoading(isVisible) {
 }
 
 export function dataLoading(isVisible) {
-    return (
-        <View style={styles.alContainer}>
-            <ActivityIndicator size={indicatorResponsive} color={LOADER_COLOR} />
-        </View>
-    )
+    if (isVisible) {
+        return (
+            <View style={styles.alContainer}>
+                <ActivityIndicator size={indicatorResponsive} color={LOADER_COLOR} />
+            </View>
+        );
+    }
+    return null;
 }
 
 export function getFileSize(fileSize) {

@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //utilities
-import { Colors } from '../../../common/SystemConstant';
+import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
 
 //lib
 import {
@@ -23,12 +23,13 @@ import {
     Left, Title, Text as NbText, Body, Right, Radio, CheckBox
 } from 'native-base';
 import {
-    ListItem
+    ListItem, Icon
 } from 'react-native-elements';
 import * as util from 'lodash';
 
 //style
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { GroupListStyle } from '../../../assets/styles';
 
 class AssignTaskMainProcessUsrs extends Component {
     constructor(props) {
@@ -40,9 +41,10 @@ class AssignTaskMainProcessUsrs extends Component {
             data: props.data,
 
             expanded: true,
-            rowItemHeight: verticalScale(70),
-            heightAnimation: new Animated.Value(verticalScale(70) * (props.data.length > 0 ? (props.data.length + 1) : 1)),
+            rowItemHeight: customWorkflowListHeight,
+            heightAnimation: new Animated.Value(customWorkflowListHeight * (props.data.length > 0 ? (props.data.length + 1) : 1)),
             rotateAnimation: new Animated.Value(0),
+            iconName: 'ios-arrow-up',
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -58,7 +60,8 @@ class AssignTaskMainProcessUsrs extends Component {
         const finalRotation = this.state.expanded ? 0 : 1
 
         this.setState({
-            expanded: !this.state.expanded
+            expanded: !this.state.expanded,
+            iconName: this.state.expanded ? 'ios-arrow-down' : 'ios-arrow-up',
         })
 
         this.state.heightAnimation.setValue(initialHeight);
@@ -109,22 +112,22 @@ class AssignTaskMainProcessUsrs extends Component {
         }
 
         return (
-            <Animated.View style={[styles.container, { height: this.state.heightAnimation }]}>
-                <View style={styles.titleContainer} >
-                    <TouchableHighlight onPress={this.toggle} onLayout={this.setMinHeight}>
+            <Animated.View style={[GroupListStyle.body, { height: this.state.heightAnimation }]}>
+                <View style={GroupListStyle.titleContainer} >
+                    <TouchableOpacity onPress={this.toggle} onLayout={this.setMinHeight}>
                         <ListItem
-                            containerStyle={styles.listItemContainer}
+                            containerStyle={GroupListStyle.listItemContainer}
                             hideChevron={this.state.data.length <= 0}
                             title={util.toUpper(this.state.title)}
-                            titleStyle={styles.listItemTitle}
+                            titleStyle={GroupListStyle.listItemTitle}
                             rightIcon={
-                                <Animated.Image source={this.icon} style={iconRotationStyle} />
+                                <Icon name={this.state.iconName} type='ionicon' size={moderateScale(26, 0.73)} color='#fff' />
                             }
                         />
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={styles.body} onLayout={this.setMaxHeight}>
+                <View style={GroupListStyle.container} onLayout={this.setMaxHeight}>
                     {
                         this.state.data.map((item, index) => (
                             <NbListItem
@@ -171,12 +174,12 @@ const styles = StyleSheet.create({
     titleContainer: {
     },
     listItemContainer: {
-        height: verticalScale(70),
+        height: customWorkflowListHeight,
         backgroundColor: Colors.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemRow: {
-        height: verticalScale(70)
+        height: customWorkflowListHeight
     },
     listItemTitle: {
         fontWeight: 'bold',

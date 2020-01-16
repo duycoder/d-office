@@ -62,8 +62,8 @@ const vanbandenApi = () => {
   const filterFlowCCReceiver = (params = []) => api.get("WorkFlow/GetFlowCCReceiver", params);
   const saveFlowCC = (payloadBody = {}) => api.post("WorkFlow/SaveFlowCC", payloadBody);
   const getFlow = (params = []) => api.get("WorkFlow/GetFlow", params);
-  const saveFlow = (payloadBody={})=>api.post("WorkFlow/SaveFlow",payloadBody);
-  const getUserInFlow = (params=[])=>api.get("WorkFlow/SearchUserInFlow",params);
+  const saveFlow = (payloadBody = {}) => api.post("WorkFlow/SaveFlow", payloadBody);
+  const getUserInFlow = (params = []) => api.get("WorkFlow/SearchUserInFlow", params);
 
   return {
     getDetail,
@@ -242,6 +242,26 @@ const taskApi = () => {
   };
 }
 
+const workflowApi = () => {
+  const checkFlow = (params = []) => api.get("WorkFlow/CheckCanProcessFlow", params);
+  const getFlowCCHelper = (params = []) => api.get("WorkFlow/GetFlowCCHelper", params);
+  const filterFlowCCReceiver = (params = []) => api.get("WorkFlow/GetFlowCCReceiver", params);
+  const saveFlowCC = (payloadBody = {}) => api.post("WorkFlow/SaveFlowCC", payloadBody);
+  const getFlow = (params = []) => api.get("WorkFlow/GetFlow", params);
+  const saveFlow = (payloadBody = {}) => api.post("WorkFlow/SaveFlow", payloadBody);
+  const getUserInFlow = (params = []) => api.get("WorkFlow/SearchUserInFlow", params);
+
+  return {
+    checkFlow,
+    saveFlowCC,
+    getFlowCCHelper,
+    filterFlowCCReceiver,
+    getFlow,
+    saveFlow,
+    getUserInFlow,
+  };
+}
+
 export {
   lichtrucApi,
   vanbandenApi,
@@ -252,5 +272,6 @@ export {
   reminderApi,
   calendarApi,
   vanbandiApi,
-  taskApi
+  taskApi,
+  workflowApi,
 };

@@ -9,11 +9,13 @@ class MoreButton extends React.Component {
   static defaultProps = {
     isLoading: false,
     isTrigger: false,
+    title: 'TẢI THÊM',
   }
   render() {
     const {
       isLoading, isTrigger,
-      loadmoreFunc
+      loadmoreFunc, 
+      title,
     } = this.props;
     let bodyContent = null;
     if (isLoading) {
@@ -22,7 +24,7 @@ class MoreButton extends React.Component {
     else if (isTrigger) {
       bodyContent = (
         <Button full style={MoreButtonStyle.button} onPress={() => loadmoreFunc()}>
-          <Text style={MoreButtonStyle.buttonText}>TẢI THÊM</Text>
+          <Text style={MoreButtonStyle.buttonText}>{title}</Text>
         </Button>
       );
     }

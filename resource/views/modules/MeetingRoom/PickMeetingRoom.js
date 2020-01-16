@@ -45,6 +45,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { meetingRoomApi } from '../../../common/Api';
+import { MoreButton } from '../../common';
 
 const MeetingRoomApi = meetingRoomApi();
 
@@ -237,9 +238,9 @@ class PickMeetingRoom extends Component {
   }
 
   onSelectRoom = (phonghopId, phonghopName) => {
-    this.setState({ 
+    this.setState({
       phonghopId,
-      phonghopName 
+      phonghopName
     });
   }
 
@@ -304,17 +305,11 @@ class PickMeetingRoom extends Component {
                   ListEmptyComponent={
                     this.state.loadingData ? null : emptyDataPage()
                   }
-                  ListFooterComponent={
-                    this.state.loadingMoreInRoom ?
-                      <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
-                      (
-                        this.state.rooms.length >= 5 ?
-                          <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore(true)}>
-                            <Text>TẢI THÊM</Text>
-                          </Button>
-                          : null
-                      )
-                  }
+                  ListFooterComponent={() => (<MoreButton
+                    isLoading={this.state.loadingMoreInRoom}
+                    isTrigger={this.state.rooms.length >= 5}
+                    loadmoreFunc={this.loadingMore}
+                  />)}
                 />
               )
             }

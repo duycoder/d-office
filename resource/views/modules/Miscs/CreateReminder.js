@@ -36,7 +36,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { reminderApi } from '../../../common/Api';
-import { DatePickerCustomStyle } from '../../../assets/styles';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
+import { HeaderRightButton, CustomPickerButton } from '../../common';
 
 const ReminderApi = reminderApi();
 
@@ -247,30 +248,18 @@ class CreateReminder extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
+            
+            <CustomPickerButton
+              isRender={isThuky}
+              labelText='Người được nhắc nhở'
+              placeholderText='Chọn người được nhắc nhở'
+              valueId={giamdocId}
+              valueName={giamdocName}
+              pickFunc={() => this.onPickGiamdoc()}
+              clearFunc={() => this.clearGiamdoc()}
+            />
 
-            {
-              isThuky && <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }]}>
-                <Label>
-                  Người được nhắc nhở
-              </Label>
-                <View style={{ width: '100%', flexDirection: 'row', justifyContent: "space-around" }}>
-                  <Button transparent style={{ width: giamdocId > 0 ? '100%' : '90%' }} onPress={() => this.onPickGiamdoc()}>
-                    {
-                      !!giamdocName
-                        ? <Text style={{ color: Colors.BLACK }}>{giamdocName}</Text>
-                        : <Text style={{ color: '#ccc' }}>Chọn người được nhắc nhở</Text>
-                    }
-                  </Button>
-                  {
-                    giamdocId > 0 && <Button transparent onPress={() => this.clearGiamdoc()}>
-                      <Icon name="ios-close-circle" style={{ marginTop: 0, alignSelf: 'center', color: Colors.RED_PANTONE_186C }} />
-                    </Button>
-                  }
-                </View>
-              </Item>
-            }
-
-            <Item stackedLabel style={{ height: verticalScale(100), justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
+            <Item stackedLabel style={{ justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
               <Label>Thời điểm nhắc</Label>
               <DatePicker
                 locale={"vi"}
@@ -282,17 +271,7 @@ class CreateReminder extends Component {
                 // minDate={new Date()}
                 confirmBtnText='CHỌN'
                 cancelBtnText='BỎ'
-                customStyles={{
-                  dateIcon: {
-                    position: 'absolute',
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: scale(36),
-                  }
-                }}
+                customStyles={CustomStylesDatepicker}
                 onDateChange={this.handleChange("thoigian")}
               />
             </Item>
@@ -340,9 +319,11 @@ class CreateReminder extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={() => this.saveReminder()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
-              <RneIcon name='save' size={30} color={Colors.WHITE} />
-            </TouchableOpacity>
+            <HeaderRightButton
+              iconName='save' iconType='material'
+              onPress={() => this.saveReminder()}
+              btnStyle={headerSubmitButtonStyle} btnDisabled={nothingChangeStatus}
+            />
           </Right>
         </Header>
         {bodyContent}
