@@ -39,6 +39,7 @@ import renderIf from 'render-if';
 import { connect } from 'react-redux';
 
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class WorkflowStreamProcessUsers extends Component {
 	constructor(props){
@@ -54,6 +55,7 @@ class WorkflowStreamProcessUsers extends Component {
 			rotateAnimation: new Animated.Value(0),
 			//mainProcessUser: this.props.mainProcessUser,
 			joinProcessUsers: this.props.joinProcessUsers,
+			iconName: 'ios-arrow-up',
 		}
 	}
 	
@@ -70,8 +72,9 @@ class WorkflowStreamProcessUsers extends Component {
 		const finalRotation = this.state.expanded ? 0 : 1
 
 		this.setState({
-			expanded: !this.state.expanded
-		})
+			expanded: !this.state.expanded,
+			iconName: this.state.expanded ? 'ios-arrow-down' : 'ios-arrow-up',
+		});
 
 		this.state.heightAnimation.setValue(initialHeight);
 		this.state.rotateAnimation.setValue(initialRotation);
@@ -146,7 +149,7 @@ class WorkflowStreamProcessUsers extends Component {
 							title={util.toUpper(this.state.title)}
 							titleStyle={styles.listItemTitle}
 							rightIcon={
-								<Animated.Image source={this.icon} style={iconRotationStyle}/>
+								<Icon name={this.state.iconName} type='ionicon' size={moderateScale(26, 0.73)} color='#fff' />
 							}
 						/>
 					</TouchableOpacity>

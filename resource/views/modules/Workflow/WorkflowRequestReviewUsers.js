@@ -40,6 +40,7 @@ import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class WorkflowRequestReviewUsers extends Component {
 	constructor(props) {
@@ -53,6 +54,7 @@ class WorkflowRequestReviewUsers extends Component {
 			heightAnimation: new Animated.Value(60 * (props.users.length > 0 ? (props.users.length + 1) : 1)),
 			rotateAnimation: new Animated.Value(0),
 			reviewUsers: this.props.reviewUsers,
+			iconName: 'ios-arrow-up',
 		}
 		this.toggle = this.toggle.bind(this);
 	}
@@ -70,8 +72,9 @@ class WorkflowRequestReviewUsers extends Component {
 		const finalRotation = this.state.expanded ? 0 : 1
 
 		this.setState({
-			expanded: !this.state.expanded
-		})
+			expanded: !this.state.expanded,
+			iconName: this.state.expanded ? 'ios-arrow-down' : 'ios-arrow-up',
+		});
 
 		this.state.heightAnimation.setValue(initialHeight);
 		this.state.rotateAnimation.setValue(initialRotation);
@@ -175,7 +178,7 @@ class WorkflowRequestReviewUsers extends Component {
 							title={util.toUpper(this.state.title)}
 							titleStyle={styles.listItemTitle}
 							rightIcon={
-								<Animated.Image source={this.icon} style={iconRotationStyle} />
+								<Icon name={this.state.iconName} type='ionicon' size={moderateScale(26, 0.73)} color='#fff' />
 							}
 						/>
 					</TouchableOpacity>
