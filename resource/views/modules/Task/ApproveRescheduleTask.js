@@ -36,7 +36,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import GoBackButton from '../../common/GoBackButton';
-import { DatePickerCustomStyle } from '../../../assets/styles';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
 
 class ApproveRescheduleTask extends Component {
     constructor(props) {
@@ -153,17 +153,7 @@ class ApproveRescheduleTask extends Component {
                                 minDate={new Date()}
                                 confirmBtnText='CHỌN'
                                 cancelBtnText='BỎ'
-                                customStyles={{
-                                    dateIcon: {
-                                        position: 'absolute',
-                                        left: 0,
-                                        top: 4,
-                                        marginLeft: 0
-                                    },
-                                    dateInput: {
-                                        marginLeft: scale(36)
-                                    }
-                                }}
+                                customStyles={CustomStylesDatepicker}
                                 onDateChange={this.onSelectDate}
                             />
                         </Item>

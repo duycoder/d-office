@@ -45,7 +45,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { meetingRoomApi } from '../../../common/Api';
-import { MoreButton } from '../../common';
+import { MoreButton, HeaderRightButton } from '../../common';
 
 const MeetingRoomApi = meetingRoomApi();
 
@@ -332,9 +332,7 @@ class PickMeetingRoom extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.preSaveRoom()}>
-              <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton onPress={() => this.preSaveRoom()} />
           </Right>
         </Header>
         {

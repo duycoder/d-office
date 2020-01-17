@@ -109,7 +109,7 @@ class HistoryEvaluateTask extends Component {
                 disableLeftSwipe={true}
                 left={
                     <Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowEvaluateInfo(item)}>
-                        <RneIcon name='info' type='foundation' size={verticalScale(30)} color={Colors.WHITE} />
+                        <RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
                     </Button>
                 }
                 body={

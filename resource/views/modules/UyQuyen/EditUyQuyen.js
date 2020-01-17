@@ -34,8 +34,8 @@ import * as action from '../../../redux/modules/UyQuyen/Action';
 import VanBanDenUyQuyen from './VanBanDenUyQuyen';
 import VanBanDiUyQuyen from './VanBanDiUyQuyen';
 import GoBackButton from '../../common/GoBackButton';
-import { DatePickerCustomStyle } from '../../../assets/styles';
-import { MoreButton } from '../../common';
+import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
+import { MoreButton, HeaderRightButton } from '../../common';
 
 
 class EditUyQuyen extends Component {
@@ -346,9 +346,10 @@ class EditUyQuyen extends Component {
                     </Body>
 
                     <Right style={NativeBaseStyle.right}>
-                        <Button transparent onPress={() => this.onSave()}>
-                            <RneIcon name='md-save' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-                        </Button>
+                        <HeaderRightButton
+                            onPress={() => this.onSave()}
+                            iconName='save' iconType='material'
+                        />
                     </Right>
                 </Header>
                 {
@@ -435,17 +436,7 @@ class EditUyQuyen extends Component {
                                                     minDate={new Date()}
                                                     confirmBtnText='CHỌN'
                                                     cancelBtnText='BỎ'
-                                                    customStyles={{
-                                                        dateIcon: {
-                                                            position: 'absolute',
-                                                            left: 0,
-                                                            top: 4,
-                                                            marginLeft: 0
-                                                        },
-                                                        dateInput: {
-                                                            marginLeft: scale(36)
-                                                        }
-                                                    }}
+                                                    customStyles={CustomStylesDatepicker}
                                                     onDateChange={(value) => this.setDate(value, false)}
                                                 />
                                             </Item>
@@ -461,17 +452,7 @@ class EditUyQuyen extends Component {
                                                     minDate={new Date()}
                                                     confirmBtnText='CHỌN'
                                                     cancelBtnText='BỎ'
-                                                    customStyles={{
-                                                        dateIcon: {
-                                                            position: 'absolute',
-                                                            left: 0,
-                                                            top: 4,
-                                                            marginLeft: 0
-                                                        },
-                                                        dateInput: {
-                                                            marginLeft: scale(36)
-                                                        }
-                                                    }}
+                                                    customStyles={CustomStylesDatepicker}
                                                     onDateChange={(value) => this.setDate(value, true)}
                                                 />
                                             </Item>

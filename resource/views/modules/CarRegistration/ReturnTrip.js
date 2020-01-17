@@ -45,6 +45,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { tripApi } from '../../../common/Api';
+import { HeaderRightButton } from '../../common';
 
 class ReturnTrip extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class ReturnTrip extends Component {
     const {
       tripId, ghichu, userId
     } = this.state;
-    
+
     this.setState({
       executing: true
     });
@@ -112,9 +113,7 @@ class ReturnTrip extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.saveReturn()}>
-              <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton onPress={() => this.saveReturn()} />
           </Right>
         </Header>
 

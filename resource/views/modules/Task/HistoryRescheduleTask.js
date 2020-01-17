@@ -168,7 +168,7 @@ class HistoryRescheduleTask extends Component {
 				disableLeftSwipe={!util.isNull(item.IS_APPROVED) || this.state.canApprove == false}
 				left={
 					<Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowRescheduleInfo(item)}>
-						<RneIcon name='info' type='foundation' size={verticalScale(30)} color={Colors.WHITE} />
+						<RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
 					</Button>
 				}
 				body={
@@ -222,7 +222,7 @@ class HistoryRescheduleTask extends Component {
 
 				right={
 					<Button style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.onConfirmApproveReschedule(item)}>
-						<RneIcon name='pencil' type='foundation' size={verticalScale(30)} color={Colors.WHITE} />
+						<RneIcon name='pencil' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
 					</Button>
 				}
 			/>

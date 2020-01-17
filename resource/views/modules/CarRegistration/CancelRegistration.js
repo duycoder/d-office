@@ -45,6 +45,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { carApi } from '../../../common/Api';
+import { HeaderRightButton } from '../../common';
 
 class CancelRegistration extends Component {
   constructor(props) {
@@ -122,13 +123,11 @@ class CancelRegistration extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.saveReject()}>
-              <RneIcon name='md-send' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton onPress={() => this.saveReject()} />
           </Right>
         </Header>
-        
-        <Content contentContainerStyle={{padding: 10}}>
+
+        <Content contentContainerStyle={{ padding: 10 }}>
           <Form>
             <Textarea rowSpan={5} bordered placeholder='Lý do huỷ' onChangeText={(reason) => this.setState({ reason })} />
           </Form>

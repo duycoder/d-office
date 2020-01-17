@@ -42,7 +42,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import GoBackButton from '../../common/GoBackButton';
 import { reminderApi } from '../../../common/Api';
-import { MoreButton } from '../../common';
+import { MoreButton, HeaderRightButton } from '../../common';
 
 class PickWhoseReminder extends Component {
   constructor(props) {
@@ -226,9 +226,11 @@ class PickWhoseReminder extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.onPickGiamdoc()} style={checkButtonStyle} disabled={unsubmitableCondition}>
-              <RneIcon name='md-checkmark' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton
+              onPress={() => this.onPickGiamdoc()}
+              iconName='md-checkmark' iconType='ionicon'
+              btnStyle={checkButtonStyle} btnDisabled={unsubmitableCondition}
+            />
           </Right>
         </Header>
         {

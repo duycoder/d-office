@@ -30,7 +30,7 @@ import {
     Colors,
     TOAST_DURATION_TIMEOUT,
 } from '../../../common/SystemConstant';
-import { indicatorResponsive, verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 
 import AlertMessage from '../../common/AlertMessage';
@@ -176,7 +176,7 @@ class ListUyQuyen extends Component {
                 rightOpenValue={-75}
                 left={
                     <Button style={{ backgroundColor: Colors.LITE_BLUE }} onPress={() => this.navigateToDetail(item.ID)}>
-                        <RneIcon name='pencil' type='material-community' size={verticalScale(30)} color={Colors.WHITE} />
+                        <RneIcon name='pencil' type='material-community' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
                     </Button>
                 }
                 body={
@@ -192,7 +192,7 @@ class ListUyQuyen extends Component {
 
                 right={
                     <Button style={{ backgroundColor: Colors.RED }} onPress={() => this.onConfirmDelete(item.ID)}>
-                        <RneIcon name='trash-can' type='material-community' size={verticalScale(30)} color={'#fff'} />
+                        <RneIcon name='trash-can' type='material-community' size={moderateScale(27, 0.79)} color={'#fff'} />
                     </Button>
                 }
             />

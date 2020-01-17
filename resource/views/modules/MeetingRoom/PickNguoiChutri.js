@@ -44,7 +44,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 // import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
 import { meetingRoomApi } from '../../../common/Api';
-import { MoreButton } from '../../common';
+import { MoreButton, HeaderRightButton } from '../../common';
 
 
 class PickNguoiChutri extends Component {
@@ -222,9 +222,11 @@ class PickNguoiChutri extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <Button transparent onPress={() => this.onPickNguoichutri()} style={checkButtonStyle} disabled={unsubmitableCondition}>
-              <RneIcon name='md-checkmark' size={verticalScale(30)} color={Colors.WHITE} type='ionicon' />
-            </Button>
+            <HeaderRightButton
+              onPress={() => this.onPickNguoichutri()}
+              iconName='md-checkmark' iconType='ionicon'
+              btnStyle={checkButtonStyle} btnDisabled={unsubmitableCondition}
+            />
           </Right>
         </Header>
         {
