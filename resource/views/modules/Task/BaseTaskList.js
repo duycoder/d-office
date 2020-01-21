@@ -44,6 +44,7 @@ import { ListNotificationStyle } from '../../../assets/styles/ListNotificationSt
 import GoBackButton from '../../common/GoBackButton';
 import { NativeBaseStyle } from '../../../assets/styles';
 import { SearchSection, MoreButton, AddButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class BaseTaskList extends Component {
     constructor(props) {
@@ -99,6 +100,10 @@ class BaseTaskList extends Component {
         const refreshingData = this.state.refreshingData;
         const loadingData = this.state.loadingData;
 
+        const {
+            userId, pageSize, pageIndex, filterValue
+        } = this.state;
+
         let apiUrlParam = 'PersonalWork';
 
         const { taskType } = this.state;
@@ -114,9 +119,12 @@ class BaseTaskList extends Component {
             apiUrlParam = 'CommandingWork';
         }
 
-        const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        const resultJson = await taskApi().getList([
+            apiUrlParam,
+            userId,
+            pageSize,
+            `${pageIndex}?query=${filterValue}`
+        ]);
 
         this.setState({
             loadingData: false,
@@ -165,17 +173,6 @@ class BaseTaskList extends Component {
     }
 
     navigateToDetail = async (taskId = 0) => {
-        // let { navigation } = this.props;
-        // let currentScreenName = "ListPersonalTaskScreen";
-
-        // if (this.state.taskType == CONGVIEC_CONSTANT.DUOC_GIAO) {
-        //     currentScreenName = "ListAssignedTaskScreen"
-        // } else if (this.state.taskType == CONGVIEC_CONSTANT.PHOIHOP_XULY) {
-        //     currentScreenName = "ListCombinationTaskScreen"
-        // } else if (this.state.taskType == CONGVIEC_CONSTANT.DAGIAO_XULY) {
-        //     currentScreenName = "ListProcessedTaskScreen"
-        // }
-
         if (taskId > 0) {
             let targetScreenParam = {
                 taskId,
@@ -193,7 +190,6 @@ class BaseTaskList extends Component {
             this.props.updateExtendsNavParams(targetScreenParam);
             this.props.navigator.navigate("CreateTaskScreen");
         }
-
     }
 
     async getListSubTasks(index, isExpand, taskId, parentIds) {
@@ -278,7 +274,6 @@ class BaseTaskList extends Component {
         return (
             <View>
                 <ListItem
-                    // hideChevron={true}
                     containerStyle={{ borderBottomWidth: 0, paddingBottom: 0 }}
                     title={
                         <RnText style={[readStateTextStyle, { fontWeight: 'bold', fontSize: moderateScale(12, 1.2) }]}>
@@ -423,7 +418,6 @@ class BaseTaskList extends Component {
                                     isLoading={this.state.loadingMoreData}
                                     isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
                                     loadmoreFunc={this.onLoadingMore} />)}
-
                                 ListEmptyComponent={() => emptyDataPage()}
                             />
                         )

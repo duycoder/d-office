@@ -14,20 +14,23 @@ class ColumnedListItem extends React.Component {
     customRightContainer: {},
     customLeftText: {},
     customRightText: {},
+    leftContainerWidth: 30,
+    rightContainerWidth: 70,
   }
   render() {
     const {
       isRender,
       leftText, rightText,
       customContainer, customLeftContainer, customLeftText, customRightContainer, customRightText,
+      leftContainerWidth, rightContainerWidth,
     } = this.props;
     if (isRender) {
       return (
         <View style={[ColumnedItemStyle.container, customContainer]}>
-          <View style={[ColumnedItemStyle.leftContainer, customLeftContainer]}>
+          <View style={[{ width: `${leftContainerWidth}%` }, customLeftContainer]}>
             <Text style={[ColumnedItemStyle.leftText, customLeftText]}>{leftText}</Text>
           </View>
-          <View style={[ColumnedItemStyle.rightContainer, customRightContainer]}>
+          <View style={[{ width: `${rightContainerWidth}%` }, customRightContainer]}>
             <Text style={[ColumnedItemStyle.rightText, customRightText]}>{rightText}</Text>
           </View>
         </View>

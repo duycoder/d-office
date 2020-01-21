@@ -39,8 +39,7 @@ import {
 //styles
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton } from '../../common';
 
 class HistoryProgressTask extends Component {
 	constructor(props) {
@@ -132,14 +131,6 @@ class HistoryProgressTask extends Component {
 				}
 			/>
 		);
-	}
-
-	componentDidMount = () => {
-		// backHandlerConfig(true, this.navigateBackToDetail);
-	}
-
-	componentWillUnmount = () => {
-		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
 	navigateBackToDetail = () => {

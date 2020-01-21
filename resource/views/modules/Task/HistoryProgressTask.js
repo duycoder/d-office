@@ -39,8 +39,7 @@ import {
 //styles
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton } from '../../common';
 
 class HistoryProgressTask extends Component {
 	constructor(props) {
@@ -126,20 +125,10 @@ class HistoryProgressTask extends Component {
 								}
 							</RnText>
 						</RnText>
-
-
 					</RnView>
 				}
 			/>
 		);
-	}
-
-	componentDidMount = () => {
-		// backHandlerConfig(true, this.navigateBackToDetail);
-	}
-
-	componentWillUnmount = () => {
-		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
 	navigateBackToDetail = () => {
@@ -156,7 +145,32 @@ class HistoryProgressTask extends Component {
 	}
 
 	render() {
-
+		let bodyContent = dataLoading(true);
+		if (!this.state.loading) {
+			bodyContent = (
+				<FlatList
+					data={this.state.data}
+					keyExtractor={(item, index) => index.toString()}
+					renderItem={this.renderItem}
+					ListEmptyComponent={() => emptyDataPage()}
+					ListFooterComponent={() => (<MoreButton
+						isLoading={this.state.loadingMore}
+						isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+						loadmoreFunc={this.loadMore}
+					/>)}
+					refreshControl={
+						<RefreshControl
+							refreshing={this.state.refreshing}
+							onRefresh={this.handleRefresh}
+							title='Kéo để làm mới'
+							colors={[Colors.BLUE_PANTONE_640C]}
+							tintColor={[Colors.BLUE_PANTONE_640C]}
+							titleColor='red'
+						/>
+					}
+				/>
+			);
+		}
 		return (
 			<Container>
 				<Header style={NativeBaseStyle.container}>
@@ -173,39 +187,9 @@ class HistoryProgressTask extends Component {
 
 				<Content contentContainerStyle={{ flex: 1 }}>
 					{
-						renderIf(this.state.loading)(
-							dataLoading(true)
-						)
-					}
-
-					{
-						renderIf(!this.state.loading)(
-							<FlatList
-								data={this.state.data}
-								keyExtractor={(item, index) => index.toString()}
-								renderItem={this.renderItem}
-								ListEmptyComponent={() => emptyDataPage()}
-								ListFooterComponent={() => (<MoreButton
-									isLoading={this.state.loadingMore}
-									isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
-									loadmoreFunc={this.loadMore}
-								/>)}
-
-								refreshControl={
-									<RefreshControl
-										refreshing={this.state.refreshing}
-										onRefresh={this.handleRefresh}
-										title='Kéo để làm mới'
-										colors={[Colors.BLUE_PANTONE_640C]}
-										tintColor={[Colors.BLUE_PANTONE_640C]}
-										titleColor='red'
-									/>
-								}
-							/>
-						)
+						bodyContent
 					}
 				</Content>
-
 
 				<PopupDialog
 					dialogTitle={<DialogTitle

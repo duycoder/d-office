@@ -10,7 +10,7 @@ import {
     EMPTY_STRING, THONGBAO_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors, generateReadFontStyleAndColor, generateBadgeIconNoti
 } from '../../../common/SystemConstant';
-import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate, convertDateToString } from '../../../common/Utilities';
+import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate, convertDateToString, showWarningToast } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -46,7 +46,6 @@ class ListNotification extends Component {
             pageSize: DEFAULT_PAGE_SIZE,
 
             dataUyQuyen: [],
-
             isRefreshNotiList: false,
         }
     }
@@ -126,13 +125,7 @@ class ListNotification extends Component {
         }
 
         if (outOfSwitch) {
-            Toast.show({
-                text: 'Bạn không có quyền truy cập vào thông tin này!',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Bạn không có quyền truy cập vào thông tin này!');
         }
         this.props.updateCoreNavParams(screenParam);
         this.props.navigation.navigate(screenName);
@@ -259,7 +252,6 @@ class ListNotification extends Component {
                                 data={this.state.data}
                                 keyExtractor={(item, index) => index.toString()}
                                 renderItem={this.renderItem}
-
                                 refreshControl={
                                     <RefreshControl
                                         refreshing={this.state.refreshing}

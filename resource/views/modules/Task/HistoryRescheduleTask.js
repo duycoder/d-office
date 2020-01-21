@@ -111,13 +111,6 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	onShowRescheduleInfo = (item) => {
-		// if (this.state.listRowId.length>0){
-		// 	for(let rowId of this.state.listRowId){
-		// 		this.refs[rowId]._root.closeRow();
-		// 	}
-		// }
-		// console.tron.log(this.state.listRowId)
-		// console.tron.log(this.myRef["rowId__34"]);
 		this.setState({
 			rescheduleInfo: item
 		}, () => {
@@ -130,19 +123,6 @@ class HistoryRescheduleTask extends Component {
 			rescheduleInfo: item
 		}, () => {
 			this.refs.confirm.showModal();
-			// Alert.alert(
-			// 	'PHẢN HỒI YÊU CẦU LÙI HẠN',
-			// 	'Phản hồi yêu cầu lùi hạn của \n' + item.FullName,
-			// 	[
-			// 		{
-			// 			'text': 'ĐỒNG Ý', onPress: () => { this.onApproveReschedule(true, item.ID, item.HANKETHUC) }
-			// 		}, {
-			// 			'text': 'KHÔNG ĐỒNG Ý', onPress: () => { this.onApproveReschedule(false, item.ID, item.HANKETHUC) }
-			// 		}, {
-			// 			'text': 'THOÁT', onPress: () => { }
-			// 		}
-			// 	]
-			// )
 		})
 	}
 

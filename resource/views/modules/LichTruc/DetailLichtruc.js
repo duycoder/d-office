@@ -18,7 +18,7 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { appGetDataAndNavigate, _readableFormat, convertDateToString } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
 import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';

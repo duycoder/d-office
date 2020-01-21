@@ -36,14 +36,12 @@ import {
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
-
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { meetingRoomApi } from '../../../common/Api';
-import GoBackButton from '../../common/GoBackButton';
-import { AddButton } from '../../common';
+import { AddButton, ColumnedListItem, GoBackButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000;
 
@@ -64,14 +62,6 @@ class MeetingDayList extends Component {
     }
   }
 
-  componentWillMount() {
-    // this.setState({
-    //   loadingData: true
-    // }, () => {
-    //   this.fetchData();
-    // })
-  }
-
   componentDidMount = () => {
     let currentNavObj = this.props.navigation || this.props.navigator;
 
@@ -79,7 +69,6 @@ class MeetingDayList extends Component {
       if (this.props.extendsNavParams.hasOwnProperty("check")) {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
-            // loadingData: true,
             items: {},
           }, () => {
             let currentDate = new Date(),
@@ -176,60 +165,33 @@ class MeetingDayList extends Component {
     return (
       <ListItem
         containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
-
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: isNotiAlertTextColor }]}>
             {item.mucdich}
           </RnText>
         }
-
         subtitle={
           <View style={{ marginTop: 8 }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ width: "35%" }}>
-                <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                  Thời gian họp:
-                    </RnText>
-              </View>
-              <View style={{ width: "65%" }}>
-                <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                  {` ${item.thoigianHop}`}
-                </RnText>
-              </View>
-            </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <View style={{ width: "35%" }}>
-                <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                  Phòng họp:
-                  </RnText>
-              </View>
-              <View style={{ width: "65%" }}>
-                {
-                  item.tenPhong
-                    ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.tenPhong}
-                    </RnText>
-                    : <RnText style={{ fontSize: moderateScale(12, 1.1), fontWeight: 'bold', color: Colors.RED_PANTONE_186C }}>
-                      {' Chưa xếp phòng'}
-                    </RnText>
-                }
-
-              </View>
-            </View>
-            {
-              item.tenNguoiChutri && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Người chủ trì:
-                  </RnText>
-                </View>
-                <View style={{ width: "65%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {' ' + item.tenNguoiChutri}
-                  </RnText>
-                </View>
-              </View>
-            }
+            <ColumnedListItem
+              leftText='Thời gian họp:'
+              rightText={item.thoigianHop}
+              leftContainerWidth={35}
+              rightContainerWidth={65}
+            />
+            <ColumnedListItem
+              leftText='Phòng họp:'
+              rightText={item.tenPhong || 'Chưa xếp phòng'}
+              leftContainerWidth={35}
+              rightContainerWidth={65}
+              customRightText={!!item.tenPhong ? {} : { fontWeight: 'bold', color: Colors.RED_PANTONE_186C }}
+            />
+            <ColumnedListItem
+              isRender={!!item.tenNguoiChutri}
+              leftText='Người chủ trì:'
+              rightText={item.tenNguoiChutri}
+              leftContainerWidth={35}
+              rightContainerWidth={65}
+            />
           </View>
         }
         hideChevron
@@ -246,7 +208,6 @@ class MeetingDayList extends Component {
   renderEmptyDate() {
     return (
       <View />
-      // <View style={styles.emptyDate}><Text>This is empty date!</Text></View>
     );
   }
 
@@ -314,13 +275,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
+    padding: moderateScale(10, 1.03),
+    marginRight: moderateScale(10, 1.03),
+    marginTop: moderateScale(16.5, 1.05)
   },
   emptyDate: {
-    height: 15,
+    height: moderateScale(14.35, 1.08),
     flex: 1,
-    paddingTop: 30
+    paddingTop: moderateScale(28.45, 1.06)
   }
 });

@@ -37,11 +37,10 @@ import renderIf from 'render-if';
 //views
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import InfoMeetingDay from './InfoMeetingDay';
-import AlertMessage from '../../common/AlertMessage';
+import { AlertMessage, GoBackButton } from '../../common';
 import { meetingRoomApi } from '../../../common/Api';
 
 const MeetingRoomApi = meetingRoomApi();
@@ -65,7 +64,6 @@ class DetailMeetingDay extends Component {
 
   componentWillMount = () => {
     this.fetchData();
-
   }
 
   componentDidMount = () => {

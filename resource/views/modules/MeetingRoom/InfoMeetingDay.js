@@ -20,6 +20,7 @@ import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { InfoStyle } from '../../../assets/styles';
+import { InfoListItem, AttachmentItem } from '../../common/DetailCommon';
 
 class RegistrationInfo extends Component {
   constructor(props) {
@@ -45,114 +46,29 @@ class RegistrationInfo extends Component {
       <View style={InfoStyle.container}>
         <ScrollView>
           <List containerStyle={InfoStyle.listContainer}>
-
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Mục đích
-                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.MUCDICH}
-                </Text>
-              } />
-
-            {
-              info.TEN_NGUOICHUTRI && <ListItem style={InfoStyle.listItemContainer}
-                hideChevron={true}
-                title={
-                  <Text style={InfoStyle.listItemTitleContainer}>
-                    Người chủ trì
-                          </Text>
-                }
-                subtitle={
-                  <Text style={InfoStyle.listItemSubTitleContainer}>
-                    {info.TEN_NGUOICHUTRI}
-                  </Text>
-                } />
-            }
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Thời gian họp
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {thoigianHop}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Phòng họp
-                                </Text>
-              }
-              subtitle={
-                (info.TEN_PHONG && info.TEN_PHONG.length > 0)
-                  ? <Text style={InfoStyle.listItemSubTitleContainer}>
-                    {info.TEN_PHONG}
-                  </Text>
-                  : <Text style={[InfoStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C, fontWeight: 'bold' }]}>
-                    Chưa xếp phòng
-                  </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Thành phần tham dự
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.THANHPHAN_THAMDU}
-                </Text>
-              } />
-            {
-              !!info.DuongdanFile && <ListItem style={InfoStyle.listItemContainer}
-                hideChevron={true}
-                title={
-                  <Text style={InfoStyle.listItemTitleContainer}>
-                    Đính kèm
-                  </Text>
-                }
-                subtitle={
-                  <View>
-                    <ListItem
-                      key={index.toString()}
-                      leftIcon={getFileExtensionLogo(getExtension(info.itemTailieu.DUONGDAN_FILE))}
-                      title={info.itemTailieu.TENTAILIEU}
-                      titleStyle={{
-                        marginLeft: 10,
-                        color: '#707070',
-                        fontWeight: 'bold'
-                      }}
-                      subtitle={
-                        getFileSize(info.itemTailieu.KICHCO) + " | " + convertDateToString(info.itemTailieu.NGAYTAO) + " " + convertTimeToString(info.itemTailieu.NGAYTAO)
-                      }
-                      subtitleStyle={{
-                        fontWeight: 'normal',
-                        color: '#707070',
-                        marginLeft: 10,
-                      }}
-                      rightIcon={
-                        <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
-                      }
-                      containerStyle={{ borderBottomWidth: 0 }}
-                      onPress={() => onDownloadFile(info.itemTailieu.TENTAILIEU, info.itemTailieu.DUONGDAN_FILE, info.itemTailieu.DINHDANG_FILE)}
-                    />
-                  </View>
-                }
-              />
-            }
-
+            <InfoListItem
+              titleText='Mục đích'
+              subtitleText={info.MUCDICH}
+            />
+            <InfoListItem
+              isRender={info.TEN_NGUOICHUTRI}
+              titleText='Người chủ trì'
+              subtitleText={info.TEN_NGUOICHUTRI}
+            />
+            <InfoListItem
+              titleText='Thời gian họp'
+              subtitleText={thoigianHop}
+            />
+            <InfoListItem
+              titleText='Phòng họp'
+              subtitleText={info.TEN_PHONG || 'Chưa xếp phòng'}
+              customSubtitleText={!!info.TEN_PHONG ? {} : { color: Colors.RED_PANTONE_186C, fontWeight: 'bold' }}
+            />
+            <InfoListItem
+              titleText='Thành phần tham dự'
+              subtitleText={info.THANHPHAN_THAMDU}
+            />
+            <AttachmentItem data={!!info.DuongdanFile ? [info.DuongdanFile] : []} />
           </List>
         </ScrollView>
       </View>

@@ -17,9 +17,10 @@ import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { convertDateToString, _readableFormat, appStoreDataAndNavigate, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
 import { Colors, EMPTY_STRING, API_URL, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { InfoStyle } from '../../../assets/styles';
-import AttachmentItem from '../../common/AttachmentItem';
+import AttachmentItem from '../../common/DetailCommon/AttachmentItem';
+import { InfoListItem } from '../../common/DetailCommon';
 
 class MainInfoPublishDoc extends Component {
 
@@ -133,7 +134,7 @@ class MainInfoPublishDoc extends Component {
                                 backgroundColor: Colors.RED_PANTONE_186C,
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                height: 30,
+                                height: moderateScale(28, 0.82),
                                 borderRadius: 5
                             }}
                                 onPress={() => this.getDetailEvent()}>
@@ -147,257 +148,92 @@ class MainInfoPublishDoc extends Component {
             )
         }
 
-        // render
         return (
             <View style={InfoStyle.container}>
                 <ScrollView>
                     <List containerStyle={InfoStyle.listContainer}>
                         <AttachmentItem data={this.state.ListTaiLieu} />
 
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Trích yếu
-                        </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.state.info.TRICHYEU}
-                                </Text>
-                            } />
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Số hiệu
-                        </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {sohieu}
-                                </Text>
-                            } />
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Sổ đi theo số
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SODITHEOSO}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Đơn vị gửi
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.props.info.nameOfDonViGui}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Loại văn bản
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.props.info.nameOfLoaiVanBan}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Lĩnh vực
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.props.info.nameOfLinhVucVanBan}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Mức độ quan trọng
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.props.info.nameOfDoKhan}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Độ ưu tiên
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.props.info.nameOfDoUuTien}
-                                </Text>
-                            } />
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Số trang
-                                </Text>
-                            }
-                            subtitle={
-                                <Text style={InfoStyle.listItemSubTitleContainer}>
-                                    {this.state.info.SOTRANG}
-                                </Text>
-                            } />
-
-
-                        {
-                            this.state.info.NGAY_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Ngày có hiệu lực
-                                </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAY_HIEULUC)}
-                                    </Text>
-                                } />
-                        }
-
-                        {
-                            this.state.info.NGAYHET_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Ngày hết hiệu lực
-                                    </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
-                                    </Text>
-                                } />
-                        }
-                        {
-                            this.state.info.NGAYHET_HIEULUC && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Ngày hết hiệu lực
-                                </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAYHET_HIEULUC)}
-                                    </Text>
-                                } />
-                        }
-                        {
-                            this.state.info.NGAY_VANBAN && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Ngày văn bản
-                                </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAY_VANBAN)}
-                                    </Text>
-                                } />
-                        }
-                        {
-                            this.state.info.NGAY_BANHANH && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Ngày ban hành
-                                </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAY_BANHANH)}
-                                    </Text>
-                                } />
-                        }
-                        {
-                            !!this.state.info.NGUOIKY && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Người ký
-                                </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {`${this.state.info.CHUCVU || ""} ${this.state.info.NGUOIKY}`}
-                                    </Text>
-                                } />
-                        }
-
-                        {
-                            !!this.state.info.NOIDUNG && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Nội dung
-                                </Text>
-                                }
-                                subtitle={
-                                    this.state.info.NOIDUNG.match(HTML_STRIP_PATTERN)
-                                        ? <HTMLView
-                                            value={this.state.info.NOIDUNG || EMPTY_STRING}
-                                            stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
-                                        />
-                                        : <Text style={InfoStyle.listItemSubTitleContainer}>{this.state.info.NOIDUNG}</Text>
-                                } />
-                        }
-
-                        {
-                            this.state.info.hasOwnProperty("NGAYCONGTAC") && <ListItem style={InfoStyle.listItemContainer}
-                                hideChevron={true}
-                                title={
-                                    <Text style={InfoStyle.listItemTitleContainer}>
-                                        Thời gian công tác
-                                    </Text>
-                                }
-                                subtitle={
-                                    <Text style={InfoStyle.listItemSubTitleContainer}>
-                                        {convertDateToString(this.state.info.NGAYCONGTAC)} lúc {congtacTime}
-                                    </Text>
-                                }
-                            />
-                        }
-
-                        <ListItem style={InfoStyle.listItemContainer}
-                            hideChevron={true}
-                            title={
-                                <Text style={InfoStyle.listItemTitleContainer}>
-                                    Trùng lịch công tác lãnh đạo
-                                </Text>
-                            }
-                            subtitle={trungLichHop} />
+                        <InfoListItem
+                            titleText='Trích yếu'
+                            subtitleText={this.state.info.TRICHYEU}
+                        />
+                        <InfoListItem
+                            titleText='Số hiệu'
+                            subtitleText={sohieu}
+                        />
+                        <InfoListItem
+                            titleText='Sổ đi theo số'
+                            subtitleText={this.state.info.SODITHEOSO}
+                        />
+                        <InfoListItem
+                            titleText='Đơn vị gửi'
+                            subtitleText={this.props.info.nameOfDonViGui}
+                        />
+                        <InfoListItem
+                            titleText='Loại văn bản'
+                            subtitleText={this.props.info.nameOfLoaiVanBan}
+                        />
+                        <InfoListItem
+                            titleText='Lĩnh vực'
+                            subtitleText={this.props.info.nameOfLinhVucVanBan}
+                        />
+                        <InfoListItem
+                            titleText='Mức độ quan trọng'
+                            subtitleText={this.props.info.nameOfDoKhan}
+                        />
+                        <InfoListItem
+                            titleText='Độ ưu tiên'
+                            subtitleText={this.props.info.nameOfDoUuTien}
+                        />
+                        <InfoListItem
+                            titleText='Số trang'
+                            subtitleText={this.state.info.SOTRANG}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAY_HIEULUC}
+                            titleText='Ngày có hiệu lực'
+                            subtitleText={convertDateToString(this.state.info.NGAY_HIEULUC)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYHET_HIEULUC}
+                            titleText='Ngày hết hiệu lực'
+                            subtitleText={convertDateToString(this.state.info.NGAYHET_HIEULUC)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYHET_HIEULUC}
+                            titleText='Ngày hết hiệu lực'
+                            subtitleText={convertDateToString(this.state.info.NGAYHET_HIEULUC)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAY_VANBAN}
+                            titleText='Ngày văn bản'
+                            subtitleText={convertDateToString(this.state.info.NGAY_VANBAN)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAY_BANHANH}
+                            titleText='Ngày ban hành'
+                            subtitleText={convertDateToString(this.state.info.NGAY_BANHANH)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGUOIKY}
+                            titleText='Người ký'
+                            subtitleText={`${this.state.info.CHUCVU || ""} ${this.state.info.NGUOIKY}`}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NOIDUNG}
+                            titleText='Nội dung văn bản'
+                            subtitleText={this.state.info.NOIDUNG}
+                        />
+                        <InfoListItem
+                            isRender={this.state.info.hasOwnProperty("NGAYCONGTAC")}
+                            titleText='Thời gian công tác'
+                            subtitleText={`${convertDateToString(this.state.info.NGAYCONGTAC)} lúc ${congtacTime}`}
+                        />
+                        <InfoListItem
+                            titleText='Trùng lịch công tác lãnh đạo'
+                            subtitleText={trungLichHop}
+                        />
 
                     </List>
                 </ScrollView>

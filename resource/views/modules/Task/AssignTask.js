@@ -30,7 +30,7 @@ import {
 	EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
 	TASK_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -43,8 +43,10 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
 import GoBackButton from '../../common/GoBackButton';
-import { MoreButton, SearchSection } from '../../common';
+import { MoreButton, SearchSection, HeaderRightButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
+const api = taskApi();
 
 class AssignTask extends Component {
 	constructor(props) {
@@ -85,13 +87,17 @@ class AssignTask extends Component {
 	fetchData = async () => {
 		this.setState({
 			loading: true
-		})
+		});
 
-		const url = `${API_URL}/api/HscvCongViec/AssignTask/${this.state.taskId}/${this.state.subTaskId}/${this.state.userId}`;
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const {
+			taskId, subTaskId, userId
+		} = this.state;
 
-		console.log(url);
+		const resultJson = await api.getAssignHelper([
+			taskId,
+			subTaskId,
+			userId
+		]);
 
 		this.setState({
 			loading: false,
@@ -149,45 +155,30 @@ class AssignTask extends Component {
 	loadingMoreJoin = () => this.loadingMore(false);
 
 	filterData = async () => {
-		const url = `${API_URL}/api/HscvCongViec/GetUserToAssignTask`;
-		const headers = new Headers({
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		});
+		const {
+			userId, selectedSegmentIndex,
+			searchingJoinProcess, searchingMainProcess,
+			loadingMoreJoinProcess, loadingMoreMainProcess,
+			joinProcessFilterValue, mainProcessFilterValue,
+			dataJoinProcessUsers, dataMainProcessUsers,
+		} = this.state;
 
-		const body = JSON.stringify({
-			userId: this.state.userId,
-			isDeptAdd: (this.state.selectedSegmentIndex == 1),
-			query: (this.state.searchingMainProcess || this.state.loadingMoreMainProcess) ? this.state.mainProcessFilterValue : this.state.joinProcessFilterValue,
-			pageIndex: (this.state.searchingMainProcess || this.state.loadingMoreMainProcess) ? this.state.mainProcessPageIndex : this.state.joinProcessPageIndex
+		const resultJson = await api.getAssignedUser({
+			userId: userId,
+			isDeptAdd: (selectedSegmentIndex == 1),
+			query: (searchingMainProcess || loadingMoreMainProcess) ? mainProcessFilterValue : joinProcessFilterValue,
+			pageIndex: (searchingMainProcess || loadingMoreMainProcess) ? mainProcessPageIndex : joinProcessPageIndex
 		});
-
-		const result = await fetch(url, {
-			method: 'POST',
-			headers,
-			body
-		});
-
-		const resultJson = await result.json();
 
 		this.setState({
-			dataMainProcessUsers: (this.state.searchingMainProcess) ? resultJson : (this.state.loadingMoreMainProcess ? [...this.state.dataMainProcessUsers, ...resultJson] : this.state.dataMainProcessUsers),
-			dataJoinProcessUsers: (this.state.searchingJoinProcess) ? resultJson : (this.state.loadingMoreJoinProcess ? [...this.state.dataJoinProcessUsers, ...resultJson] : this.state.dataJoinProcessUsers),
+			dataMainProcessUsers: (searchingMainProcess) ? resultJson : (loadingMoreMainProcess ? [...dataMainProcessUsers, ...resultJson] : dataMainProcessUsers),
+			dataJoinProcessUsers: (searchingJoinProcess) ? resultJson : (loadingMoreJoinProcess ? [...dataJoinProcessUsers, ...resultJson] : dataJoinProcessUsers),
 
 			loadingMoreMainProcess: false,
 			loadingMoreJoinProcess: false,
 			searchingMainProcess: false,
 			searchingJoinProcess: false
 		})
-	}
-
-
-	componentDidMount = () => {
-		// backHandlerConfig(true, this.navigateBackToDetail);
-	}
-
-	componentWillUnmount = () => {
-		// backHandlerConfig(false, this.navigateBackToDetail);
 	}
 
 	navigateBackToDetail = () => {
@@ -207,42 +198,23 @@ class AssignTask extends Component {
 	}
 
 	onAssginTask = async () => {
+		const { mainProcessUser, joinProcessUsers } = this.props;
+		const { userId, taskId, subTaskId } = this.state;
+
 		if (this.props.mainProcessUser == 0) {
-			Toast.show({
-				text: 'Vui lòng chọn người xử lý chính',
-				type: 'danger',
-				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: Colors.LITE_BLUE },
-			});
+			showWarningToast('Vui lòng chọn người xử lý chính');
 		} else {
 			this.setState({
 				executing: true
 			});
 
-			const url = `${API_URL}/api/HscvCongViec/SaveAssignTask`;
-			const headers = new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json; charset=utf-8'
+			const resultJson = await api.saveAssignedUser({
+				userId: userId,
+				AssignTaskId: taskId,
+				AssignTaskSubId: subTaskId,
+				XuLyChinhId: mainProcessUser,
+				ThamGia: joinProcessUsers.toString()
 			});
-
-			const body = JSON.stringify({
-				userId: this.state.userId,
-				AssignTaskId: this.state.taskId,
-				AssignTaskSubId: this.state.subTaskId,
-				XuLyChinhId: this.props.mainProcessUser,
-				ThamGia: this.props.joinProcessUsers.toString()
-			});
-
-			const result = await fetch(url, {
-				method: 'POST',
-				headers,
-				body
-			});
-
-			const resultJson = await result.json();
-
-			await asyncDelay();
 
 			this.setState({
 				executing: false
@@ -267,10 +239,10 @@ class AssignTask extends Component {
 	}
 
 	_handleFieldNameChange = fieldName => text => {
-    this.setState({
-      [fieldName]: text
-    });
-  }
+		this.setState({
+			[fieldName]: text
+		});
+	}
 
 	render() {
 		let bodyContent = null;
@@ -416,9 +388,7 @@ class AssignTask extends Component {
 					</Body>
 
 					<Right style={NativeBaseStyle.right}>
-						<TouchableOpacity onPress={() => this.onAssginTask()}>
-							<RneIcon name='md-send' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
-						</TouchableOpacity>
+						<HeaderRightButton onPress={() => this.onAssginTask()} />
 					</Right>
 				</Header>
 

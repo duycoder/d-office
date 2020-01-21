@@ -57,6 +57,8 @@ const lichtrucApi = () => {
 
 const vanbandenApi = () => {
   const getDetail = (params = []) => api.get("VanBanDen/GetDetail", params);
+  const getList = (params = []) => api.get("VanBanDen", params);
+
   const checkFlow = (params = []) => api.get("WorkFlow/CheckCanProcessFlow", params);
   const getFlowCCHelper = (params = []) => api.get("WorkFlow/GetFlowCCHelper", params);
   const filterFlowCCReceiver = (params = []) => api.get("WorkFlow/GetFlowCCReceiver", params);
@@ -74,6 +76,7 @@ const vanbandenApi = () => {
     getFlow,
     saveFlow,
     getUserInFlow,
+    getList,
   };
 }
 
@@ -219,7 +222,15 @@ const calendarApi = () => {
 }
 
 const vanbandiApi = () => {
+  const getDetail = (params = []) => api.get("VanBanDi/GetDetail", params);
+  const getList = (params = []) => api.get("VanBanDi", params);
+  const getSignedUnit = (params = []) => api.get("VanBanDi/SearchInternalUnit", params);
 
+  return {
+    getDetail,
+    getList,
+    getSignedUnit,
+  };
 }
 
 const taskApi = () => {
@@ -230,6 +241,13 @@ const taskApi = () => {
   const getDetail = (params = []) => api.get("HscvCongViec/JobDetail", params);
   const startTask = (payloadBody = {}) => api.post("HscvCongViec/BeginProcess", payloadBody);
   const getTaskAssigner = (payloadBody = {}) => api.post("HscvCongViec/GetListGiaoviec", payloadBody);
+  const getAttachment = (payloadBody = {}) => api.post("", payloadBody);
+  const getList = (params = []) => api.get("HscvCongViec", params);
+  const getAssignHelper = (params = []) => api.get("HscvCongViec/AssignTask", params);
+  const getAssignedUser = (payloadBody = {}) => api.post("HscvCongViec/GetUserToAssignTask", payloadBody);
+  const saveAssignedUser = (payloadBody = {}) => api.post("HscvCongViec/SaveAssignTask", payloadBody);
+  const getSubTask = (params = []) => api.get("HscvCongViec/GetSubTasks", params);
+  const saveCompleteSubTask = (payloadBody = {}) => api.post("HscvCongViec/CompleteSubTask", payloadBody);
   //TODO: added plan to deprecated
 
   return {
@@ -239,6 +257,12 @@ const taskApi = () => {
     getDetail,
     startTask,
     getTaskAssigner,
+    getList,
+    getAssignHelper,
+    getAssignedUser,
+    saveAssignedUser,
+    getSubTask,
+    saveCompleteSubTask,
   };
 }
 
@@ -250,6 +274,7 @@ const workflowApi = () => {
   const getFlow = (params = []) => api.get("WorkFlow/GetFlow", params);
   const saveFlow = (payloadBody = {}) => api.post("WorkFlow/SaveFlow", payloadBody);
   const getUserInFlow = (params = []) => api.get("WorkFlow/SearchUserInFlow", params);
+  const saveSignDoc = (payloadBody = {}) => api.post("WorkFlow/SaveSignDoc", payloadBody);
 
   return {
     checkFlow,
@@ -259,6 +284,7 @@ const workflowApi = () => {
     getFlow,
     saveFlow,
     getUserInFlow,
+    saveSignDoc,
   };
 }
 

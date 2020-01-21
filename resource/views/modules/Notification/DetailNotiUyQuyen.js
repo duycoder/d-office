@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Container, Header, Left, Right, Body, Title, Content } from 'native-base';
 import { _readableFormat, convertDateToString } from '../../../common/Utilities';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
@@ -26,20 +26,6 @@ class DetailNotiUyQuyen extends Component {
   componentWillMount = () => {
     this.fetchData();
   }
-
-  // componentDidMount = () => {
-  //   this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
-  //     if (this.props.extendsNavParams.hasOwnProperty("check")) {
-  //       if (this.props.extendsNavParams.check === true) {
-  //         this.fetchData();
-  //       }
-  //     }
-  //   })
-  // }
-
-  // componentWillUnmount = () => {
-  //   this.willFocusListener.remove();
-  // }
 
   fetchData = async () => {
     this.setState({
@@ -128,10 +114,8 @@ class DetailNotiUyQuyen extends Component {
                   <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAYTAO)}`}</Text>
                 </View>
               </View>
-
             </Content>
         }
-
       </Container>
     );
   }

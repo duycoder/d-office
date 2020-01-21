@@ -45,8 +45,7 @@ import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
 import { reminderApi } from '../../../common/Api';
-import { AddButton, ColumnedListItem } from '../../common';
-import GoBackButton from '../../common/GoBackButton';
+import { AddButton, ColumnedListItem, GoBackButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;

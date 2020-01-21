@@ -43,14 +43,12 @@ import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
-import GoBackButton from '../../common/GoBackButton';
 import { meetingRoomApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton } from '../../common';
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
 
 const MeetingRoomApi = meetingRoomApi();
 
 class PickMeetingRoom extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -276,7 +274,7 @@ class PickMeetingRoom extends Component {
       bodyContent = (
         <Container>
           <Item>
-            <Icon name='ios-search' style={{ marginLeft: 5 }} />
+            <Icon name='ios-search' style={{ marginLeft: moderateScale(5) }} />
             <Input placeholder='Tên phòng'
               value={this.state.roomFilterValue}
               onSubmitEditing={() => this.onFilter(true)}

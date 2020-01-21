@@ -13,7 +13,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import OpenFile from 'react-native-doc-viewer';
 import * as util from 'lodash';
 //lib
-import { Button, Icon, Text as NBText } from 'native-base'
+import { Button, Icon, Text as NBText, Toast } from 'native-base'
 import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL, ASYNC_DELAY_TIMEOUT } from './SystemConstant'
 import AlertMessage from '../views/common/AlertMessage';
 import AlertMessageStyle from '../assets/styles/AlertMessageStyle';
@@ -422,4 +422,14 @@ export function isObject(needCheckObj) {
  */
 export function isObjectEmpty(obj = {}) {
     return Object.keys(obj).length < 1;
+}
+
+export function showWarningToast(title = '') {
+    Toast.show({
+        text: title,
+        type: 'danger',
+        buttonText: "OK",
+        buttonStyle: { backgroundColor: Colors.WHITE },
+        buttonTextStyle: { color: Colors.LITE_BLUE },
+    });
 }

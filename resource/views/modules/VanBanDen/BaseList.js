@@ -42,6 +42,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { SearchSection, MoreButton } from '../../common';
+import { vanbandenApi } from '../../../common/Api';
 
 class BaseList extends Component {
   constructor(props) {
@@ -93,7 +94,9 @@ class BaseList extends Component {
   async fetchData() {
     let apiUrlParam = 'ChuaXuLy';
 
-    const { docType } = this.state;
+    const { docType,
+      userId, hasAuthorization, pageSize, pageIndex, filterValue
+    } = this.state;
 
     if (docType == VANBANDEN_CONSTANT.DA_XULY) {
       apiUrlParam = 'DaXuLy';
@@ -105,10 +108,13 @@ class BaseList extends Component {
       apiUrlParam = 'NoiBoDaXuLy'
     }
 
-    const url = `${API_URL}/api/VanBanDen/${apiUrlParam}/${this.state.userId}/${this.state.hasAuthorization}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await vanbandenApi().getList([
+      apiUrlParam,
+      userId,
+      hasAuthorization,
+      pageSize,
+      `${pageIndex}?query=${filterValue}`
+    ]);
 
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
@@ -119,15 +125,6 @@ class BaseList extends Component {
   }
 
   navigateToDocDetail = (docId) => {
-    let currentScreenName = "VanBanDenIsNotProcessScreen";
-
-    if (this.state.docType == VANBANDEN_CONSTANT.DA_XULY) {
-      currentScreenName = "VanBanDenIsProcessScreen"
-    } else if (this.state.docType == VANBANDEN_CONSTANT.NOIBO_CHUAXULY) {
-      currentScreenName = "VanBanDenInternalIsNotProcessScreen"
-    } else if (this.state.docType == VANBANDEN_CONSTANT.NOIBO_DAXULY) {
-      currentScreenName = "VanBanDenInternalIsProcessScreen"
-    }
     let targetScreenParam = {
       docId,
       docType: this.state.docType

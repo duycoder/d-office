@@ -162,13 +162,15 @@ class CreateMeetingDay extends Component {
     });
   }
 
-  // navigateToVanbanLienquan = (screenName = "") => {
-  //   const targetScreenParam = {
-  //     docId: this.state.docId,
-  //     docType: this.state.docType
-  //   };
-  //   this.onNavigate(screenName, targetScreenParam);
-  // }
+  showWarningToast = (title = '') => {
+    Toast.show({
+      text: title,
+      type: 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: Colors.LITE_BLUE },
+    });
+  }
 
   saveLichhop = async () => {
     this.setState({
@@ -181,46 +183,15 @@ class CreateMeetingDay extends Component {
     } = this.state;
 
     if (!mucdich) {
-      Toast.show({
-        text: 'Vui lòng nhập mục đích',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
-    }
-    else if (!thamgia) {
-      Toast.show({
-        text: 'Vui lòng nhập thành phần tham dự',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      this.showWarningToast('Vui lòng nhập mục đích');
+    } else if (!thamgia) {
+      this.showWarningToast('Vui lòng nhập thành phần tham dự');
     } else if (!thoigianBatdau) {
-      Toast.show({
-        text: 'Vui lòng chọn thời gian bắt đầu',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      this.showWarningToast('Vui lòng chọn thời gian bắt đầu');
     } else if (!thoigianKetthuc) {
-      Toast.show({
-        text: 'Vui lòng chọn thời gian kết thúc',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      this.showWarningToast('Vui lòng chọn thời gian kết thúc');
     } else if (!ngayHop) {
-      Toast.show({
-        text: 'Vui lòng chọn ngày họp',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      this.showWarningToast('Vui lòng chọn ngày họp');
     } else {
       this.setState({
         executing: true

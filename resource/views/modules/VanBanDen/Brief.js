@@ -67,10 +67,10 @@ class Brief extends Component {
         if (this.props.extendsNavParams.check === true) {
           this.setState({
             loading: true
-          }, ()=>{
+          }, () => {
             this.fetchData();
           });
-this.props.updateExtendsNavParams({check: false});
+          this.props.updateExtendsNavParams({ check: false });
         }
       }
     })
@@ -148,7 +148,7 @@ this.props.updateExtendsNavParams({check: false});
       <Container>
         <Header hasTabs style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBackToDetailVanbanDen()}/>
+            <GoBackButton onPress={() => this.navigateBackToDetailVanbanDen()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -321,11 +321,11 @@ class BriefTaskList extends Component {
 
           leftIcon={
             <View style={ListTaskStyle.leftSide}>
-            {
-              renderIf(item.HAS_FILE)(
-                <Icon name='ios-attach' />
-              )
-            }
+              {
+                renderIf(item.HAS_FILE)(
+                  <Icon name='ios-attach' />
+                )
+              }
             </View>
           }
 
@@ -364,7 +364,6 @@ class BriefTaskList extends Component {
           data={this.state.data}
           keyExtractor={(item, index) => item.ID.toString()}
           renderItem={this.renderItem}
-
           ListEmptyComponent={() => emptyDataPage()}
         />
       </View>
@@ -413,11 +412,11 @@ class BriefResponseList extends Component {
           }}
           leftIcon={
             <View style={ListSignDocStyle.leftSide}>
-            {
-              renderIf(item.HAS_FILE)(
-                <Icon name='ios-attach' />
-              )
-            }
+              {
+                renderIf(item.HAS_FILE)(
+                  <Icon name='ios-attach' />
+                )
+              }
             </View>
           }
 

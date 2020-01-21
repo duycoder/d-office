@@ -48,8 +48,7 @@ import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import { getFileExtensionLogo } from '../../../common/Effect';
 import AlertMessage from '../../common/AlertMessage';
 import { lichtrucApi } from '../../../common/Api';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton, ColumnedListItem } from '../../common';
 
 const api = lichtrucApi();
 
@@ -230,73 +229,38 @@ class ListLichtruc extends Component {
   renderItem = ({ item, index }) => {
     const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
+    const thoihanText = convertDateToString(item.TUNGAY) - convertDateToString(item.DENNGAY);
     return (
       <View>
         <ListItem
           containerStyle={{ borderBottomColor: Colors.GRAY }}
-
           onPress={() => this.navigateToScreen("ListPersonalLichtrucScreen")}
-
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
               {item.KEHOACH}
             </RnText>
           }
-
           subtitle={
             <View style={{ marginTop: 8 }}>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "30%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Thời hạn:
-                </RnText>
-                </View>
-                <View style={{ width: "70%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                    {` ${convertDateToString(item.TUNGAY)} - ${convertDateToString(item.DENNGAY)}`}
-                  </RnText>
-                </View>
-              </View>
-              {
-                (item.BS_TRUC_THAM_VAN && item.BS_TRUC_THAM_VAN.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "30%" }}>
-                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                      Bác sĩ trực tham vấn:
-                    </RnText>
-                  </View>
-                  <View style={{ width: "70%" }}>
-                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.BS_TRUC_THAM_VAN}
-                    </RnText>
-                  </View>
-                </View>
-              }
-              {
-                (item.BS_KIEM_TRA_TRUC && item.BS_KIEM_TRA_TRUC.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <View style={{ width: "30%" }}>
-                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                      Bác sĩ kiểm tra trực:
-                    </RnText>
-                  </View>
-                  <View style={{ width: "70%" }}>
-                    <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-                      {' ' + item.BS_KIEM_TRA_TRUC}
-                    </RnText>
-                  </View>
-                </View>
-              }
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <View style={{ width: "30%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-                    Trạng thái:
-                </RnText>
-                </View>
-                <View style={{ width: "70%" }}>
-                  <RnText style={{ fontSize: moderateScale(12, 1.1), color: statusTextColor }}>
-                    {` ${item.TenTrangThai}`}
-                  </RnText>
-                </View>
-              </View>
+              <ColumnedListItem
+                leftText='Thời hạn:'
+                rightText={thoihanText}
+              />
+              <ColumnedListItem
+                isRender={!!item.BS_TRUC_THAM_VAN}
+                leftText='Bác sĩ trực tham vấn:'
+                rightText={item.BS_TRUC_THAM_VAN}
+              />
+              <ColumnedListItem
+                isRender={!!item.BS_KIEM_TRA_TRUC}
+                leftText='Bác sĩ kiểm tra trực:'
+                rightText={item.BS_KIEM_TRA_TRUC}
+              />
+              <ColumnedListItem
+                leftText='Trạng thái:'
+                rightText={item.TenTrangThai}
+                customRightText={{ color: statusTextColor }}
+              />
             </View>
           }
           rightIcon={
@@ -355,20 +319,6 @@ class ListLichtruc extends Component {
                 </MenuOptions>
               </Menu>
             </Right>
-            {
-              // <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
-              //   <Icon name='ios-search' />
-              //   <Input placeholder='Tên chuyến'
-              //     value={this.state.filterValue}
-              //     onChangeText={(filterValue) => this.setState({ filterValue })}
-              //     onSubmitEditing={() => this.onFilter()} />
-              //   {
-              //     this.state.filterValue !== EMPTY_STRING
-              //       ? <Icon name='ios-close-circle' onPress={this.onClearFilter} />
-              //       : null
-              //   }
-              // </Item>
-            }
           </Header>
 
           <Content contentContainerStyle={{ flex: 1 }}>

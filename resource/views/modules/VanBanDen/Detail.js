@@ -44,6 +44,7 @@ import GoBackButton from '../../common/GoBackButton';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandenApi } from '../../../common/Api';
+import { Timeline } from '../../common/DetailCommon';
 const api = vanbandenApi();
 class Detail extends Component {
     constructor(props) {
@@ -72,13 +73,11 @@ class Detail extends Component {
     }
 
     componentWillMount = () => {
-        // backHandlerConfig(true, this.navigateBack);
         this.fetchData();
 
     }
 
     componentDidMount = () => {
-        // console.tron.log(this.props.extendsNavParams)
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("check")) {
                 if (this.props.extendsNavParams.check === true) {
@@ -91,7 +90,6 @@ class Detail extends Component {
 
     componentWillUnmount = () => {
         this.willFocusListener.remove();
-        // backHandlerConfig(false, this.navigateBack);
     }
 
     async fetchData() {
@@ -151,7 +149,6 @@ class Detail extends Component {
         }
 
         this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam)
-        // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
     }
 
     onProcessDoc = async (item, isStepBack) => {
@@ -178,8 +175,6 @@ class Detail extends Component {
                 apiUrlMiddle: 'VanBanDen'
             }
             this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
-
-            // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
         }
     }
 
@@ -232,8 +227,6 @@ class Detail extends Component {
 
     onSendCC() {
         const targetScreenParam = {
-            // processId: this.state.docInfo.WorkFlow.Process.ID,
-            // stepId: 0,
             idItem: this.state.docInfo.WorkFlow.Process.ITEM_ID,
             itemType: this.state.docInfo.WorkFlow.Process.ITEM_TYPE
         };
@@ -315,11 +308,6 @@ class Detail extends Component {
                                     <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
                                 </MenuOptions>
                             </Menu>
-                            {
-                                // <Button transparent onPress={() => this.navigateToBrief()}>
-                                //     <RneIcon name='ios-paper' size={moderateScale(35)} color={Colors.WHITE} type='ionicon' />
-                                // </Button>
-                            }
                         </Right>
                     </Header>
                     {
@@ -404,7 +392,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <TimelinePublishDoc info={this.state.docInfo} />
+                        <Timeline info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
 

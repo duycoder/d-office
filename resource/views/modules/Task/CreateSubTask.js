@@ -19,7 +19,7 @@ import DatePicker from 'react-native-datepicker';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -30,7 +30,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
@@ -101,21 +101,9 @@ class CreateSubTask extends Component {
 		} = this.state;
 
 		if (util.isNull(content) || util.isEmpty(content)) {
-			Toast.show({
-				text: 'Vui lòng nhập nội dung',
-				type: 'danger',
-				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: Colors.LITE_BLUE },
-			});
+			showWarningToast('Vui lòng nhập nội dung');
 		} else if (util.isNull(chosenDate) || util.isEmpty(chosenDate)) {
-			Toast.show({
-				text: 'Vui lòng nhập thời hạn xử lý',
-				type: 'danger',
-				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: Colors.LITE_BLUE },
-			});
+			showWarningToast('Vui lòng nhập thời hạn xử lý');
 		} else {
 			this.setState({
 				executing: true
@@ -214,22 +202,6 @@ class CreateSubTask extends Component {
 								}
 							</Picker>
 						</Item>
-
-						{
-							// <Item stackedLabel>
-							// 	<Label>Lập kế hoạch</Label>
-							// 	<Picker
-							// 		iosHeader='Chọn mức quan trọng'
-							// 		mode='dropdown'
-							// 		iosIcon={<Icon name='ios-arrow-down' type="Ionicons" />}
-							// 		style={{ width: pickerFormat() }}
-							// 		selectedValue={this.state.planValue}
-							// 		onValueChange={this.onPlanValueChange.bind(this)}>
-							// 		<Picker.Item value="1" label="Có" />
-							// 		<Picker.Item value="0" label="Không" />
-							// 	</Picker>
-							// </Item>
-						}
 
 						<Item stackedLabel style={{ justifyContent: 'center' }}>
 							<Label>Hạn hoàn thành <Text style={{ color: '#f00' }}>*</Text></Label>

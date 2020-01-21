@@ -20,7 +20,7 @@ import 'moment/locale/vi';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -74,13 +74,7 @@ class CreateNotiUyQuyen extends Component {
     } = this.state;
 
     if (!tieude) {
-      Toast.show({
-        text: 'Vui lòng nhập tiêu đề',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập tiêu đề');
     }
     // else if (!noidung) {
     //   Toast.show({
@@ -92,13 +86,7 @@ class CreateNotiUyQuyen extends Component {
     //   });
     // } 
     else if (!showUntil) {
-      Toast.show({
-        text: 'Vui lòng chọn hạn hiển thị thông báo',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn hạn hiển thị thông báo');
     }
     else {
       this.setState({
@@ -203,7 +191,7 @@ class CreateNotiUyQuyen extends Component {
                 bordered
                 value={noidung}
                 onChangeText={this.handleChange("noidung")}
-                style={[{ width: '100%', marginTop: 20 }, focusId === "noidung" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
+                style={[{ width: '100%', marginTop: moderateScale(18.5, 0.85) }, focusId === "noidung" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}
                 onFocus={() => this.setState({ focusId: "noidung" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
@@ -265,16 +253,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateNotiUyQuyen);
-
-const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderColor: Colors.GRAY,
-    borderWidth: 1,
-    padding: 5,
-    width: '100%'
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
-})

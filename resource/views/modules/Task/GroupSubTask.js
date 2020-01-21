@@ -47,6 +47,7 @@ import { AlertMessageStyle } from "../../../assets/styles/index";
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
 import { MoreButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class GroupSubTask extends Component {
     constructor(props) {
@@ -93,12 +94,11 @@ class GroupSubTask extends Component {
     }
 
     fetchData = async () => {
-        const url = `${API_URL}/api/HscvCongViec/GetSubTasks/${this.state.taskId}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-
-        await asyncDelay(1000);
+        const { taskId, pageIndex, filterValue } = this.state;
+        const resultJson = await taskApi().getSubTask([
+            taskId,
+            `${pageIndex}?query=${filterValue}`
+        ]);
 
         this.setState({
             data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson,
@@ -127,14 +127,6 @@ class GroupSubTask extends Component {
             }, () => {
                 this.refs.confirm_1.showModal();
             });
-            // Alert.alert(
-            //     'XỬ LÝ CÔNG VIỆC CON',
-            //     `Xử lý công việc #${item.ID}`,
-            //     [
-            //         { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
-            //         { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) }
-            //     ]
-            // )
         }
         else if (canAssign && !canFinish) {
             this.setState({
@@ -143,14 +135,6 @@ class GroupSubTask extends Component {
             }, () => {
                 this.refs.confirm_2.showModal();
             });
-            // Alert.alert(
-            //     'XỬ LÝ CÔNG VIỆC CON',
-            //     `Xử lý công việc #${item.ID}`,
-            //     [
-            //         { 'text': 'GIAO VIỆC', onPress: () => this.onNavigateToAssignTask(item.ID) },
-            //         { 'text': 'THOÁT', onPress: () => { } },
-            //     ]
-            // )
         } else {
             this.setState({
                 editSubTaskType: 3,
@@ -158,14 +142,6 @@ class GroupSubTask extends Component {
             }, () => {
                 this.refs.confirm_3.showModal();
             });
-            // Alert.alert(
-            //     'XỬ LÝ CÔNG VIỆC CON',
-            //     `Xử lý công việc #${item.ID}`,
-            //     [
-            //         { 'text': 'HOÀN THÀNH', onPress: () => this.onConfirmCompleteTask(item.ID) },
-            //         { 'text': 'THOÁT', onPress: () => { } },
-            //     ]
-            // )
         }
     }
 
@@ -213,15 +189,7 @@ class GroupSubTask extends Component {
             alertIdHolder: id
         }, () => {
             this.refs.confirm_4.showModal();
-        })
-        // Alert.alert(
-        //     'XÁC NHẬN HOÀN THÀNH',
-        //     'Bạn có chắc chắn đã hoàn thành công việc này?',
-        //     [
-        //         { 'text': 'Đồng ý', onPress: () => this.onCompleteSubTask(id) },
-        //         { 'text': 'Hủy bỏ', onPress: () => { } }
-        //     ]
-        // )
+        });
     }
 
     onCompleteSubTask = async (id) => {
@@ -270,69 +238,10 @@ class GroupSubTask extends Component {
         let canFinish = this.state.canFinishTask && item.DAGIAOVIEC != true;
 
         return (
-            // <View>
-            //     <ListItem
-            //         // hideChevron={true}
-            //         containerStyle={{ borderBottomWidth: 0, paddingBottom: 0 }}
-            //         title={
-            //             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2) }]}>
-            //                 {item.NOIDUNG}
-            //             </RnText>
-            //         }
-
-            //         subtitle={
-            //             <View style={{ marginTop: 8 }}>
-            //                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            //                     <View style={{ width: "35%" }}>
-            //                         <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-            //                             Hạn xử lý:
-            //                         </RnText>
-            //                     </View>
-            //                     <View style={{ width: "65%" }}>
-            //                         <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-            //                             {' ' + convertDateToString(item.HANHOANTHANH)}
-            //                         </RnText>
-            //                     </View>
-            //                 </View>
-            //                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            //                     <View style={{ width: "35%" }}>
-            //                         <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
-            //                             Người thực hiện:
-            //                         </RnText>
-            //                     </View>
-            //                     <View style={{ width: "65%" }}>
-            //                         {
-            //                             item.NGUOITHUCHIEN
-            //                                 ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-            //                                     {' ' + item.NGUOITHUCHIEN}
-            //                                 </RnText>
-            //                                 : item.TRANGTHAI_ID > 0 
-            //                                     ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
-            //                                         {' Tự thực hiện'}
-            //                                     </RnText>
-            //                                     : <RnText style={{ fontSize: moderateScale(12, 1.1), color: Colors.RED_PANTONE_186C }}>
-            //                                         {' Chưa giao việc'}
-            //                                     </RnText>
-            //                         }
-            //                     </View>
-            //                 </View>
-            //             </View>
-            //         }
-            //         rightIcon={
-            //             <View style={{ flexDirection: 'column' }}>
-            //                 <RneIcon name='check-bold' size={26} color={item.TRANGTHAI_ID > 0 ? Colors.GREEN_PANTON_369C : Colors.RED_PANTONE_186C} type='material-community' />
-            //             </View>
-            //         }
-            //     />
-            // </View>
-
-
-
             <SwipeRow
                 leftOpenValue={75}
                 rightOpenValue={-75}
                 disableLeftSwipe={(!canAssign && !canFinish) || item.TRANGTHAI_ID > 0}
-                // disableRightSwipe={item.DAGIAOVIEC === true}
                 left={
                     <Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowSubTaskInfo(item)}>
                         <RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
@@ -398,7 +307,6 @@ class GroupSubTask extends Component {
     }
 
     componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams) {
                 if (this.props.extendsNavParams.hasOwnProperty("check")) {
@@ -412,14 +320,10 @@ class GroupSubTask extends Component {
     }
 
     componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
         this.willFocusListener.remove();
     }
 
     navigateBackToDetail = () => {
-        // appGetDataAndNavigate(this.props.navigation, 'GroupSubTaskScreen');
-        // return true;
-        // this.props.navigation.navigate(this.props.coreNavParams.screenName);
         this.props.navigation.goBack();
     }
 
@@ -489,7 +393,6 @@ class GroupSubTask extends Component {
                     executeLoading(this.state.executing)
                 }
 
-                {/* hiển thị thông tin công việc con*/}
                 <PopupDialog
                     dialogTitle={<DialogTitle title={`THÔNG TIN CÔNG VIỆC #${this.state.dataItem.CONGVIEC_ID}`}
                         titleStyle={{

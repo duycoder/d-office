@@ -32,7 +32,7 @@ import {
 } from '../../../common/SystemConstant';
 import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, indicatorResponsive, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
@@ -40,9 +40,8 @@ import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
-import GoBackButton from '../../common/GoBackButton';
 import { reminderApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton } from '../../common';
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
 
 class PickWhoseReminder extends Component {
   constructor(props) {
@@ -179,7 +178,7 @@ class PickWhoseReminder extends Component {
     else {
       bodyContent = (
         <Content contentContainerStyle={{ flex: 1 }}>
-          <Item style={{ paddingLeft: 10 }}>
+          <Item style={{ paddingLeft: scale(10) }}>
             <Icon name='ios-search' />
             <Input placeholder={'Họ tên'}
               onSubmitEditing={() => this.onFilter(true)}
@@ -192,10 +191,6 @@ class PickWhoseReminder extends Component {
                 : null
             }
           </Item>
-
-          {
-
-          }
 
           <FlatList
             data={this.state.data}

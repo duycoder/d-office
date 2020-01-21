@@ -35,9 +35,6 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 
-
-
-
 class UpdateProgressTask extends Component {
     constructor(props) {
         super(props);

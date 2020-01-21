@@ -25,7 +25,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
@@ -64,15 +64,6 @@ class ApproveProgressTask extends Component {
         })
     }
 
-
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
-    }
-
     navigateBackToDetail = () => {
         this.props.navigation.goBack();
     }
@@ -80,22 +71,9 @@ class ApproveProgressTask extends Component {
     //kiểm tra chắc chắn phê duyệt tiến độ công việc
     onConfirmApproveCompleteTask = () => {
         if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {
-            Toast.show({
-                text: 'Vui lòng nhập nội dung phản hồi',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng nhập nội dung phản hồi');
         } else {
             this.refs.confirm.showModal();
-            // Alert.alert(
-            //     'XÁC NHẬN PHẢN HỒI',
-            //     'Bạn có chắc chắn muốn thực hiện việc này?',
-            //     [
-            //         { text: 'Đồng ý', onPress: () => this.onApproveCompleteTask() },
-            //         { text: 'Hủy bỏ', onPress: () => { } },
-            //     ]);
         }
     }
 

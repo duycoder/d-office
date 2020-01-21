@@ -9,7 +9,7 @@ import { WebView } from 'react-native-webview';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
 import { Container, Header, Left, Body, Title, Right } from 'native-base';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 

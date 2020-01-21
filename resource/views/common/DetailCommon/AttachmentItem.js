@@ -3,11 +3,11 @@ import {
   View, Text, StyleSheet
 } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
-import { isArray, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../common/Utilities';
-import { InfoStyle } from '../../assets/styles';
-import { Colors } from '../../common/SystemConstant';
-import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
-import { getFileSize, getFileExtensionLogo } from '../../common/Effect';
+import { isArray, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
+import { InfoStyle } from '../../../assets/styles';
+import { Colors } from '../../../common/SystemConstant';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { getFileSize, getFileExtensionLogo } from '../../../common/Effect';
 
 export default class AttachmentItem extends Component {
   static defaultProps = {

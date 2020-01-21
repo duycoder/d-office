@@ -41,6 +41,7 @@ import { ListNotificationStyle } from '../../../assets/styles/ListNotificationSt
 import GoBackButton from '../../common/GoBackButton';
 import { NativeBaseStyle } from '../../../assets/styles';
 import { SearchSection, MoreButton } from '../../common';
+import { vanbandiApi } from '../../../common/Api';
 
 class BaseList extends Component {
   constructor(props) {
@@ -91,7 +92,9 @@ class BaseList extends Component {
   async fetchData() {
     let apiUrlParam = 'ChuaXuLy';
 
-    const { docType } = this.state;
+    const { docType,
+      userId, hasAuthorization, pageSize, pageIndex, filterValue
+    } = this.state;
 
     if (docType == VANBANDI_CONSTANT.DA_XULY) {
       apiUrlParam = 'DaXuLy';
@@ -101,10 +104,13 @@ class BaseList extends Component {
       apiUrlParam = 'DaBanHanh';
     }
 
-    const url = `${API_URL}/api/VanBanDi/${apiUrlParam}/${this.state.userId}/${this.state.hasAuthorization}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
-    const result = await fetch(url);
-    const resultJson = await result.json();
+    const resultJson = await vanbandiApi().getList([
+      apiUrlParam,
+      userId,
+      hasAuthorization,
+      pageSize,
+      `${pageIndex}?query=${filterValue}`
+    ]);
 
     this.setState({
       data: this.state.loadingMoreData ? [...this.state.data, ...resultJson.ListItem] : resultJson.ListItem,
@@ -115,16 +121,6 @@ class BaseList extends Component {
   }
 
   navigateToDocDetail = (docId) => {
-    let currentScreenName = "VanBanDiIsNotProcessScreen";
-
-    if (this.state.docType == VANBANDI_CONSTANT.DA_XULY) {
-      currentScreenName = "VanBanDiIsProcessScreen"
-    } else if (this.state.docType == VANBANDI_CONSTANT.THAMGIA_XULY) {
-      currentScreenName = "VanBanDiJoinProcessScreen"
-    } else if (this.state.docType == VANBANDI_CONSTANT.DA_BANHANH) {
-      currentScreenName = "VanBanDiIsPublishScreen"
-    }
-
     let targetScreenParam = {
       docId,
       docType: this.state.docType
@@ -132,8 +128,6 @@ class BaseList extends Component {
 
     this.props.updateCoreNavParams(targetScreenParam);
     this.props.navigator.navigate("VanBanDiDetailScreen");
-
-    // appStoreDataAndNavigate(this.props.navigator, currentScreenName, new Object(), "VanBanDiDetailScreen", targetScreenParam);
   }
 
   onFilter = () => {
@@ -190,7 +184,7 @@ class BaseList extends Component {
                 <RnText style={ListNotificationStyle.leftTitleText}>{loaiVanbanStr}</RnText>
               </View>
               {
-                item.HAS_FILE && <RNEIcon name='ios-attach' size={26} type='ionicon' containerStyle={{ marginRight: 8, marginTop: 2 }} />
+                item.HAS_FILE && <RNEIcon name='ios-attach' size={moderateScale(25.34, 0.78)} type='ionicon' containerStyle={{ marginRight: 8, marginTop: 2 }} />
               }
             </View>
           }

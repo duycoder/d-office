@@ -30,7 +30,7 @@ import {
   EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
   TASK_PROCESS_TYPE, Colors, DEFAULT_PAGE_SIZE
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -40,12 +40,8 @@ import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
-// import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
-// import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
-import GoBackButton from '../../common/GoBackButton';
 import { meetingRoomApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton } from '../../common';
-
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
 
 class PickNguoiChutri extends Component {
   constructor(props) {
@@ -99,13 +95,7 @@ class PickNguoiChutri extends Component {
 
   onPickNguoichutri = () => {
     if (this.state.chutriId === 0) {
-      Toast.show({
-        text: 'Vui lòng chọn người chủ trì',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn người chủ trì');
     } else {
       this.props.updateExtendsNavParams({ chutriId: this.state.chutriId, chutriName: this.state.chutriName });
       this.navigateBack();
@@ -188,10 +178,6 @@ class PickNguoiChutri extends Component {
                 : null
             }
           </Item>
-
-          {
-
-          }
 
           <FlatList
             data={this.state.data}

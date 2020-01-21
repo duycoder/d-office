@@ -46,6 +46,8 @@ import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import GoBackButton from '../../common/GoBackButton';
 import { HeaderMenuStyle } from '../../../assets/styles';
+import { vanbandiApi, workflowApi } from '../../../common/Api';
+import { Timeline } from '../../common/DetailCommon';
 
 class Detail extends Component {
     constructor(props) {
@@ -81,12 +83,13 @@ class Detail extends Component {
             loading: true
         });
 
-        const url = `${API_URL}/api/VanBanDi/GetDetail/${this.state.docId}/${this.state.userId}/${this.state.hasAuthorization}`;
+        const { docId, userId, hasAuthorization } = this.state;
 
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-        await asyncDelay();
+        const resultJson = await vanbandiApi().getDetail([
+            docId,
+            userId,
+            hasAuthorization
+        ]);
 
         this.setState({
             loading: false,
@@ -96,7 +99,6 @@ class Detail extends Component {
     }
 
     componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBack);
         this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
             if (this.props.extendsNavParams.hasOwnProperty("from")) {
                 if (this.props.extendsNavParams.from === "detail") {
@@ -117,7 +119,6 @@ class Detail extends Component {
 
     componentWillUnmount = () => {
         this.willFocusListener.remove();
-        // backHandlerConfig(false, this.navigateBack);
     }
 
     navigateBack = () => {
@@ -138,14 +139,11 @@ class Detail extends Component {
     }
 
     onReplyReview() {
-
         const targetScreenParam = {
             itemType: this.state.docInfo.Process.ITEM_TYPE
         }
 
         this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam);
-
-        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowReplyReviewScreen", targetScreenParam);
     }
 
     onProcessDoc = (item, isStepBack) => {
@@ -170,8 +168,6 @@ class Detail extends Component {
             }
 
             this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
-
-            // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowStreamProcessScreen", targetScreenParam);
         }
     }
 
@@ -185,7 +181,6 @@ class Detail extends Component {
         }
 
         this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
-        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onSelectWorkFlowStep(item, isStepBack) {
@@ -199,46 +194,21 @@ class Detail extends Component {
 
     onConfirmSignDoc = () => {
         this.refs.confirm.showModal();
-        // Alert.alert(
-        //     'XÁC NHẬN KÝ DUYỆT',
-        //     'Bạn có chắc chắn ký duyệt văn bản',
-        //     [
-        //         {
-        //             text: 'CÓ',
-        //             onPress: async () => {
-        //                 this.onSignDoc();
-        //             }
-        //         },
-        //         {
-        //             text: 'KHÔNG',
-        //             onPress: () => { }
-        //         }
-        //     ]
-        // )
     }
 
     onSignDoc = async () => {
         this.refs.confirm.closeModal();
-        const url = `${API_URL}/api/WorkFlow/SaveSignDoc/`;
+
         this.setState({
             executing: true
         })
 
-        const result = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8',
-            },
-            body: JSON.stringify({
-                UserID: this.state.userId,
-                ItemID: this.state.docId,
-                IsUyQuyen: false
-            })
-        }).then(response => response.json());
+        const result = workflowApi().saveSignDoc({
+            UserID: this.state.userId,
+            ItemID: this.state.docId,
+            IsUyQuyen: false
+        });
 
-        await asyncDelay();
-        
         this.setState({
             executing: false
         })
@@ -264,8 +234,6 @@ class Detail extends Component {
             vanbandiData: this.state.docInfo.LstRootComment
         }
         this.onNavigate("ListCommentScreen", targetScreenParam);
-
-        // appStoreDataAndNavigate(this.props.navigation, "VanBanDiDetailScreen", this.state.screenParam, "ListCommentScreen", targetScreenParam);
     }
 
     onCreateTask = () => {
@@ -284,7 +252,6 @@ class Detail extends Component {
     }
 
     render() {
-        // console.tron.log(this.state.docInfo)
         let bodyContent = null;
         let workflowButtons = [];
         if (this.state.loading) {
@@ -353,22 +320,6 @@ class Detail extends Component {
                                     <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
                                 </MenuOptions>
                             </Menu>
-                            {
-                                // <Button transparent onPress={this.onOpenComment}>
-                                //     <Form style={DetailSignDocStyle.commentButtonContainer}>
-                                //         <Icon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
-                                //         {
-                                //             renderIf(this.state.docInfo && this.state.docInfo.hasOwnProperty('CommentCount') && this.state.docInfo.CommentCount > 0)(
-                                //                 <Form style={DetailSignDocStyle.commentCircleContainer}>
-                                //                     <Text style={DetailSignDocStyle.commentCountText}>
-                                //                         {this.state.docInfo.CommentCount}
-                                //                     </Text>
-                                //                 </Form>
-                                //             )
-                                //         }
-                                //     </Form>
-                                // </Button>
-                            }
                         </Right>
                     </Header>
                     {
@@ -435,8 +386,8 @@ class DetailContent extends Component {
             <View style={{ flex: 1 }}>
                 <Tabs
                     // renderTabBar={() => <ScrollableTab  />}
-              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
-              initialPage={this.state.currentTabIndex}
+                    tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+                    initialPage={this.state.currentTabIndex}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
                     <Tab heading={
@@ -482,7 +433,7 @@ class DetailContent extends Component {
                             </Text>
                         </TabHeading>
                     }>
-                        <TimelineSignDoc info={this.state.docInfo} />
+                        <Timeline info={this.state.docInfo} />
                     </Tab>
                 </Tabs>
                 {

@@ -42,12 +42,11 @@ import GroupSubTask from './GroupSubTask';
 import ResultEvaluationTask from './ResultEvaluationTask'
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
-import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { HeaderMenuStyle } from '../../../assets/styles/index';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton, AlertMessage } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 const TaskApi = taskApi();
@@ -671,8 +670,8 @@ class TaskContent extends Component {
         if (this.state.info.PhieuDanhGia != null) {
             bodyContent = (
                 <Tabs
-              tabContainerStyle={{ height: moderateScale(47, 0.97) }}
-              initialPage={0}
+                    tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+                    initialPage={0}
                     tabBarUnderlineStyle={TabStyle.underLineStyle}
                     onChangeTab={(selectedTabIndex) => this.setState({ selectedTabIndex })}>
                     <Tab heading={

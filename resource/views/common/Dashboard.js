@@ -304,7 +304,6 @@ class Dashboard extends Component {
       this.fetchRecentNoti();
       this.fetchDataUyQuyen();
       this.fetchBirthdayData();
-      // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
     });
   }
 
@@ -335,7 +334,6 @@ class Dashboard extends Component {
   }
 
   render() {
-    // console.tron.log(this.state.userInfo)
     const {
       notifyCount, userFunctions, onFocusNow,
       notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan,
@@ -452,7 +450,6 @@ class Dashboard extends Component {
               }}>
                 <CalendarStrip
                   calendarAnimation={{ type: 'sequence', duration: 30 }}
-                  // daySelectionAnimation={{ type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white' }}
                   style={{
                     height: verticalScale(100),
                     paddingTop: verticalScale(20),
@@ -466,14 +463,7 @@ class Dashboard extends Component {
                   dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
                   highlightDateNumberStyle={{ color: '#c21421', fontSize: moderateScale(14, 1.2) }}
                   highlightDateNameStyle={{ color: '#c21421', fontSize: moderateScale(13, 1.1) }}
-                  // disabledDateNameStyle={{ color: 'grey' }}
-                  // disabledDateNumberStyle={{ color: 'grey' }}
-                  // datesWhitelist={datesWhitelist}
-                  // datesBlacklist={datesBlacklist}
-                  // iconLeft={require('./img/left-arrow.png')}
-                  // iconRight={require('./img/right-arrow.png')}
                   iconContainer={{ flex: 0.1 }}
-                  // showDayNumber={false}
                   onDateSelected={(date) => this.fetchCalendarData(date)}
                   shouldAllowFontScaling={false}
                 />

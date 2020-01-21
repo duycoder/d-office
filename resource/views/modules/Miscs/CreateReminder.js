@@ -31,13 +31,12 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { reminderApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
-import { HeaderRightButton, CustomPickerButton } from '../../common';
+import { HeaderRightButton, CustomPickerButton, GoBackButton } from '../../common';
 
 const ReminderApi = reminderApi();
 

@@ -67,14 +67,6 @@ class WorkflowRequestReview extends Component {
 		}
 	}
 
-	componentDidMount = () => {
-		// backHandlerConfig(true, this.navigateBackToDetail);
-	}
-
-	componentWillUnmount = () => {
-		// backHandlerConfig(false, this.navigateBackToDetail);
-	}
-
 	componentWillMount() {
 		this.fetchData();
 	}
@@ -85,7 +77,6 @@ class WorkflowRequestReview extends Component {
 		});
 
 		const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack ? 1 : 0}/${this.state.hasAuthorization}`;
-		console.log('đường dẫn', url);
 
 		const result = await fetch(url);
 		const resultJson = await result.json();
@@ -177,7 +168,6 @@ class WorkflowRequestReview extends Component {
 			});
 
 			//gửi thông báo đến cho người nhận review
-
 			if (!util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
 				const message = this.props.userInfo.Fullname + " đã gửi bạn review một văn bản mới";
 				const content = {
@@ -209,7 +199,6 @@ class WorkflowRequestReview extends Component {
 				}
 			});
 		}
-
 	}
 
 	render() {

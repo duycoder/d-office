@@ -22,7 +22,7 @@ import 'moment/locale/vi';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -33,13 +33,12 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { taskApi } from '../../../common/Api';
 import { DatePickerCustomStyle, InputCreateStyle, PickerCreateStyle, CustomStylesDatepicker } from '../../../assets/styles/index';
-import { CustomPickerButton } from '../../common';
+import { CustomPickerButton, GoBackButton } from '../../common';
 
 const TaskApi = taskApi();
 
@@ -133,14 +132,6 @@ class CreateTask extends Component {
     });
   }
 
-  // navigateToVanbanLienquan = (screenName = "") => {
-  //   const targetScreenParam = {
-  //     docId: this.state.docId,
-  //     docType: this.state.docType
-  //   };
-  //   this.onNavigate(screenName, targetScreenParam);
-  // }
-
   fetchData = async () => {
     this.setState({
       loading: true
@@ -187,30 +178,11 @@ class CreateTask extends Component {
     } = this.state;
 
     if (util.isNull(title) || util.isEmpty(title)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung công việc',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
-    }
-    else if (util.isNull(content) || util.isEmpty(content)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung công việc',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập nội dung công việc');
+    } else if (util.isNull(content) || util.isEmpty(content)) {
+      showWarningToast('Vui lòng nhập nội dung công việc');
     } else if (util.isNull(deadline) || util.isEmpty(deadline)) {
-      Toast.show({
-        text: 'Vui lòng nhập thời hạn xử lý',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập thời hạn xử lý');
     } else {
       this.setState({
         executing: true
@@ -572,16 +544,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateTask);
-
-const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderColor: Colors.GRAY,
-    borderWidth: 1,
-    padding: 5,
-    width: '100%'
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
-})

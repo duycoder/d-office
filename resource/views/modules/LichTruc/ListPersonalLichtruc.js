@@ -45,6 +45,7 @@ import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
 import { reminderApi, lichtrucApi } from '../../../common/Api';
+import { GoBackButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
@@ -157,13 +158,11 @@ class ListPersonalLichtruc extends Component {
     return (
       <ListItem
         containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
-
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
             {item.title}
           </RnText>
         }
-
         subtitle={
           <View style={{ marginTop: 8 }}>
             <RnText style={[{ fontSize: moderateScale(11, 1.1), flexWrap: "wrap", color: Colors.DANK_GRAY }]}>
@@ -196,9 +195,7 @@ class ListPersonalLichtruc extends Component {
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
-              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
-            </TouchableOpacity>
+            <GoBackButton onPress={() => this.navigateBack()} buttonStyle={{ width: '100%' }} />
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>
@@ -254,9 +251,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17
+    padding: moderateScale(10, 1.03),
+    marginRight: moderateScale(10, 1.03),
+    marginTop: moderateScale(16.35, 1.08)
   },
   emptyDate: {
     height: 15,
