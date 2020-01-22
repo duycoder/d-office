@@ -14,7 +14,7 @@ import {
   MODULE_CONSTANT,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -42,9 +42,8 @@ import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
-import GoBackButton from '../../common/GoBackButton';
 import { vanbandenApi } from '../../../common/Api';
-import { HeaderRightButton, MoreButton } from '../../common';
+import { HeaderRightButton, MoreButton, GoBackButton } from '../../common';
 
 const api = vanbandenApi();
 
@@ -117,15 +116,8 @@ class WorkflowCC extends Component {
 
     if (drivers.length > 0) {
       if (chosenDrivers.length === 0) {
-        Toast.show({
-          text: 'Vui lòng chọn người tham gia xử lý',
-          type: 'danger',
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-        });
-      }
-      else {
+        showWarningToast('Vui lòng chọn người tham gia xử lý');
+      } else {
         this.setState({
           executing: true
         });

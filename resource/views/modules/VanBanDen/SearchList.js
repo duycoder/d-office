@@ -36,7 +36,7 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //utilities
-import { formatLongText, closeSideBar, openSideBar } from '../../../common/Utilities';
+import { formatLongText, closeSideBar, openSideBar, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redũx
@@ -100,16 +100,8 @@ class ListFilterPublishDoc extends Component {
 
     onFilter = () => {
         if (util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)) {
-            Toast.show({
-                text: 'Vui lòng nhập mã hiệu hoặc trích yếu',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: '#fff' },
-                buttonTextStyle: { color: '#FF0033' },
-                duration: 2000
-            });
+            showWarningToast('Vui lòng nhập mã hiệu hoặc trích yếu');
         } else {
-            //tìm kiếm
             this.setState({
                 data: [],
                 pageIndex: DEFAULT_PAGE_INDEX,
@@ -118,7 +110,7 @@ class ListFilterPublishDoc extends Component {
                 if (!util.isEmpty(this.state.filterValue)) {
                     this.fetchData();
                 }
-            })
+            });
         }
     }
 

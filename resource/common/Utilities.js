@@ -14,7 +14,7 @@ import OpenFile from 'react-native-doc-viewer';
 import * as util from 'lodash';
 //lib
 import { Button, Icon, Text as NBText, Toast } from 'native-base'
-import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL, ASYNC_DELAY_TIMEOUT } from './SystemConstant'
+import { SAD_FACE_ICON_URI, EMTPY_DATA_MESSAGE, EMPTY_DATA_ICON_URI, Colors, WEB_URL, ASYNC_DELAY_TIMEOUT, APPLICATION_SHORT_NAME } from './SystemConstant'
 import AlertMessage from '../views/common/AlertMessage';
 import AlertMessageStyle from '../assets/styles/AlertMessageStyle';
 
@@ -269,8 +269,7 @@ export const onDownloadFile = async (fileName, fileLink, fileExtension) => {
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             {
                 title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-                message:
-                    'EofficeVNEH muốn truy cập vào tài liệu của bạn',
+                message: `${APPLICATION_SHORT_NAME} muốn truy cập vào tài liệu của bạn`,
                 buttonNeutral: 'Để sau',
                 buttonNegative: 'Thoát',
                 buttonPositive: 'OK',

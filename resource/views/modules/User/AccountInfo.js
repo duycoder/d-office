@@ -40,15 +40,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //import FCM, { FCMEvent } from 'react-native-fcm';
 import Confirm from '../../common/Confirm';
 
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
-const userAvatar = require('../../../assets/images/avatar.png');
-
 import Images from '../../../common/Images';
-import GoBackButton from '../../common/GoBackButton';
 import { accountApi } from '../../../common/Api';
 
 class AccountInfo extends Component {
@@ -155,12 +147,7 @@ class AccountInfo extends Component {
       <Container>
         <StatusBar barStyle="light-content" />
         <Header style={NativeBaseStyle.container}>
-          <Left style={NativeBaseStyle.left}>
-            {
-              // <GoBackButton onPress={() => this.navigateBack()} />
-            }
-          </Left>
-
+          <Left style={NativeBaseStyle.left}/>
           <Body style={NativeBaseStyle.body}>
             <Title style={NativeBaseStyle.bodyTitle}>
               TÀI KHOẢN
@@ -252,7 +239,6 @@ class AccountInfo extends Component {
 
           </Content>
         </Container>
-
 
         {
           executeLoading(this.state.loading)

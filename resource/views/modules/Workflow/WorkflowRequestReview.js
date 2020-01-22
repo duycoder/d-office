@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action'
 
 //utilities
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, showWarningToast } from '../../../common/Utilities';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import {
 	API_URL, EMPTY_STRING, HEADER_COLOR, LOADER_COLOR, Colors,
@@ -37,8 +37,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import WorkflowRequestReviewUsers from './WorkflowRequestReviewUsers';
-import GoBackButton from '../../common/GoBackButton';
-import { HeaderRightButton } from '../../common';
+import { HeaderRightButton, GoBackButton } from '../../common';
 
 class WorkflowRequestReview extends Component {
 	constructor(props) {
@@ -128,14 +127,7 @@ class WorkflowRequestReview extends Component {
 
 	saveRequestReview = async () => {
 		if (this.props.reviewUsers.length <= 0) {
-			Toast.show({
-				text: 'Vui lòng chọn người cần gửi',
-				type: 'danger',
-				buttonText: "OK",
-				buttonStyle: { backgroundColor: '#fff' },
-				buttonTextStyle: { color: '#FF0033' },
-			});
-			return false
+			showWarningToast('Vui lòng chọn người cần gửi');
 		} else {
 			this.setState({
 				executing: true

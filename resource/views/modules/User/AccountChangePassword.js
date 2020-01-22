@@ -29,23 +29,13 @@ import AccountStyle from '../../../assets/styles/AccountStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
+import { asyncDelay, emptyDataPage, showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import GoBackButton from '../../common/GoBackButton';
 import { accountApi } from '../../../common/Api';
-
-//fcm
-//import FCM, { FCMEvent } from 'react-native-fcm';
-
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
-const userAvatar = require('../../../assets/images/avatar.png');
 
 const AccountApi = accountApi();
 
@@ -133,15 +123,7 @@ class AccountChangePassword extends Component {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Mật khẩu xác nhận không khớp',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Mật khẩu xác nhận không khớp');
       });
       return;
     }
@@ -170,15 +152,7 @@ class AccountChangePassword extends Component {
       })
     }
     else {
-      Toast.show({
-        text: 'Thất bại',
-        type: 'danger',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      })
+      showWarningToast('Thất bại');
     }
   }
 
@@ -218,21 +192,6 @@ class AccountChangePassword extends Component {
       buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
       duration: TOAST_DURATION_TIMEOUT,
     });
-  }
-
-  onCheckValidate = () => {
-    if (this.state.TMPpassword !== this.state.password) {
-      Toast.show({
-        text: 'Mật khẩu xác nhận không khớp',
-        type: 'danger',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      });
-      return;
-    }
   }
 
   render() {
@@ -286,7 +245,7 @@ class AccountChangePassword extends Component {
                   secureTextEntry={this.state.isHidePassword}
                   autoCorrect={false}
                   returnKeyType={'done'}
-                  onSubmitEditing={this.onCheckValidate}
+                  onSubmitEditing={() => this.onSaveChange()}
                   onFocus={() => this.setState({ focusId: 'confirmPassword' })}
                   onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 />

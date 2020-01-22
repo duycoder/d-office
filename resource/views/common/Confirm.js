@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { API_URL, Colors } from '../../common/SystemConstant'
+import { API_URL, Colors, APPLICATION_SHORT_NAME } from '../../common/SystemConstant'
 
 //native
 import { Header } from 'react-native-elements';
@@ -83,7 +83,7 @@ export default class Confirm extends Component {
                         />
                         <View style={styles.content}>
                             <Text style={styles.contentText}>
-                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng EofficeVNEH?
+                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng {APPLICATION_SHORT_NAME}?
                             </Text>
                         </View>
 

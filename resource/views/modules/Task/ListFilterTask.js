@@ -39,7 +39,7 @@ import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //utilities
-import { formatLongText, closeSideBar, openSideBar, getUserInfo, convertDateToString } from '../../../common/Utilities';
+import { formatLongText, closeSideBar, openSideBar, getUserInfo, convertDateToString, showWarningToast } from '../../../common/Utilities';
 
 import * as util from 'lodash';
 import { NativeBaseStyle } from '../../../assets/styles';
@@ -115,14 +115,7 @@ class ListFilterTask extends Component {
     onFilter = () => {
         //tìm kiếm
         if (util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)) {
-            Toast.show({
-                text: 'Vui lòng nhập tên công việc',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: '#fff' },
-                buttonTextStyle: { color: '#FF0033' },
-                duration: 2000
-            });
+            showWarningToast('Vui lòng nhập tên công việc');
         } else {
             this.setState({
                 data: [],

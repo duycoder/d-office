@@ -31,12 +31,12 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { accountApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
+import { HeaderRightButton, GoBackButton } from '../../common';
 
 class CreateNotiUyQuyen extends Component {
   constructor(props) {
@@ -224,9 +224,11 @@ class CreateNotiUyQuyen extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <TouchableOpacity onPress={() => this.saveNotiUyQuyen()} style={headerSubmitButtonStyle} disabled={nothingChangeStatus}>
-              <RneIcon name='save' size={30} color={Colors.WHITE} />
-            </TouchableOpacity>
+            <HeaderRightButton
+              onPress={() => this.saveNotiUyQuyen()}
+              iconName='save' iconType='material'
+              btnStyle={headerSubmitButtonStyle} btnDisabled={nothingChangeStatus}
+            />
           </Right>
         </Header>
         {bodyContent}

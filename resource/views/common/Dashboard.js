@@ -46,7 +46,7 @@ const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 import { GridPanelStyle } from '../../assets/styles/GridPanelStyle';
-import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat, isArray } from '../../common/Utilities';
+import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat, isArray, showWarningToast } from '../../common/Utilities';
 import { ListNotificationStyle } from '../../assets/styles/ListNotificationStyle';
 import { DashboardStyle } from '../../assets/styles/DashboardStyle';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
@@ -194,13 +194,7 @@ class Dashboard extends Component {
       this.props.navigation.navigate("DetailEventScreen", { id: eventId });
     }
     else {
-      Toast.show({
-        text: 'Không tìm thấy lịch công tác yêu cầu',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Không tìm thấy lịch công tác yêu cầu');
     }
   }
 

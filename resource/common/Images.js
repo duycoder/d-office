@@ -1,5 +1,8 @@
 const images = {
   background: require('../assets/images/background.png'),
+  ribbonBackground: require('../assets/images/ribbon-background.png'),
+  showPasswordIcon: require('../assets/images/visible-eye.png'),
+  hidePasswordIcon: require('../assets/images/hidden-eye.png'),
   userAvatar: require('../assets/images/avatar.png'),
   subItemIconLink: require('../assets/images/arrow-white-right.png'),
   logo: require('../assets/images/new_logo.png'),
@@ -41,8 +44,6 @@ const images = {
     cong_viec_ca_nhan: require('../assets/images/Dashboard_icon/hot_pick/cong_viec_ca_nhan.png'),
     tien_ich: require('../assets/images/Dashboard_icon/hot_pick/tien_ich.png'),
   },
-  banner_top: require('../assets/images/banner_top.png'),
-  banner_top_2: require('../assets/images/banner_top_2.jpeg'),
   icon_phe_duyet: require('../assets/images/icon_phe_duyet.png'),
 }
 

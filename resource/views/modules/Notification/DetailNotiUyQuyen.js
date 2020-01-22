@@ -60,8 +60,7 @@ class DetailNotiUyQuyen extends Component {
             </Title>
           </Body>
 
-          <Right style={NativeBaseStyle.right}>
-          </Right>
+          <Right style={NativeBaseStyle.right} />
         </Header>
 
         {

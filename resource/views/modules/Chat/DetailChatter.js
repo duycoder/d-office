@@ -25,7 +25,7 @@ import { EMPTY_STRING, API_URL, Colors, EMTPY_DATA_MESSAGE } from '../../../comm
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import {ListChatterStyle} from '../../../assets/styles/ChatStyle';
+import { ListChatterStyle } from '../../../assets/styles/ChatStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
@@ -34,17 +34,7 @@ import { asyncDelay, emptyDataPage, convertDateTimeToString, convertDateToString
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-import GoBackButton from '../../common/GoBackButton';
-
-//fcm
-//import FCM, { FCMEvent } from 'react-native-fcm';
-
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
-const userAvatar = require('../../../assets/images/avatar.png');
+import { GoBackButton } from '../../common';
 
 class DetailChatter extends Component {
   constructor(props) {
@@ -76,7 +66,7 @@ class DetailChatter extends Component {
       <Container>
         <Header style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={()=>this.navigateBackToChatter()} />
+            <GoBackButton onPress={() => this.navigateBackToChatter()} />
           </Left>
 
           <Body style={NativeBaseStyle.body}>
@@ -84,18 +74,14 @@ class DetailChatter extends Component {
               TÀI KHOẢN
             </Title>
           </Body>
-          <Right style={NativeBaseStyle.right}>
-            {/* <Button transparent onPress={() => this.navigateToEditAccount()}>
-              <Icon name='ios-save' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
-            </Button> */}
-          </Right>
+          <Right style={NativeBaseStyle.right} />
         </Header>
         <ImageBackground style={{ flex: 1 }}>
           <Content>
             <Form>
               <ListItem
                 leftIcon={
-                  <View style={{marginHorizontal: moderateScale(30)}}>
+                  <View style={{ marginHorizontal: moderateScale(30) }}>
                     <Icon name={'address-card'} type={'font-awesome'} size={moderateScale(40)} />
                   </View>
                 }
@@ -109,7 +95,7 @@ class DetailChatter extends Component {
 
               <ListItem
                 leftIcon={
-                  <View style={{marginHorizontal: moderateScale(30)}}>
+                  <View style={{ marginHorizontal: moderateScale(30) }}>
                     <Icon name={'envelope'} type={'font-awesome'} size={moderateScale(40)} />
                   </View>
                 }
@@ -123,7 +109,7 @@ class DetailChatter extends Component {
 
               <ListItem
                 leftIcon={
-                  <View style={{marginHorizontal: moderateScale(30)}}>
+                  <View style={{ marginHorizontal: moderateScale(30) }}>
                     <Icon name={'user-tie'} type={'font-awesome'} size={moderateScale(40)} />
                   </View>
                 }
@@ -137,7 +123,7 @@ class DetailChatter extends Component {
 
               <ListItem
                 leftIcon={
-                  <View style={{marginHorizontal: moderateScale(30), alignSelf: 'center'}}>
+                  <View style={{ marginHorizontal: moderateScale(30), alignSelf: 'center' }}>
                     <Icon name={'mobile'} type={'font-awesome'} size={moderateScale(40)} />
                   </View>
                 }
@@ -151,9 +137,6 @@ class DetailChatter extends Component {
             </Form>
           </Content>
         </ImageBackground>
-        {
-          //authenticateLoading(this.state.loading)
-        }
       </Container>
     );
   }

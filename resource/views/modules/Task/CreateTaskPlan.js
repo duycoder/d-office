@@ -19,7 +19,7 @@ import DatePicker from 'react-native-datepicker';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -30,8 +30,9 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { DatePickerCustomStyle } from '../../../assets/styles';
+import { taskApi } from '../../../common/Api';
 
 class CreateTaskPlan extends Component {
   constructor(props) {
@@ -74,49 +75,24 @@ class CreateTaskPlan extends Component {
     const { fromScreen } = this.state;
 
     if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập nội dung');
     } else if (util.isNull(this.state.chosenDate) || util.isEmpty(this.state.chosenDate)) {
-      Toast.show({
-        text: 'Vui lòng nhập thời hạn xử lý',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập thời hạn xử lý');
     } else {
       this.setState({
         executing: true
       });
 
-      const url = `${API_URL}/api/HscvCongViec/CreateSubTask`;
+      const { taskId, content, priorityValue, urgencyValue, chosenDate, planValue } = this.state;
 
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=utf-8'
+      const resultJson = await taskApi().saveSubTask({
+        beginTaskId: taskId,
+        taskContent: content,
+        priority: priorityValue,
+        urgency: urgencyValue,
+        deadline: chosenDate,
+        isHasPlan: planValue == '1'
       });
-
-      const body = JSON.stringify({
-        beginTaskId: this.state.taskId,
-        taskContent: this.state.content,
-        priority: this.state.priorityValue,
-        urgency: this.state.urgencyValue,
-        deadline: this.state.chosenDate,
-        isHasPlan: this.state.planValue == '1'
-      });
-
-      const result = await fetch(url, {
-        method: 'POST',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
 
       await asyncDelay();
 

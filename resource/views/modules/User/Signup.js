@@ -28,22 +28,14 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities'
+import { asyncDelay, emptyDataPage, showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { accountApi } from '../../../common/Api';
-
-//fcm
-//import FCM, { FCMEvent } from 'react-native-fcm';
-
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
+import images from '../../../common/Images';
 
 class Signup extends Component {
   constructor(props) {
@@ -168,104 +160,59 @@ class Signup extends Component {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Bạn phải nhập họ và tên của mình',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Bạn phải nhập họ và tên của mình');
       });
-      return;
     }
-
-    if (userName.length < 6 || userName.length > 16) {
+    else if (userName.length < 6 || userName.length > 16) {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Tên đăng nhập phải có 6 - 16 kí tự',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Tên đăng nhập phải có 6 - 16 kí tự');
       });
-      return;
     }
-
-    if (!email.match(EMAIL_VALIDATION)) {
+    else if (!email.match(EMAIL_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Hãy nhập đúng Email',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Hãy nhập đúng định dạng email');
       });
-      return;
     }
-
-    if (!password.match(PASSWD_VALIDATION)) {
+    else if (!password.match(PASSWD_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt');
       });
-      return;
-    }
-
-    const result = await accountApi().postSignup({
-      EMAIL: email,
-      HOTEN: fullName,
-      MATKHAU: password,
-      TENDANGNHAP: userName
-    });
-
-    this.setState({
-      loading: false
-    });
-
-    if (result.Status) {
-      Toast.show({
-        text: 'Đăng ký tài khoản thành công',
-        type: 'success',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
-        duration: TOAST_DURATION_TIMEOUT,
-        onClose: () => {
-          this.props.navigation.goBack();
-        }
-      })
     }
     else {
-      Toast.show({
-        text: result.Message,
-        type: 'danger',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      })
+      const result = await accountApi().postSignup({
+        EMAIL: email,
+        HOTEN: fullName,
+        MATKHAU: password,
+        TENDANGNHAP: userName
+      });
+
+      this.setState({
+        loading: false
+      });
+
+      if (result.Status) {
+        Toast.show({
+          text: 'Đăng ký tài khoản thành công',
+          type: 'success',
+          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+          buttonText: "OK",
+          buttonStyle: { backgroundColor: Colors.WHITE },
+          buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
+          duration: TOAST_DURATION_TIMEOUT,
+          onClose: () => {
+            this.props.navigation.goBack();
+          }
+        })
+      }
+      else {
+        showWarningToast(result.Message);
+      }
     }
   }
 
@@ -291,12 +238,9 @@ class Signup extends Component {
           </Body>
           <Right style={NativeBaseStyle.right} />
         </Header>
-        <ImageBackground source={uriBackground} style={{ flex: 1 }}>
+        <ImageBackground source={images.background} style={{ flex: 1 }}>
           <Content>
             <Form>
-              {/* <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: verticalScale(this.state.logoMargin) }}>
-                <Image source={dojiBigIcon} />
-              </View> */}
               <Item stackedLabel>
                 <Label style={LoginStyle.formLabelText}>Họ và tên</Label>
                 <Input

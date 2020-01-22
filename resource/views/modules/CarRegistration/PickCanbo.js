@@ -30,7 +30,7 @@ import {
   EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
   TASK_PROCESS_TYPE, Colors, DEFAULT_PAGE_SIZE
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -101,13 +101,7 @@ class PickCanbo extends Component {
 
   onPickAssigner = () => {
     if (this.state.canboId === 0) {
-      Toast.show({
-        text: 'Vui lòng chọn cán bộ',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn cán bộ');
     } else {
       this.props.updateExtendsNavParams({ canboId: this.state.canboId, canboName: this.state.canboName });
       this.navigateBack();

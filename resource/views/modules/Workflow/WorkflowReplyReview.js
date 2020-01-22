@@ -31,7 +31,7 @@ import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyl
 import { TabStyle } from '../../../assets/styles/TabStyle';
 
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString, pickerFormat } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString, pickerFormat, showWarningToast } from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
@@ -47,9 +47,8 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-import AlertMessage from '../../common/AlertMessage';
+import { AlertMessage, GoBackButton } from '../../common';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
-import GoBackButton from '../../common/GoBackButton';
 
 class WorkflowReplyReview extends Component {
     constructor(props) {
@@ -73,46 +72,15 @@ class WorkflowReplyReview extends Component {
         });
     }
 
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBack);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBack);
-    }
-
     navigateBack = () => {
         this.props.navigation.goBack();
     }
 
     onConfirmReplyReview() {
         if (util.isNull(this.state.message) || util.isEmpty(this.state.message)) {
-            Toast.show({
-                text: 'Vui lòng nhập nội dung phản hồi',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng nhập nội dung phản hồi');
         } else {
             this.refs.confirm.showModal();
-            // Alert.alert(
-            //     'XÁC NHẬN PHẢN HỒI',
-            //     'Bạn có chắc chắn muốn thực hiện việc này?',
-            //     [
-            //         {
-            //             text: 'Đồng ý', onPress: () => {
-            //                 this.saveReplyReview();
-            //             }
-            //         },
-
-            //         {
-            //             text: 'Hủy bỏ', onPress: () => {
-
-            //             }
-            //         }
-            //     ]
-            // )
         }
     }
 
@@ -196,10 +164,7 @@ class WorkflowReplyReview extends Component {
                         </Title>
                     </Body>
 
-                    <Right style={NativeBaseStyle.right}>
-                        <Button transparent>
-                        </Button>
-                    </Right>
+                    <Right style={NativeBaseStyle.right} />
                 </Header>
 
                 <Content>

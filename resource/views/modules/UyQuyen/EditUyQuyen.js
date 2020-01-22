@@ -17,7 +17,7 @@ import {
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { moderateScale, indicatorResponsive, verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, _readableFormat } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, _readableFormat, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //styles
@@ -33,10 +33,11 @@ import DeptUyQuyen from './DeptUyQuyen';
 import * as action from '../../../redux/modules/UyQuyen/Action';
 import VanBanDenUyQuyen from './VanBanDenUyQuyen';
 import VanBanDiUyQuyen from './VanBanDiUyQuyen';
-import GoBackButton from '../../common/GoBackButton';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
-import { MoreButton, HeaderRightButton } from '../../common';
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
+import { authorizeApi } from '../../../common/Api';
 
+const api = authorizeApi();
 
 class EditUyQuyen extends Component {
     constructor(props) {
@@ -111,9 +112,11 @@ class EditUyQuyen extends Component {
     }
 
     fetchData = async () => {
-        const url = `${API_URL}/api/QuanLyUyQuyen/EditUyQuyen/${this.state.userId}/${this.state.authorizedId}`;
-        console.log(url);
-        const result = await fetch(url).then(response => response.json());
+        const { userId, authorizedId } = this.state;
+        const result = await api.edit([
+            userId,
+            authorizedId
+        ])
         this.setState({
             loadingData: false,
             entity: result.Entity,
@@ -127,15 +130,19 @@ class EditUyQuyen extends Component {
         this.setState({
             searchingUser: true,
             pageIndex: DEFAULT_PAGE_INDEX,
+        }, () => {
+            const { userId, authorizedId, pageIndex, pageSize, userFilter } = this.state;
+            const result = await api.search([
+                userId,
+                authorizedId,
+                pageIndex,
+                `${pageSize}?query=${userFilter}`
+            ]);
+            this.setState({
+                searchingUser: false,
+                users: result
+            });
         });
-
-        const url = `${API_URL}/api/QuanLyUyQuyen/SearchUyQuyen/${this.state.userId}/${this.state.authorizedId}/${DEFAULT_PAGE_INDEX}/${this.state.pageSize}?query=${this.state.userFilter}`;
-
-        const result = await fetch(url).then(response => response.json());
-        this.setState({
-            searchingUser: false,
-            users: result
-        })
     }
 
     onClearFilter = () => {
@@ -229,106 +236,56 @@ class EditUyQuyen extends Component {
         const startDate = this.state.entity.NGAY_BATDAU;
         const endDate = this.state.entity.NGAY_KETTHUC;
         if (selectedUser == 0) {
+            showWarningToast('Vui lòng chọn người ủy quyền');
+        } else if (!startDate) {
+            showWarningToast('Vui lòng chọn ngày bắt đầu');
+        } else if (!endDate) {
+            showWarningToast('Vui lòng chọn ngày kết thúc');
+        } else if (startDate > endDate) {
+            showWarningToast('Thời gian ủy quyền không hợp lệ');
+        } else {
+            this.setState({
+                executing: true
+            });
+
+            const resultJson = await api.save({
+                NguoiUyQuyenId: this.state.userId,
+                Entity: {
+                    ID: this.state.entity.ID,
+                    NGUOIUYQUYEN_ID: this.state.userId,
+                    NGUOIDUOCUYQUYEN_ID: this.props.selectedUser,
+                    NGAY_BATDAU: this.state.entity.NGAY_BATDAU,
+                    NGAY_KETTHUC: this.state.entity.NGAY_KETTHUC
+                },
+                VanBanDenDoKhan: this.props.groupVanBanDenDoKhan.join(),
+                VanBanDenDoMat: this.props.groupVanBanDenDoMat.join(),
+                VanBanDenLinhVucVanBan: this.props.groupVanBanDenLinhVucVanBan.join(),
+                VanBanDenLoaiVanBan: this.props.groupVanBanDenLoaiVanBan.join(),
+
+                VanBanDiDoUuTien: this.props.groupVanBanDiDoUuTien.join(),
+                VanBanDiDoQuanTrong: this.props.groupVanBanDiDoQuanTrong.join(),
+                VanBanDiLinhVucVanBan: this.props.groupVanBanDiLinhVucVanBan.join(),
+                VanBanDiLoaiVanBan: this.props.groupVanBanDiLoaiVanBan.join(),
+            });
+
+            this.setState({
+                executing: false
+            });
+
             Toast.show({
-                text: 'Vui lòng chọn người ủy quyền',
-                type: 'danger',
+                text: resultJson.Status ? 'Ủy quyền thành công' : 'Ủy quyền thất bại',
+                type: resultJson.Status ? 'success' : 'danger',
                 buttonText: "OK",
                 buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-            return;
-        }
-
-        if (!startDate) {
-            Toast.show({
-                text: 'Vui lòng chọn ngày bắt đầu',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-            return;
-        }
-
-        if (!endDate) {
-            Toast.show({
-                text: 'Vui lòng chọn ngày kết thúc',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-            return;
-        }
-
-        if (startDate > endDate) {
-            Toast.show({
-                text: 'Thời gian ủy quyền không hợp lệ',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-            return;
-        }
-
-        this.setState({
-            executing: true
-        });
-        const url = `${API_URL}/api/QuanLyUyQuyen/SaveUyQuyen`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        });
-
-        const body = JSON.stringify({
-            NguoiUyQuyenId: this.state.userId,
-            Entity: {
-                ID: this.state.entity.ID,
-                NGUOIUYQUYEN_ID: this.state.userId,
-                NGUOIDUOCUYQUYEN_ID: this.props.selectedUser,
-                NGAY_BATDAU: this.state.entity.NGAY_BATDAU,
-                NGAY_KETTHUC: this.state.entity.NGAY_KETTHUC
-            },
-            VanBanDenDoKhan: this.props.groupVanBanDenDoKhan.join(),
-            VanBanDenDoMat: this.props.groupVanBanDenDoMat.join(),
-            VanBanDenLinhVucVanBan: this.props.groupVanBanDenLinhVucVanBan.join(),
-            VanBanDenLoaiVanBan: this.props.groupVanBanDenLoaiVanBan.join(),
-
-            VanBanDiDoUuTien: this.props.groupVanBanDiDoUuTien.join(),
-            VanBanDiDoQuanTrong: this.props.groupVanBanDiDoQuanTrong.join(),
-            VanBanDiLinhVucVanBan: this.props.groupVanBanDiLinhVucVanBan.join(),
-            VanBanDiLoaiVanBan: this.props.groupVanBanDiLoaiVanBan.join(),
-        })
-
-        const result = await fetch(url, {
-            method: 'post',
-            headers,
-            body
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
-
-        this.setState({
-            executing: false
-        });
-
-        //hiển thị kết quả xử lý
-        Toast.show({
-            text: resultJson.Status ? 'Ủy quyền thành công' : 'Ủy quyền thất bại',
-            type: resultJson.Status ? 'success' : 'danger',
-            buttonText: "OK",
-            buttonStyle: { backgroundColor: Colors.WHITE },
-            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: TOAST_DURATION_TIMEOUT,
-            onClose: () => {
-                if (resultJson.Status) {
-                    this.navigateBackToList();
+                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+                duration: TOAST_DURATION_TIMEOUT,
+                onClose: () => {
+                    if (resultJson.Status) {
+                        this.navigateBackToList();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     render() {
@@ -357,7 +314,6 @@ class EditUyQuyen extends Component {
                         dataLoading(true)
                     )
                 }
-
                 {
                     renderIf(!this.state.loadingData)(
                         <Content>

@@ -21,9 +21,7 @@ export const { width, height } = Dimensions.get('window');
 export const HEADER_COLOR = '#FF0033'
 export const SUB_HEADER_COLOR = '#F7A30A';
 export const SEARCHBAR_COLOR = '#FCC954';
-
 export const LOADER_COLOR = '#0082ba';
-
 export const LOADMORE_COLOR = '#0082ba';
 
 export const PLANJOB_CONSTANT = {
@@ -519,7 +517,7 @@ export function generateBadgeIconNoti(itemType) {
 export function generateReadFontStyleAndColor(isRead = false) {
 	let checkReadFont = 'bold',
 		checkReadColor = Colors.NOT_READ;
-	
+
 	if (isRead) {
 		checkReadFont = 'normal';
 		checkReadColor = Colors.HAS_DONE;
@@ -531,3 +529,5 @@ export function generateReadFontStyleAndColor(isRead = false) {
 }
 
 export const customWorkflowListHeight = moderateScale(58.25, 1.15);
+export const APPLICATION_SHORT_NAME = 'EofficeVNEH';
+export const APPLICATION_FULL_NAME = 'PHẦN MỀM QUẢN LÝ ĐIỀU HÀNH VĂN BẢN';

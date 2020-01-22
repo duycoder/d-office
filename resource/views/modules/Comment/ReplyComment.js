@@ -12,11 +12,11 @@ import { connect } from 'react-redux';
 //utilities
 import {
   API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE, EMPTY_STRING,
+  DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage, formatMessage
+  asyncDelay, formatLongText, isImage, formatMessage, showWarningToast
 } from '../../../common/Utilities';
 
 //lib
@@ -144,15 +144,8 @@ class ReplyComment extends Component {
 
   sendComment = async () => {
     if (util.isEmpty(this.state.commentContent) || util.isNull(this.state.commentContent)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung phản hồi',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
-    }
-    else {
+      showWarningToast('Vui lòng nhập nội dung phản hồi');
+    } else {
       this.setState({
         executing: true
       });
@@ -227,8 +220,7 @@ class ReplyComment extends Component {
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
           title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-          message:
-            'EofficeVNEH muốn truy cập vào tài liệu của bạn',
+          message: `${APPLICATION_SHORT_NAME} muốn truy cập vào tài liệu của bạn`,
           buttonNeutral: 'Để sau',
           buttonNegative: 'Thoát',
           buttonPositive: 'OK',

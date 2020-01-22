@@ -16,21 +16,18 @@ import { Container, Content, CheckBox, Form, Item, Input, Label, Toast } from 'n
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, APPLICATION_FULL_NAME, APPLICATION_SHORT_NAME } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay } from '../../../common/Utilities'
+import { asyncDelay, showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-
-//fcm
-// import FCM, { FCMEvent } from 'react-native-fcm';
 
 //react-native-firebase
 import firebase from 'react-native-firebase';
@@ -38,12 +35,7 @@ import firebase from 'react-native-firebase';
 //debug
 import Reactotron from 'reactotron-react-native'
 import { accountApi } from '../../../common/Api';
-
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const uriRibbonBackground = require('../../../assets/images/ribbon-background.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
+import images from '../../../common/Images';
 
 class Login extends Component {
     constructor(props) {
@@ -153,13 +145,9 @@ class Login extends Component {
             Keyboard.dismiss();
             //lấy fcm token
             let deviceToken = await AsyncStorage.getItem('deviceToken');
-            //Reactotron.log('========> Device từ Async Storage', deviceToken);
 
             if (!deviceToken) {
                 deviceToken = await firebase.messaging().getToken();
-
-                //Reactotron.log('========> Device từ firebase.messaging().getToken()', deviceToken);
-
                 if (deviceToken) {
                     await AsyncStorage.setItem('deviceToken', deviceToken);
                 }
@@ -179,13 +167,7 @@ class Login extends Component {
                     this.setState({
                         loading: false
                     }, () => {
-                        Toast.show({
-                            text: 'Lỗi máy chủ!',
-                            textStyle: { fontSize: moderateScale(12, 1.5) },
-                            buttonText: "OK",
-                            buttonStyle: { backgroundColor: "#acb7b1" },
-                            duration: TOAST_DURATION_TIMEOUT
-                        });
+                        showWarningToast('Lỗi máy chủ!');
                     });
                 }
                 else {
@@ -193,59 +175,18 @@ class Login extends Component {
                         this.props.setUserInfo(resultJson);
                         this.props.navigation.navigate('LoadingScreen');
                     });
-
-                    //tìm token và gán vào cho người dùng
-                    // await firebase.messaging().getToken().then((token) => {
-                    //     resultJson.Token = token;
-                    // })
-
-                    // //cập nhật token vào csdl qua api
-                    // const activeTokenResult = await fetch(`${API_URL}/api/Account/ActiveUserToken`, {
-                    //     method: 'POST',
-                    //     headers: {
-                    //         'Accept': 'application/json',
-                    //         'Content-Type': 'application/json; charset=utf-8',
-                    //     },
-                    //     body: JSON.stringify({
-                    //         userId: resultJson.ID,
-                    //         token: resultJson.Token
-                    //     })
-                    // }).then(response => response.json()).then(responseJson => {
-                    //     return responseJson;
-                    // });
-
-                    // if (activeTokenResult) {
-
-                    // } else {
-                    //     this.setState({
-                    //         loading: false
-                    //     }, () => {
-                    //         Toast.show({
-                    //             text: 'Hệ thống đang cập nhật! Vui lòng trở lại sau!',
-                    //             textStyle: { fontSize: moderateScale(12, 1.5) },
-                    //             buttonText: "OK",
-                    //             buttonStyle: { backgroundColor: "#acb7b1" },
-                    //             duration: 3000
-                    //         });
-                    //     });
-                    // }
                 }
             }
             else {
                 this.setState({
                     loading: false
                 }, () => {
-                    Toast.show({
-                        text: 'Thông tin đăng nhập không chính xác!',
-                        textStyle: { fontSize: moderateScale(12, 1.5) },
-                        buttonText: "OK",
-                        buttonStyle: { backgroundColor: "#acb7b1" },
-                        duration: TOAST_DURATION_TIMEOUT
-                    });
+                    showWarningToast('Thông tin đăng nhập không chính xác!');
                 });
             }
         } catch (error) {
-            //Reactotron.log('========> Lỗi ở đâu đó', error);
+            //TODO: call api to send Error to server
+            console.log(error);
         }
 
     }
@@ -263,7 +204,7 @@ class Login extends Component {
         const toggleLoginStyleButton = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: 'lightgrey' };
         const toggleLoginStyleText = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
         return (
-            <ImageBackground source={uriBackground} style={{ flex: 1 }}>
+            <ImageBackground source={images.background} style={{ flex: 1 }}>
                 <StatusBar barStyle="dark-content" />
                 <Container>
                     <Animated.View style={[
@@ -274,14 +215,14 @@ class Login extends Component {
                     ]}>
 
                         <Text style={[LoginStyle.formHeaderSoftwareTitle, { display: this.state.headerComponentsDisplayStatus }]}>
-                            PHẦN MỀM QUẢN LÝ ĐIỀU HÀNH VĂN BẢN
+                            {APPLICATION_FULL_NAME}
                         </Text>
 
                         <Text style={[LoginStyle.formHeaderSoftwareName, { display: this.state.headerComponentsDisplayStatus }]}>
-                            EofficeVNEH
+                            {APPLICATION_SHORT_NAME}
                         </Text>
                     </Animated.View>
-                    <ImageBackground source={uriRibbonBackground} style={LoginStyle.formContainerImageBackground}>
+                    <ImageBackground source={images.ribbonBackground} style={LoginStyle.formContainerImageBackground}>
                         <ScrollView style={LoginStyle.formContainer}>
                             <View style={LoginStyle.formTitle}>
                                 <Text style={LoginStyle.formTitleText}>
@@ -326,7 +267,7 @@ class Login extends Component {
                                         onSubmitEditing={() => this.onLogin()}
                                     />
                                     <TouchableOpacity onPress={this.onChangePasswordVisibility.bind(this)} style={LoginStyle.formPasswordVisibility}>
-                                        <Image source={(this.state.isHidePassword) ? showPasswordIcon : hidePasswordIcon}
+                                        <Image source={(this.state.isHidePassword) ? images.showPasswordIcon : images.hidePasswordIcon}
                                             style={{ display: this.state.passwordIconDisplayStatus }} />
                                     </TouchableOpacity>
 

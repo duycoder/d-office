@@ -25,7 +25,7 @@ import renderIf from 'render-if';
 import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, onDownloadFile, asyncDelay } from '../../../common/Utilities';
+import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, onDownloadFile, asyncDelay, showWarningToast } from '../../../common/Utilities';
 import {
   API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
@@ -210,14 +210,7 @@ class ListLichtruc extends Component {
       });
     }
     else {
-      Toast.show({
-        text: "Vui lòng chọn lịch cần phê duyệt",
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      });
+      showWarningToast('Vui lòng chọn lịch cần phê duyệt');
     }
   }
 

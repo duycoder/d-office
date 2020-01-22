@@ -14,7 +14,7 @@ import {
   MODULE_CONSTANT,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -98,13 +98,7 @@ class CancelRegistration extends Component {
       });
     }
     else {
-      Toast.show({
-        text: 'Vui lòng nhập lý do',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      })
+      showWarningToast('Vui lòng nhập lý do');
     }
   }
 

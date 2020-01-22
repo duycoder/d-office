@@ -12,7 +12,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -38,13 +38,10 @@ import renderIf from 'render-if';
 
 //views
 import MainInfoSignDoc from './Info';
-import TimelineSignDoc from './History';
-import AttachSignDoc from './Attachment';
 import UnitSignDoc from './UnitSignDoc';
 
-import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton, AlertMessage } from '../../common';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandiApi, workflowApi } from '../../../common/Api';
 import { Timeline } from '../../common/DetailCommon';
@@ -150,15 +147,8 @@ class Detail extends Component {
         if (!isStepBack &&
             this.state.docInfo.WorkFlow.Function &&
             this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
-            Toast.show({
-                text: 'Vui lòng ký duyệt văn bản',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-        }
-        else {
+            showWarningToast('Vui lòng ký duyệt văn bản');
+        } else {
             const targetScreenParam = {
                 processId: this.state.docInfo.WorkFlow.Process.ID,
                 stepId: item.ID,

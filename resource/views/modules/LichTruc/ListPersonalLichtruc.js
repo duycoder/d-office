@@ -69,14 +69,6 @@ class ListPersonalLichtruc extends Component {
     }
   }
 
-  componentWillMount() {
-    // this.setState({
-    //   loadingData: true
-    // }, () => {
-    //   this.fetchData();
-    // })
-  }
-
   componentDidMount = () => {
     let currentNavObj = this.props.navigation || this.props.navigator;
 
@@ -254,10 +246,5 @@ const styles = StyleSheet.create({
     padding: moderateScale(10, 1.03),
     marginRight: moderateScale(10, 1.03),
     marginTop: moderateScale(16.35, 1.08)
-  },
-  emptyDate: {
-    height: 15,
-    flex: 1,
-    paddingTop: 30
   }
 });

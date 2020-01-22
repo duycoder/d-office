@@ -20,7 +20,7 @@ import 'moment/locale/vi';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -162,16 +162,6 @@ class CreateMeetingDay extends Component {
     });
   }
 
-  showWarningToast = (title = '') => {
-    Toast.show({
-      text: title,
-      type: 'danger',
-      buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.LITE_BLUE },
-    });
-  }
-
   saveLichhop = async () => {
     this.setState({
       isSaveBtnPressed: false,
@@ -183,15 +173,15 @@ class CreateMeetingDay extends Component {
     } = this.state;
 
     if (!mucdich) {
-      this.showWarningToast('Vui lòng nhập mục đích');
+      showWarningToast('Vui lòng nhập mục đích');
     } else if (!thamgia) {
-      this.showWarningToast('Vui lòng nhập thành phần tham dự');
+      showWarningToast('Vui lòng nhập thành phần tham dự');
     } else if (!thoigianBatdau) {
-      this.showWarningToast('Vui lòng chọn thời gian bắt đầu');
+      showWarningToast('Vui lòng chọn thời gian bắt đầu');
     } else if (!thoigianKetthuc) {
-      this.showWarningToast('Vui lòng chọn thời gian kết thúc');
+      showWarningToast('Vui lòng chọn thời gian kết thúc');
     } else if (!ngayHop) {
-      this.showWarningToast('Vui lòng chọn ngày họp');
+      showWarningToast('Vui lòng chọn ngày họp');
     } else {
       this.setState({
         executing: true

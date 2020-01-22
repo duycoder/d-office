@@ -24,7 +24,7 @@ import DatePicker from 'react-native-datepicker';
 
 //utilities
 import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -36,6 +36,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import GoBackButton from '../../common/GoBackButton';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import { DatePickerCustomStyle } from '../../../assets/styles';
+import { taskApi } from '../../../common/Api';
 
 
 class RescheduleTask extends Component {
@@ -75,46 +76,22 @@ class RescheduleTask extends Component {
 
     onSaveExtendTask = async () => {
         if (util.isNull(this.state.chosenDate) || util.isEmpty(this.state.chosenDate)) {
-            Toast.show({
-                text: 'Vui lòng nhập thời hạn xin lùi',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng nhập thời hạn xin lùi');
         } else if (util.isNull(this.state.reason) || util.isEmpty(this.state.reason)) {
-            Toast.show({
-                text: 'Vui lòng nhập nguyên nhân xin lùi hạn',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng nhập nguyên nhân xin lùi hạn');
         } else {
             this.setState({
                 executing: true
             });
 
-            const url = `${API_URL}/api/HscvCongViec/SaveExtendTask`;
-            const headers = new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
+            const { taskId, userId, chosenDate, reason } = this.state;
+
+            const resultJson = await taskApi().saveExtendTask({
+                id: taskId,
+                userId,
+                extendDate: chosenDate,
+                reason
             });
-
-            const body = JSON.stringify({
-                id: this.state.taskId,
-                userId: this.state.userId,
-                extendDate: this.state.chosenDate,
-                reason: this.state.reason
-            })
-
-            const result = await fetch(url, {
-                method: 'post',
-                headers,
-                body
-            });
-
-            const resultJson = await result.json();
 
             await asyncDelay();
 

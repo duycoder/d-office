@@ -14,7 +14,7 @@ import DatePicker from 'react-native-datepicker';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -66,21 +66,9 @@ class ConfirmTaskPlan extends Component {
     const { fromScreen } = this.state;
 
     if (util.isNull(this.state.content) || util.isEmpty(this.state.content)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập nội dung');
     } else if (util.isNull(this.state.chosenDate) || util.isEmpty(this.state.chosenDate)) {
-      Toast.show({
-        text: 'Vui lòng nhập thời hạn xử lý',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập thời hạn xử lý');
     } else {
       this.setState({
         executing: true

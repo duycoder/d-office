@@ -248,6 +248,8 @@ const taskApi = () => {
   const saveAssignedUser = (payloadBody = {}) => api.post("HscvCongViec/SaveAssignTask", payloadBody);
   const getSubTask = (params = []) => api.get("HscvCongViec/GetSubTasks", params);
   const saveCompleteSubTask = (payloadBody = {}) => api.post("HscvCongViec/CompleteSubTask", payloadBody);
+  const updateProgressTask = (payloadBody = {}) => api.post("HscvCongViec/UpdateProgressTask", payloadBody);
+  const saveExtendTask = (payloadBody = {}) => api.post("HscvCongViec/SaveExtendTask", payloadBody);
   //TODO: added plan to deprecated
 
   return {
@@ -263,6 +265,8 @@ const taskApi = () => {
     saveAssignedUser,
     getSubTask,
     saveCompleteSubTask,
+    updateProgressTask,
+    saveExtendTask,
   };
 }
 
@@ -288,6 +292,18 @@ const workflowApi = () => {
   };
 }
 
+const authorizeApi = () => {
+  const save = (payloadBody = {}) => api.post("QuanLyUyQuyen/SaveUyQuyen", payloadBody);
+  const search = (params = []) => api.get("QuanLyUyQuyen/SearchUyQuyen", params);
+  const edit = (params = []) => api.get("QuanLyUyQuyen/EditUyQuyen", params);
+
+  return {
+    save,
+    search,
+    edit,
+  };
+}
+
 export {
   lichtrucApi,
   vanbandenApi,
@@ -300,4 +316,5 @@ export {
   vanbandiApi,
   taskApi,
   workflowApi,
+  authorizeApi,
 };

@@ -14,7 +14,7 @@ import {
   MODULE_CONSTANT,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -144,15 +144,8 @@ class PickMeetingRoom extends Component {
     } = this.state;
     if (rooms.length > 0) {
       if (phonghopId === 0) {
-        Toast.show({
-          text: 'Vui lòng chọn phòng họp',
-          type: 'danger',
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-        });
-      }
-      else {
+        showWarningToast('Vui lòng chọn phòng họp');
+      } else {
         this.setState({
           executing: true
         });

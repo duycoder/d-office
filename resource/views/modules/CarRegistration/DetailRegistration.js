@@ -12,7 +12,7 @@ import { NavigationActions } from 'react-navigation';
 
 //utilities
 import { API_URL, Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -158,13 +158,7 @@ class DetailRegistration extends Component {
       this.props.navigation.navigate("DetailEventScreen", { id: eventId });
     }
     else {
-      Toast.show({
-        text: 'Không tìm thấy lịch công tác yêu cầu',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Không tìm thấy lịch công tác yêu cầu');
     }
   }
 

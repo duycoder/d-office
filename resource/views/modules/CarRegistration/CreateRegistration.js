@@ -20,7 +20,7 @@ import 'moment/locale/vi';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -153,46 +153,15 @@ class CreateRegistration extends Component {
     } = this.state;
 
     if (!mucdich) {
-      Toast.show({
-        text: 'Vui lòng nhập mục đích',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
-    }
-    else if (!noidung) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập mục đích');
+    } else if (!noidung) {
+      showWarningToast('Vui lòng nhập nội dung');
     } else if (!ngayXP) {
-      Toast.show({
-        text: 'Vui lòng chọn thời gian xuất phát',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn thời gian xuất phát');
     } else if (!diemXP) {
-      Toast.show({
-        text: 'Vui lòng chọn điểm xuất phát',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn điểm xuất phát');
     } else if (!diemKT) {
-      Toast.show({
-        text: 'Vui lòng chọn điểm kết thúc',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn điểm kết thúc');
     } else {
       this.setState({
         executing: true

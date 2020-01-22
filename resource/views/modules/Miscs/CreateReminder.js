@@ -20,7 +20,7 @@ import 'moment/locale/vi';
 import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText } from '../../../common/Utilities';
+import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
@@ -124,22 +124,10 @@ class CreateReminder extends Component {
     } = this.state;
 
     if (!noidung) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung nhắc việc',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập nội dung nhắc việc');
     }
     else if (!thoigian) {
-      Toast.show({
-        text: 'Vui lòng chọn thời gian',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng chọn thời gian');
     } else {
       this.setState({
         executing: true

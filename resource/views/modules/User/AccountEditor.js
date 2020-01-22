@@ -29,23 +29,14 @@ import AccountStyle from '../../../assets/styles/AccountStyle';
 import { scale, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, convertStringToDate } from '../../../common/Utilities'
+import { asyncDelay, convertDateToString, convertStringToDate, showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { accountApi } from '../../../common/Api';
-//fcm
-//import FCM, { FCMEvent } from 'react-native-fcm';
-
-//images
-const uriBackground = require('../../../assets/images/background.png');
-const dojiBigIcon = require('../../../assets/images/doji-big-icon.png');
-const showPasswordIcon = require('../../../assets/images/visible-eye.png');
-const hidePasswordIcon = require('../../../assets/images/hidden-eye.png');
-const userAvatar = require('../../../assets/images/avatar.png');
 
 class AccountEditor extends Component {
   constructor(props) {
@@ -153,15 +144,7 @@ class AccountEditor extends Component {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Hãy nhập đúng số điện thoại',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Hãy nhập đúng số điện thoại');
       });
       return;
     }
@@ -170,15 +153,7 @@ class AccountEditor extends Component {
       this.setState({
         loading: false
       }, () => {
-        Toast.show({
-          text: 'Hãy nhập đúng email',
-          type: 'danger',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-          duration: TOAST_DURATION_TIMEOUT
-        });
+        showWarningToast('Hãy nhập đúng email');
       });
       return;
     }
@@ -192,9 +167,9 @@ class AccountEditor extends Component {
       EMAIL: savedEmail
     });
 
-      this.setState({
-        loading: false
-      });
+    this.setState({
+      loading: false
+    });
 
     if (result.Status) {
       this.props.updateExtendsNavParams({ check: true });
@@ -212,15 +187,7 @@ class AccountEditor extends Component {
       });
     }
     else {
-      Toast.show({
-        text: result.Message,
-        type: 'danger',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-        duration: TOAST_DURATION_TIMEOUT
-      });
+      showWarningToast(result.Message);
     }
   }
 
@@ -289,7 +256,6 @@ class AccountEditor extends Component {
                   showIcon={false}
                   customStyles={{
                     dateInput: {
-                      // marginLeft: scale(36),
                       borderWidth: 0,
                       alignItems: 'flex-start',
                       flex: 1,
@@ -300,12 +266,6 @@ class AccountEditor extends Component {
                       fontSize: moderateScale(15.45, 1.01),
                       color: Colors.BLACK
                     },
-                    // datePicker: {
-                    //   marginVertical: 0
-                    // },
-                    // datePickerCon: {
-                    //   marginVertical: 0
-                    // }
                   }}
                   onDateChange={this._handleFieldNameChange('dateOfBirth')}
                   onOpenModal={() => this.setState({ focusId: 'dateOfBirth' })}
@@ -334,7 +294,7 @@ class AccountEditor extends Component {
                 />
               </Item>
             </Form>
-            <View style={{marginHorizontal: 25}}>
+            <View style={{ marginHorizontal: 25 }}>
               <TouchableOpacity
                 onPress={() => this.onSaveAccountInfo()}
                 style={[AccountStyle.submitButton, submitableButtonBackground]}

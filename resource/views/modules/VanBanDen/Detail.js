@@ -12,7 +12,7 @@ import { NavigationActions } from 'react-navigation';
 
 //utilities
 import { API_URL, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -40,7 +40,7 @@ import TimelinePublishDoc from './History';
 import AttachPublishDoc from './Attachment';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandenApi } from '../../../common/Api';
@@ -133,13 +133,7 @@ class Detail extends Component {
             this.props.navigation.navigate("DetailEventScreen", { id: eventId });
         }
         else {
-            Toast.show({
-                text: 'Không tìm thấy lịch công tác yêu cầu',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Không tìm thấy lịch công tác yêu cầu');
         }
     }
 
@@ -158,13 +152,7 @@ class Detail extends Component {
         }
 
         if (isProcessable == false) {
-            Toast.show({
-                text: 'Không thể kết thúc văn bản',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Không thể kết thúc văn bản');
         } else {
             const targetScreenParam = {
                 processId: this.state.docInfo.WorkFlow.Process.ID,
@@ -205,8 +193,6 @@ class Detail extends Component {
             logId: 0
         }
         this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
-
-        // appStoreDataAndNavigate(this.props.navigation, "VanBanDenDetailScreen", this.state.screenParam, "WorkflowRequestReviewScreen", targetScreenParam);
     }
 
     onCreateTask = () => {

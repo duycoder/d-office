@@ -22,6 +22,7 @@ import * as util from 'lodash';
 import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GroupListStyle } from '../../../assets/styles';
+import { showWarningToast } from '../../../common/Utilities';
 
 class WorkflowStreamJoinProcessUsers extends Component {
     constructor(props) {
@@ -66,13 +67,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
         const { HasUserExecute, HasUserJoinExecute } = this.state.flowData;
 
         if (HasUserExecute && HasUserJoinExecute && this.props.mainProcessUser === 0) {
-            Toast.show({
-                text: 'Vui lòng chọn người xử lý chính',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng chọn người xử lý chính');
         } else {
             this.props.updateProcessUsers(userId, false);
 

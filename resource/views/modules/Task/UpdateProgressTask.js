@@ -23,7 +23,7 @@ import * as util from 'lodash';
 import {
     API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -32,8 +32,9 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import AccountStyle from '../../../assets/styles/AccountStyle';
+import { taskApi } from '../../../common/Api';
 
 class UpdateProgressTask extends Component {
     constructor(props) {
@@ -56,48 +57,22 @@ class UpdateProgressTask extends Component {
 
     onUpdateProgressTask = async () => {
         if (util.isNull(this.state.progressValueStr) || util.isEmpty(this.state.progressValueStr)) {
-            Toast.show({
-                text: 'Vui lòng nhập phần trăm hoàn thành công việc',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
-        }
-        else if (util.isNull(this.state.comment) || util.isEmpty(this.state.comment)) {
-            Toast.show({
-                text: 'Vui lòng nhập nội dung',
-                type: 'danger',
-                buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: Colors.LITE_BLUE },
-            });
+            showWarningToast('Vui lòng nhập phần trăm hoàn thành công việc');
+        } else if (util.isNull(this.state.comment) || util.isEmpty(this.state.comment)) {
+            showWarningToast('Vui lòng nhập nội dung');
         } else {
             this.setState({
                 executing: true
-            })
-
-            const url = `${API_URL}/api/HscvCongViec/UpdateProgressTask`;
-            const headers = new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=utf-8'
-            });
-            const body = JSON.stringify({
-                userId: this.state.userId,
-                taskId: this.state.taskId,
-                percentComplete: this.state.progressValue,
-                comment: this.state.comment
             });
 
-            const result = await fetch(url, {
-                method: 'POST',
-                headers,
-                body
+            const { userId, taskId, progressValue, comment } = this.state;
+
+            const resultJson = await taskApi().updateProgressTask({
+                userId,
+                taskId,
+                percentComplete: progressValue,
+                comment
             });
-
-            const resultJson = await result.json();
-
-            await asyncDelay();
 
             this.setState({
                 executing: false
@@ -118,14 +93,6 @@ class UpdateProgressTask extends Component {
                 }
             });
         }
-    }
-
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     navigateBackToDetail = () => {
@@ -178,8 +145,7 @@ class UpdateProgressTask extends Component {
                         </Title>
                     </Body>
 
-                    <Right style={NativeBaseStyle.right}>
-                    </Right>
+                    <Right style={NativeBaseStyle.right} />
                 </Header>
 
                 <Content contentContainerStyle={AccountStyle.mainContainer}>

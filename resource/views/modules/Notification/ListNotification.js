@@ -152,7 +152,6 @@ class ListNotification extends Component {
                 }
                 this.props.updateExtendsNavParams({ checkRefreshUyQuyenList: false });
             }
-            // isAndroid && StatusBar.setBackgroundColor('#6a51ae');
         });
     }
 

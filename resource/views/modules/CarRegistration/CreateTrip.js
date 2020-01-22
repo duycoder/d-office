@@ -15,7 +15,7 @@ import {
   TOAST_DURATION_TIMEOUT,
   customWorkflowListHeight
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage } from '../../../common/Utilities';
+import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
@@ -117,33 +117,12 @@ class CreateTrip extends Component {
     } = this.state;
     if (drivers.length > 0 && cars.length > 0) {
       if (chosenCars.length === 0) {
-        Toast.show({
-          text: 'Vui lòng chọn xe',
-          type: 'danger',
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-        });
-      }
-      else if (chosenDrivers.length === 0) {
-        Toast.show({
-          text: 'Vui lòng chọn lái xe',
-          type: 'danger',
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-        });
-      }
-      else if (chosenCars.length !== chosenDrivers.length) {
-        Toast.show({
-          text: 'Số lái xe phải tương đồng với số xe',
-          type: 'danger',
-          buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.LITE_BLUE },
-        });
-      }
-      else {
+        showWarningToast('Vui lòng chọn xe');
+      } else if (chosenDrivers.length === 0) {
+        showWarningToast('Vui lòng chọn lái xe');
+      } else if (chosenCars.length !== chosenDrivers.length) {
+        showWarningToast('Số lái xe phải tương đồng với số xe');
+      } else {
         this.setState({
           executing: true
         });
@@ -384,11 +363,11 @@ class CreateTrip extends Component {
                     ListEmptyComponent={
                       this.state.loadingData ? null : emptyDataPage()
                     }
-                    ListFooterComponent={()=>(<MoreButton
+                    ListFooterComponent={() => (<MoreButton
                       isLoading={this.state.loadingMoreInDriver}
                       isTrigger={this.state.drivers.length >= 5}
                       loadmoreFunc={this.loadingMoreDriver}
-                      />)}
+                    />)}
                   />
                 )
               }

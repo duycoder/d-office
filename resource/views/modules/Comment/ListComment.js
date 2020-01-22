@@ -12,11 +12,11 @@ import { connect } from 'react-redux';
 //utilities
 import {
   API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE, EMPTY_STRING
+  DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate, convertDateToString
+  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, showWarningToast
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
@@ -164,13 +164,7 @@ class ListComment extends Component {
 
   sendComment = async () => {
     if (util.isEmpty(this.state.commentContent) || util.isNull(this.state.commentContent)) {
-      Toast.show({
-        text: 'Vui lòng nhập nội dung bình luận',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
+      showWarningToast('Vui lòng nhập nội dung bình luận');
     }
     else {
       const data = new FormData();
@@ -276,8 +270,7 @@ class ListComment extends Component {
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
           title: 'CẤP QUYỀN TRUY CẬP CHO ỨNG DỤNG',
-          message:
-            'EofficeVNEH muốn truy cập vào tài liệu của bạn',
+          message: `${APPLICATION_SHORT_NAME} muốn truy cập vào tài liệu của bạn`,
           buttonNeutral: 'Để sau',
           buttonNegative: 'Thoát',
           buttonPositive: 'OK',
