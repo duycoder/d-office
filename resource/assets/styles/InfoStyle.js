@@ -19,11 +19,13 @@ export default StyleSheet.create({
   }, listItemTitleContainer: {
     fontWeight: 'bold',
     color: '#777',
-    fontSize: moderateScale(11, 0.9)
+    fontSize: moderateScale(11, 0.9),
+    marginLeft: 0,
   }, listItemSubTitleContainer: {
     fontSize: moderateScale(12, 1.3),
     color: 'black',
     fontWeight: 'normal',
-    marginTop: 5
+    marginTop: 5,
+    marginLeft: 0,
   }
 });

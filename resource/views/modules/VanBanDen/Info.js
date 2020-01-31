@@ -167,6 +167,7 @@ class MainInfoPublishDoc extends Component {
                             subtitleText={this.state.info.SODITHEOSO}
                         />
                         <InfoListItem
+                            isRender={!!this.props.info.nameOfDonViGui}
                             titleText='Đơn vị gửi'
                             subtitleText={this.props.info.nameOfDonViGui}
                         />

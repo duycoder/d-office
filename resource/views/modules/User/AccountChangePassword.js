@@ -107,15 +107,7 @@ class AccountChangePassword extends Component {
     //   this.setState({
     //     loading: false
     //   }, () => {
-    //     Toast.show({
-    //       text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
-    //       type: 'danger',
-    //       textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-    //       buttonText: "OK",
-    //       buttonStyle: { backgroundColor: Colors.WHITE },
-    //       buttonTextStyle: { color: Colors.LITE_BLUE },
-    //       duration: TOAST_DURATION_TIMEOUT
-    //     });
+    //     showWarningToast('Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt');
     //   });
     //   return;
     // }
@@ -172,15 +164,7 @@ class AccountChangePassword extends Component {
 
   onCheckPassword = () => {
     // if (!this.state.password.match(PASSWD_VALIDATION)) {
-    //   Toast.show({
-    //     text: 'Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt',
-    //     type: 'danger',
-    //     textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
-    //     buttonText: "OK",
-    //     buttonStyle: { backgroundColor: Colors.WHITE },
-    //     buttonTextStyle: { color: Colors.LITE_BLUE },
-    //     duration: TOAST_DURATION_TIMEOUT
-    //   });
+    //   showWarningToast('Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt');
     //   return;
     // }
     Toast.show({
@@ -251,7 +235,7 @@ class AccountChangePassword extends Component {
                 />
               </Item>
             </Form>
-            <View style={{ marginHorizontal: 25 }}>
+            <View style={{ marginHorizontal: moderateScale(23.8, 1.02) }}>
               <TouchableOpacity
                 onPress={() => this.onSaveChange()}
                 style={[AccountStyle.submitButton, submitableButtonBackground]}

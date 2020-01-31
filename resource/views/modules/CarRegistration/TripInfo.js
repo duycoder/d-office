@@ -8,12 +8,10 @@ import { View, Text, ScrollView, Linking } from 'react-native'
 
 //lib
 import { List, ListItem } from 'react-native-elements';
-//styles
-import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { InfoStyle } from '../../../assets/styles';
+import { InfoListItem } from '../../common/DetailCommon';
 
 class TripInfo extends Component {
-
   constructor(props) {
     super(props);
 
@@ -24,37 +22,18 @@ class TripInfo extends Component {
 
   render() {
     const { info } = this.state;
-
-    // render
     return (
       <View style={InfoStyle.container}>
         <ScrollView>
           <List containerStyle={InfoStyle.listContainer}>
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Tên chuyến
-                    </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.TEN_CHUYEN}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Tên xe
-                    </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.TENXE}
-                </Text>
-              } />
+            <InfoListItem
+              titleText='Tên chuyến'
+              subtitleText={info.TEN_CHUYEN}
+            />
+            <InfoListItem
+              titleText='Tên xe'
+              subtitleText={info.TENXE}
+            />
             <ListItem style={InfoStyle.listItemContainer}
               onPress={() => Linking.openURL(`tel:${info.DIENTHOAI_LAIXE}`)}
               hideChevron={true}
@@ -68,114 +47,15 @@ class TripInfo extends Component {
                   {info.DIENTHOAI_LAIXE}
                 </Text>
               } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Tên lái xe
-                    </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.TEN_LAIXE}
-                </Text>
-              } />
-
-            {
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Tên cán bộ
-              //           </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={InfoStyle.listItemSubTitleContainer}>
-              //       {info.TEN_CANBO}
-              //     </Text>
-              //   } />
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Mục đích
-              //   </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={InfoStyle.listItemSubTitleContainer}>
-              //       {info.MUCDICH}
-              //     </Text>
-              //   } />
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Thời gian xuất phát
-              //                   </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={InfoStyle.listItemSubTitleContainer}>
-              //       {info.THOIGIAN_XUATPHAT}
-              //     </Text>
-              //   } />
-
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Số người
-              //   </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={InfoStyle.listItemSubTitleContainer}>
-              //       {info.SONGUOI}
-              //     </Text>
-              //   } />
-
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Nội dung
-              //   </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={InfoStyle.listItemSubTitleContainer}>
-              //       {info.NOIDUNG}
-              //     </Text>
-              //   } />
-            }
-
-            {
-              !!info.GHICHU && <ListItem style={InfoStyle.listItemContainer}
-                hideChevron={true}
-                title={
-                  <Text style={InfoStyle.listItemTitleContainer}>
-                    Ghi chú
-                </Text>
-                }
-                subtitle={
-                  <Text style={InfoStyle.listItemSubTitleContainer}>
-                    {info.GHICHU}
-                  </Text>
-                } />
-            }
-
-            {
-              // <ListItem style={InfoStyle.listItemContainer}
-              //   hideChevron={true}
-              //   title={
-              //     <Text style={InfoStyle.listItemTitleContainer}>
-              //       Trạng thái
-              //   </Text>
-              //   }
-              //   subtitle={
-              //     <Text style={[InfoStyle.listItemSubTitleContainer, { color: info.MAU_TRANGTHAI.toString() }]}>
-              //       {info.TEN_TRANGTHAI}
-              //     </Text>
-              //   } />
-            }
-
+            <InfoListItem
+              titleText='Tên lái xe'
+              subtitleText={info.TEN_LAIXE}
+            />
+            <InfoListItem
+              isRender={!!info.GHICHU}
+              titleText='Ghi chú'
+              subtitleText={info.GHICHU}
+            />
           </List>
         </ScrollView>
       </View>

@@ -1,7 +1,7 @@
 /**
- * @description: danh sách văn bản trình ký chưa xử lý
- * @author: duynn
- * @since: 02/05/2018
+ * @description: danh sách lịch trình xe
+ * @author: annv
+ * @since: 03/09/2019
  */
 'use strict'
 import React, { Component } from 'react';
@@ -41,8 +41,8 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { ItemProportion } from '../../../assets/styles/ListLayoutStyles';
 import { carApi } from '../../../common/Api';
-import { SearchSection, AddButton, MoreButton, ColumnedListItem } from '../../common';
-import GoBackButton from '../../common/GoBackButton';
+import { SearchSection, AddButton, MoreButton, ColumnedListItem, GoBackButton } from '../../common';
+import { dataLoading } from '../../../common/Effect';
 
 class ListRegistration extends Component {
   constructor(props) {
@@ -57,8 +57,6 @@ class ListRegistration extends Component {
       loadingMoreData: false,
       refreshingData: false,
       data: [],
-
-      // hasAuthorization: props.hasAuthorization || 0
     }
   }
 
@@ -170,14 +168,6 @@ class ListRegistration extends Component {
       timePart = thoigianXP[1],
       datePart = thoigianXP[0];
 
-
-    //   dokhanText = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-    //     ? 'R.Q.TRỌNG'
-    //     : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
-    //   dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-    //     ? Colors.RED_PANTONE_186C
-    //     : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
-
     return (
       <View>
         <ListItem
@@ -189,11 +179,6 @@ class ListRegistration extends Component {
               <RnText style={{ color: Colors.LITE_BLUE, fontSize: moderateScale(11, 1.02) }}>{datePart}</RnText>
             </View>
           }
-          // title={
-          //   <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
-          //     {formatLongText(item.MUCDICH, 50)}
-          //   </RnText>
-          // }
 
           subtitle={
             <View style={{ marginLeft: scale(8) }}>
@@ -253,30 +238,6 @@ class ListRegistration extends Component {
           }
           onPress={() => this.navigateToDetail(item.ID)}
         />
-        {
-          //   <View style={{ paddingBottom: 10, paddingLeft: 10, paddingRight: 10, flexDirection: 'row', borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}>
-          //     <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-          //       <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-          //         <RnText style={{ fontWeight: 'bold' }}>
-          //           Số người:
-          // </RnText>
-          //         <RnText>
-          //           {' ' + item.SONGUOI}
-          //         </RnText>
-          //       </RnText>
-          //     </View>
-          //     <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-          //       <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-          //         <RnText style={{ fontWeight: 'bold' }}>
-          //           Trạng thái:
-          // </RnText>
-          //         <RnText style={{ color: item.MAU_TRANGTHAI, fontWeight: 'bold' }}>
-          //           {' ' + item.TEN_TRANGTHAI}
-          //         </RnText>
-          //       </RnText>
-          //     </View>
-          //   </View>
-        }
       </View>
     );
   }
@@ -288,6 +249,34 @@ class ListRegistration extends Component {
   }
 
   render() {
+    const { loadingData, data, refreshingData, loadingMoreData, filterValue } = this.state;
+    let bodyContent = dataLoading(loadingData);
+    if (!loadingData) {
+      bodyContent = (
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={this.renderItem}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshingData}
+              onRefresh={this.handleRefresh}
+              colors={[Colors.BLUE_PANTONE_640C]}
+              tintColor={[Colors.BLUE_PANTONE_640C]}
+              title='Kéo để làm mới'
+              titleColor={Colors.RED}
+            />
+          }
+          ListEmptyComponent={() => loadingData ? null : emptyDataPage()}
+          ListFooterComponent={() => (<MoreButton
+            isLoading={loadingMoreData}
+            isTrigger={data && data.length >= DEFAULT_PAGE_SIZE}
+            loadmoreFunc={this.loadingMore}
+          />)}
+        />
+      );
+    }
+
     return (
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
@@ -296,7 +285,7 @@ class ListRegistration extends Component {
           </Left>
 
           <SearchSection
-            filterValue={this.state.filterValue}
+            filterValue={filterValue}
             placeholderText='Nội dung'
             filterFunc={this.onFilter}
             handleChangeFunc={this._handleFieldNameChange}
@@ -305,41 +294,7 @@ class ListRegistration extends Component {
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
-          {
-            renderIf(this.state.loadingData)(
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              </View>
-            )
-          }
-
-          {
-            renderIf(!this.state.loadingData)(
-              <FlatList
-                data={this.state.data}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={this.renderItem}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshingData}
-                    onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
-                    title='Kéo để làm mới'
-                    titleColor={Colors.RED}
-                  />
-                }
-                ListEmptyComponent={() =>
-                  this.state.loadingData ? null : emptyDataPage()
-                }
-                ListFooterComponent={() => (<MoreButton
-                  isLoading={this.state.loadingMoreData}
-                  isTrigger={this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE}
-                  loadmoreFunc={this.loadingMore}
-                />)}
-              />
-            )
-          }
+          {bodyContent}
         </Content>
         <AddButton createFunc={this.onCreateCarRegistration} />
       </Container>
@@ -353,13 +308,11 @@ const mapStatetoProps = (state) => {
     // filterValue: state.vanbandenState.filterValue,
     coreNavParams: state.navState.coreNavParams,
     extendsNavParams: state.navState.extendsNavParams,
-    // hasAuthorization: state.navState.hasAuthorization
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // editFilterValue: (filterValue) => dispatch(vanbandenAction.editFilterValue(filterValue)),
     updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
     updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
   }

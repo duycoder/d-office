@@ -11,7 +11,7 @@ import { indicatorResponsive, scale, moderateScale, verticalScale } from '../ass
 import * as util from 'lodash';
 import { Icon } from 'react-native-elements';
 
-export function authenticateLoading(isVisible) {
+function authenticateLoading(isVisible) {
     return (
         <Modal
             supportedOrientations={['portrait', 'landscape']}
@@ -32,7 +32,7 @@ export function authenticateLoading(isVisible) {
 }
 
 
-export function executeLoading(isVisible) {
+function executeLoading(isVisible) {
     return (
         <Modal
             supportedOrientations={['portrait', 'landscape']}
@@ -52,7 +52,7 @@ export function executeLoading(isVisible) {
     )
 }
 
-export function dataLoading(isVisible) {
+function dataLoading(isVisible) {
     if (isVisible) {
         return (
             <View style={styles.alContainer}>
@@ -63,7 +63,7 @@ export function dataLoading(isVisible) {
     return null;
 }
 
-export function getFileSize(fileSize) {
+function getFileSize(fileSize) {
     if (fileSize && util.isNumber(fileSize)) {
         if (fileSize >= 1048576) {
             return `${util.round((fileSize / 1048576), 2)} MB`;
@@ -76,7 +76,7 @@ export function getFileSize(fileSize) {
     return '0 KB';
 }
 
-export function getFileExtensionLogo(extension) {
+function getFileExtensionLogo(extension) {
     const imageExtensions = ['image/jpg', 'image/jpeg', 'image/png', 'png', 'jpg', 'jpeg'];
     const docExtension = ['doc', 'docx'];
     const excelExtension = ['xls', 'xlsx'];
@@ -123,6 +123,14 @@ export function getFileExtensionLogo(extension) {
     </View>
 }
 
+export {
+    authenticateLoading,
+    executeLoading,
+    dataLoading,
+    getFileSize,
+    getFileExtensionLogo,
+}
+
 
 const alBorderBlockStyle = (Platform.OS === 'ios') ? { backgroundColor: 'rgba(48, 40, 41, 0.8)', width: moderateScale(150, 1.5), height: moderateScale(150, 1.5), flexDirection: 'column', borderWidth: 0.5, borderColor: 'black' } : { backgroundColor: Colors.LITE_BLUE, width: scale(200), height: verticalScale(100), flexDirection: 'row' };
 
@@ -132,7 +140,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff'
-        // backgroundColor: 'rgba(52, 52, 52, 0.8)'
     },
     alBorderBlock: {
         borderRadius: moderateScale(5),

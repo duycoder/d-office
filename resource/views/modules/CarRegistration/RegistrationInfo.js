@@ -20,6 +20,7 @@ import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { InfoStyle } from '../../../assets/styles';
+import { InfoListItem } from '../../common/DetailCommon';
 
 class RegistrationInfo extends Component {
 
@@ -76,174 +77,61 @@ class RegistrationInfo extends Component {
               relateCalendar
             }
 
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Tên cán bộ
-                        </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.TEN_CANBO}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Mục đích
-                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.MUCDICH}
-                </Text>
-              } />
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Thời gian xuất phát
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.THOIGIAN_XUATPHAT}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Điểm xuất phát
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.DIEM_XUATPHAT}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Điểm kết thúc
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.DIEM_KETTHUC}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Người đăng ký
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.NGUOIDANGKY}
-                </Text>
-              } />
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Phòng ban đăng ký
-                                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.PHONGBAN_DANGKY}
-                </Text>
-              } />
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Số người
-                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.SONGUOI}
-                </Text>
-              } />
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Nội dung
-                </Text>
-              }
-              subtitle={
-                <Text style={InfoStyle.listItemSubTitleContainer}>
-                  {info.NOIDUNG}
-                </Text>
-              } />
-
-            {
-              (info.GHICHU && info.GHICHU.length > 0) && <ListItem style={InfoStyle.listItemContainer}
-                hideChevron={true}
-                title={
-                  <Text style={InfoStyle.listItemTitleContainer}>
-                    Ghi chú
-                </Text>
-                }
-                subtitle={
-                  <Text style={InfoStyle.listItemSubTitleContainer}>
-                    {info.GHICHU}
-                  </Text>
-                } />
-            }
-
-            <ListItem style={InfoStyle.listItemContainer}
-              hideChevron={true}
-              title={
-                <Text style={InfoStyle.listItemTitleContainer}>
-                  Trạng thái
-                </Text>
-              }
-              subtitle={
-                <Text style={[InfoStyle.listItemSubTitleContainer, { color: info.MAU_TRANGTHAI + "" }]}>
-                  {info.TEN_TRANGTHAI}
-                </Text>
-              } />
-
-            {
-              !!info.LYDO_TUCHOI && <ListItem style={InfoStyle.listItemContainer}
-                hideChevron={true}
-                title={
-                  <Text style={InfoStyle.listItemTitleContainer}>
-                    Lý do huỷ/ từ chồi
-                  </Text>
-                }
-                subtitle={
-                  <Text style={InfoStyle.listItemSubTitleContainer}>
-                    {info.LYDO_TUCHOI}
-                  </Text>
-                } />
-            }
-
+            <InfoListItem
+              titleText='Tên cán bộ'
+              subtitleText={info.TEN_CANBO}
+            />
+            <InfoListItem
+              titleText='Mục đích'
+              subtitleText={info.MUCDICH}
+            />
+            <InfoListItem
+              titleText='Thời gian xuất phát'
+              subtitleText={info.THOIGIAN_XUATPHAT}
+            />
+            <InfoListItem
+              titleText='Điểm xuất phát'
+              subtitleText={info.DIEM_XUATPHAT}
+            />
+            <InfoListItem
+              titleText='Điểm kết thúc'
+              subtitleText={info.DIEM_KETTHUC}
+            />
+            <InfoListItem
+              titleText='Người đăng ký'
+              subtitleText={info.NGUOIDANGKY}
+            />
+            <InfoListItem
+              titleText='Phòng ban đăng ký'
+              subtitleText={info.PHONGBAN_DANGKY}
+            />
+            <InfoListItem
+              titleText='Số người'
+              subtitleText={info.SONGUOI}
+            />
+            <InfoListItem
+              titleText='Nội dung'
+              subtitleText={info.NOIDUNG}
+            />
+            <InfoListItem
+              isRender={info.GHICHU && info.GHICHU.length > 0}
+              titleText='Ghi chú'
+              subtitleText={info.GHICHU}
+            />
+            <InfoListItem
+              titleText='Trạng thái'
+              subtitleText={info.TEN_TRANGTHAI}
+            />
+            <InfoListItem
+              isRender={!!info.LYDO_TUCHOI}
+              titleText='Lý do huỷ/ từ chồi'
+              subtitleText={info.LYDO_TUCHOI}
+            />
           </List>
         </ScrollView>
       </View>
     );
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     userInfo: state.userState.userInfo
-//   }
-// }
-
-// export default connect(mapStateToProps)(RegistrationInfo);
 
 export default RegistrationInfo;

@@ -187,7 +187,7 @@ class ListPersonalLichtruc extends Component {
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
-            <GoBackButton onPress={() => this.navigateBack()} buttonStyle={{ width: '100%' }} />
+            <GoBackButton onPress={() => this.navigateBack()} buttonStyle='100%' />
           </Left>
 
           <Body style={[NativeBaseStyle.body, { flex: 6 }]}>

@@ -6,36 +6,23 @@
 import React, { Component } from 'react';
 import {
     AsyncStorage, View, Text, ScrollView, Image,
-    ImageBackground, Modal,
-    TouchableOpacity
+    ImageBackground, TouchableOpacity
 } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../redux/modules/Nav/Action';
-//native-base
-import {
-    Container, Header, Content,
-    Left, Right, Body, Title, Footer
-} from 'native-base';
 
 import { ListItem, Icon } from 'react-native-elements';
-import renderIf from 'render-if';
 
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
-import * as SBIcons from '../../assets/styles/SideBarIcons';
 
 import Panel from './Panel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
+import { Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 import Images from '../../common/Images';
-// import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
-
-const headerBackground = require('../../assets/images/background.png');
-const userAvatar = require('../../assets/images/avatar.png');
-const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
 const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
@@ -219,10 +206,10 @@ class SideBar extends Component {
 
                         {
                             // Lấy chức năng của người dùng
-                            userFunctions && userFunctions.map((item, index) =>
+                            userFunctions && userFunctions.map((item) =>
                                 <Panel title={item.TEN_CHUCNANG.replace("Quản lý ", "")} key={item.DM_CHUCNANG_ID.toString()} actionCode={item.MA_CHUCNANG} isParent={true}>
                                     {
-                                        item.ListThaoTac.map((sItem, sIndex) =>
+                                        item.ListThaoTac.map((sItem) =>
                                             sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE
                                                 ? <TouchableOpacity
                                                     key={sItem.DM_THAOTAC_ID.toString()}

@@ -4,6 +4,7 @@ import { ListItem } from 'react-native-elements';
 import { InfoStyle } from '../../../assets/styles';
 import { HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
 import HTMLView from 'react-native-htmlview';
+import util from 'lodash';
 
 class InfoListItem extends React.Component {
   static defaultProps = {
@@ -18,7 +19,7 @@ class InfoListItem extends React.Component {
       isRender, titleText, subtitleText,
       customTitleText, customSubtitleText,
     } = this.props;
-    if (isRender) {
+    if (isRender && util.isString(titleText) && util.isString(subtitleText)) {
       const isHTML = subtitleText.match(HTML_STRIP_PATTERN);
       if (!isHTML) {
         return (

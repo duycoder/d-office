@@ -130,7 +130,7 @@ class EditUyQuyen extends Component {
         this.setState({
             searchingUser: true,
             pageIndex: DEFAULT_PAGE_INDEX,
-        }, () => {
+        }, async () => {
             const { userId, authorizedId, pageIndex, pageSize, userFilter } = this.state;
             const result = await api.search([
                 userId,

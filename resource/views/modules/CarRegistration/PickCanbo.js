@@ -40,12 +40,8 @@ import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
-// import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
-// import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
-import GoBackButton from '../../common/GoBackButton';
 import { carApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton } from '../../common';
-
+import { MoreButton, HeaderRightButton,GoBackButton } from '../../common';
 
 class PickCanbo extends Component {
   constructor(props) {
@@ -171,7 +167,6 @@ class PickCanbo extends Component {
   }
 
   render() {
-    // console.tron.log(this.state.canboId)
     let unsubmitableCondition = this.state.canboId === 0,
       checkButtonStyle = unsubmitableCondition ? { opacity: 0.6 } : { opacity: 1 };
 
@@ -196,10 +191,6 @@ class PickCanbo extends Component {
                 : null
             }
           </Item>
-
-          {
-
-          }
 
           <FlatList
             data={this.state.data}
@@ -248,7 +239,6 @@ class PickCanbo extends Component {
     );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {

@@ -66,7 +66,7 @@ import AccountChangePassword from '../modules/User/AccountChangePassword';
 
 import Loading from '../common/Loading';
 //sidebar
-import SideBar from './SideBar';
+// import SideBar from './SideBar';
 import Dashboard from './Dashboard';
 import KeyFunction from './KeyFunction';
 import ExtendKeyFunction from './ExtendKeyFunction';
