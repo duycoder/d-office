@@ -138,15 +138,19 @@ class WorkflowStreamProcess extends Component {
             });
 
             const {
-                userId, processId, stepId, mainProcessUser, joinProcessUsers, message, isStepBack, logId
+                userId, processId, stepId, message, isStepBack, logId
             } = this.state;
+
+            const {
+                mainProcessUser, joinProcessUsers
+            } = this.props;
 
             const resultJson = await api.saveFlow({
                 userId,
                 processID: processId,
                 stepID: stepId,
                 mainUser: mainProcessUser,
-                joinuser: joinProcessUsers,
+                joinUser: joinProcessUsers.toString(),
                 message,
                 IsBack: isStepBack ? 1 : 0,
                 LogID: logId,
