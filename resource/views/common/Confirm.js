@@ -19,13 +19,15 @@ import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIn
 //util
 import { appNavigate } from '../../common/Utilities';
 import { accountApi } from '../../common/Api';
+import { executeLoading } from '../../common/Effect';
 
 export default class Confirm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isVisible: false,
-            title: props.title || ''
+            title: props.title || '',
+            executing: false,
         }
     }
 
@@ -46,6 +48,10 @@ export default class Confirm extends Component {
     }
 
     async signOut() {
+        this.setState({
+            isVisible: false,
+            executing: true,
+        });
         //lấy thông tin người dùng từ storage
         const userInfoJSON = await AsyncStorage.getItem('userInfo');
         const userInfo = JSON.parse(userInfoJSON);
@@ -58,54 +64,62 @@ export default class Confirm extends Component {
 
         //xóa các dữ liệu trong storage
         AsyncStorage.clear().then(() => {
+            this.setState({
+                executing: false,
+            });
             appNavigate(this.props.navigation, 'LoginScreen');
-        })
+        });
     }
 
     render() {
         return (
-            <Modal
-                supportedOrientations={['portrait', 'landscape']}
-                animationType={'fade'}
-                transparent={true}
-                visible={this.state.isVisible}
-                onRequestClose={() => this.onModalClose()}>
-                <View style={styles.container}>
-                    <View style={styles.body}>
-                        <Header
-                            outerContainerStyles={styles.headerOuter}
-                            centerComponent={
-                                <Text style={styles.headerCenterTitle}>
-                                    {this.state.title}
-                                </Text>
-                            }
-                        />
-                        <View style={styles.content}>
-                            <Text style={styles.contentText}>
-                                Bạn có chắc chắn muốn thoát {'\n'} ứng dụng {APPLICATION_SHORT_NAME}?
-                            </Text>
-                        </View>
-
-                        <View style={styles.footer}>
-                            <View style={styles.leftFooter}>
-                                <TouchableOpacity onPress={() => this.closeModal()} style={styles.footerButton}>
-                                    <Text style={[styles.footerText, { fontWeight: 'bold', color: Colors.LITE_BLUE }]}>
-                                        KHÔNG
+            <View>
+                <Modal
+                    supportedOrientations={['portrait', 'landscape']}
+                    animationType={'fade'}
+                    transparent={true}
+                    visible={this.state.isVisible}
+                    onRequestClose={() => this.onModalClose()}>
+                    <View style={styles.container}>
+                        <View style={styles.body}>
+                            <Header
+                                outerContainerStyles={styles.headerOuter}
+                                centerComponent={
+                                    <Text style={styles.headerCenterTitle}>
+                                        {this.state.title}
                                     </Text>
-                                </TouchableOpacity>
+                                }
+                            />
+                            <View style={styles.content}>
+                                <Text style={styles.contentText}>
+                                    Bạn có chắc chắn muốn thoát {'\n'} ứng dụng {APPLICATION_SHORT_NAME}?
+                            </Text>
                             </View>
 
-                            <View style={styles.rightFooter}>
-                                <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
-                                    <Text style={[styles.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                                        CÓ
+                            <View style={styles.footer}>
+                                <View style={styles.leftFooter}>
+                                    <TouchableOpacity onPress={() => this.closeModal()} style={styles.footerButton}>
+                                        <Text style={[styles.footerText, { fontWeight: 'bold', color: Colors.LITE_BLUE }]}>
+                                            KHÔNG
                                     </Text>
-                                </TouchableOpacity>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={styles.rightFooter}>
+                                    <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
+                                        <Text style={[styles.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                            CÓ
+                                    </Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </View>
-                </View>
-            </Modal>
+                </Modal>
+                {
+                    executeLoading(this.state.executing)
+                }
+            </View>
         );
     }
 }
