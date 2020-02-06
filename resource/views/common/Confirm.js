@@ -56,7 +56,6 @@ export default class Confirm extends Component {
             token: userInfo.Token || userInfo.DeviceToken
         });
 
-
         //xóa các dữ liệu trong storage
         AsyncStorage.clear().then(() => {
             appNavigate(this.props.navigation, 'LoginScreen');

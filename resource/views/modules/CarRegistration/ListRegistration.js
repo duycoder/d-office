@@ -135,7 +135,7 @@ class ListRegistration extends Component {
     })
   }
 
-  loadingMore() {
+  loadingMore = () => {
     this.setState({
       loadingMoreData: true,
       pageIndex: this.state.pageIndex + 1,

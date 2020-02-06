@@ -142,7 +142,7 @@ class BaseList extends Component {
     })
   }
 
-  loadingMore() {
+  loadingMore = () => {
     this.setState({
       loadingMoreData: true,
       pageIndex: this.state.pageIndex + 1,
@@ -171,7 +171,7 @@ class BaseList extends Component {
   }
 
   renderItem = ({ item, index }) => {
-    const readStateStyle = item.IS_READ === true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
+    const readStateStyle = item.IS_READ == true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
       dokhanText = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
         ? 'R.Q.TRỌNG'
         : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),

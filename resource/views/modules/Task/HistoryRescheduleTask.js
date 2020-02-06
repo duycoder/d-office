@@ -94,7 +94,7 @@ class HistoryRescheduleTask extends Component {
 		});
 	}
 
-	loadMore() {
+	loadMore = () => {
 		this.setState({
 			loadingMore: true,
 			pageIndex: this.state.pageIndex + 1

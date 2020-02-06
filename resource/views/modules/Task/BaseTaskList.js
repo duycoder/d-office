@@ -154,7 +154,7 @@ class BaseTaskList extends Component {
         })
     }
 
-    onLoadingMore() {
+    onLoadingMore = () => {
         this.setState({
             loadingMoreData: true,
             pageIndex: this.state.pageIndex + 1

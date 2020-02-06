@@ -147,7 +147,7 @@ class SearchList extends Component {
     })
   }
 
-  loadingMore() {
+  loadingMore = () => {
     this.setState({
       loadingMore: true,
       pageIndex: this.state.pageIndex + 1,

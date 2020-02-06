@@ -42,10 +42,11 @@ const ListPublishDocStyle = StyleSheet.create({
         fontSize: moderateScale(10, 0.8)
     },
     textNormal: {
-        color: '#000'
+        color: Colors.BLACK, //'#000'
+        fontWeight: 'bold'
     },
     textRead: {
-        color: '#888'
+        color: '#888' //'#888'
     }
 });
 

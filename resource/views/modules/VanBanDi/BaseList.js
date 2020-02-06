@@ -149,7 +149,7 @@ class BaseList extends Component {
     })
   }
 
-  loadingMore() {
+  loadingMore = () => {
     this.setState({
       loadingMoreData: true,
       pageIndex: this.state.pageIndex + 1,
@@ -168,7 +168,8 @@ class BaseList extends Component {
   }
 
   renderItem = ({ item, index }) => {
-    const dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+    const readStateStyle = item.IS_READ == true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
+    dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
       ? Colors.RED_PANTONE_186C
       : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
     const loaiVanbanArr = item.TEN_LOAIVANBAN.split(" "),
@@ -190,7 +191,7 @@ class BaseList extends Component {
           }
 
           title={
-            <RnText style={[ListPublishDocStyle.abridgment]}>
+            <RnText style={[ListPublishDocStyle.abridgment, readStateStyle]}>
               <RnText style={{ fontWeight: 'bold' }}>
                 Trích yếu:
               </RnText>
@@ -203,7 +204,7 @@ class BaseList extends Component {
           subtitle={
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
               <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub]}>
+                <RnText style={[ListPublishDocStyle.abridgmentSub, readStateStyle]}>
                   <RnText style={{ fontWeight: 'bold' }}>
                     Loại văn bản:
                   </RnText>
@@ -213,7 +214,7 @@ class BaseList extends Component {
                 </RnText>
               </View>
               <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub]}>
+                <RnText style={[ListPublishDocStyle.abridgmentSub, readStateStyle]}>
                   <RnText style={{ fontWeight: 'bold' }}>
                     Lĩnh vực:
                   </RnText>
