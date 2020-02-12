@@ -55,7 +55,7 @@ class BasePickInvite extends Component {
 
       data: [],
       [unitId_Text]: extendsNavParams[unitId_Text] || [],
-      [unitName_Text]: extendsNavParams[unitId_Text] || [],
+      [unitName_Text]: extendsNavParams[unitName_Text] || [],
       keyword: null,
     }
   }
@@ -107,26 +107,21 @@ class BasePickInvite extends Component {
   }
 
   selectUnit = (itemName, itemId) => {
-    let listUnitId = this.state[this.unitId],
-      listUnitName = this.state[this.unitName];
+    this._updateListUnit(this.unitId, itemId);
+    this._updateListUnit(this.unitName, itemName);
+  }
 
-      const indexId = listUnitId.indexOf(itemId),
-      indexName = listUnitName.indexOf(itemName);
-    if (indexId > -1) {
-      listUnitId.splice(indexId, 1);
+  _updateListUnit = (stateName, item) => {
+    let list = this.state[stateName];
+    const index = list.indexOf(item);
+    if (index > -1) {
+      list.splice(index, 1);
     } else {
-      listUnitId.push(itemId);
+      list.push(item);
     }
-    if (indexName > -1) {
-      listUnitName.splice(indexName, 1);
-    } else {
-      listUnitName.push(itemName);
-    }
-
     this.setState({
-      [this.unitId]: listUnitId,
-      [this.unitName]: listUnitName,
-    }, ()=> console.tron.log(this.state[this.unitId]));
+      [stateName]: list
+    });
   }
 
   renderUnitList = ({ item }) => {

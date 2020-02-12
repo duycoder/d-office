@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native';
 //lib
 import {
   Container, Header, Left, Body, Right, Item, Title, Text, Input,
-  Form, Toast, Label
+  Form, Toast, Label, Textarea
 } from 'native-base'
 import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
@@ -117,19 +117,19 @@ class CreateMeetingDay extends Component {
       }
       let joinPlaceholderTemp = [];
       if (extendsNavParams.hasOwnProperty('joinNguoiText')) {
-        joinPlaceholderTemp.concat(extendsNavParams.joinNguoiText);
+        joinPlaceholderTemp = joinPlaceholderTemp.concat(extendsNavParams.joinNguoiText);
       }
       if (extendsNavParams.hasOwnProperty('joinVaitroText')) {
-        joinPlaceholderTemp.concat(extendsNavParams.joinVaitroText);
+        joinPlaceholderTemp = joinPlaceholderTemp.concat(extendsNavParams.joinVaitroText);
       }
       if (extendsNavParams.hasOwnProperty('joinPhongText')) {
-        joinPlaceholderTemp.concat(extendsNavParams.joinPhongText);
+        joinPlaceholderTemp = joinPlaceholderTemp.concat(extendsNavParams.joinPhongText);
       }
-      console.tron.log(extendsNavParams)
       if (joinPlaceholderTemp.length > 0) {
         this.setState({
-          joinPlaceholderText: joinPlaceholderTemp.toString(),
-        },()=>console.tron.log(this.state.joinPlaceholderText));
+          joinPlaceholderText: joinPlaceholderTemp.join(', '),
+          thamgia: joinPlaceholderTemp.map(text => `- ${text}`).join('\n'),
+        });
       }
     });
   }
@@ -212,6 +212,18 @@ class CreateMeetingDay extends Component {
       joinPhongId, joinPhongText,
     }
     this.onNavigate('PickInviteUnitsScreen', targetScreenParam);
+  }
+  clearPickInvite = () => {
+    this.setState({
+      joinNguoiId: [],
+      joinNguoiText: [],
+      joinVaitroId: [],
+      joinVaitroText: [],
+      joinPhongId: [],
+      joinPhongText: [],
+      joinPlaceholderText: EMPTY_STRING,
+      thamgia: EMPTY_STRING,
+    });
   }
 
   saveLichhop = async () => {
@@ -390,27 +402,27 @@ class CreateMeetingDay extends Component {
               />
             </Item>
 
-            <Item stackedLabel style={[{ marginHorizontal: verticalScale(18) }, focusId === "thamgia" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
-              <Label>
-                Thành phần tham dự
-              </Label>
-
-              <Input
-                value={thamgia}
-                onChangeText={this.handleChange("thamgia")}
-                onFocus={() => this.setState({ focusId: "thamgia" })}
-                onBlur={() => this.setState({ focusId: EMPTY_STRING })}
-              />
-            </Item>
-
             <CustomPickerButton
               labelText='Thành phần tham dự'
               placeholderText={'Chọn thành phần tham dự'}
               // valueId={phonghopId}
               valueName={this.state.joinPlaceholderText}
               pickFunc={() => this.onPickInvite()}
-            // clearFunc={() => this.clearPhonghop()}
+              clearFunc={() => this.clearPickInvite()}
             />
+
+            <Item stackedLabel style={[{ marginHorizontal: verticalScale(0) }, focusId === "thamgia" ? focusTextboxBorderStyle : blurTextboxBorderStyle]}>
+              <Textarea
+                rowSpan={5} bordered
+                placeholder='Nhập thành phần tham dự'
+                onChangeText={this.handleChange('thamgia')}
+                onFocus={() => this.setState({ focusId: "thamgia" })}
+                onBlur={() => this.setState({ focusId: EMPTY_STRING })}
+                style={{ width: '100%', marginTop: 20 }}
+                value={thamgia}
+                placeholderTextColor={Colors.GRAY}
+              />
+            </Item>
 
             <CustomPickerButton
               labelText='Phòng họp'
