@@ -17,6 +17,10 @@ class CustomPickerButton extends React.Component {
       valueId, valueName,
       pickFunc, clearFunc
     } = this.props;
+
+    const isValueNameEmpty = !!valueName,
+      isValueIdValid = valueId > 0;
+      
     if (isRender) {
       return (
         <Item stackedLabel style={InputCreateStyle.container}>
@@ -24,13 +28,13 @@ class CustomPickerButton extends React.Component {
           <View style={CustomPickerStyle.inputGroup}>
             <Button transparent style={{ width: valueId > 0 ? '100%' : '90%' }} onPress={pickFunc}>
               {
-                !valueName
-                  ? <Text style={CustomPickerStyle.placeholder}>{placeholderText}</Text>
-                  : <Text style={CustomPickerStyle.valueName}>{valueName}</Text>
+                isValueNameEmpty
+                  ? <Text style={CustomPickerStyle.valueName}>{valueName}</Text>
+                  : <Text style={CustomPickerStyle.placeholder}>{placeholderText}</Text>
               }
             </Button>
             {
-              valueId > 0 && <Button transparent onPress={clearFunc}>
+              isValueIdValid && <Button transparent onPress={clearFunc}>
                 <Icon name="ios-close-circle" style={CustomPickerStyle.clearIcon} />
               </Button>
             }

@@ -179,6 +179,10 @@ const meetingRoomApi = () => {
   const getListCalendar = (payloadBody = {}) => api.post("MeetingRoom/ListLichhop", payloadBody);
   const getNguoichutri = (params = []) => api.get("MeetingRoom/SearchChutriHop", params);
 
+  const getInviteListPerson = (params = []) => api.get("MeetingRoom/SearchThamgiaNguoi", params);
+  const getInviteListRole = (params = []) => api.get("MeetingRoom/SearchThamgiaVaitro", params);
+  const getInviteListDept = (params = []) => api.get("MeetingRoom/SearchThamgiaPhong", params);
+
   return {
     getRooms,
     saveRoom,
@@ -187,7 +191,10 @@ const meetingRoomApi = () => {
     getDetail,
     cancelCalendar,
     getListCalendar,
-    getNguoichutri
+    getNguoichutri,
+    getInviteListPerson,
+    getInviteListRole,
+    getInviteListDept,
   };
 }
 

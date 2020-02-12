@@ -97,7 +97,8 @@ class PickNguoiChutri extends Component {
     if (this.state.chutriId === 0) {
       showWarningToast('Vui lòng chọn người chủ trì');
     } else {
-      this.props.updateExtendsNavParams({ chutriId: this.state.chutriId, chutriName: this.state.chutriName });
+      const { chutriId, chutriName } = this.state;
+      this.props.updateExtendsNavParams({ chutriId, chutriName });
       this.navigateBack();
     }
   }

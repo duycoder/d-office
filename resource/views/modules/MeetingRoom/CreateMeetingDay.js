@@ -5,35 +5,28 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { Platform, TouchableOpacity, View, TextInput, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 //lib
 import {
-  Container, Header, Left, Body, Content,
-  Right, Item, Title, Text, Icon, Input,
-  Button, Form, Picker, Toast, Label, Textarea
+  Container, Header, Left, Body, Right, Item, Title, Text, Input,
+  Form, Toast, Label
 } from 'native-base'
-import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
-import * as util from 'lodash';
+import { showWarningToast } from '../../../common/Utilities';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
-//style
-import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import GoBackButton from '../../common/GoBackButton';
-import { ScrollView } from 'react-native-gesture-handler';
-import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { meetingRoomApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
@@ -69,29 +62,74 @@ class CreateMeetingDay extends Component {
       isSaveBtnPressed: true,
       isSaveIcoPressed: true,
       isFromCalendar: props.extendsNavParams.isFromCalendar || false,
+
+      joinPlaceholderText: EMPTY_STRING,
+      joinNguoiId: [],
+      joinNguoiText: [],
+      joinVaitroId: [],
+      joinVaitroText: [],
+      joinPhongId: [],
+      joinPhongText: [],
     }
   }
 
   handleChange = fieldName => fieldValue => this.setState({ [fieldName]: fieldValue })
 
   componentDidMount = () => {
-    this.willFocusListener = this.props.navigation.addListener('didFocus', () => {
-      if (this.props.extendsNavParams.hasOwnProperty("chutriId")) {
-        if (this.props.extendsNavParams.chutriId > 0) {
+    const navObj = this.props.navigation || this.props.navigator;
+    this.willFocusListener = navObj.addListener('didFocus', () => {
+      const { extendsNavParams } = this.props;
+      if (extendsNavParams.hasOwnProperty('chutriId')) {
+
+        if (extendsNavParams.chutriId > 0) {
           this.setState({
-            chutriId: this.props.extendsNavParams.chutriId,
-            chutriName: this.props.extendsNavParams.chutriName
+            chutriId: extendsNavParams.chutriId,
+            chutriName: extendsNavParams.chutriName
           });
         }
       }
-      if (this.props.extendsNavParams.hasOwnProperty("phonghopId")) {
-        if (this.props.extendsNavParams.phonghopId > 0) {
+      if (extendsNavParams.hasOwnProperty('phonghopId')) {
+        if (extendsNavParams.phonghopId > 0) {
           this.setState({
-            phonghopId: this.props.extendsNavParams.phonghopId,
-            phonghopName: this.props.extendsNavParams.phonghopName,
+            phonghopId: extendsNavParams.phonghopId,
+            phonghopName: extendsNavParams.phonghopName,
             fromScreen: EMPTY_STRING
-          })
+          });
         }
+      }
+      if (extendsNavParams.hasOwnProperty('joinNguoiId')) {
+        this.setState({
+          joinNguoiId: extendsNavParams.joinNguoiId,
+          joinNguoiText: extendsNavParams.joinNguoiText,
+        });
+      }
+      if (extendsNavParams.hasOwnProperty('joinVaitroId')) {
+        this.setState({
+          joinVaitroId: extendsNavParams.joinVaitroId,
+          joinVaitroText: extendsNavParams.joinVaitroText,
+        });
+      }
+      if (extendsNavParams.hasOwnProperty('joinPhongId')) {
+        this.setState({
+          joinPhongId: extendsNavParams.joinPhongId,
+          joinPhongText: extendsNavParams.joinPhongText,
+        });
+      }
+      let joinPlaceholderTemp = [];
+      if (extendsNavParams.hasOwnProperty('joinNguoiText')) {
+        joinPlaceholderTemp.concat(extendsNavParams.joinNguoiText);
+      }
+      if (extendsNavParams.hasOwnProperty('joinVaitroText')) {
+        joinPlaceholderTemp.concat(extendsNavParams.joinVaitroText);
+      }
+      if (extendsNavParams.hasOwnProperty('joinPhongText')) {
+        joinPlaceholderTemp.concat(extendsNavParams.joinPhongText);
+      }
+      console.tron.log(extendsNavParams)
+      if (joinPlaceholderTemp.length > 0) {
+        this.setState({
+          joinPlaceholderText: joinPlaceholderTemp.toString(),
+        },()=>console.tron.log(this.state.joinPlaceholderText));
       }
     });
   }
@@ -160,6 +198,20 @@ class CreateMeetingDay extends Component {
       phonghopId: 0,
       phonghopName: EMPTY_STRING
     });
+  }
+
+  onPickInvite = () => {
+    const {
+      joinNguoiId, joinNguoiText,
+      joinVaitroId, joinVaitroText,
+      joinPhongId, joinPhongText,
+    } = this.state;
+    const targetScreenParam = {
+      joinNguoiId, joinNguoiText,
+      joinVaitroId, joinVaitroText,
+      joinPhongId, joinPhongText,
+    }
+    this.onNavigate('PickInviteUnitsScreen', targetScreenParam);
   }
 
   saveLichhop = async () => {
@@ -252,7 +304,6 @@ class CreateMeetingDay extends Component {
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
-    let relateCalendar = null;
 
     let bodyContent = null;
     if (loading) {
@@ -351,6 +402,15 @@ class CreateMeetingDay extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
+
+            <CustomPickerButton
+              labelText='Thành phần tham dự'
+              placeholderText={'Chọn thành phần tham dự'}
+              // valueId={phonghopId}
+              valueName={this.state.joinPlaceholderText}
+              pickFunc={() => this.onPickInvite()}
+            // clearFunc={() => this.clearPhonghop()}
+            />
 
             <CustomPickerButton
               labelText='Phòng họp'

@@ -201,7 +201,7 @@ class Dashboard extends Component {
   fetchRecentNoti = async () => {
     const result = await api.getRecentNoti([
       this.state.userInfo.ID,
-      "3/1/false?query="
+      "3/1/true?query="
     ]);
 
     this.setState({

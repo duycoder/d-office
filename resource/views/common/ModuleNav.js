@@ -105,6 +105,7 @@ import DetailMeetingDay from '../modules/MeetingRoom/DetailMeetingDay';
 import PickMeetingRoom from '../modules/MeetingRoom/PickMeetingRoom';
 import CreateMeetingDay from '../modules/MeetingRoom/CreateMeetingDay';
 import PickNguoiChutri from '../modules/MeetingRoom/PickNguoiChutri';
+import PickInviteUnits from '../modules/MeetingRoom/PickInviteUnits';
 //#endregion
 
 //comment
@@ -383,6 +384,9 @@ const baseStack = {
   // }, AccountChangePasswordScreen: {
   //   screen: AccountChangePassword
   // },
+  PickInviteUnitsScreen: {
+    screen: PickInviteUnits
+  },
 };
 
 const notificationStack = StackNavigator(

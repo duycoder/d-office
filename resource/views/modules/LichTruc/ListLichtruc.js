@@ -222,7 +222,7 @@ class ListLichtruc extends Component {
   renderItem = ({ item, index }) => {
     const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
-    const thoihanText = convertDateToString(item.TUNGAY) - convertDateToString(item.DENNGAY);
+    const thoihanText = `${convertDateToString(item.TUNGAY)} - ${convertDateToString(item.DENNGAY)}`;
     return (
       <View>
         <ListItem
