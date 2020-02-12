@@ -14,7 +14,8 @@ const CustomPickerStyle = StyleSheet.create({
   },
   valueName: {
     fontSize: moderateScale(14.3, 0.86),
-    color: Colors.BLACK
+    color: Colors.BLACK,
+    flexShrink: 1,
   },
   clearIcon: {
     marginTop: 0,
