@@ -247,7 +247,7 @@ class CreateReminder extends Component {
             />
 
             <Item stackedLabel style={{ justifyContent: 'center', marginHorizontal: verticalScale(18) }}>
-              <Label>Thời điểm nhắc</Label>
+              <Label>Thời điểm nhắc <Text style={{ color: '#f00' }}>*</Text></Label>
               <DatePicker
                 locale={"vi"}
                 style={DatePickerCustomStyle.containerStyle}
@@ -264,7 +264,7 @@ class CreateReminder extends Component {
             </Item>
 
             <Item stackedLabel style={{ marginRight: verticalScale(18) }}>
-              <Label>Nhắc việc trước</Label>
+              <Label>Nhắc việc trước <Text style={{ color: '#f00' }}>*</Text></Label>
               <Picker
                 iosHeader='Chọn thời gian nhắc việc trước'
                 mode='dropdown'
