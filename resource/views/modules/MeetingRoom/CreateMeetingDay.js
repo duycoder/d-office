@@ -234,6 +234,7 @@ class CreateMeetingDay extends Component {
     const {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
       canCreateMeetingForOthers, isFromCalendar,
+      joinNguoiId, joinNguoiText, joinPhongId, joinPhongText, joinVaitroText, joinVaitroId,
     } = this.state;
 
     if (!mucdich) {
@@ -262,7 +263,13 @@ class CreateMeetingDay extends Component {
         chutriId: isFromCalendar ? chutriId : (canCreateMeetingForOthers ? chutriId : userId),
         userId,
         lichCongtacId,
-        phonghopId
+        phonghopId,
+        joinNguoiId: joinNguoiId.toString(),
+        joinNguoiText: joinNguoiText.toString(),
+        joinVaitroId: joinVaitroId.toString(),
+        joinVaitroText: joinVaitroText.toString(),
+        joinPhongId: joinPhongId.toString(),
+        joinPhongText: joinPhongText.toString(),
       });
 
       this.setState({
