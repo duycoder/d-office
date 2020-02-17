@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import { convertDateToString, asyncDelay, formatLongText, convertDateTimeToTitle, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
 
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
-import * as util from 'lodash';
+import util from 'lodash';
 
 import HTMLView from 'react-native-htmlview';
 import { API_URL, Colors, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
@@ -152,10 +152,21 @@ export default class TaskDescription extends Component {
                 }
             }
         }
-
-        let ListThamgiaStr = (this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0)
-            ? this.props.info.LstNguoiThamGia.split(",").map(name => `- ${name}`).join("\n")
-            : "N/A";
+        let ListThamgiaStr = 'N/A';
+        const lstJoin = this.props.info.LstNguoiThamGia;
+        if (lstJoin && lstJoin.length > 0) {
+            if (util.isArray(lstJoin)) {
+                if (lstJoin.length > 1) {
+                    ListThamgiaStr = lstJoin.map(name => `- ${name}`).join('\n');
+                }
+                else {
+                    ListThamgiaStr = lstJoin.toString();
+                }
+            }
+            else if (util.isString(lstJoin)) {
+                ListThamgiaStr = lstJoin.split(',').map(name => `- ${name}`).join('\n');
+            }
+        }
 
         return (
             <View style={InfoStyle.container}>

@@ -17,7 +17,7 @@ export default class AttachmentItem extends Component {
   render() {
     const { data } = this.props;
 
-    if (isArray(data)) {
+    if (isArray(data) && data.length > 0) {
       return (
         <ListItem style={InfoStyle.listItemContainer}
           hideChevron

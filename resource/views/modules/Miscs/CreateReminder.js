@@ -124,10 +124,10 @@ class CreateReminder extends Component {
     } = this.state;
 
     if (!noidung) {
-      showWarningToast('Vui lòng nhập nội dung nhắc việc');
+      showWarningToast('Vui lòng nhập nội dung nhắc việc', this._toggleSaveState);
     }
     else if (!thoigian) {
-      showWarningToast('Vui lòng chọn thời gian');
+      showWarningToast('Vui lòng chọn thời gian', this._toggleSaveState);
     } else {
       this.setState({
         executing: true
@@ -166,10 +166,7 @@ class CreateReminder extends Component {
             // this.props.navigation.navigate("DetailMeetingDayScreen");
           }
           else {
-            this.setState({
-              isSaveBtnPressed: true,
-              isSaveIcoPressed: true
-            });
+            this._toggleSaveState();
           }
         }
       });
@@ -193,6 +190,13 @@ class CreateReminder extends Component {
     this.setState({
       giamdocId: 0,
       giamdocName: null
+    });
+  }
+
+  _toggleSaveState = () => {
+    this.setState({
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
     });
   }
 
@@ -235,7 +239,7 @@ class CreateReminder extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
               />
             </Item>
-            
+
             <CustomPickerButton
               isRender={isThuky}
               labelText='Người được nhắc nhở'

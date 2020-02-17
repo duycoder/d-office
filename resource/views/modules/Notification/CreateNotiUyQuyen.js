@@ -74,7 +74,7 @@ class CreateNotiUyQuyen extends Component {
     } = this.state;
 
     if (!tieude) {
-      showWarningToast('Vui lòng nhập tiêu đề');
+      showWarningToast('Vui lòng nhập tiêu đề', this._toggleSaveState);
     }
     // else if (!noidung) {
     //   Toast.show({
@@ -86,7 +86,7 @@ class CreateNotiUyQuyen extends Component {
     //   });
     // } 
     else if (!showUntil) {
-      showWarningToast('Vui lòng chọn hạn hiển thị thông báo');
+      showWarningToast('Vui lòng chọn hạn hiển thị thông báo', this._toggleSaveState);
     }
     else {
       this.setState({
@@ -119,14 +119,18 @@ class CreateNotiUyQuyen extends Component {
             this.navigateBack();
           }
           else {
-            this.setState({
-              isSaveBtnPressed: true,
-              isSaveIcoPressed: true
-            });
+            this._toggleSaveState();
           }
         }
       });
     }
+  }
+
+  _toggleSaveState = () => {
+    this.setState({
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
+    });
   }
 
   render() {

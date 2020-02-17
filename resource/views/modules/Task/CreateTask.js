@@ -164,6 +164,12 @@ class CreateTask extends Component {
     });
   }
 
+  _toggleSaveState = () => {
+    this.setState({
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
+    });
+  }
   saveTask = async () => {
     this.setState({
       isSaveBtnPressed: false,
@@ -178,11 +184,11 @@ class CreateTask extends Component {
     } = this.state;
 
     if (util.isNull(title) || util.isEmpty(title)) {
-      showWarningToast('Vui lòng nhập nội dung công việc');
+      showWarningToast('Vui lòng nhập nội dung công việc', this._toggleSaveState);
     } else if (util.isNull(content) || util.isEmpty(content)) {
-      showWarningToast('Vui lòng nhập nội dung công việc');
+      showWarningToast('Vui lòng nhập nội dung công việc', this._toggleSaveState);
     } else if (util.isNull(deadline) || util.isEmpty(deadline)) {
-      showWarningToast('Vui lòng nhập thời hạn xử lý');
+      showWarningToast('Vui lòng nhập thời hạn xử lý', this._toggleSaveState);
     } else {
       this.setState({
         executing: true
@@ -228,10 +234,7 @@ class CreateTask extends Component {
             this.props.navigation.navigate("DetailTaskScreen");
           }
           else {
-            this.setState({
-              isSaveBtnPressed: true,
-              isSaveIcoPressed: true
-            });
+            this._toggleSaveState();
           }
         }
       });
@@ -333,7 +336,7 @@ class CreateTask extends Component {
                 style={InputCreateStyle.input}
               />
             </Item>
-            
+
             <CustomPickerButton
               isRender={isGiamdoc === false && isThuky === false}
               labelText='Người giao việc'

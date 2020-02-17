@@ -153,15 +153,15 @@ class CreateRegistration extends Component {
     } = this.state;
 
     if (!mucdich) {
-      showWarningToast('Vui lòng nhập mục đích');
+      showWarningToast('Vui lòng nhập mục đích', this._toggleSaveState);
     } else if (!noidung) {
-      showWarningToast('Vui lòng nhập nội dung');
+      showWarningToast('Vui lòng nhập nội dung', this._toggleSaveState);
     } else if (!ngayXP) {
-      showWarningToast('Vui lòng chọn thời gian xuất phát');
+      showWarningToast('Vui lòng chọn thời gian xuất phát', this._toggleSaveState);
     } else if (!diemXP) {
-      showWarningToast('Vui lòng chọn điểm xuất phát');
+      showWarningToast('Vui lòng chọn điểm xuất phát', this._toggleSaveState);
     } else if (!diemKT) {
-      showWarningToast('Vui lòng chọn điểm kết thúc');
+      showWarningToast('Vui lòng chọn điểm kết thúc', this._toggleSaveState);
     } else {
       this.setState({
         executing: true
@@ -204,10 +204,7 @@ class CreateRegistration extends Component {
             this.props.navigation.navigate("DetailCarRegistrationScreen");
           }
           else {
-            this.setState({
-              isSaveBtnPressed: true,
-              isSaveIcoPressed: true
-            });
+            this._toggleSaveState();
           }
         }
       });
@@ -218,6 +215,13 @@ class CreateRegistration extends Component {
   onNavigate = (screenName, targetScreenParam) => {
     this.props.updateExtendsNavParams(targetScreenParam);
     this.props.navigation.navigate(screenName);
+  }
+
+  _toggleSaveState() {
+    this.setState({
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
+    });
   }
 
   render() {

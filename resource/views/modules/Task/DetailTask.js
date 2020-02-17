@@ -596,7 +596,6 @@ class DetailTask extends Component {
                         bodyContent
                     }
 
-                    {/* hiệu ứng xử lý */}
                     {
                         menuActions.length > 0 &&
                         <ButtonGroup
@@ -605,13 +604,6 @@ class DetailTask extends Component {
                             // containerBorderRadius={50}
                             buttons={menuActions}
                         />
-                        // <RnView style={[ButtonGroupStyle.container, { margin: 10 }]}>
-                        //     <ScrollView
-                        //         horizontal
-                        //     >
-                        //         {menuActions}
-                        //     </ScrollView>
-                        // </RnView>
                     }
                     {
                         executeLoading(this.state.executing)
@@ -687,28 +679,17 @@ class TaskContent extends Component {
 
                     {
                         // <Tab heading={
-                        //     <TabHeading style={(this.state.selectedTabIndex == 1) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                        //         <NbIcon name='ios-attach' style={TabStyle.activeText} />
-                        //         <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
-                        //             ĐÍNH KÈM
-                        //     </Text>
+                        //     <TabHeading style={(this.state.selectedTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
+                        //         <NbIcon name='ios-create' style={TabStyle.activeText} />
+                        //         <Text style={(this.state.selectedTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
+                        //             ĐÁNH GIÁ
+                        //         </Text>
                         //     </TabHeading>
                         // }>
-                        //     <TaskAttachment info={this.props.info} />
+    
+                        //     <ResultEvaluationTask data={this.state.info} />
                         // </Tab>
                     }
-
-                    <Tab heading={
-                        <TabHeading style={(this.state.selectedTabIndex == 2) ? TabStyle.activeTab : TabStyle.inActiveTab}>
-                            <NbIcon name='ios-create' style={TabStyle.activeText} />
-                            <Text style={(this.state.selectedTabIndex == 2) ? TabStyle.activeText : TabStyle.inActiveText}>
-                                ĐÁNH GIÁ
-                            </Text>
-                        </TabHeading>
-                    }>
-
-                        <ResultEvaluationTask data={this.state.info} />
-                    </Tab>
                 </Tabs>
             )
         } else {

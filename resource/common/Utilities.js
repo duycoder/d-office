@@ -423,7 +423,7 @@ export function isObjectEmpty(obj = {}) {
     return Object.keys(obj).length < 1;
 }
 
-export function showWarningToast(title = '') {
+export function showWarningToast(title = '', callback) {
     Toast.show({
         text: title,
         type: 'danger',
@@ -431,4 +431,7 @@ export function showWarningToast(title = '') {
         buttonStyle: { backgroundColor: Colors.WHITE },
         buttonTextStyle: { color: Colors.LITE_BLUE },
     });
+    if (typeof callback === 'function') {
+        callback();
+    }
 }

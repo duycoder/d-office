@@ -127,8 +127,7 @@ class CreateMeetingDay extends Component {
       }
       if (joinPlaceholderTemp.length > 0) {
         this.setState({
-          joinPlaceholderText: joinPlaceholderTemp.join(', '),
-          thamgia: joinPlaceholderTemp.map(text => `- ${text}`).join('\n'),
+          joinPlaceholderText: joinPlaceholderTemp.reverse().join(', '),
         });
       }
     });
@@ -225,7 +224,12 @@ class CreateMeetingDay extends Component {
       thamgia: EMPTY_STRING,
     });
   }
-
+  _toggleSaveState = () => {
+    this.setState({
+      isSaveBtnPressed: true,
+      isSaveIcoPressed: true,
+    });
+  }
   saveLichhop = async () => {
     this.setState({
       isSaveBtnPressed: false,
@@ -235,18 +239,19 @@ class CreateMeetingDay extends Component {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
       canCreateMeetingForOthers, isFromCalendar,
       joinNguoiId, joinNguoiText, joinPhongId, joinPhongText, joinVaitroText, joinVaitroId,
+      joinPlaceholderText,
     } = this.state;
 
     if (!mucdich) {
-      showWarningToast('Vui lòng nhập mục đích');
-    } else if (!thamgia) {
-      showWarningToast('Vui lòng nhập thành phần tham dự');
+      showWarningToast('Vui lòng nhập mục đích', this._toggleSaveState);
+    } else if (!thamgia && !joinPlaceholderText) {
+      showWarningToast('Vui lòng nhập thành phần tham dự', this._toggleSaveState);
     } else if (!thoigianBatdau) {
-      showWarningToast('Vui lòng chọn thời gian bắt đầu');
+      showWarningToast('Vui lòng chọn thời gian bắt đầu', this._toggleSaveState);
     } else if (!thoigianKetthuc) {
-      showWarningToast('Vui lòng chọn thời gian kết thúc');
+      showWarningToast('Vui lòng chọn thời gian kết thúc', this._toggleSaveState);
     } else if (!ngayHop) {
-      showWarningToast('Vui lòng chọn ngày họp');
+      showWarningToast('Vui lòng chọn ngày họp', this._toggleSaveState);
     } else {
       this.setState({
         executing: true
@@ -254,7 +259,7 @@ class CreateMeetingDay extends Component {
 
       const resultJson = await MeetingRoomApi.saveCalendar({
         mucdich,
-        thamgia,
+        thamgia: thamgia || joinPlaceholderText,
         ngayHop,
         gioBatdau: thoigianBatdau.split(":")[0],
         phutBatdau: thoigianBatdau.split(":")[1],
@@ -294,10 +299,7 @@ class CreateMeetingDay extends Component {
             this.props.navigation.navigate("DetailMeetingDayScreen");
           }
           else {
-            this.setState({
-              isSaveBtnPressed: true,
-              isSaveIcoPressed: true
-            });
+            this._toggleSaveState();
           }
         }
       });
@@ -317,7 +319,7 @@ class CreateMeetingDay extends Component {
         mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop,
         loading, focusId, chutriName, canCreateMeetingForOthers,
         isSaveBtnPressed, isSaveIcoPressed,
-        phonghopId, phonghopName
+        phonghopId, phonghopName, joinPlaceholderText,
       } = this.state,
       nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop || !isSaveBtnPressed || !isSaveIcoPressed,
       submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
@@ -426,7 +428,7 @@ class CreateMeetingDay extends Component {
                 onFocus={() => this.setState({ focusId: "thamgia" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 style={{ width: '100%', marginTop: 20 }}
-                value={thamgia}
+                value={!!thamgia ? thamgia : (!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING)}
                 placeholderTextColor={Colors.GRAY}
               />
             </Item>
