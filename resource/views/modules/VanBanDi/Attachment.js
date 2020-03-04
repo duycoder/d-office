@@ -11,27 +11,22 @@ import { ActivityIndicator, FlatList } from 'react-native';
 import { Container, Content, Header, Item, Icon, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 
-import {
-    MenuProvider,
-    Menu,
-    MenuOptions,
-    MenuOption,
-    MenuTrigger,
-} from 'react-native-popup-menu';
+import { MenuProvider } from 'react-native-popup-menu';
 
 //styles
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 
 //utilities
 import renderIf from 'render-if';
-import { API_URL, WEB_URL, EMPTY_STRING, LOADER_COLOR, Colors, BASEDOCSEARCH_CONSTANT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
 import {
-    asyncDelay, isImage, emptyDataPage, convertDateToString,
+    emptyDataPage, convertDateToString,
     convertTimeToString, onDownloadFile, extention
 } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { NativeBaseStyle } from '../../../assets/styles';
+import { vanbandiApi } from '../../../common/Api';
 
 export default class AttachSignDoc extends Component {
     constructor(props) {
@@ -48,32 +43,19 @@ export default class AttachSignDoc extends Component {
         }
     }
 
-    async onFilter() {
+    onFilter = async () => {
         this.setState({
             searching: true
         });
 
-        const url = `${API_URL}/api/VanBanDi/SearchAttachment?id=${this.state.VB_ID}&attQuery=${this.state.filterValue}`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        });
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay(1000);
+        const { VB_ID, filterValue } = this.state;
+        const resultJson = await vanbandiApi().getAttachment(`?id=${VB_ID}&attQuery=${filterValue}`);
 
         this.setState({
             searching: false,
             ListTaiLieu: resultJson
         });
     }
-
 
     renderItem = ({ item }) => {
         let regExtension = extention(item.DUONGDAN_FILE);

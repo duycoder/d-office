@@ -6,37 +6,28 @@
 'use strict'
 import React, { Component } from 'react'
 import {
-    Platform, Alert, ActivityIndicator,
-    View, Text, Image, ScrollView, FlatList,
-    TouchableOpacity, RefreshControl, PermissionsAndroid
+    ActivityIndicator,
+    FlatList
 } from 'react-native'
 
 //lib
 import renderIf from 'render-if';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
-import RNFetchBlob from 'rn-fetch-blob';
 import { Container, Content, Header, Item, Input, Icon } from 'native-base';
-import OpenFile from 'react-native-doc-viewer';
-import * as util from 'lodash';
 
 //styles
-import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
+import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 
-import {
-    EMTPY_DATA_MESSAGE, WEB_URL, Colors,
-    EMPTY_STRING, LOADER_COLOR, API_URL
-} from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 
 //utilities
-import { formatLongText, isImage, emptyDataPage, asyncDelay, 
-    convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
+import { emptyDataPage, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { NativeBaseStyle } from '../../../assets/styles';
-
+import { taskApi } from '../../../common/Api';
 
 export default class TaskAttachment extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -47,24 +38,13 @@ export default class TaskAttachment extends Component {
         }
     }
 
-    async onAttachFilter() {
+    onAttachFilter = async () => {
         this.setState({
             searching: true
         });
 
-        const url = `${API_URL}/api/HscvCongViec/SearchAttachment?id=${this.state.CongViec.ID}&attQuery=${this.state.filterValue}`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        })
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-        const resultJson = await result.json();
-
-        await asyncDelay(1000);
+        const { CongViec, filterValue } = this.state;
+        const resultJson = await taskApi().getAttachment(`?id=${CongViec.ID}&attQuery=${filterValue}`);
 
         this.setState({
             searching: false,

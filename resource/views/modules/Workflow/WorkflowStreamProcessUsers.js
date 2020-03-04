@@ -32,7 +32,7 @@ import {
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //util
-import * as util from 'lodash';
+import util from 'lodash';
 import renderIf from 'render-if';
 
 //redux
@@ -44,7 +44,6 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 class WorkflowStreamProcessUsers extends Component {
 	constructor(props){
 		super(props);
-		this.icon = require('../../../assets/images/arrow-white.png');
 		this.state = {
 			isMainProcess: props.isMainProcess,
 			title: props.title,

@@ -11,25 +11,25 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  WEB_URL, Colors, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
-  emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage, formatMessage, showWarningToast
+  convertDateTimeToString,
+  showWarningToast
 } from '../../../common/Utilities';
 
 //lib
 import {
   Alert, View, Text, FlatList, Platform,
-  TouchableOpacity, ScrollView, Keyboard
+  ScrollView, Keyboard
 } from 'react-native';
 import {
   Container, Header, Left, Right, Body, Title, Input,
-  Button, Content, Icon, Footer, Text as NbText, Toast
+  Button, Content, Footer
 } from 'native-base';
 import renderIf from 'render-if';
-import { Icon as RneIcon, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import * as util from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -38,19 +38,15 @@ import Images from '../../../common/Images';
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import {
-  ListCommentStyle, ReplyCommentStyle,
-  AttachCommentStyle, FooterCommentStyle
+  ReplyCommentStyle,
+  FooterCommentStyle
 } from '../../../assets/styles/CommentStyle';
 
-import { scale, verticalScale, moderateScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
-
-const android = RNFetchBlob.android;
+import { MoreButton, GoBackButton } from '../../common';
+import { vanbandiApi, taskApi } from '../../../common/Api';
 
 class ReplyComment extends Component {
   constructor(props) {
@@ -77,7 +73,10 @@ class ReplyComment extends Component {
       loadingMore: false,
       pageIndex: DEFAULT_PAGE_INDEX,
       pageSize: DEFAULT_PAGE_SIZE,
-    }
+    };
+
+    this.VanbanDiApi = vanbandiApi();
+    this.TaskApi = taskApi();
   }
 
   componentWillMount = () => {
@@ -93,13 +92,13 @@ class ReplyComment extends Component {
     this.keyboardWillHideSub.remove();
   }
 
-  keyboardWillShow = (event) => {
+  keyboardWillShow = () => {
     this.setState({
       footerFlex: 1
     })
   };
 
-  keyboardWillHide = (event) => {
+  keyboardWillHide = () => {
     this.setState({
       footerFlex: 0
     })
@@ -119,16 +118,23 @@ class ReplyComment extends Component {
   }
 
   fetchData = async () => {
-    let url = `${API_URL}/api/VanBanDi/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
-    const { isTaskComment } = this.state;
+    let result = {}
+    const { isTaskComment, comment, pageIndex, pageSize } = this.state;
 
     if (isTaskComment) {
-      url = `${API_URL}/api/HscvCongViec/GetRepliesOfComment/${this.state.comment.ID}/${this.state.pageIndex}/${this.state.pageSize}`;
+      result = await this.TaskApi.getRepliesOfComment([
+        comment.ID,
+        pageIndex,
+        pageSize
+      ]);
     }
-    let result = await fetch(url).then((response) => response.json());
-    // if (isTaskComment) {
-    //   result = resultJson.LstRootComment;
-    // }
+    else {
+      result = await this.VanbanDiApi.getRepliesOfComment([
+        comment.ID,
+        pageIndex,
+        pageSize
+      ]);
+    }
 
     this.setState({
       loading: false,
@@ -150,46 +156,11 @@ class ReplyComment extends Component {
         executing: true
       });
 
-      let url = `${API_URL}/api/VanBanDi/SaveComment`;
-      let headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=utf-8'
-      });
-
-      let body = JSON.stringify({
-        ID: 0,
-        VANBANDI_ID: this.state.docId,
-        PARENT_ID: this.state.comment.ID,
-        NGUOITAO: this.state.userId,
-        NOIDUNGTRAODOI: this.state.commentContent
-      });
-
       if (this.state.isTaskComment) {
-        url = `${API_URL}/api/HscvCongViec/SaveComment`;
-        headers = new Headers({
-          'Accept': 'application/json',
-          'Content-Type': 'application/json;charset=utf-8'
-        });
-
-        body = JSON.stringify({
-          ID: 0,
-          CONGVIEC_ID: this.state.taskId,
-          REPLY_ID: this.state.comment.ID,
-          USER_ID: this.state.userId,
-          NOIDUNG: this.state.commentContent,
-          CREATED_BY: this.state.userId
-        });
+      }
+      else {
       }
 
-      await asyncDelay(1000);
-
-      const result = await fetch(url, {
-        method: 'post',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
       this.setState({
         executing: false,
         commentContent: EMPTY_STRING
@@ -197,14 +168,11 @@ class ReplyComment extends Component {
     }
   }
 
-  async onDownloadFile(fileName, fileLink, fileExtension) {
-    //config save path
+  async onDownloadFile(fileName, fileLink) {
     fileLink = fileLink.replace(/\\/, '');
     fileLink = fileLink.replace(/\\/g, '/');
     let date = new Date();
     let url = `${WEB_URL}/Uploads/${fileLink}`;
-    // url = url.replace('\\', '/');
-    // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
     let regExtension = this.extention(url);
     let extension = "." + regExtension[0];
@@ -353,23 +321,8 @@ class ReplyComment extends Component {
   }
 
   render() {
-    let attachmentContent = null;
     let attach = this.state.comment.ATTACH;
     if (attach != null) {
-      attachmentContent = (
-        <View style={AttachCommentStyle.commentAttachContainer}>
-          <View style={AttachCommentStyle.commentAttachInfo}>
-            <RneIcon name='ios-attach' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
-            <Text style={AttachCommentStyle.commentAttachText}>
-              {formatLongText(this.state.comment.ATTACH.TENTAILIEU, 30)}
-            </Text>
-          </View>
-
-          <TouchableOpacity style={AttachCommentStyle.commetnAttachButton} onPress={() => this.onDownloadFile(attach.TENTAILIEU, attach.DUONGDAN_FILE, attach.DINHDANG_FILE)}>
-            <RneIcon name='download' color={Colors.BLUE_PANTONE_640C} size={verticalScale(15)} type='entypo' />
-          </TouchableOpacity>
-        </View>
-      )
     }
     const buttonSendColor = this.state.commentContent.trim() === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
     return (

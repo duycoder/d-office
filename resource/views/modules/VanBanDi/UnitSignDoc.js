@@ -4,10 +4,10 @@
 * @since: 28/05/2018
 */
 import React, { Component } from 'react';
-import { ActivityIndicator, View, ScrollView, FlatList, Text } from 'react-native';
+import { ActivityIndicator, FlatList } from 'react-native';
 
 //lib
-import { Container, Content, Header, Icon, Item, Input, Col } from 'native-base';
+import { Container, Content, Header, Icon, Item, Input } from 'native-base';
 import { List, ListItem, Icon as RneIcon } from 'react-native-elements';
 import renderIf from 'render-if';
 
@@ -15,9 +15,10 @@ import renderIf from 'render-if';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 
 //utilities
-import { API_URL, EMPTY_STRING, LOADER_COLOR, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage } from '../../../common/Utilities';
+import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { emptyDataPage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { vanbandiApi } from '../../../common/Api';
 
 export default class UnitSignDoc extends Component {
 	constructor(props) {
@@ -42,15 +43,7 @@ export default class UnitSignDoc extends Component {
 			searching: true
 		});
 
-		const url = `${API_URL}/api/VanBanDi/SearchInternalUnit?id=${this.state.VanBanDi.ID}&unitQuery=${this.state.filterValue}`;
-
-		const result = await fetch(url, {
-			method: 'GET'
-		}).then(response => response.json()).then(responseJson => {
-			return responseJson;
-		});
-
-		await asyncDelay(1000)
+		const result = await vanbandiApi().getInternalUnits(`?id=${this.state.VanBanDi.ID}&unitQuery=${this.state.filterValue}`)
 
 		this.setState({
 			searching: false,

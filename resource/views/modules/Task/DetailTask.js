@@ -5,42 +5,33 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { AsyncStorage, Alert, View as RnView, Text as RnText, FlatList, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View as RnView, Text as RnText, TouchableOpacity } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
 //lib
-import { Menu, MenuTrigger, MenuOptions, MenuOption, MenuProvider, renderers } from 'react-native-popup-menu';
+import { Menu, MenuTrigger, MenuOptions, MenuOption, MenuProvider } from 'react-native-popup-menu';
 import {
-    Container, Header, Left, Button, Body,
-    Title, Right, Toast, Tabs, Tab, TabHeading, ScrollableTab,
-    Icon as NbIcon, Text, SwipeRow, Item, Input,
-    Content, Form,
+    Container, Header, Left, Body,
+    Title, Right, Toast, Tabs, Tab, TabHeading, Icon as NbIcon, Text,
 } from 'native-base';
 import { Icon, ButtonGroup } from 'react-native-elements';
-import renderIf from 'render-if';
 import * as util from 'lodash'
 
 //utilities
 import {
-    API_URL, LOADER_COLOR, HEADER_COLOR, Colors,
-    CONGVIEC_CONSTANT, PLANJOB_CONSTANT, EMPTY_DATA_ICON_URI, EMPTY_STRING, DEFAULT_PAGE_INDEX, TOAST_DURATION_TIMEOUT
+    API_URL, Colors,
+    EMPTY_STRING, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, convertDateToString, formatLongText, appGetDataAndNavigate, backHandlerConfig, appStoreDataAndNavigate } from '../../../common/Utilities';
-import { verticalScale, indicatorResponsive, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { asyncDelay } from '../../../common/Utilities';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 
-//styles
-import { MenuStyle, MenuOptionStyle, MenuOptionsCustomStyle } from '../../../assets/styles/MenuPopUpStyle';
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //comps
 import TaskDescription from './TaskDescription';
-import TaskAttachment from './TaskAttachment';
-import GroupSubTask from './GroupSubTask';
-import ResultEvaluationTask from './ResultEvaluationTask'
-import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { HeaderMenuStyle } from '../../../assets/styles/index';
@@ -48,6 +39,7 @@ import { HeaderMenuStyle } from '../../../assets/styles/index';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { GoBackButton, AlertMessage } from '../../common';
 import { taskApi } from '../../../common/Api';
+import { WorkflowButton } from '../../common/DetailCommon';
 
 const TaskApi = taskApi();
 
@@ -396,42 +388,37 @@ class DetailTask extends Component {
             const task = this.state.taskInfo;
             if (task.CongViec.IS_BATDAU == true) {
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec == true && task.CongViec.IS_SUBTASK != true) || task.IsNguoiThucHienChinh) && (task.CongViec.PHANTRAMHOANTHANH < 100)) {
-                    menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onUpdateTaskProgress()}><RnText style={ButtonGroupStyle.buttonText}>CẬP NHẬT TIẾN ĐỘ</RnText></TouchableOpacity> }
-                        // <InteractiveButton title={'Cập nhật tiến độ'} onPress={() => this.onUpdateTaskProgress()} key={1} />
-                    )
+                    menuActions.push({
+                        element: () => <WorkflowButton onPress={() => this.onUpdateTaskProgress()} btnText="CẬP NHẬT TIẾN ĐỘ" />
+                    });
 
                     if (task.CongViec.NGUOIXULYCHINH_ID != task.CongViec.NGUOIGIAOVIEC_ID) {
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onRescheduleTask()}><RnText style={ButtonGroupStyle.buttonText}>LÙI HẠN CÔNG VIỆC</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'Lùi hạn công việc'} onPress={() => this.onRescheduleTask()} key={2} />
-                        )
+                        menuActions.push({
+                            element: () => <WorkflowButton onPress={() => this.onRescheduleTask()} btnText="LÙI HẠN CÔNG VIỆC" />
+                        });
                     }
                 }
 
                 if (task.IsNguoiGiaoViec && task.CongViec.PHANTRAMHOANTHANH == 100 && task.CongViec.NGUOIGIAOVIECDAPHANHOI == null) {
-                    menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onApproveProgressTask()}><RnText style={ButtonGroupStyle.buttonText}>PHẢN HỒI CÔNG VIỆC</RnText></TouchableOpacity> }
-                        // <InteractiveButton title={'Phản hồi công việc'} onPress={() => this.onApproveProgressTask()} key={3} />
-                    )
+                    menuActions.push({
+                        element: () => <WorkflowButton onPress={() => this.onApproveProgressTask()} btnText="PHẢN HỒI CÔNG VIỆC" />
+                    });
                 }
 
                 if (((task.CongViec.DAGIAOVIEC != true && task.IsNguoiGiaoViec && task.CongViec.IS_SUBTASK != true)
                     || task.IsNguoiThucHienChinh)
                     && (task.CongViec.PHANTRAMHOANTHANH == null || task.CongViec.PHANTRAMHOANTHANH < 100)) {
-                    menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onCreateSubTask()}><RnText style={ButtonGroupStyle.buttonText}>TẠO CÔNG VIỆC CON</RnText></TouchableOpacity> }
-                        // <InteractiveButton title={'Tạo công việc con'} onPress={() => this.onCreateSubTask()} key={4} />
-                    )
+                    menuActions.push({
+                        element: () => <WorkflowButton onPress={() => this.onCreateSubTask()} btnText="TẠO CÔNG VIỆC CON" />
+                    });
                 }
 
                 if (task.HasRoleAssignTask
                     && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                     && task.CongViec.DAGIAOVIEC != true) {
-                    menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>GIAO VIỆC</RnText></TouchableOpacity> }
-                        // <InteractiveButton title={'Giao việc'} onPress={() => this.onAssignTask()} key={5} />
-                    )
+                    menuActions.push({
+                        element: () => <WorkflowButton onPress={() => this.onAssignTask()} btnText="GIAO VIỆC" />
+                    });
                 }
 
                 // if (task.HasRoleAssignTask) {
@@ -470,16 +457,12 @@ class DetailTask extends Component {
                     if (task.HasRoleAssignTask
                         && (task.CongViec.PHANTRAMHOANTHANH == 0 || task.CongViec.PHANTRAMHOANTHANH == null)
                         && task.CongViec.DAGIAOVIEC != true) {
-
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onAssignTask()}><RnText style={ButtonGroupStyle.buttonText}>GIAO VIỆC</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'GIAO VIỆC'} onPress={() => this.onAssignTask()} key={9} />
-                        )
-
-                        menuActions.push(
-                            { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
-                            // <InteractiveButton title={'BẮT ĐẦU XỬ LÝ'} onPress={() => this.onConfirmToStartTask()} key={10} />
-                        )
+                        menuActions.push({
+                            element: () => <WorkflowButton onPress={() => this.onAssignTask()} btnText="GIAO VIỆC" />
+                        });
+                        menuActions.push({
+                            element: () => <WorkflowButton onPress={() => this.onConfirmToStartTask()} btnText="BẮT ĐẦU XỬ LÝ" />
+                        });
                     }
                 }
                 else if (task.IsNguoiGiaoViec) {
@@ -520,10 +503,9 @@ class DetailTask extends Component {
                     //     }
                     // } else {
                     //Bắt đầu xử lý
-                    menuActions.push(
-                        { element: () => <TouchableOpacity style={ButtonGroupStyle.button} onPress={() => this.onConfirmToStartTask()}><RnText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU XỬ LÝ</RnText></TouchableOpacity> }
-                        // <InteractiveButton title={'Bắt đầu xử lý'} onPress={() => this.onConfirmToStartTask()} key={16} />
-                    )
+                    menuActions.push({
+                        element: () => <WorkflowButton onPress={() => this.onConfirmToStartTask()} btnText="BẮT ĐẦU XỬ LÝ" />
+                    });
                     // }
                 }
             }
@@ -686,7 +668,7 @@ class TaskContent extends Component {
                         //         </Text>
                         //     </TabHeading>
                         // }>
-    
+
                         //     <ResultEvaluationTask data={this.state.info} />
                         // </Tab>
                     }
@@ -733,39 +715,6 @@ class TaskContent extends Component {
         );
     }
 }
-
-class InteractiveButton extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            title: props.title
-        }
-    }
-    render() {
-        return (
-            <RnView style={styles.slide}>
-                <TouchableOpacity style={[ButtonGroupStyle.button, { paddingHorizontal: 10, borderWidth: 3, borderColor: Colors.WHITE }]} onPress={this.props.onPress}>
-                    <Text style={ButtonGroupStyle.buttonText}>{util.toUpper(this.state.title)}</Text>
-                </TouchableOpacity>
-            </RnView>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    wrapper: {
-    },
-    slide: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    text: {
-        color: '#fff',
-        fontSize: moderateScale(30, 1.1),
-        fontWeight: 'bold',
-    }
-})
 
 const mapStateToProps = (state) => {
     return {

@@ -6,22 +6,17 @@
 'use strict'
 import React, { Component } from 'react';
 
-import { View, Text, RefreshControl, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
 //lib
-import { Container, Header, Content, Icon } from 'native-base';
-import { Icon as RNEIcon } from 'react-native-elements';
-import * as util from 'lodash';
+import { Container, Content } from 'native-base';
+import util from 'lodash';
 import renderIf from 'render-if';
-import HTMLView from 'react-native-htmlview';
 
 //utilities
-import { convertDateTimeToString, emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
-import { LOADER_COLOR, Colors, EMPTY_STRING } from '../../../common/SystemConstant';
-import { verticalScale, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
-import { HistoryStyle, TimeLineStyle } from '../../../assets/styles/HistoryStyle';
-
-const STRIP_HTML_PATTERN = /<[^>]*>?/gm;
+import { emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
+import { Colors, EMPTY_STRING, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
+import { TimeLineStyle } from '../../../assets/styles/HistoryStyle';
 
 export default class TimelineSignDoc extends Component {
     constructor(props) {
@@ -31,31 +26,22 @@ export default class TimelineSignDoc extends Component {
         }
     }
 
-    keyExtractor = (item, index) => item.ID.toString()
+    keyExtractor = (item) => item.ID.toString()
 
     renderItem = ({ item, index }) => {
-        let identifyBackground = TimeLineStyle.initState;
-        let identifyColor = TimeLineStyle.initStateText;
-        let iconName = 'plus-circle-outline';
         let stepName = 'KHỞI TẠO'
         let message = 'KHỞI TẠO'
         if (item.step != null) {
             message = item.MESSAGE;
             if (item.IS_RETURN) {
-                identifyBackground = TimeLineStyle.backState;
-                identifyColor = TimeLineStyle.backStateText;
-                iconName = 'arrow-left-drop-circle-outline';
                 stepName = 'TRẢ VỀ';
             } else {
-                identifyBackground = TimeLineStyle.fowardState;
-                identifyColor = TimeLineStyle.fowardStateText;
-                iconName = 'arrow-right-drop-circle-outline';
                 stepName = util.toUpper(item.step.NAME);
             }
         }
         else {
             if (!!item.MESSAGE) {
-                const stripedMessage = item.MESSAGE.replace(STRIP_HTML_PATTERN, EMPTY_STRING);
+                const stripedMessage = item.MESSAGE.replace(HTML_STRIP_PATTERN, EMPTY_STRING);
                 stepName = stripedMessage;
                 message = stripedMessage;
             }
@@ -153,11 +139,6 @@ export default class TimelineSignDoc extends Component {
                                                 <Text style={TimeLineStyle.infoDetailValueText}>
                                                     {ListJoinStr}
                                                 </Text>
-                                                // item.LstThamGia.map((name) => (
-                                                //     <Text style={TimeLineStyle.infoDetailValueText}>
-                                                //         - {`${name}\n`}
-                                                //     </Text>
-                                                // ))
                                             }
                                         </View>
                                     </View>

@@ -5,7 +5,7 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { ActivityIndicator, View, FlatList, RefreshControl } from 'react-native';
+import { ActivityIndicator, FlatList, RefreshControl } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
@@ -14,14 +14,14 @@ import * as vanbandiAction from '../../../redux/modules/VanBanDi/Action';
 //lib
 import {
   Container, Header, Item, Icon, Input, Body, Text,
-  Content, List, ListItem, Badge, Left, Right, Button
+  Content, List, ListItem, Right, Button
 } from 'native-base'
 import renderIf from 'render-if';
 
 //utilities
-import { formatLongText, openSideBar } from '../../../common/Utilities';
+import { formatLongText } from '../../../common/Utilities';
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
+  HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors
 } from '../../../common/SystemConstant';
@@ -30,9 +30,9 @@ import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 //style
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { MoreButton } from '../../common';
+import { vanbandiApi } from '../../../common/Api';
 
 class SearchList extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -56,14 +56,16 @@ class SearchList extends Component {
     })
   }
 
-  async fetchData() {
+  fetchData = async () => {
+    const {
+      filterType,
+      userId, pageSize, pageIndex, filterValue,
+    } = this.state;
+
     const refreshingData = this.state.refreshingData;
     const loadingData = this.state.loadingData;
 
     let apiUrlParam = 'GetListProcessing';
-
-    const { filterType } = this.state;
-
     if (filterType == VANBAN_CONSTANT.DA_XULY) {
       apiUrlParam = 'GetListProcessed';
     } else if (filterType == VANBAN_CONSTANT.CAN_REVIEW) {
@@ -72,15 +74,12 @@ class SearchList extends Component {
       apiUrlParam = 'GetListReviewed';
     }
 
-    const url = `${API_URL}/api/VanBanDi/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
-    let result = await fetch(url).then(response => response.json())
-      .then(responseJson => {
-        return responseJson.ListItem
-      }).catch(err => {
-        console.log(`Error in url: ${url}`, err);
-        return []
-      });
+    let result = await vanbandiApi().getSearchList([
+      apiUrlParam,
+      userId,
+      pageSize,
+      `${pageIndex}?query=${filterValue}`
+    ]);
 
     this.setState({
       refreshingData: false,
@@ -103,7 +102,7 @@ class SearchList extends Component {
     this.props.navigation.navigate(screenName);
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     return (
       <ListItem button onPress={() => this.navigateToDocDetail(item.ID)} icon>
         <Body>

@@ -11,27 +11,26 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  WEB_URL, Colors, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateTimeToString,
-  asyncDelay, formatLongText, isImage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, showWarningToast
+  showWarningToast
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //lib
 import renderIf from 'render-if';
 import {
-  Alert, ActivityIndicator, FlatList, View, Text,
-  TouchableOpacity, Image, Keyboard, Platform,
-  Animated,
+  Alert, FlatList, View, Text,
+  TouchableOpacity, Keyboard, Platform,
 } from 'react-native';
 import {
   Container, Header, Left, Right, Body, Title, Input,
-  Button, Content, Icon, Footer, Text as NbText, Toast
+  Content
 } from 'native-base';
-import { Icon as RneIcon, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import * as util from 'lodash';
 import RNFetchBlob from 'rn-fetch-blob';
 //import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
@@ -40,18 +39,16 @@ import Images from '../../../common/Images';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ListCommentStyle, FooterCommentStyle, AttachCommentStyle } from '../../../assets/styles/CommentStyle';
-import { scale, verticalScale, moderateScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
+import { ListCommentStyle, FooterCommentStyle } from '../../../assets/styles/CommentStyle';
+import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //firebase
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
-
-const android = RNFetchBlob.android;
+import { MoreButton, GoBackButton } from '../../common';
+import { vanbandiApi, taskApi } from '../../../common/Api';
 
 class ListComment extends Component {
   constructor(props) {
@@ -78,7 +75,10 @@ class ListComment extends Component {
       avatarSourceURI: EMPTY_STRING,
       isOpen: false,
       heightAnimation: verticalScale(50),
-    }
+    };
+
+    this.VanbanDiApi = vanbandiApi();
+    this.TaskApi = taskApi();
   }
 
   componentWillMount = () => {
@@ -97,14 +97,22 @@ class ListComment extends Component {
   }
 
   fetchData = async () => {
-    let url = `${API_URL}/api/VanBanDi/GetRootCommentsOfVanBan/${this.state.docId}/${this.state.pageIndex}/${this.state.pageSize}`;
-    const { isTaskComment } = this.state;
-
+    const { isTaskComment, docId, pageIndex, pageSize } = this.state;
+    let result = {};
     if (isTaskComment) {
-      url = `${API_URL}/api/HscvCongViec/GetRootCommentsOfTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}`;
+      result = await this.VanbanDiApi.getComment([
+        docId,
+        pageIndex,
+        pageSize
+      ]);
     }
-
-    let result = await fetch(url).then((response) => response.json());
+    else {
+      result = await this.TaskApi.getComment([
+        docId,
+        pageIndex,
+        pageSize
+      ]);
+    }
 
     this.setState({
       loading: false,
@@ -140,13 +148,13 @@ class ListComment extends Component {
     // }
   }
 
-  keyboardWillShow = (event) => {
+  keyboardWillShow = () => {
     this.setState({
       footerFlex: 1
     })
   };
 
-  keyboardWillHide = (event) => {
+  keyboardWillHide = () => {
     this.setState({
       footerFlex: 0
     })
@@ -178,32 +186,9 @@ class ListComment extends Component {
       this.setState({
         executing: true
       });
-
-      //phần thông tin cho văn bản 
-      let url = `${API_URL}/api/VanBanDi/SaveComment`;
-
-      let headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=utf-8'
-      });
-
-      let body = JSON.stringify({
-        ID: 0,
-        VANBANDI_ID: this.state.docId,
-        PARENT_ID: null,
-        NGUOITAO: this.state.userId,
-        NOIDUNGTRAODOI: this.state.commentContent
-      });
-
-      //phần thông tin cho công việc
+      
       if (this.state.isTaskComment) {
-        url = `${API_URL}/api/HscvCongViec/SaveComment`;
-        headers = new Headers({
-          'Accept': 'application/json',
-          'Content-Type': 'application/json;charset=utf-8'
-        });
-
-        body = JSON.stringify({
+        const resultJson = await this.TaskApi.saveComment({
           ID: 0,
           CONGVIEC_ID: this.state.taskId,
           REPLY_ID: null,
@@ -211,18 +196,7 @@ class ListComment extends Component {
           NOIDUNG: this.state.commentContent,
           CREATED_BY: this.state.userId
         });
-      }
 
-      await asyncDelay(1000);
-
-      const result = await fetch(url, {
-        method: 'post',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-      if (this.state.isTaskComment) {
         if (resultJson.Status == true && !util.isNull(resultJson.GroupTokens) && !util.isEmpty(resultJson.GroupTokens)) {
           const message = this.props.userInfo.Fullname + ' đã đăng trao đổi nội dung công việc #Công việc ' + this.state.taskId;
           const content = {
@@ -239,6 +213,8 @@ class ListComment extends Component {
           })
         }
       }
+      else {
+      }
 
       this.setState({
         executing: false,
@@ -247,14 +223,11 @@ class ListComment extends Component {
     }
   }
 
-  async onDownloadFile(fileName, fileLink, fileExtension) {
-    //config save path
+  async onDownloadFile(fileName, fileLink) {
     fileLink = fileLink.replace(/\\/, '');
     fileLink = fileLink.replace(/\\/g, '/');
     let date = new Date();
     let url = `${WEB_URL}/Uploads/${fileLink}`;
-    // url = url.replace('\\', '/');
-    // url = url.replace(/\\/g, '/');
     url = url.replace(/ /g, "%20");
     let regExtension = this.extention(url);
     let extension = "." + regExtension[0];
@@ -387,23 +360,8 @@ class ListComment extends Component {
     })
   }
 
-  renderItem = ({ item, index }) => {
-    let attachmentContent = null;
+  renderItem = ({ item }) => {
     if (item.ATTACH != null) {
-      attachmentContent = (
-        <View style={AttachCommentStyle.commentAttachContainer}>
-          <View style={AttachCommentStyle.commentAttachInfo}>
-            <RneIcon name='ios-attach' color={Colors.BLUE_PANTONE_640C} size={verticalScale(20)} type='ionicon' />
-            <Text style={AttachCommentStyle.commentAttachText}>
-              {formatLongText(item.ATTACH.TENTAILIEU, 30)}
-            </Text>
-          </View>
-
-          <TouchableOpacity style={AttachCommentStyle.commetnAttachButton} onPress={() => this.onDownloadFile(item.ATTACH.TENTAILIEU, item.ATTACH.DUONGDAN_FILE, item.ATTACH.DINHDANG_FILE)}>
-            <RneIcon name='download' color={Colors.BLUE_PANTONE_640C} size={verticalScale(15)} type='entypo' />
-          </TouchableOpacity>
-        </View>
-      )
     }
     // let currentBorderBottomWidth = .7;
     // if (--this.state.data.length === index) {

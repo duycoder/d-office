@@ -6,9 +6,8 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  AsyncStorage, ActivityIndicator, View,
-  FlatList, RefreshControl, TouchableOpacity, Text as RnText, StatusBar
-} from 'react-native';
+  ActivityIndicator, View,
+  FlatList, RefreshControl, Text as RnText} from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
@@ -16,17 +15,15 @@ import * as vanbandiAction from '../../../redux/modules/VanBanDi/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
-  Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button
-} from 'native-base'
+  Container, Header, Content, Left} from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle } from '../../../common/Utilities';
+import { formatLongText, emptyDataPage, convertDateTimeToTitle } from '../../../common/Utilities';
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
-  VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
+  DOKHAN_CONSTANT,
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
   VANBANDI_CONSTANT,
   EMPTY_STRING
@@ -34,13 +31,10 @@ import {
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 
-//styles
-import { ListSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { NativeBaseStyle } from '../../../assets/styles';
-import { SearchSection, MoreButton } from '../../common';
+import { SearchSection, MoreButton, GoBackButton } from '../../common';
 import { vanbandiApi } from '../../../common/Api';
 
 class BaseList extends Component {
@@ -167,7 +161,7 @@ class BaseList extends Component {
     })
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     const readStateStyle = item.IS_READ == true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
     dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
       ? Colors.RED_PANTONE_186C

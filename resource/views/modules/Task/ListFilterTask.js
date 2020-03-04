@@ -6,8 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    RefreshControl, AsyncStorage, ActivityIndicator, View, Text, Modal,
-    FlatList, TouchableOpacity, Image
+    RefreshControl, ActivityIndicator, View, Text, FlatList, TouchableOpacity, Image
 } from 'react-native';
 
 //constant
@@ -15,14 +14,13 @@ import {
     API_URL, DEFAULT_PAGE_INDEX,
     DEFAULT_PAGE_SIZE, EMPTY_DATA_ICON_URI,
     EMPTY_STRING, EMTPY_DATA_MESSAGE,
-    HEADER_COLOR, LOADER_COLOR,
+    LOADER_COLOR,
     Colors
 } from '../../../common/SystemConstant';
 
 //native-base
 import {
-    Button, Icon, Item, Input, Title, Toast,
-    Container, Header, Content, Left, Right, Body
+    Icon, Item, Input, Container, Header, Content
 } from 'native-base';
 
 //react-native-elements
@@ -39,7 +37,7 @@ import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
 //utilities
-import { formatLongText, closeSideBar, openSideBar, getUserInfo, convertDateToString, showWarningToast } from '../../../common/Utilities';
+import { convertDateToString, showWarningToast } from '../../../common/Utilities';
 
 import * as util from 'lodash';
 import { NativeBaseStyle } from '../../../assets/styles';
@@ -57,7 +55,13 @@ class ListFilterTask extends Component {
             filterValue: this.props.navigation.state.params.filterValue,
             filterType: this.props.navigation.state.params.filterType,
             showFilter: false
-        }
+        };
+        this.filterTypeConst = {
+            CHUA_XULY: 1,
+            DA_XULY: 2,
+            CAN_REVIEW: 3,
+            DA_REVIEW: 4,
+        };
     }
 
     componentDidMount = () => {
@@ -65,44 +69,36 @@ class ListFilterTask extends Component {
     }
 
     fetchData = async () => {
-        //quy ước xử lý
-        /*
-            1:chưa xử lý
-            2: đã xử lý
-            3: cần review
-            4: đã review
-        */
+        const { filterType, refreshing, userId, pageSize, pageIndex, filterValue } = this.state;
 
         let apiUrlParam = 'PersonalWork';
-
-        if (this.state.filterType == 2) {
-            apiUrlParam = 'AssignedWork'
-        } else if (this.state.filterType == 3) {
-            apiUrlParam = 'CombinationWork'
-        } else if (this.state.filterType == 4) {
-            apiUrlParam = 'ProcessedJob'
+        switch (+filterType) {
+            case this.filterTypeConst.CHUA_XULY: apiUrlParam = 'PersonalWork';
+                break;
+            case this.filterTypeConst.DA_XULY: apiUrlParam = 'AssignedWork';
+                break;
+            case this.filterTypeConst.CAN_REVIEW: apiUrlParam = 'CombinationWork';
+                break;
+            case this.filterTypeConst.DA_REVIEW: apiUrlParam = 'ProcessedJob';
+                break;
+            default: apiUrlParam = 'PersonalWork';
+                break;
         }
 
-        const isRefreshing = this.state.refreshing
-        if (!isRefreshing) {
-            this.setState({ loading: true });
-        }
-
-        const url = `${API_URL}/api/HscvCongViec/${apiUrlParam}/${this.state.userId}/${this.state.pageSize}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-        // console.log('123', url);
-        let result = await fetch(url).then(response => {
-            return response.json();
-        }).then(responseJson => {
-            return responseJson.ListItem;
-        }).catch(err => {
-            console.log(`Error in URL: ${url}`, err);
-            return []
+        this.setState({
+            loading: !refreshing ? true : false,
         });
+
+        const result = await taskApi().getListFilterTask([
+            userId,
+            pageSize,
+            `%{pageIndex}?query=${filterValue}`
+        ], apiUrlParam);
 
         this.setState({
             loading: false,
             refreshing: false,
-            data: isRefreshing ? result : [...this.state.data, ...result]
+            data: refreshing ? result : [...this.state.data, ...result]
         });
     }
 
@@ -113,7 +109,6 @@ class ListFilterTask extends Component {
     }
 
     onFilter = () => {
-        //tìm kiếm
         if (util.isNull(this.state.filterValue) || util.isEmpty(this.state.filterValue)) {
             showWarningToast('Vui lòng nhập tên công việc');
         } else {

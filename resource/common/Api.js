@@ -234,11 +234,31 @@ const vanbandiApi = () => {
   const getDetail = (params = []) => api.get("VanBanDi/GetDetail", params);
   const getList = (params = []) => api.get("VanBanDi", params);
   const getSignedUnit = (params = []) => api.get("VanBanDi/SearchInternalUnit", params);
+  const getAttachment = (urlParams = "") => api.post(`VanBanDi/SearchAttachment${urlParams}`);
+  const getInternalUnits = (urlParams = "") => api.get(`VanBanDi/SearchInternalUnit${urlParams}`);
+  const getSearchList = (params = []) => api.get("VanBanDi", params);
+  const saveReplyReview = (payloadBody = {}) => api.post("VanBanDi/SaveReplyReview", payloadBody);
+  const getFlow = (params = []) => api.get("VanBanDi/GetFlow", params);
+  const getUserReview = (params = []) => api.get("VanBanDi/SearchUserReview", params);
+  const saveReview = (payloadBody = {}) => api.post("VanBanDi/SaveReview", payloadBody);
+  const getComment = (params = []) => api.get("VanBanDi/GetRootCommentsOfVanBan", params);
+  const saveComment = (payloadBody = {}) => api.post("VanBanDi/SaveComment", payloadBody);
+  const getRepliesOfComment = (params = []) => api.get("VanBanDi/GetRepliesOfComment", params);
 
   return {
     getDetail,
     getList,
     getSignedUnit,
+    getAttachment,
+    getInternalUnits,
+    getSearchList,
+    saveReplyReview,
+    getFlow,
+    getUserReview,
+    saveReview,
+    getComment,
+    saveComment,
+    getRepliesOfComment,
   };
 }
 
@@ -250,7 +270,7 @@ const taskApi = () => {
   const getDetail = (params = []) => api.get("HscvCongViec/JobDetail", params);
   const startTask = (payloadBody = {}) => api.post("HscvCongViec/BeginProcess", payloadBody);
   const getTaskAssigner = (payloadBody = {}) => api.post("HscvCongViec/GetListGiaoviec", payloadBody);
-  const getAttachment = (payloadBody = {}) => api.post("", payloadBody);
+  const getAttachment = (urlParams = "") => api.post(`HscvCongViec/SearchAttachment${urlParams}`);
   const getList = (params = []) => api.get("HscvCongViec", params);
   const getAssignHelper = (params = []) => api.get("HscvCongViec/AssignTask", params);
   const getAssignedUser = (payloadBody = {}) => api.post("HscvCongViec/GetUserToAssignTask", payloadBody);
@@ -259,7 +279,16 @@ const taskApi = () => {
   const saveCompleteSubTask = (payloadBody = {}) => api.post("HscvCongViec/CompleteSubTask", payloadBody);
   const updateProgressTask = (payloadBody = {}) => api.post("HscvCongViec/UpdateProgressTask", payloadBody);
   const saveExtendTask = (payloadBody = {}) => api.post("HscvCongViec/SaveExtendTask", payloadBody);
-  //TODO: added plan to deprecated
+  const getCalculatedPoint = (params = []) => api.get("HscvCongViec/CalculateTaskPoint", params);
+  const saveEvaluationPoint = (payloadBody = {}) => api.post("HscvCongViec/SaveEvaluationTask", payloadBody);
+  const getListEvaluation = (params = []) => api.get("HscvCongViec/GetListSubmit", params);
+  const getListPlan = (params = []) => api.get("HscvCongViec/GetListProgressTask", params);
+  const getListProgress = (params = []) => api.get("HscvCongViec/GetListProgressTask", params);
+  const getListReschedule = (params = []) => api.get("HscvCongViec/GetListRescheduleTask", params);
+  const getListFilterTask = (params = [], apiUrl = "") => api.get(`HscvCongViec/${apiUrl}`, params);
+  const getComment = (params = []) => api.get("HscvCongViec/GetRootCommentsOfTask", params);
+  const saveComment = (payloadBody = {}) => api.post("HscvCongViec/SaveComment", payloadBody);
+  const getRepliesOfComment = (params = []) => api.get("HscvCongViec/GetRepliesOfComment", params);
 
   return {
     getCreateHelper,
@@ -276,6 +305,17 @@ const taskApi = () => {
     saveCompleteSubTask,
     updateProgressTask,
     saveExtendTask,
+    getCalculatedPoint,
+    saveEvaluationPoint,
+    getListEvaluation,
+    getListPlan,
+    getListProgress,
+    getListReschedule,
+    getListFilterTask,
+    getAttachment,
+    getComment,
+    saveComment,
+    getRepliesOfComment,
   };
 }
 

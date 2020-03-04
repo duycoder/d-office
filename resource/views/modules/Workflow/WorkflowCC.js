@@ -5,37 +5,32 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text as RnText, FlatList } from 'react-native';
+import { ActivityIndicator, View, FlatList } from 'react-native';
 
 //utilites
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
-  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
-  MODULE_CONSTANT,
+  EMPTY_STRING,
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import * as util from 'lodash';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //effect
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //redux
 import { connect } from 'react-redux';
-import * as workflowAction from '../../../redux/modules/Workflow/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Left, Button, Content, Title,
-  Tabs, Tab, TabHeading, ScrollableTab, Text, Icon,
+  Container, Header, Left, Content, Title,
+  Tabs, Tab, TabHeading, Text, Icon,
   Form, Textarea, Body, Item, Input, Right, Toast,
-  Label, ListItem, CheckBox
+  ListItem, CheckBox
 } from 'native-base';
 import renderIf from 'render-if';
-import { Icon as RneIcon } from 'react-native-elements';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';

@@ -17,24 +17,16 @@ import {
     Button, Text, Body, Textarea, Item, Label, Content
 } from 'native-base';
 
-import {
-    Icon as RneIcon
-} from 'react-native-elements';
-import * as util from 'lodash';
-
 //utilities
 import { executeLoading } from '../../../common/Effect';
 import { API_URL, Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
-
-import { formatMessage, asyncDelay } from '../../../common/Utilities';
-import GoBackButton from '../../common/GoBackButton';
+import { asyncDelay } from '../../../common/Utilities';
+import { GoBackButton } from '../../common';
 
 class DenyRescheduleTask extends Component {
     constructor(props) {
@@ -111,7 +103,7 @@ class DenyRescheduleTask extends Component {
             <Container>
                 <Header style={NativeBaseStyle.container}>
                     <Left style={NativeBaseStyle.left}>
-						<GoBackButton onPress={() => this.navigateBack()} />
+                        <GoBackButton onPress={() => this.navigateBack()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

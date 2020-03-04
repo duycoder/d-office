@@ -5,34 +5,26 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { Platform, TouchableOpacity, View, TextInput, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 //lib
 import {
-  Container, Header, Left, Body, Content,
-  Right, Item, Title, Text, Icon, Input,
-  Button, Form, Picker, Toast, Label, Textarea
-} from 'native-base'
-import { Icon as RneIcon, ListItem } from 'react-native-elements';
+  Container, Header, Left, Body, Right, Item, Title, Text, Icon, Input,
+  Form, Picker, Toast, Label} from 'native-base'
 import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, formatLongText, showWarningToast } from '../../../common/Utilities';
-import * as util from 'lodash';
+import { pickerFormat, showWarningToast } from '../../../common/Utilities';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
-//style
-import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import { ScrollView } from 'react-native-gesture-handler';
-import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { reminderApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
@@ -214,7 +206,6 @@ class CreateReminder extends Component {
       submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
-    let relateCalendar = null;
 
     let bodyContent = null;
     if (loading) {
@@ -342,15 +333,3 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateReminder);
 
-const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderColor: Colors.GRAY,
-    borderWidth: 1,
-    padding: 5,
-    width: '100%'
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
-})

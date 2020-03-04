@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -34,7 +34,7 @@ import { asyncDelay, emptyDataPage, showWarningToast } from '../../../common/Uti
 //redux
 import { connect } from 'react-redux';
 import * as userAction from '../../../redux/modules/User/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import { accountApi } from '../../../common/Api';
 
 const AccountApi = accountApi();

@@ -6,32 +6,29 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  AsyncStorage, ActivityIndicator, View,
+  ActivityIndicator, View,
   FlatList, RefreshControl, TouchableOpacity, Text as RnText,
   Image
 } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
-import * as vanbandenAction from '../../../redux/modules/VanBanDen/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button, Fab, Title, Subtitle, Toast
+  Container, Header, Body, Text,
+  Content, Left, Right, Title, Toast
 } from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString, onDownloadFile, asyncDelay, showWarningToast } from '../../../common/Utilities';
+import { emptyDataPage, convertDateToString, onDownloadFile, showWarningToast } from '../../../common/Utilities';
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
-  VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
-  VANBANDEN_CONSTANT,
-  VANBANDI_CONSTANT, LICHTRUC_CONSTANT,
+  LICHTRUC_CONSTANT,
   EMPTY_STRING,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
@@ -39,13 +36,9 @@ import { indicatorResponsive, moderateScale, verticalScale } from '../../../asse
 import Images from '../../../common/Images';
 
 
-//styles
-import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { MenuProvider, MenuOption, MenuOptions, MenuTrigger, Menu } from 'react-native-popup-menu';
 import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
-import { getFileExtensionLogo } from '../../../common/Effect';
 import AlertMessage from '../../common/AlertMessage';
 import { lichtrucApi } from '../../../common/Api';
 import { MoreButton, GoBackButton, ColumnedListItem } from '../../common';
@@ -219,7 +212,7 @@ class ListLichtruc extends Component {
     this.props.navigation.navigate(screenName);
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
     const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
     const thoihanText = `${convertDateToString(item.TUNGAY)} - ${convertDateToString(item.DENNGAY)}`;

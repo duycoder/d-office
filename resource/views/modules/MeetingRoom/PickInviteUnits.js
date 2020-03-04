@@ -5,43 +5,21 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import {
-  ActivityIndicator, FlatList
-} from 'react-native'
 //lib
 import {
-  Container, Content, Segment, Button, Text, Icon, Item, Input,
-  Header, Left, Body, Title, View, Tabs, Tab, TabHeading,
-  Right, Toast, ListItem as NbListItem, Radio, CheckBox
-} from 'native-base';
-import {
-  Icon as RneIcon
-} from 'react-native-elements';
-import renderIf from 'render-if';
-import * as util from 'lodash';
+  Container, Content, Text, Header, Left, Body, Title, Tabs, Tab, TabHeading,
+  Right} from 'native-base';
 
 //redux
 import { connect } from 'react-redux';
-import * as taskAction from '../../../redux/modules/CongViec/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
-//utilities
-import {
-  API_URL, HEADER_COLOR, DEFAULT_PAGE_INDEX,
-  EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
-  TASK_PROCESS_TYPE, Colors, DEFAULT_PAGE_SIZE
-} from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
-import { dataLoading, executeLoading } from '../../../common/Effect';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-//views
-import { meetingRoomApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
+import { HeaderRightButton, GoBackButton } from '../../common';
 import BasePickInvite from './BasePickInvite';
 
 class PickInviteUnits extends Component {

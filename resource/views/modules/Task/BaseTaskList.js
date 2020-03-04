@@ -6,8 +6,8 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    AsyncStorage, ActivityIndicator, View, Text as RnText,
-    FlatList, RefreshControl, TouchableOpacity
+    ActivityIndicator, View, Text as RnText,
+    FlatList, RefreshControl,
 } from 'react-native';
 import HTMLView from 'react-native-htmlview';
 
@@ -17,16 +17,15 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-    Container, Header, Left, Input,
-    Item, Icon, Button, Text, Content, Fab
+    Container, Header, Left, Content,
 } from 'native-base';
-import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import renderIf from 'render-if';
 
 //constant
 import {
-    API_URL, HEADER_COLOR, EMPTY_STRING,
-    LOADER_COLOR, CONGVIEC_CONSTANT,
+    API_URL, EMPTY_STRING,
+    CONGVIEC_CONSTANT,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
     Colors,
     DOKHAN_CONSTANT,
@@ -34,16 +33,14 @@ import {
 } from '../../../common/SystemConstant';
 
 //utilities
-import { indicatorResponsive, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
-import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, appStoreDataAndNavigate, asyncDelay } from '../../../common/Utilities';
+import { getColorCodeByProgressValue, convertDateToString, emptyDataPage, asyncDelay } from '../../../common/Utilities';
 
 //styles
 import { ListTaskStyle, DetailTaskStyle } from '../../../assets/styles/TaskStyle';
-import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { NativeBaseStyle } from '../../../assets/styles';
-import { SearchSection, MoreButton, AddButton } from '../../common';
+import { SearchSection, MoreButton, AddButton, GoBackButton } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 class BaseTaskList extends Component {
@@ -96,7 +93,6 @@ class BaseTaskList extends Component {
     }
 
     async fetchData() {
-        const loadingMoreData = this.state.loadingMoreData;
         const refreshingData = this.state.refreshingData;
         const loadingData = this.state.loadingData;
 
@@ -192,7 +188,7 @@ class BaseTaskList extends Component {
         }
     }
 
-    async getListSubTasks(index, isExpand, taskId, parentIds) {
+    getListSubTasks = async (index, isExpand, taskId, parentIds) => {
         if (isExpand == false) {
             this.setState({
                 executing: true
@@ -252,7 +248,7 @@ class BaseTaskList extends Component {
         }
     }
 
-    renderItem = ({ item, index }) => {
+    renderItem = ({ item }) => {
         const readStateTextStyle = item.IS_READ === true ? ListTaskStyle.textRead : ListTaskStyle.textNormal,
             progressColor = getColorCodeByProgressValue(item.PHANTRAMHOANTHANH),
             progressText = `${item.PHANTRAMHOANTHANH || 0}%`;
@@ -264,12 +260,9 @@ class BaseTaskList extends Component {
             renderBars[--progressBars] = 1;
         }
 
-        const dokhanText = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-            ? 'R.Q.TRỌNG'
-            : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
-            dokhanBgColor = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-                ? Colors.RED_PANTONE_186C
-                : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+        const dokhanBgColor = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+            ? Colors.RED_PANTONE_186C
+            : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
 
         return (
             <View>
@@ -402,7 +395,7 @@ class BaseTaskList extends Component {
                         renderIf(!this.state.loadingData)(
                             <FlatList
                                 data={this.state.data}
-                                keyExtractor={(item, index) => item.ID.toString()}
+                                keyExtractor={(item) => item.ID.toString()}
                                 renderItem={this.renderItem}
                                 refreshControl={
                                     <RefreshControl

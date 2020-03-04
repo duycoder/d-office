@@ -5,47 +5,32 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import {
-	Animated, View, Text, FlatList,
-	TouchableOpacity, TouchableHighlight, StyleSheet, Image
-} from 'react-native';
+import { Animated, View, TouchableOpacity, StyleSheet } from 'react-native';
 
 //native-base
 import {
-	Button, Icon as NBIcon, Text as NBText, Item, Input, Title,
-	Container, Header, Content, Left, Right, Body, CheckBox,
-	Tab, Tabs, TabHeading, ScrollableTab, ListItem as NBListItem
+	Text as NBText, Title,
+	Left, Right, Body, CheckBox,
+	ListItem as NBListItem
 } from 'native-base';
 
-import { List, ListItem, Icon } from 'react-native-elements';
+import { ListItem, Icon } from 'react-native-elements';
 
 //constant
-import {
-	API_URL, DEFAULT_PAGE_INDEX,
-	DEFAULT_PAGE_SIZE, EMPTY_DATA_ICON_URI,
-	EMPTY_STRING, EMTPY_DATA_MESSAGE,
-	HEADER_COLOR, LOADER_COLOR, Colors
-} from '../../../common/SystemConstant';
-
-//effect
-import { dataLoading, executeLoading } from '../../../common/Effect';
+import { Colors } from '../../../common/SystemConstant';
 
 //util
-import * as util from 'lodash';
-import renderIf from 'render-if';
+import util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
-//styles
-import { TabStyle } from '../../../assets/styles/TabStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 class WorkflowRequestReviewUsers extends Component {
 	constructor(props) {
 		super(props);
-		this.icon = require('../../../assets/images/arrow-white.png');
 		this.state = {
 			title: props.title,
 			users: props.users,
@@ -125,22 +110,9 @@ class WorkflowRequestReviewUsers extends Component {
 	}
 
 	render() {
-		const interpolateRotation = this.state.rotateAnimation.interpolate({
-			inputRange: [0, 1],
-			outputRange: ['0deg', '180deg']
-		});
-
-		const iconRotationStyle = {
-			transform: [
-				{
-					rotate: interpolateRotation
-				}
-			]
-		}
-
 		const listChildren = this.state.expanded ? <View style={styles.body}>
 			{
-				this.state.users.map((item, index) => (
+				this.state.users.map((item) => (
 					<NBListItem
 						key={item.ID}
 						onPress={() => this.onCheckUser(item.ID)} style={{ height: this.state.rowItemHeight }}>
@@ -203,7 +175,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WorkflowRequestReviewUsers);
-
 
 const styles = StyleSheet.create({
 	wrapper: {

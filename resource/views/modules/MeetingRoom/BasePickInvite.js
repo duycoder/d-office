@@ -14,9 +14,6 @@ import {
   Left, Title, Right, ListItem as NbListItem, CheckBox
 } from 'native-base';
 
-//redux
-import { connect } from 'react-redux';
-import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
   DEFAULT_PAGE_INDEX,

@@ -26,11 +26,10 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { meetingRoomApi } from '../../../common/Api';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
-import { CustomPickerButton, HeaderRightButton } from '../../common';
+import { CustomPickerButton, HeaderRightButton, GoBackButton } from '../../common';
 
 const MeetingRoomApi = meetingRoomApi();
 

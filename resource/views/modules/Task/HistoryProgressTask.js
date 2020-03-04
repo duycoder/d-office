@@ -40,6 +40,7 @@ import {
 import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { MoreButton, GoBackButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class HistoryProgressTask extends Component {
 	constructor(props) {
@@ -77,9 +78,12 @@ class HistoryProgressTask extends Component {
 	}
 
 	fetchData = async () => {
-		const url = `${API_URL}/api/HscvCongViec/GetListProgressTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}?query=${this.state.fitlerValue}`
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const { taskId, pageIndex, pageSize, fitlerValue } = this.state;
+		const resultJson = await taskApi().getListProgress([
+			taskId,
+			pageIndex,
+			`${pageSize}?query=${filterValue}`
+		]);
 
 		this.setState({
 			data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson,

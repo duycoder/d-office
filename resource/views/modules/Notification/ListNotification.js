@@ -1,31 +1,22 @@
 import React, { Component } from 'react'
 import {
-    View, Text as RNText, ActivityIndicator, StyleSheet,
-    TouchableOpacity, FlatList, RefreshControl, AsyncStorage, StatusBar
+    FlatList, RefreshControl, AsyncStorage, StatusBar
 } from 'react-native'
 
 //constant
 import {
-    API_URL,
-    EMPTY_STRING, THONGBAO_CONSTANT,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors, generateReadFontStyleAndColor, generateBadgeIconNoti
-} from '../../../common/SystemConstant';
-import { appNavigate, convertDateTimeToTitle, emptyDataPage, appStoreDataAndNavigate, convertDateToString, showWarningToast } from '../../../common/Utilities';
+    EMPTY_STRING, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors} from '../../../common/SystemConstant';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
-import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
-//lib
-import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import {
     Container, Header, Title, Content,
-    Left, Body, Right, Text, Button, Toast, Fab, Icon
-} from 'native-base';
+    Left, Body, Right} from 'native-base';
 import renderIf from 'render-if';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
-import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { accountApi } from '../../../common/Api';
 import { RecentNoti, AuthorizeNoti } from '../../common/DashboardCommon';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -53,7 +44,6 @@ class ListNotification extends Component {
     onPressNotificationItem = async (item) => {
         //update read state for unread noti
         if (!item.IS_READ) {
-            const result = await AccountApi.updateReadStateOfMessage(item);
 
             this.setState({
                 isRefreshNotiList: true,

@@ -8,7 +8,7 @@ import { GoBackButton } from '../../common';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
-import { Colors, API_URL } from '../../../common/SystemConstant';
+import { Colors } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
 import { accountApi } from '../../../common/Api';
 

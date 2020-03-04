@@ -18,7 +18,7 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { convertDateToString } from '../../../common/Utilities'
 
 //styles
-import { verticalScale, indicatorResponsive, scale, moderateScale } from '../../../assets/styles/ScaleIndicator'
+import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator'
 
 export default class ResultEvaluationTask extends Component {
     state = {
@@ -367,4 +367,4 @@ const styles = StyleSheet.create({
         color: '#000',
         textDecorationLine: 'underline'
     }
-})
+});

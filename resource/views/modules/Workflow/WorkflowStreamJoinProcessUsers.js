@@ -6,17 +6,17 @@
 
 'use strict'
 import React, { Component } from 'react';
-import { Animated, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Animated, View, TouchableOpacity } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
-import { List, ListItem, Icon } from 'react-native-elements';
+import { ListItem, Icon } from 'react-native-elements';
 import {
     ListItem as NbListItem, Text as NbText,
-    Right, Left, Title, Body, Radio, CheckBox, Toast
+    Right, Left, Title, Body, CheckBox
 } from 'native-base';
 import * as util from 'lodash';
 import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
@@ -27,7 +27,6 @@ import { showWarningToast } from '../../../common/Utilities';
 class WorkflowStreamJoinProcessUsers extends Component {
     constructor(props) {
         super(props);
-        this.icon = require('../../../assets/images/arrow-white.png');
         this.state = {
             title: props.title,
             users: props.users,

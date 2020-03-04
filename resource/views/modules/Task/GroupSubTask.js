@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import {
-    Alert, ActivityIndicator, StyleSheet, RefreshControl,
+    ActivityIndicator, StyleSheet, RefreshControl,
     View, Text as RnText, FlatList, Platform,
     TouchableOpacity
 } from 'react-native';
@@ -17,24 +17,20 @@ import { connect } from 'react-redux';
 //lib
 import {
     Container, Header, Item, Input, Icon, Title, Form,
-    Content, Button, Text, SwipeRow, Left, Body, Toast, Label, Right
+    Content, Button, SwipeRow, Left, Body, Toast, Label, Right
 } from 'native-base';
-import { Icon as RneIcon, ListItem } from 'react-native-elements';
+import { Icon as RneIcon } from 'react-native-elements';
 import renderIf from 'render-if';
-import * as util from 'lodash';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 //utilities
 import {
-    emptyDataPage, formatLongText,
-    convertDateToString, asyncDelay,
-    backHandlerConfig, appGetDataAndNavigate
+    emptyDataPage, convertDateToString, asyncDelay
 } from '../../../common/Utilities'
 import { executeLoading } from '../../../common/Effect'
 import {
     API_URL, DEFAULT_PAGE_INDEX,
-    EMPTY_STRING, LOADMORE_COLOR,
-    LOADER_COLOR, HEADER_COLOR, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
+    EMPTY_STRING, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //styles
@@ -45,8 +41,7 @@ import AlertMessage from "../../common/AlertMessage";
 import { AlertMessageStyle } from "../../../assets/styles/index";
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 class GroupSubTask extends Component {

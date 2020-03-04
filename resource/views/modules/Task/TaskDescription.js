@@ -8,24 +8,15 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
-import { connect } from 'react-redux';
 
 //common
-import { convertDateToString, asyncDelay, formatLongText, convertDateTimeToTitle, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
+import { convertDateToString, formatLongText, convertDateTimeToTitle } from '../../../common/Utilities';
 
-import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 import util from 'lodash';
 
-import HTMLView from 'react-native-htmlview';
-import { API_URL, Colors, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
-
-//redux
-import * as navAction from '../../../redux/modules/Nav/Action';
-import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
-import AttachmentItem from '../../common/DetailCommon/AttachmentItem';
 import { InfoStyle } from '../../../assets/styles';
-import { InfoListItem } from '../../common/DetailCommon';
+import { InfoListItem, AttachmentItem } from '../../common/DetailCommon';
+import { taskApi, vanbandenApi, vanbandiApi } from '../../../common/Api';
 
 export default class TaskDescription extends Component {
     constructor(props) {
@@ -58,17 +49,22 @@ export default class TaskDescription extends Component {
     }
 
     fetchData = async (docId, isArrived = false) => {
-        let url = `${API_URL}/api/VanBanDi/GetDetail/${docId}/${this.state.userId}/0`;
-
+        const { userId } = this.state;
+        let resultJson = {};
         if (isArrived) {
-            url = `${API_URL}/api/VanBanDen/GetDetail/${docId}/${this.state.userId}/0`;
+            resultJson = vanbandenApi().getDetail([
+                docId,
+                userId,
+                0
+            ]);
         }
-
-
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-        await asyncDelay();
+        else {
+            resultJson = vanbandiApi().getDetail([
+                docId,
+                userId,
+                0
+            ]);
+        }
 
         this.setState({
             docInfo: resultJson,
@@ -76,17 +72,7 @@ export default class TaskDescription extends Component {
         });
     }
     fetchAttachment = async () => {
-        const url = `${API_URL}/api/HscvCongViec/SearchAttachment?id=${this.state.CongViec.ID}&attQuery=`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        })
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-        const resultJson = await result.json();
+        const resultJson = await taskApi().getAttachment(`?id=${this.state.CongViec.ID}&attQuery=`);
 
         this.setState({
             attachments: resultJson
@@ -126,7 +112,7 @@ export default class TaskDescription extends Component {
             else {
                 if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
                     const { TRICHYEU, ID } = this.state.docInfo.VanBanTrinhKy,
-                        { STR_DOKHAN, STR_NGUOIKY, STR_DOUUTIEN } = this.state.docInfo;
+                        { STR_DOKHAN, STR_NGUOIKY } = this.state.docInfo;
                     relateDoc = (
                         <ListItem
                             style={InfoStyle.listItemContainer}

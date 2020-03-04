@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-	ActivityIndicator, FlatList, StyleSheet, View as RnView, Text as RnText,
+	FlatList, StyleSheet, View as RnView, Text as RnText,
 	RefreshControl, Platform
 } from 'react-native';
 //redux
@@ -16,7 +16,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
 	Container, Header, Left, Content,
-	Body, Title, Button, Text, SwipeRow,
+	Body, Title, Button, SwipeRow,
 	Right, Form, Item, Label,
 } from 'native-base';
 import {
@@ -27,19 +27,17 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 
 //utilities
 import {
-	API_URL, LOADER_COLOR, HEADER_COLOR, EMPTY_STRING,
+	API_URL, EMPTY_STRING,
 	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
-import {
-	emptyDataPage, formatLongText, convertDateToString, convertDateTimeToString,
-	backHandlerConfig, appGetDataAndNavigate
-} from '../../../common/Utilities';
+import { emptyDataPage, convertDateTimeToString } from '../../../common/Utilities';
 
 //styles
-import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { MoreButton, GoBackButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class HistoryProgressTask extends Component {
 	constructor(props) {
@@ -77,9 +75,12 @@ class HistoryProgressTask extends Component {
 	}
 
 	fetchData = async () => {
-		const url = `${API_URL}/api/HscvCongViec/GetListProgressTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}?query=${this.state.fitlerValue}`
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const { taskId, pageIndex, pageSize, fitlerValue } = this.state;
+		const resultJson = await taskApi().getListPlan([
+			taskId,
+			pageIndex,
+			`${pageSize}?query=${filterValue}`
+		]);
 
 		this.setState({
 			data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson,
@@ -125,8 +126,6 @@ class HistoryProgressTask extends Component {
 								}
 							</RnText>
 						</RnText>
-
-
 					</RnView>
 				}
 			/>

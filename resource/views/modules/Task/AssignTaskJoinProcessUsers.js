@@ -5,9 +5,7 @@
  */
 import React, { Component } from 'react';
 import {
-    Animated, TouchableOpacity, Image,
-    View, Text as RnText, FlatList, StyleSheet,
-    TouchableHighlight
+    Animated, TouchableOpacity, View
 } from 'react-native';
 
 //redux
@@ -16,9 +14,8 @@ import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //lib
 import {
-    Container, Content, List as NbList, ListItem as NbListItem,
-    Left, Title, Text as NbText, Body, Right, Radio,
-    CheckBox,
+    ListItem as NbListItem,
+    Left, Title, Text as NbText, Body, Right, CheckBox,
     Toast
 } from 'native-base';
 import {
@@ -30,7 +27,7 @@ import * as util from 'lodash';
 import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant'
 
 //style
-import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GroupListStyle } from '../../../assets/styles';
 
 class AssignTaskJoinProcessUsers extends Component {
@@ -140,13 +137,6 @@ class AssignTaskJoinProcessUsers extends Component {
             outputRange: ['0deg', '180deg']
         });
 
-        const iconRotationStyle = {
-            transform: [
-                {
-                    rotate: interpolateRotation
-                }
-            ]
-        }
 
         return (
             <Animated.View style={[GroupListStyle.body, { height: this.state.heightAnimation }]}>
@@ -166,7 +156,7 @@ class AssignTaskJoinProcessUsers extends Component {
 
                 <View style={GroupListStyle.container} onPress={this.setMaxHeight}>
                     {
-                        this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item, index) => (
+                        this.state.data.filter(x => x.ID !== this.state.mainProcessUser).map((item) => (
                             <NbListItem
                                 key={item.ID}
                                 style={{ height: this.state.rowItemHeight }}

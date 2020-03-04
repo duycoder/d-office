@@ -6,24 +6,21 @@
 'use strict'
 import React, { Component } from 'react'
 import {
-    AsyncStorage, View, ScrollView, Text, TextInput, Button,
-    Keyboard, Animated, Image, ImageBackground,
+    AsyncStorage, View, ScrollView, Text, TextInput, Keyboard, Animated, Image, ImageBackground,
     TouchableOpacity, StatusBar
 } from 'react-native'
 
 //lib
-import { Container, Content, CheckBox, Form, Item, Input, Label, Toast } from 'native-base';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import * as util from 'lodash';
+import { Container } from 'native-base';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, APPLICATION_FULL_NAME, APPLICATION_SHORT_NAME } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, APPLICATION_FULL_NAME, APPLICATION_SHORT_NAME } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, showWarningToast } from '../../../common/Utilities'
+import { showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';
@@ -32,8 +29,6 @@ import * as userAction from '../../../redux/modules/User/Action';
 //react-native-firebase
 import firebase from 'react-native-firebase';
 
-//debug
-import Reactotron from 'reactotron-react-native'
 import { accountApi } from '../../../common/Api';
 import images from '../../../common/Images';
 
@@ -186,7 +181,7 @@ class Login extends Component {
             }
         } catch (error) {
             //TODO: call api to send Error to server
-            console.log(error);
+            showWarningToast(error);
         }
 
     }

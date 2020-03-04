@@ -7,29 +7,24 @@
 import React, { Component } from 'react'
 import {
   View, Text,
-  Keyboard, Image, ImageBackground,
-  TouchableOpacity
+  Keyboard, TouchableOpacity
 } from 'react-native'
 
 //lib
 import {
   Container, Content, Form, Item, Input, Label, Toast,
-  Header, Right, Body, Left, Button, Title
+  Header, Right, Body, Left, Title
 } from 'native-base';
-import { Icon } from 'react-native-elements';
-import * as util from 'lodash';
 import DatePicker from 'react-native-datepicker';
 //constants
-import { EMPTY_STRING, API_URL, Colors, TOAST_DURATION_TIMEOUT, EMAIL_VALIDATION } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT, EMAIL_VALIDATION } from '../../../common/SystemConstant';
 
-//styles
-import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import { scale, moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 import { authenticateLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, convertStringToDate, showWarningToast } from '../../../common/Utilities'
+import { convertDateToString, convertStringToDate, showWarningToast } from '../../../common/Utilities'
 
 //redux
 import { connect } from 'react-redux';

@@ -12,24 +12,22 @@ import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action'
 
 //utilities
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, showWarningToast } from '../../../common/Utilities';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import {
-	API_URL, EMPTY_STRING, HEADER_COLOR, LOADER_COLOR, Colors,
-	LOADMORE_COLOR, DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, TOAST_DURATION_TIMEOUT
+	EMPTY_STRING, Colors,
+	DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //lib
 import renderIf from 'render-if';
 import * as util from 'lodash';
 import {
 	Container, Content, Header, Left, Text, Icon, Title, Textarea,
-	Right, Body, Item, Button, Tabs, Tab, TabHeading, Form, Input, Toast, Col
-}
+	Right, Body, Item, Tabs, Tab, TabHeading, Form, Input, Toast}
 	from 'native-base';
-import { Icon as RneIcon } from 'react-native-elements';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
@@ -38,6 +36,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import WorkflowRequestReviewUsers from './WorkflowRequestReviewUsers';
 import { HeaderRightButton, GoBackButton } from '../../common';
+import { vanbandiApi } from '../../../common/Api';
 
 class WorkflowRequestReview extends Component {
 	constructor(props) {
@@ -63,22 +62,28 @@ class WorkflowRequestReview extends Component {
 			loadingMore: false,
 			executing: false,
 			hasAuthorization: props.hasAuthorization || 0
-		}
+		};
+
+		this.VanbanDiApi = vanbandiApi();
 	}
 
 	componentWillMount() {
 		this.fetchData();
 	}
 
-	async fetchData() {
+	fetchData = async () => {
 		this.setState({
 			loading: true
 		});
 
-		const url = `${API_URL}/api/VanBanDi/GetFlow/${this.state.userId}/${this.state.processId}/${this.state.stepId}/${this.state.isStepBack ? 1 : 0}/${this.state.hasAuthorization}`;
-
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const { userId, processId, stepId, isStepBack, hasAuthorization } = this.state;
+		const resultJson = await this.VanbanDiApi.getFlow([
+			userId,
+			processId,
+			stepId,
+			isStepBack ? 1 : 0,
+			hasAuthorization
+		]);
 
 		this.setState({
 			loading: false,
@@ -112,10 +117,11 @@ class WorkflowRequestReview extends Component {
 	}
 
 	filterData = async () => {
-		const url = `${API_URL}/api/VanBanDi/SearchUserReview/${this.state.userId}/${this.state.pageIndex}?query=${this.state.filterValue}`;
-
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const { userId, pageIndex, filterValue } = this.state;
+		const resultJson = await this.VanbanDiApi.getUserReview([
+			userId,
+			`${pageIndex}?query=${filterValue}`
+		]);
 
 		this.setState({
 			loadingMore: false,
@@ -133,27 +139,13 @@ class WorkflowRequestReview extends Component {
 				executing: true
 			});
 
-			const url = `${API_URL}/api/VanBanDi/SaveReview`;
-			const headers = new Headers({
-				'Accept': 'application/json',
-				'Content-Type': 'application/json; charset=utf-8'
-			});
-			const body = JSON.stringify({
+			const resultJson = await this.VanbanDiApi.saveReview({
 				userId: this.state.userId,
 				joinUser: this.props.reviewUsers.toString(),
 				stepID: this.state.stepId,
 				processID: this.state.processId,
 				message: this.state.message
-			});
-			const result = await fetch(url, {
-				method: 'POST',
-				headers,
-				body
-			});
-
-			const resultJson = await result.json();
-
-			await asyncDelay();
+			})
 
 			this.setState({
 				executing: false

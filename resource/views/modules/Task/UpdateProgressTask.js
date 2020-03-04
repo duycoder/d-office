@@ -13,22 +13,19 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
     Container, Header, Left, Text, Content, Label, Toast,
-    Body, Right, Icon, Title, Button, Form, Item, Input
+    Body, Right, Title, Button, Form, Item, Input
 } from 'native-base';
-import { Icon as RneIcon } from 'react-native-elements';
 import Slider from 'react-native-slider';
 import * as util from 'lodash';
 
 //utilities
 import {
-    API_URL, HEADER_COLOR, EMPTY_STRING, LOADER_COLOR, Colors, TOAST_DURATION_TIMEOUT
+    EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
+import { showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
-import { verticalScale, scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
 
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -129,7 +126,6 @@ class UpdateProgressTask extends Component {
             })
         }
     }
-
 
     render() {
         return (

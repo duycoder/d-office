@@ -5,39 +5,18 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import {
-	ActivityIndicator, View, Text, Modal,
-	FlatList, TouchableOpacity, Image,
-	StyleSheet
-} from 'react-native';
-
-//constant
-import {
-	API_URL, HEADER_COLOR
-} from '../../../common/SystemConstant';
+import { View } from 'react-native';
 
 //native-base
 import {
-	Button, Icon as NBIcon, Text as NBText, Item, Input, Title,
-	Container, Header, Content, Left, Right, Body, CheckBox,
-	Tab, Tabs, TabHeading, ScrollableTab, List as NBList, ListItem as NBListItem, Radio
+	Text as NBText, Title,
+	Left, Right, CheckBox,
+	List as NBList, ListItem as NBListItem, Radio
 } from 'native-base';
-
-//react-native-elements
-import { ListItem, Icon } from 'react-native-elements';
-//styles
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
-import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyle';
-import { TabStyle } from '../../../assets/styles/TabStyle';
-
-import { dataLoading } from '../../../common/Effect';
-import { asyncDelay, unAuthorizePage, openSideBar } from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
 import renderIf from 'render-if';
-import * as util from 'lodash';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 
 import * as taskAction from '../../../redux/modules/CongViec/Action';
 

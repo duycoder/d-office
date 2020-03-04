@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 
 import {
-    ActivityIndicator, FlatList, StyleSheet, View as RnView, Text as RnText,
+    FlatList, StyleSheet, View as RnView, Text as RnText,
     RefreshControl, Dimensions, Platform
 } from 'react-native';
 //redux
@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 //lib
 import {
     Container, Header, Left, Content,
-    Body, Title, Button, Text, SwipeRow,
+    Body, Title, Button, SwipeRow,
     Right, Form, Item, Label,
 } from 'native-base';
 import {
@@ -27,20 +27,17 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 
 //utilities
 import {
-    API_URL, LOADER_COLOR, HEADER_COLOR, EMPTY_STRING,
+    API_URL, EMPTY_STRING,
     DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
-import {
-    emptyDataPage, formatLongText, convertDateToString, convertDateTimeToString,
-    backHandlerConfig, appGetDataAndNavigate
-} from '../../../common/Utilities';
-import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { emptyDataPage, convertDateTimeToString } from '../../../common/Utilities';
+import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class HistoryEvaluateTask extends Component {
     constructor(props) {
@@ -61,7 +58,6 @@ class HistoryEvaluateTask extends Component {
         }
     }
 
-
     componentWillMount = () => {
         this.setState({
             loading: true
@@ -79,9 +75,12 @@ class HistoryEvaluateTask extends Component {
     }
 
     fetchData = async () => {
-        const url = `${API_URL}/api/HscvCongViec/GetListSubmit/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}?query=${this.state.filterValue}`
-        const result = await fetch(url);
-        const resultJson = await result.json();
+        const {taskId, pageIndex, pageSize, filterValue} = this.state;
+        const resultJson = await taskApi().getListEvaluation([
+            taskId,
+            pageIndex,
+            `${pageSize}?query=${filterValue}`,
+        ]);
 
         this.setState({
             data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson,
@@ -98,7 +97,6 @@ class HistoryEvaluateTask extends Component {
             this.popupDialog.show();
         })
     }
-
 
     renderItem = ({ item }) => {
         const statusResponsive = (deviceWidth < 340) ? 'Trạng thái: ' : ' - Trạng thái: ';
@@ -143,18 +141,7 @@ class HistoryEvaluateTask extends Component {
         );
     }
 
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
-    }
-
     navigateBackToDetail = () => {
-        // appGetDataAndNavigate(this.props.navigation, 'HistoryEvaluateTaskScreen');
-        // return true;
-        // this.props.navigation.navigate(this.props.coreNavParams.screenName);
         this.props.navigation.goBack();
     }
 
@@ -188,7 +175,6 @@ class HistoryEvaluateTask extends Component {
                             dataLoading(true)
                         )
                     }
-
                     {
                         renderIf(!this.state.loading)(
                             <FlatList
@@ -215,7 +201,6 @@ class HistoryEvaluateTask extends Component {
                             />
                         )
                     }
-
 
                     <PopupDialog
                         dialogTitle={<DialogTitle title='THÔNG TIN CẬP NHẬT TIẾN ĐỘ'

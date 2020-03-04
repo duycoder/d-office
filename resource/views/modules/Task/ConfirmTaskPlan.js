@@ -1,31 +1,25 @@
 'use strict'
 import React, { Component } from 'react';
-import { Platform, TouchableOpacity, View, TextInput, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 //lib
 import {
   Container, Header, Left, Body, Content,
-  Right, Item, Title, Text, Icon, Input,
-  Button, Form, Picker, Toast, Label, Textarea
+  Right, Item, Title, Text, Icon, Form, Picker, Toast, Label, Textarea,
 } from 'native-base'
-import { Icon as RneIcon } from 'react-native-elements';
-import DatePicker from 'react-native-datepicker';
 
 //utilities
-import { API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { executeLoading } from '../../../common/Effect';
-import { asyncDelay, convertDateToString, backHandlerConfig, appGetDataAndNavigate, pickerFormat, showWarningToast } from '../../../common/Utilities';
+import { asyncDelay, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
-//style
-import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 
 class ConfirmTaskPlan extends Component {
   constructor(props) {
@@ -219,15 +213,3 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmTaskPlan);
 
-const styles = StyleSheet.create({
-  textAreaContainer: {
-    borderColor: Colors.GRAY,
-    borderWidth: 1,
-    padding: 5,
-    width: '100%'
-  },
-  textArea: {
-    height: 150,
-    justifyContent: "flex-start"
-  }
-})

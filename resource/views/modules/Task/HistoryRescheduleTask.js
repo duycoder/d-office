@@ -7,15 +7,15 @@
 import React, { Component } from 'react';
 import { View as RnView, Text as RnText } from 'react-native';
 import {
-	ActivityIndicator, Alert, FlatList,
+	FlatList,
 	RefreshControl, StyleSheet, Dimensions, Platform,
 	TouchableOpacity
 } from 'react-native';
 //lib
 import {
-	SwipeRow, Button, View, Text, Icon, Item,
+	SwipeRow, Button, Item,
 	Label, Container, Header, Left, Body, Right,
-	Title, Content, Form, Toast
+	Title, Content, Form
 } from 'native-base';
 import renderIf from 'render-if';
 import * as util from 'lodash';
@@ -29,21 +29,19 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { API_URL, HEADER_COLOR, LOADER_COLOR, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
+import { API_URL, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
 import {
-	asyncDelay, emptyDataPage, formatLongText, convertDateToString,
-	appGetDataAndNavigate, backHandlerConfig, convertDateTimeToString
+	emptyDataPage, convertDateToString
 } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import AlertMessage from '../../common/AlertMessage';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton } from '../../common';
+import { MoreButton, GoBackButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
 class HistoryRescheduleTask extends Component {
 	constructor(props) {
@@ -81,10 +79,12 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	fetchData = async () => {
-		const url = `${API_URL}/api/HscvCongViec/GetListRescheduleTask/${this.state.taskId}/${this.state.pageIndex}/${this.state.pageSize}?query=`;
-
-		const result = await fetch(url);
-		const resultJson = await result.json();
+		const { taskId, pageIndex, pageSize } = this.state;
+		const resultJson = await taskApi().getListReschedule([
+			taskId,
+			pageIndex,
+			`${pageSize}?query=`
+		]);
 
 		this.setState({
 			data: this.state.loadingMore ? [...this.state.data, ...resultJson] : resultJson,
@@ -126,7 +126,7 @@ class HistoryRescheduleTask extends Component {
 		})
 	}
 
-	onApproveReschedule = async (isApprove, extendId, deadline) => {
+	onApproveReschedule = (isApprove, extendId, deadline) => {
 		this.refs.confirm.closeModal();
 		const screenName = isApprove ? 'ApproveRescheduleTaskScreen' : 'DenyRescheduleTaskScreen';
 		const targetParams = {
@@ -141,8 +141,6 @@ class HistoryRescheduleTask extends Component {
 	renderItem = ({ item }) => {
 		return (
 			<SwipeRow
-				// ref={ref => this.myRef[`rowId__${item.ID}`] = ref}
-				// onRowOpen={()=>this.setState({listRowId: [...this.state.listRowId, `rowId__${item.ID}`]})}
 				leftOpenValue={75}
 				rightOpenValue={-75}
 				disableLeftSwipe={!util.isNull(item.IS_APPROVED) || this.state.canApprove == false}
@@ -210,7 +208,6 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	componentDidMount = () => {
-		// backHandlerConfig(true, this.navigateBackToList);
 		this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
 			if (this.props.extendsNavParams.hasOwnProperty("check")) {
 				if (this.props.extendsNavParams.check === true) {
@@ -226,7 +223,6 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	componentWillUnmount = () => {
-		// backHandlerConfig(false, this.navigateBackToList);
 		this.willFocusListener.remove();
 	}
 
@@ -288,8 +284,6 @@ class HistoryRescheduleTask extends Component {
 				{
 					executeLoading(this.state.executing)
 				}
-
-				{/* hiển thị thông tin lùi hạn công việc */}
 
 				<PopupDialog
 					dialogTitle={<DialogTitle title='THÔNG TIN LÙI HẠN'

@@ -7,20 +7,15 @@ import React, { Component } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 
 //lib
-import { List, ListItem, Icon } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements'
 import _ from 'lodash';
-import HTMLView from 'react-native-htmlview';
-//styles
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 //common
-import { convertDateToString, asyncDelay, formatLongText, extention, convertTimeToString, onDownloadFile } from '../../../common/Utilities';
-import { Colors, API_URL, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
-import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { convertDateToString, formatLongText } from '../../../common/Utilities';
+import { Colors } from '../../../common/SystemConstant';
 import { InfoStyle } from '../../../assets/styles';
 import AttachmentItem from '../../common/DetailCommon/AttachmentItem';
 import { InfoListItem } from '../../common/DetailCommon';
-import { vanbandenApi } from '../../../common/Api';
+import { vanbandenApi, vanbandiApi } from '../../../common/Api';
 
 export default class MainInfoSignDoc extends Component {
     constructor(props) {
@@ -54,20 +49,7 @@ export default class MainInfoSignDoc extends Component {
         });
     }
     fetchAttachment = async () => {
-        const url = `${API_URL}/api/VanBanDi/SearchAttachment?id=${this.state.info.ID}&attQuery=`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        });
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay(1000);
+        const resultJson = await vanbandiApi().getAttachment(`?id=${this.state.info.ID}&attQuery=`);
 
         this.setState({
             ListTaiLieu: resultJson

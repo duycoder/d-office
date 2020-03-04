@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
-import {
-
-} from 'react-native';
-
 import { connect } from 'react-redux';
-
 import { WebView } from 'react-native-webview';
-import * as navAction from '../../../redux/modules/Nav/Action';
-import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
 import { Container, Header, Left, Body, Title, Right } from 'native-base';
 import { GoBackButton } from '../../common';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { moderateScale } from '../../../assets/styles/ScaleIndicator';
-
-const DEFAULT_URL = "http://vanban.vnio.vn/LICHCONGTAC_LANHDAOArea/LICHCONGTAC_LANHDAO/Index/";
 
 class WebViewer extends Component {
   constructor(props) {
     super(props);
+    const DEFAULT_URL = "http://vanban.vnio.vn/LICHCONGTAC_LANHDAOArea/LICHCONGTAC_LANHDAO/Index/";
+
     this.state = {
       url: props.extendsNavParams.webviewUrl || DEFAULT_URL,
       title: props.extendsNavParams.screenTitle || props.userInfo.Fullname || "Người dùng",
@@ -29,7 +21,6 @@ class WebViewer extends Component {
   onNavigationStateChange = navState => {
     if (navState.url.indexOf('https://www.google.com') === 0) {
       const regex = /#access_token=(.+)/;
-      let accessToken = navState.url.match(regex)[1];
       // console.log(accessToken);
     }
   };

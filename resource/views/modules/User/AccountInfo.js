@@ -7,21 +7,18 @@
 import React, { Component } from 'react';
 import {
   View, Text,
-  Image, ImageBackground, StyleSheet,
   TouchableOpacity, StatusBar
 } from 'react-native';
 
 //lib
 import {
-  Container, Content, Form, Item, Input, Label,
-  Header, Right, Body, Left, Button, Title
+  Container, Content, Form, Item, Label,
+  Header, Right, Body, Left, Title
 } from 'native-base';
-import { Icon, Button as RNEButton, ListItem } from 'react-native-elements';
+import { Icon, ListItem } from 'react-native-elements';
 import 'moment/locale/vi';
-// import ImagePicker from 'react-native-image-picker';
-import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, WEB_URL } from '../../../common/SystemConstant';
+import { EMPTY_STRING, Colors, WEB_URL } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -29,7 +26,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import { moderateScale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
-import { authenticateLoading, dataLoading, executeLoading } from '../../../common/Effect';
+import { executeLoading } from '../../../common/Effect';
 import { convertDateToString } from '../../../common/Utilities';
 
 //redux

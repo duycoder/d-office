@@ -1,30 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 
 import {
-  Container, Header, Left, Button,
-  Body, Icon, Title, Content, Form,
-  Tabs, Tab, TabHeading, ScrollableTab, Right, Subtitle
+  Container, Header, Left, Body, Title, Content, Right, Subtitle
 } from 'native-base';
 
 import {
-  Icon as RneIcon, ButtonGroup, List, ListItem,
+  List, ListItem,
 } from 'react-native-elements';
 
 import { connect } from 'react-redux';
 
-import { Colors, API_URL, EMPTY_STRING } from '../../../common/SystemConstant';
+import { Colors } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { appGetDataAndNavigate, _readableFormat, convertDateToString } from '../../../common/Utilities';
+import { _readableFormat } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
 import { GoBackButton } from '../../common';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
-import { SideBarStyle } from '../../../assets/styles/SideBarStyle';
-import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
-import * as navAction from '../../../redux/modules/Nav/Action';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-import { HeaderMenuStyle } from '../../../assets/styles';
 import { lichtrucApi } from '../../../common/Api';
 import { InfoStyle } from '../../../assets/styles';
 
@@ -84,7 +77,6 @@ class DetailLichtruc extends Component {
     }
     else {
       if (!!data && data.length > 0) {
-        const listDate = data.map(x => `- ${x}`).join(`\n`);
         bodyContent = (
           <View style={InfoStyle.container}>
             <ScrollView>

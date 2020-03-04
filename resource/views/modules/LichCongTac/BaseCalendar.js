@@ -19,7 +19,7 @@ import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndica
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { _readableFormat } from '../../../common/Utilities';
-import * as util from 'lodash';
+import util from 'lodash';
 import { connect } from 'react-redux';
 import GoBackButton from '../../common/GoBackButton';
 

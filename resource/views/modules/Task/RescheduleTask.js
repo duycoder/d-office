@@ -5,7 +5,6 @@
 */
 'use strict'
 import React, { Component } from 'react';
-import { DatePickerAndroid } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
@@ -13,27 +12,21 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
     Container, Header, Left, Body, Right,
-    Button, Icon, Title, Form, Item, Label,
+    Button, Title, Form, Item, Label,
     Input, Content, Text, Toast
 } from 'native-base';
-import {
-    Icon as RneIcon
-} from 'react-native-elements';
 import * as util from 'lodash';
 import DatePicker from 'react-native-datepicker';
 
 //utilities
-import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, convertDateToString, convertDateTimeToString, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
+import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { asyncDelay, convertDateToString, showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
-
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { scale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import { DatePickerCustomStyle } from '../../../assets/styles';
 import { taskApi } from '../../../common/Api';
@@ -59,15 +52,6 @@ class RescheduleTask extends Component {
         this.setState({
             chosenDate: newDate,
         })
-    }
-
-
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
     }
 
     navigateBackToDetail = () => {

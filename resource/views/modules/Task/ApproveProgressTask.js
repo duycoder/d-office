@@ -6,18 +6,16 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    Alert, Platform,
     View as RnView, Text as RnText, TouchableOpacity
 } from 'react-native'
 //lib
 import {
     Container, Header, Left, Body, Right,
     Icon, Title, Text, Form, Item, Label,
-    Input, Picker, Button, Toast, Content,
+    Picker, Button, Toast, Content,
     Textarea
 } from 'native-base';
 
-import { Icon as RneIcon } from 'react-native-elements';
 
 //redux
 import { connect } from 'react-redux';
@@ -25,19 +23,15 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
 import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat, showWarningToast } from '../../../common/Utilities';
+import { asyncDelay, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
-import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
-
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import AlertMessage from '../../common/AlertMessage';
+import { AlertMessage, GoBackButton } from '../../common';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
-import GoBackButton from '../../common/GoBackButton';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 
 class ApproveProgressTask extends Component {

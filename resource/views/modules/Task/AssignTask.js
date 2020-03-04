@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-	ActivityIndicator, FlatList, TouchableOpacity
+	ActivityIndicator, FlatList
 } from 'react-native'
 //lib
 import {
@@ -14,11 +14,7 @@ import {
 	Header, Left, Body, Title, View, Tabs, Tab, TabHeading,
 	Right, Toast
 } from 'native-base';
-import {
-	Icon as RneIcon
-} from 'react-native-elements';
 import renderIf from 'render-if';
-import * as util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
@@ -26,14 +22,12 @@ import * as taskAction from '../../../redux/modules/CongViec/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
-	API_URL, HEADER_COLOR, DEFAULT_PAGE_INDEX,
-	EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
-	TASK_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
+	DEFAULT_PAGE_INDEX,
+	EMPTY_STRING, TASK_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
@@ -42,8 +36,7 @@ import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 //views
 import AssignTaskJoinProcessUsers from './AssignTaskJoinProcessUsers';
 import AssignTaskMainProcessUsers from './AssignTaskMainProcessUsers';
-import GoBackButton from '../../common/GoBackButton';
-import { MoreButton, SearchSection, HeaderRightButton } from '../../common';
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 const api = taskApi();

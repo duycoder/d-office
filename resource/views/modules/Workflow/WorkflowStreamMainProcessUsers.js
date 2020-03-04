@@ -5,29 +5,28 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { Animated, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Animated, View, TouchableOpacity } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
 
 //lib
-import { List, ListItem, Icon } from 'react-native-elements';
+import { ListItem, Icon } from 'react-native-elements';
 import {
     ListItem as NbListItem, Text as NbText,
-    Left, Right, Title, Body, Radio, CheckBox
+    Left, Right, Title, Body, CheckBox
 } from 'native-base';
 import * as util from 'lodash';
 
 //utilities
-import { WORKFLOW_PROCESS_TYPE, Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
+import { customWorkflowListHeight } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GroupListStyle } from '../../../assets/styles';
 
 class WorkflowStreamMainProcessUsers extends Component {
     constructor(props) {
         super(props);
-        this.icon = require('../../../assets/images/arrow-white.png');
         this.state = {
             title: props.title,
             users: props.users,
@@ -93,19 +92,6 @@ class WorkflowStreamMainProcessUsers extends Component {
     }
 
     render() {
-        const interpolateRotation = this.state.rotateAnimation.interpolate({
-            inputRange: [0, 1],
-            outputRange: ['0deg', '180deg']
-        });
-
-        const iconRotationStyle = {
-            transform: [
-                {
-                    rotate: interpolateRotation
-                }
-            ]
-        }
-
         return (
             <Animated.View style={[GroupListStyle.container, { height: this.state.heightAnimation }]}>
                 <View style={GroupListStyle.titleContainer} onLayout={this.setMinHeight}>
@@ -124,7 +110,7 @@ class WorkflowStreamMainProcessUsers extends Component {
 
                 <View style={GroupListStyle.body} onLayout={this.setMaxHeight}>
                     {
-                        this.state.users.map((item, index) => (
+                        this.state.users.map((item) => (
                             <NbListItem key={item.ID} onPress={() => this.onSelectUser(item.ID)}
                                 style={{ height: this.state.rowItemHeight }}>
                                 <Left>
@@ -162,13 +148,13 @@ class WorkflowStreamMainProcessUsers extends Component {
 const mapStateToProps = (state) => {
     return {
         mainProcessUsers: state.workflowState.mainProcessUser,
-        joinProcessUsers: state.workflowState.joinProcessUsers
+        joinProcessUsers: state.workflowState.joinProcessUsers,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateProcessUsers: (userId, isMainProcess) => dispatch(workflowAction.updateProcessUsers(userId, isMainProcess))
+        updateProcessUsers: (userId, isMainProcess) => dispatch(workflowAction.updateProcessUsers(userId, isMainProcess)),
     }
 }
 

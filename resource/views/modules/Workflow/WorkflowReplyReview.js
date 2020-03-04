@@ -6,49 +6,36 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-    Alert, ActivityIndicator, View, Text, Modal,
-    FlatList, TouchableOpacity, Image,
-    StyleSheet, DatePickerAndroid
+    TouchableOpacity
 } from 'react-native';
 
 //constant
 import {
-    API_URL, HEADER_COLOR, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT
+    EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //native-base
 import {
     Form, Button, Icon as NBIcon, Text as NBText, Item, Input, Title, Picker, Toast,
-    Container, Header, Content, Left, Right, Body, CheckBox, Label, Textarea,
-    Tab, Tabs, TabHeading, ScrollableTab, List as NBList, ListItem as NBListItem, Radio
+    Container, Header, Content, Left, Right, Body, Label
 } from 'native-base';
 
-//react-native-elements
-import { ListItem, Icon, Slider } from 'react-native-elements';
-//styles
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
-import { MenuStyle, MenuOptionStyle } from '../../../assets/styles/MenuPopUpStyle';
-import { TabStyle } from '../../../assets/styles/TabStyle';
-
-import { dataLoading, executeLoading } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, unAuthorizePage, openSideBar, convertDateToString, pickerFormat, showWarningToast } from '../../../common/Utilities';
+import { executeLoading } from '../../../common/Effect';
+import { pickerFormat, showWarningToast } from '../../../common/Utilities';
 
 //lib
 import { connect } from 'react-redux';
-import renderIf from 'render-if';
-import * as util from 'lodash';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-
+import util from 'lodash';
 import * as workflowAction from '../../../redux/modules/Workflow/Action';
-
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
-import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 import { AlertMessage, GoBackButton } from '../../common';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import { vanbandiApi } from '../../../common/Api';
 
 class WorkflowReplyReview extends Component {
     constructor(props) {
@@ -84,33 +71,24 @@ class WorkflowReplyReview extends Component {
         }
     }
 
-    async saveReplyReview() {
+    saveReplyReview = async () => {
         this.refs.confirm.closeModal();
         this.setState({
             executing: true
         });
-        const url = `${API_URL}/api/VanBanDi/SaveReplyReview`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
-        });
-        const body = JSON.stringify({
-            userID: this.state.userId,
-            phanHoiVanBan: this.state.message,
-            pheDuyetVanBan: this.state.selected,
-            itemId: this.state.docId,
-            itemType: this.state.itemType
-        });
 
-        const result = await fetch(url, {
-            method: 'POST',
-            headers,
-            body
+        const {
+            userId, message, selected, docId, itemType,
+            docType
+        } = this.state;
+
+        const resultJson = await vanbandiApi().saveReplyReview({
+            userID: userId,
+            phanHoiVanBan: message,
+            pheDuyetVanBan: selected,
+            itemId: docId,
+            itemType
         });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
 
         this.setState({
             executing: false
@@ -126,7 +104,7 @@ class WorkflowReplyReview extends Component {
                 targetDocId: this.state.docId,
                 targetDocType: this.state.docType
             }
-            content.message = formatMessage(content.message, "VanBanDiDetailScreen", 0, this.state.docType, this.state.docId);
+            content.message = formatMessage(content.message, "VanBanDiDetailScreen", 0, docType, docId);
 
             resultJson.GroupTokens.forEach(token => {
                 pushFirebaseNotify(content, token, "notification");

@@ -10,11 +10,8 @@ import { StyleSheet } from 'react-native';
 import {
     Container, Header, Left, Button, Icon,
     Body, Title, Right, Text, Content,
-    Form, Item, Label, Picker, Toast
+    Form, Label, Picker, Toast
 } from 'native-base';
-import {
-    Icon as RneIcon
-} from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import renderIf from 'render-if';
 
@@ -23,19 +20,17 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate,formatMessage, pickerFormat } from '../../../common/Utilities'
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { pickerFormat } from '../../../common/Utilities'
+import { scale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import * as util from 'lodash';
-
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
+import { taskApi } from '../../../common/Api';
 
+const api = taskApi();
 
 class EvaluationTask extends Component {
     constructor(props) {
@@ -43,8 +38,8 @@ class EvaluationTask extends Component {
 
         this.state = {
             userId: props.userInfo.ID,
-            taskId: this.props.coreNavParams.taskId,
-            taskType: this.props.coreNavParams.taskType,
+            taskId: props.coreNavParams.taskId,
+            taskType: props.coreNavParams.taskType,
 
             executing: false,
             loading: true,
@@ -58,16 +53,14 @@ class EvaluationTask extends Component {
         }
     }
 
-    async componentWillMount() {
+    componentWillMount = async () => {
         this.setState({
             loading: true
         })
 
-        const url = `${API_URL}/api/HscvCongViec/CalculateTaskPoint/${this.state.taskId}`;
-        const result = await fetch(url);
-        const resultJson = await result.json();
-
-        await asyncDelay(1000);
+        const resultJson = await api.getCalculatedPoint([
+            this.state.taskId
+        ]);
 
         this.setState({
             loading: false,
@@ -114,35 +107,23 @@ class EvaluationTask extends Component {
     onEvaluateTask = async () => {
         this.setState({
             executing: true
-        })
-
-        const url = `${API_URL}/api/HscvCongViec/SaveEvaluationTask`;
-
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=utf-8'
         });
 
-        const body = JSON.stringify({
-            userId: this.state.userId,
-            taskId: this.state.taskId,
-            TDG_TUCHUCAO: this.state.TUCHU_CAO == EMPTY_STRING ? 0 : this.state.TUCHU_CAO,
-            TDG_TRACHNHIEMLON: this.state.TRACHNHIEM_LON == EMPTY_STRING ? 0 : this.state.TRACHNHIEM_LON,
-            TDG_TUONGTACTOT: this.state.TUONGTAC_TOT == EMPTY_STRING ? 0 : this.state.TUONGTAC_TOT,
-            TDG_TOCDONHANH: this.state.TOCDO_NHANH == EMPTY_STRING ? 0 : this.state.TOCDO_NHANH,
-            TDG_TIENBONHIEU: this.state.TIENBO_NHIEU == EMPTY_STRING ? 0 : this.state.TIENBO_NHIEU,
-            TDG_THANHTICHVUOT: this.state.THANHTICH_VUOT == EMPTY_STRING ? 0 : this.state.THANHTICH_VUOT
-        });
+        const {
+            userId, taskId,
+            TUCHU_CAO, TRACHNHIEM_LON, TUONGTAC_TOT, TOCDO_NHANH, TIENBO_NHIEU, THANHTICH_VUOT,
+        } = this.state;
 
-        const result = await fetch(url, {
-            method: 'post',
-            headers,
-            body
+        const resultJson = await api.saveEvaluationPoint({
+            userId,
+            taskId,
+            TDG_TUCHUCAO: TUCHU_CAO || 0,
+            TDG_TRACHNHIEMLON: TRACHNHIEM_LON || 0,
+            TDG_TUONGTACTOT: TUONGTAC_TOT || 0,
+            TDG_TOCDONHANH: TOCDO_NHANH || 0,
+            TDG_TIENBONHIEU: TIENBO_NHIEU || 0,
+            TDG_THANHTICHVUOT: THANHTICH_VUOT || 0,
         });
-
-        const resultJson = await result.json();
-        
-        await asyncDelay();
 
         this.setState({
             executing: false
@@ -164,14 +145,6 @@ class EvaluationTask extends Component {
         });
     }
 
-    componentDidMount = () => {
-        // backHandlerConfig(true, this.navigateBackToDetail);
-    }
-
-    componentWillUnmount = () => {
-        // backHandlerConfig(false, this.navigateBackToDetail);
-    }
-
     navigateBackToDetail = () => {
         this.props.navigation.goBack();
     }
@@ -181,7 +154,7 @@ class EvaluationTask extends Component {
             <Container>
                 <Header style={NativeBaseStyle.container}>
                     <Left style={NativeBaseStyle.left}>
-						<GoBackButton onPress={() => this.navigateBackToDetail()} />
+                        <GoBackButton onPress={() => this.navigateBackToDetail()} />
                     </Left>
 
                     <Body style={NativeBaseStyle.body}>

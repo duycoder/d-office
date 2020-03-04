@@ -13,23 +13,15 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-    Container, Header, Left, Body, Right, Button, Toast, Item,
-    Icon, Content, Form, Picker, Text, Title, Label, Textarea
+    Container, Header, Left, Body, Right, Button, Toast, Icon, Content, Form, Picker, Text, Title, Label, Textarea
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import {
-    Icon as RneIcon
-} from 'react-native-elements';
-import * as util from 'lodash';
 
 //utilities
-import { API_URL, EMPTY_STRING, HEADER_COLOR, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { executeLoading, } from '../../../common/Effect';
-import { asyncDelay, backHandlerConfig, appGetDataAndNavigate, formatMessage, pickerFormat } from '../../../common/Utilities';
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
-
-//firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { asyncDelay, pickerFormat } from '../../../common/Utilities';
+import { scale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';

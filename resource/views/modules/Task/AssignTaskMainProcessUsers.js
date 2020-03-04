@@ -5,9 +5,7 @@
  */
 import React, { Component } from 'react';
 import {
-    Animated, TouchableOpacity, Image,
-    View, Text as RnText, FlatList, StyleSheet,
-    TouchableHighlight
+    Animated, TouchableOpacity, View
 } from 'react-native';
 
 //redux
@@ -19,8 +17,8 @@ import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant
 
 //lib
 import {
-    Container, Content, List as NbList, ListItem as NbListItem,
-    Left, Title, Text as NbText, Body, Right, Radio, CheckBox
+    ListItem as NbListItem,
+    Left, Title, Text as NbText, Body, Right, CheckBox
 } from 'native-base';
 import {
     ListItem, Icon
@@ -28,7 +26,7 @@ import {
 import * as util from 'lodash';
 
 //style
-import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GroupListStyle } from '../../../assets/styles';
 
 class AssignTaskMainProcessUsrs extends Component {
@@ -103,13 +101,6 @@ class AssignTaskMainProcessUsrs extends Component {
             outputRange: ['0deg', '180deg']
         });
 
-        const iconRotationStyle = {
-            transform: [
-                {
-                    rotate: interpolateRotation
-                }
-            ]
-        }
 
         return (
             <Animated.View style={[GroupListStyle.body, { height: this.state.heightAnimation }]}>
@@ -129,7 +120,7 @@ class AssignTaskMainProcessUsrs extends Component {
 
                 <View style={GroupListStyle.container} onLayout={this.setMaxHeight}>
                     {
-                        this.state.data.map((item, index) => (
+                        this.state.data.map((item) => (
                             <NbListItem
                                 key={item.ID} style={{ height: this.state.rowItemHeight }}
                                 onPress={() => this.onSelectUser(item.ID)}>
@@ -163,32 +154,6 @@ class AssignTaskMainProcessUsrs extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    wrapper: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
-    container: {
-
-    },
-    titleContainer: {
-    },
-    listItemContainer: {
-        height: customWorkflowListHeight,
-        backgroundColor: Colors.LITE_BLUE,
-        justifyContent: 'center'
-    },
-    listItemRow: {
-        height: customWorkflowListHeight
-    },
-    listItemTitle: {
-        fontWeight: 'bold',
-        color: '#fff'
-    },
-    body: {
-        overflow: 'scroll'
-    }
-});
 
 const mapStateToProps = (state) => {
     return {

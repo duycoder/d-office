@@ -5,19 +5,17 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { ActivityIndicator, View, Text as RnText, FlatList, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, View, FlatList, TouchableOpacity } from 'react-native';
 
 //utilites
 import {
-    API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors,
-    MODULE_CONSTANT,
+    EMPTY_STRING,
+    DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, Colors,
     TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
+import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import * as util from 'lodash';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 
 //effect
 import { dataLoading, executeLoading } from '../../../common/Effect';
@@ -29,8 +27,8 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-    Container, Header, Left, Button, Content, Title,
-    Tabs, Tab, TabHeading, ScrollableTab, Text, Icon,
+    Container, Header, Left, Content, Title,
+    Tabs, Tab, TabHeading, Text, Icon,
     Form, Textarea, Body, Item, Input, Right, Toast,
     Label
 } from 'native-base';
@@ -635,14 +633,14 @@ const mapStateToProps = (state) => {
         joinProcessUsers: state.workflowState.joinProcessUsers,
         coreNavParams: state.navState.coreNavParams,
         extendsNavParams: state.navState.extendsNavParams,
-        hasAuthorization: state.navState.hasAuthorization
+        hasAuthorization: state.navState.hasAuthorization,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         resetProcessUsers: (workflowProcessType) => dispatch(workflowAction.resetProcessUsers(workflowProcessType)),
-        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(WorkflowStreamProcess);

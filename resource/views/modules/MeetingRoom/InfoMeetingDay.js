@@ -4,21 +4,14 @@
  * @since: 09/05/2018
  */
 import React, { Component } from 'react'
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
+import { View, ScrollView } from 'react-native'
 
 //lib
-import { List, ListItem, Icon } from 'react-native-elements';
-import HTMLView from 'react-native-htmlview';
-import { connect } from 'react-redux';
-//styles
-import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
+import { List } from 'react-native-elements';
 
 //common
-import { convertDateToString, _readableFormat, formatLongText, extention, onDownloadFile, convertTimeToString } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
-import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
-import { verticalScale } from '../../../assets/styles/ScaleIndicator';
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
+import { convertDateToString, _readableFormat, extention } from '../../../common/Utilities';
+import { Colors } from '../../../common/SystemConstant';
 import { InfoStyle } from '../../../assets/styles';
 import { InfoListItem, AttachmentItem } from '../../common/DetailCommon';
 

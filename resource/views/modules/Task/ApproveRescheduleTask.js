@@ -17,25 +17,20 @@ import {
     Button, Text, Body, Form, Label, Input, Textarea, Content
 } from 'native-base';
 
-import {
-    Icon as RneIcon
-} from 'react-native-elements';
-
 import DatePicker from 'react-native-datepicker';
 import * as util from 'lodash';
 
 //utilities
 import { executeLoading } from '../../../common/Effect';
 import { API_URL, Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { asyncDelay, convertDateToString, convertDateTimeToString, formatMessage } from '../../../common/Utilities';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { asyncDelay, convertDateToString } from '../../../common/Utilities';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //firebase
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
-import GoBackButton from '../../common/GoBackButton';
+import {GoBackButton} from '../../common';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
 
 class ApproveRescheduleTask extends Component {
