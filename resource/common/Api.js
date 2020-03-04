@@ -34,7 +34,7 @@ const baseApi = () => {
 
   return {
     get,
-    post
+    post,
   };
 }
 const api = baseApi();
@@ -143,7 +143,7 @@ const carApi = () => {
     cancelRegistration,
     getList,
     getCanbo,
-    checkRegistration
+    checkRegistration,
   };
 }
 
@@ -165,7 +165,7 @@ const tripApi = () => {
     getDetailByRegistrationId,
     startTrip,
     returnTrip,
-    getList
+    getList,
   };
 }
 
@@ -173,6 +173,7 @@ const meetingRoomApi = () => {
   const getRooms = (payloadBody = {}) => api.post("MeetingRoom/SearchPhonghop", payloadBody);
   const saveRoom = (payloadBody = {}) => api.post("MeetingRoom/SavePhonghop", payloadBody);
   const getCreateHelper = (params = []) => api.get("MeetingRoom/CreateLichhop", params);
+  const getEditHelper = (params = []) => api.get("MeetingRoom/EditLichhop", params);
   const saveCalendar = (payloadBody = {}) => api.post("MeetingRoom/SaveLichhop", payloadBody);
   const getDetail = (params = []) => api.get("MeetingRoom/DetailLichhop", params);
   const cancelCalendar = (payloadBody = {}) => api.post("MeetingRoom/CancelLichhop", payloadBody);
@@ -195,6 +196,7 @@ const meetingRoomApi = () => {
     getInviteListPerson,
     getInviteListRole,
     getInviteListDept,
+    getEditHelper,
   };
 }
 
@@ -212,7 +214,7 @@ const reminderApi = () => {
     saveReminder,
     deleteReminder,
     toggleReminder,
-    getWhoseReminder
+    getWhoseReminder,
   };
 }
 
