@@ -44,6 +44,7 @@ import RegistrationInfo from './RegistrationInfo';
 import AlertMessage from '../../common/AlertMessage';
 import TripInfo from './TripInfo';
 import { tripApi } from '../../../common/Api';
+import { WorkflowButton } from '../../common/DetailCommon';
 
 const TripApi = tripApi();
 
@@ -197,12 +198,12 @@ class DetailTrip extends Component {
       switch (TRANGTHAI) {
         case DATXE_CONSTANT.CHUYEN_STATUS.MOI_TAO:
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onConfirmAction(1)} btnText="BẮT ĐẦU" />
           });
           break;
         case DATXE_CONSTANT.CHUYEN_STATUS.DANG_CHAY:
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onReturnTrip()}><RNText style={ButtonGroupStyle.buttonText}>TRẢ XE</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onReturnTrip()} btnText="TRẢ XE" />
           });
           break;
         default:

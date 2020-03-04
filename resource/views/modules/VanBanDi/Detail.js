@@ -5,30 +5,26 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RNButton, Alert } from 'react-native';
+import { View, Text as RNText, TouchableOpacity as RNButton } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { API_URL, Colors } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, showWarningToast } from '../../../common/Utilities';
+import { Colors } from '../../../common/SystemConstant';
+import { unAuthorizePage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
 //lib
 import {
-    Container, Header, Left, Button,
-    Body, Icon, Title, Content, Form,
-    Tabs, Tab, TabHeading, ScrollableTab,
-    Text, Right, Toast
+    Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right, Toast
 } from 'native-base';
 import { MenuProvider, MenuTrigger, Menu, MenuOption, MenuOptions } from 'react-native-popup-menu'
 import {
@@ -44,7 +40,7 @@ import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { GoBackButton, AlertMessage } from '../../common';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandiApi, workflowApi } from '../../../common/Api';
-import { Timeline } from '../../common/DetailCommon';
+import { Timeline, WorkflowButton } from '../../common/DetailCommon';
 
 class Detail extends Component {
     constructor(props) {
@@ -252,16 +248,15 @@ class Detail extends Component {
         } else {
             if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
                 workflowButtons.push({
-                    element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onReplyReview()}><RNText style={ButtonGroupStyle.buttonText}>PHẢN HỒI</RNText></RNButton>
-                })
+                    element: () => <WorkflowButton onPress={() => this.onReplyReview()} btnText="PHẢN HỒI" />
+                });
             } else {
-                let workflowMenuOptions = [];
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStepBack) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStepBack)) {
                     this.state.docInfo.WorkFlow.LstStepBack.forEach(item => {
                         workflowButtons.push({
-                            element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, true)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RNButton>
-                        })
-                    })
+                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
+                        });
+                    });
                 }
 
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStep) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStep)) {
@@ -272,8 +267,8 @@ class Detail extends Component {
                             }
                         }
                         workflowButtons.push({
-                            element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, false)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RNButton>
-                        })
+                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, false)} btnText={util.toUpper(item.NAME)} />
+                        });
                     });
                 }
             }
@@ -282,11 +277,11 @@ class Detail extends Component {
 
             if (docFunction && docFunction.FUNTION_NAME === "KYDUYETVANBAN") {
                 workflowButtons.push({
-                    element: () => <RNButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmSignDoc()}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(docFunction.FUNTION_TITLE)}</RNText></RNButton>
-                })
+                    element: () => <WorkflowButton onPress={() => this.onConfirmSignDoc()} btnText={util.toUpper(docFunction.FUNTION_TITLE)} />
+                });
             }
 
-            bodyContent = <DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
+            bodyContent = (<DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />);
         }
         return (
             <MenuProvider backHandler>

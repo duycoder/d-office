@@ -8,11 +8,10 @@ import React, { Component } from 'react';
 import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 //utilities
-import { API_URL, Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, showWarningToast } from '../../../common/Utilities';
+import { Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { asyncDelay, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -21,28 +20,25 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
+import { AlertMessageStyle } from '../../../assets/styles';
 //lib
 import {
-  Container, Header, Left, Button,
-  Body, Icon, Title, Content, Form,
-  Tabs, Tab, TabHeading, ScrollableTab,
-  Text, Right, Toast
+  Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right, Toast
 } from 'native-base';
 import {
-  Icon as RneIcon, ButtonGroup
+  ButtonGroup
 } from 'react-native-elements';
 
-import renderIf from 'render-if';
+//redux
+import * as navAction from '../../../redux/modules/Nav/Action';
 
 //views
-
-import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
-import RegistrationInfo from './RegistrationInfo';
-import AlertMessage from '../../common/AlertMessage';
 import TripInfo from './TripInfo';
+import RegistrationInfo from './RegistrationInfo';
+import { GoBackButton, AlertMessage } from '../../common';
+import { WorkflowButton } from '../../common/DetailCommon';
+
+//api
 import { carApi, tripApi } from '../../../common/Api';
 
 const CarApi = carApi(),
@@ -354,8 +350,6 @@ class DetailRegistration extends Component {
     this.onNavigate("ReturnTripScreen", targetScreenParam);
   }
 
-
-
   onNavigate(targetScreenName, targetScreenParam) {
     if (!util.isNull(targetScreenParam)) {
       this.props.updateExtendsNavParams(targetScreenParam);
@@ -379,18 +373,19 @@ class DetailRegistration extends Component {
           switch (entity.TRANGTHAI) {
             case DATXE_CONSTANT.CHUYEN_STATUS.MOI_TAO:
               workflowButtons.push({
-                element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForTrip(1)}><RNText style={ButtonGroupStyle.buttonText}>BẮT ĐẦU</RNText></RnButton>
+                element: () => <WorkflowButton onPress={() => this.onConfirmActionForTrip(1)} btnText="BẮT ĐẦU" />
               });
               break;
             case DATXE_CONSTANT.CHUYEN_STATUS.DANG_CHAY:
               workflowButtons.push({
-                element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onReturnTrip()}><RNText style={ButtonGroupStyle.buttonText}>TRẢ XE</RNText></RnButton>
+                element: () => <WorkflowButton onPress={() => this.onReturnTrip()} btnText="TRẢ XE" />
               });
               break;
             default:
               break;
           }
         }
+
         bodyContent = (
           <DetailContent registrationInfo={this.state.registrationInfo} tripInfo={this.state.tripInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
         );
@@ -402,27 +397,28 @@ class DetailRegistration extends Component {
 
         if (canSendRegistration) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(1)}><RNText style={ButtonGroupStyle.buttonText}>GỬI YÊU CẦU</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onConfirmActionForRegistration(1)} btnText="GỬI YÊU CẦU" />
           });
         }
         else if (canCheckRegistration) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmActionForRegistration(3)}><RNText style={ButtonGroupStyle.buttonText}>DUYỆT XE</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onConfirmActionForRegistration(3)} btnText="DUYỆT XE" />
           });
         }
         else if (canRecieveRegistratiion) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCreateTrip()}><RNText style={ButtonGroupStyle.buttonText}>TIẾP NHẬN</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onCreateTrip()} btnText="TIẾP NHẬN" />
           });
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCancelTrip()}><RNText style={ButtonGroupStyle.buttonText}>KHÔNG TIẾP NHẬN</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onCancelTrip()} btnText="KHÔNG TIẾP NHẬN" />
           });
         }
         if (canCancelRegistration) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onCancelRegistration_New()}><RNText style={ButtonGroupStyle.buttonText}>HUỶ</RNText></RnButton>
+            element: () => <WorkflowButton onPress={() => this.onCancelRegistration_New()} btnText="HUỶ" />
           });
         }
+
         bodyContent = <DetailContent registrationInfo={this.state.registrationInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
       }
       else {
@@ -553,7 +549,7 @@ class DetailContent extends Component {
                   <Icon name='ios-information-circle-outline' style={TabStyle.activeText} />
                   <Text style={(this.state.selectedTabIndex == 0) ? TabStyle.activeText : TabStyle.inActiveText}>
                     ĐĂNG KÝ XE
-                          </Text>
+                  </Text>
                 </TabHeading>
               }>
                 <RegistrationInfo info={this.state.registrationInfo} navigateToEvent={this.props.navigateToEvent} />
@@ -564,7 +560,7 @@ class DetailContent extends Component {
                   <Icon name='ios-create' style={TabStyle.activeText} />
                   <Text style={(this.state.selectedTabIndex == 1) ? TabStyle.activeText : TabStyle.inActiveText}>
                     CHUYẾN XE
-                          </Text>
+                  </Text>
                 </TabHeading>
               }>
                 <TripInfo info={this.state.tripInfo} />

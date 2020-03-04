@@ -42,6 +42,7 @@ import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import InfoMeetingDay from './InfoMeetingDay';
 import { AlertMessage, GoBackButton } from '../../common';
 import { meetingRoomApi } from '../../../common/Api';
+import { WorkflowButton } from '../../common/DetailCommon';
 
 const MeetingRoomApi = meetingRoomApi();
 
@@ -167,6 +168,13 @@ class DetailMeetingDay extends Component {
     });
   }
 
+  onEditCalendar = () => {
+    this.onNavigate('CreateMeetingRoom', {
+      isEdit: true,
+      lichhopId: this.state.lichhopId,
+    });
+  }
+
   onNavigate(targetScreenName, targetScreenParam) {
     if (!util.isNull(targetScreenParam)) {
       this.props.updateExtendsNavParams(targetScreenParam);
@@ -176,7 +184,7 @@ class DetailMeetingDay extends Component {
 
   render() {
     const {
-      canBookingRoom, entity
+      canBookingRoom, entity, canDeleteCalendar
     } = this.state.lichhopInfo;
     let bodyContent = null;
     let workflowButtons = [];
@@ -186,18 +194,24 @@ class DetailMeetingDay extends Component {
     else {
       if (canBookingRoom) {
         workflowButtons.push({
-          element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ LỊCH HỌP</RNText></RnButton>
-        })
+          element: () => <WorkflowButton onPress={() => this.onConfirmAction(1)} btnText="HUỶ LỊCH" />
+        });
         // if (entity.PHONGHOP_ID) {
         //   workflowButtons.push({
-        //     element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onConfirmAction(1)}><RNText style={ButtonGroupStyle.buttonText}>HUỶ ĐẶT PHÒNG</RNText></RnButton>
+        //     element: () => <WorkflowButton onPress={() => this.onConfirmAction(1)} btnText="HUỶ ĐẶT PHÒNG" />
         //   })
         // }
         if (!entity.PHONGHOP_ID) {
           workflowButtons.push({
-            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSelectRoom()}><RNText style={ButtonGroupStyle.buttonText}>ĐẶT PHÒNG</RNText></RnButton>
-          })
+            element: () => <WorkflowButton onPress={() => this.onEditCalendar()} btnText="ĐẶT PHÒNG" />
+          });
         }
+      }
+
+      if (canDeleteCalendar) {
+        workflowButtons.push({
+          element: () => <WorkflowButton onPress={() => this.onSelectRoom()} btnText="SỬA LỊCH" />
+        });
       }
 
       bodyContent = <DetailContent lichhopInfo={this.state.lichhopInfo} buttons={workflowButtons} />

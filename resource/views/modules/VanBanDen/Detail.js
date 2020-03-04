@@ -44,7 +44,7 @@ import { GoBackButton } from '../../common';
 import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandenApi } from '../../../common/Api';
-import { Timeline } from '../../common/DetailCommon';
+import { Timeline, WorkflowButton } from '../../common/DetailCommon';
 const api = vanbandenApi();
 class Detail extends Component {
     constructor(props) {
@@ -237,14 +237,14 @@ class Detail extends Component {
         } else {
             if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
                 workflowButtons.push({
-                    element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onReplyReview()}><RNText style={ButtonGroupStyle.buttonText}>PHẢN HỒI</RNText></RnButton>
-                })
+                    element: () => <WorkflowButton onPress={() => this.onReplyReview()} btnText="PHẢN HỒI" />
+                });
             } else {
                 if (!util.isNull(this.state.docInfo.WorkFlow.LstStepBack)) {
                     this.state.docInfo.WorkFlow.LstStepBack.forEach(item => {
                         workflowButtons.push({
-                            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, true)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RnButton>
-                        })
+                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
+                        });
                     })
                 }
 
@@ -257,15 +257,15 @@ class Detail extends Component {
                             }
                         }
                         workflowButtons.push({
-                            element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSelectWorkFlowStep(item, false)}><RNText style={ButtonGroupStyle.buttonText}>{util.toUpper(item.NAME)}</RNText></RnButton>
-                        })
+                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
+                        });
                     }
                 }
             }
 
             if (this.state.docInfo.canChuyenPhoihopXuly) {
                 workflowButtons.push({
-                    element: () => <RnButton style={ButtonGroupStyle.button} onPress={() => this.onSendCC()}><RNText style={ButtonGroupStyle.buttonText}>CHUYỂN XỬ LÝ</RNText></RnButton>
+                    element: () => <WorkflowButton onPress={() => this.onSendCC()} btnText="CHUYỂN XỬ LÝ" />
                 });
             }
 
