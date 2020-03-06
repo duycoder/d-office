@@ -155,7 +155,7 @@ class DetailMeetingDay extends Component {
   }
 
   onEditCalendar = () => {
-    this.onNavigate('CreateMeetingRoom', {
+    this.onNavigate('CreateMeetingDayScreen', {
       isEdit: true,
       lichhopId: this.state.lichhopId,
     });
@@ -189,14 +189,14 @@ class DetailMeetingDay extends Component {
         // }
         if (!entity.PHONGHOP_ID) {
           workflowButtons.push({
-            element: () => <WorkflowButton onPress={() => this.onEditCalendar()} btnText="ĐẶT PHÒNG" />
+            element: () => <WorkflowButton onPress={() => this.onSelectRoom()} btnText="ĐẶT PHÒNG" />
           });
         }
       }
 
       if (canDeleteCalendar) {
         workflowButtons.push({
-          element: () => <WorkflowButton onPress={() => this.onSelectRoom()} btnText="SỬA LỊCH" />
+          element: () => <WorkflowButton onPress={() => this.onEditCalendar()} btnText="SỬA LỊCH" />
         });
       }
 
