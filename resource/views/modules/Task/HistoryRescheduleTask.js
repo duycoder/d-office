@@ -5,42 +5,33 @@
 */
 'use strict';
 import React, { Component } from 'react';
-import { View as RnView, Text as RnText } from 'react-native';
+import { View, Text } from 'react-native';
 import {
-	FlatList,
-	RefreshControl, StyleSheet, Dimensions, Platform,
-	TouchableOpacity
+	FlatList, RefreshControl, StyleSheet
 } from 'react-native';
 //lib
 import {
-	SwipeRow, Button, Item,
-	Label, Container, Header, Left, Body, Right,
-	Title, Content, Form
+	Container, Header, Left, Body, Right,
+	Title, Content
 } from 'native-base';
-import renderIf from 'render-if';
-import * as util from 'lodash';
+import util from 'lodash';
 import {
-	Icon as RneIcon
+	ListItem, Icon
 } from 'react-native-elements';
-import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { API_URL, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
-import {
-	emptyDataPage, convertDateToString
-} from '../../../common/Utilities';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
+import { emptyDataPage, convertDateToString } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { scale, verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import AlertMessage from '../../common/AlertMessage';
-import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
+import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { MoreButton, GoBackButton } from '../../common';
+import { MoreButton, GoBackButton, ColumnedListItem } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 class HistoryRescheduleTask extends Component {
@@ -66,8 +57,6 @@ class HistoryRescheduleTask extends Component {
 
 			listRowId: [],
 		};
-
-		this.myRef = [];
 	}
 
 	componentWillMount() {
@@ -123,11 +112,10 @@ class HistoryRescheduleTask extends Component {
 			rescheduleInfo: item
 		}, () => {
 			this.refs.confirm.showModal();
-		})
+		});
 	}
 
 	onApproveReschedule = (isApprove, extendId, deadline) => {
-		this.refs.confirm.closeModal();
 		const screenName = isApprove ? 'ApproveRescheduleTaskScreen' : 'DenyRescheduleTaskScreen';
 		const targetParams = {
 			canApprove: this.state.canApprove,
@@ -139,70 +127,60 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	renderItem = ({ item }) => {
+		let statusText = 'Chưa phê duyệt',
+			statusStyle = styles.notConfirmText;
+		if (item.IS_APPROVED) {
+			statusText = 'Đồng ý';
+			statusStyle = styles.approveText;
+		}
+		else if (item.IS_APPROVED == false) {
+			statusText = 'Từ chối';
+			statusStyle = styles.denyText;
+		}
+
+		let rightIcon = null;
+		if (this.state.canApprove && util.isNull(item.IS_APPROVED)) {
+			rightIcon = (
+				<View style={{ flexDirection: 'column' }}>
+					<Icon name='check' onPress={() => this.onApproveReschedule(true, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={Colors.GREEN_PANTON_376C} type='material-community' />
+					<Icon name='close' onPress={() => this.onApproveReschedule(false, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={Colors.RED_PANTONE_186C} type='material-community' />
+				</View>
+			);
+		}
+
 		return (
-			<SwipeRow
-				leftOpenValue={75}
-				rightOpenValue={-75}
-				disableLeftSwipe={!util.isNull(item.IS_APPROVED) || this.state.canApprove == false}
-				left={
-					<Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowRescheduleInfo(item)}>
-						<RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
-					</Button>
+			<ListItem
+				containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+				subtitle={
+					<View style={{ marginLeft: scale(8) }}>
+						<ColumnedListItem
+							leftText='Xin lùi đến ngày'
+							rightText={convertDateToString(item.HANKETHUC)}
+						/>
+						<ColumnedListItem
+							isRender={item.IS_APPROVED}
+							leftText='Đồng ý tới ngày'
+							rightText={convertDateToString(item.HANKETTHUC_LANHDAODUYET)}
+						/>
+						<ColumnedListItem
+							isRender={!!item.NOIDUNG}
+							leftText='Lý do'
+							rightText={item.NOIDUNG}
+						/>
+						<ColumnedListItem
+							isRender={!!item.BUTPHELANHDAO}
+							leftText='Nội dung phê duyệt'
+							rightText={item.BUTPHELANHDAO}
+						/>
+						<ColumnedListItem
+							leftText='Trạng thái'
+							rightText={statusText}
+							customRightText={statusStyle}
+						/>
+					</View>
 				}
-				body={
-					<RnView>
-						<RnView style={styles.rowContainer}>
-							<RnText style={styles.rowDateContainer}>
-								<RnText>
-									{'Xin lùi đến: '}
-								</RnText>
-
-								<RnText style={styles.rowDate}>
-									{convertDateToString(item.HANKETHUC) + ' '}
-								</RnText>
-							</RnText>
-							<RnText>
-								<RnText style={styles.rowStatusLabel}>
-									{'Trạng thái: '}
-								</RnText>
-								{
-									util.isNull(item.IS_APPROVED) ?
-										<RnText style={[styles.notConfirmText, styles.rowStatus]}>
-											Chưa phê duyệt
-								</RnText> :
-										(
-											item.IS_APPROVED ?
-												<RnText style={[styles.approveText, styles.rowStatus]}>
-													Đã phê duyệt
-										</RnText>
-												: <RnText style={[styles.denyText, styles.rowStatus]}>
-													Không phê duyệt
-										</RnText>
-										)
-								}
-							</RnText>
-						</RnView>
-						{
-							item.IS_APPROVED &&
-							<RnView style={[styles.rowContainer, { marginTop: 5 }]}>
-								<RnText>
-									<RnText style={styles.rowStatusLabel}>
-										{`Đồng ý phê duyệt tới: `}
-									</RnText>
-									<RnText style={[styles.approveText, styles.rowStatus]}>
-										{convertDateToString(item.HANKETTHUC_LANHDAODUYET)}
-									</RnText>
-								</RnText>
-							</RnView>
-						}
-					</RnView>
-				}
-
-				right={
-					<Button style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.onConfirmApproveReschedule(item)}>
-						<RneIcon name='pencil' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
-					</Button>
-				}
+				hideChevron={rightIcon == null}
+				rightIcon={rightIcon}
 			/>
 		)
 	}
@@ -216,7 +194,7 @@ class HistoryRescheduleTask extends Component {
 					}, () => {
 						this.fetchData();
 					});
-					this.updateExtendsNavParams({ check: false });
+					this.props.updateExtendsNavParams({ check: false });
 				}
 			}
 		});
@@ -231,6 +209,36 @@ class HistoryRescheduleTask extends Component {
 	}
 
 	render() {
+		let bodyContent = null;
+		const { loading, data, refreshing, loadingMore } = this.state;
+		if (loading) {
+			bodyContent = dataLoading(true);
+		} else {
+			bodyContent = (
+				<FlatList
+					data={data}
+					keyExtractor={(item, index) => index.toString()}
+					renderItem={this.renderItem}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={this.handleRefresh}
+							title='Kéo để làm mới'
+							colors={[Colors.BLUE_PANTONE_640C]}
+							tintColor={[Colors.BLUE_PANTONE_640C]}
+							titleColor='red'
+						/>
+					}
+					ListEmptyComponent={() => emptyDataPage()}
+					ListFooterComponent={() => (<MoreButton
+						isLoading={loadingMore}
+						isTrigger={data.length >= DEFAULT_PAGE_SIZE}
+						loadmoreFunc={this.loadMore}
+					/>)}
+				/>
+			);
+		}
+
 		return (
 			<Container>
 				<Header style={NativeBaseStyle.container}>
@@ -248,237 +256,25 @@ class HistoryRescheduleTask extends Component {
 
 				<Content contentContainerStyle={{ flex: 1 }}>
 					{
-						renderIf(this.state.loading)(
-							dataLoading(true)
-						)
-					}
-
-					{
-						renderIf(!this.state.loading)(
-							<FlatList
-								data={this.state.data}
-								keyExtractor={(item, index) => index.toString()}
-								renderItem={this.renderItem}
-								refreshControl={
-									<RefreshControl
-										refreshing={this.state.refreshing}
-										onRefresh={this.handleRefresh}
-										title='Kéo để làm mới'
-										colors={[Colors.BLUE_PANTONE_640C]}
-										tintColor={[Colors.BLUE_PANTONE_640C]}
-										titleColor='red'
-									/>
-								}
-								ListEmptyComponent={() => emptyDataPage()}
-
-								ListFooterComponent={() => (<MoreButton
-									isLoading={this.state.loadingMore}
-									isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
-									loadmoreFunc={this.loadMore}
-								/>)}
-							/>
-						)
+						bodyContent
 					}
 				</Content>
-
 				{
 					executeLoading(this.state.executing)
 				}
-
-				<PopupDialog
-					dialogTitle={<DialogTitle title='THÔNG TIN LÙI HẠN'
-						titleStyle={{
-							...Platform.select({
-								android: {
-									height: verticalScale(50),
-									justifyContent: 'center',
-								}
-							})
-						}} />}
-					ref={(popupDialog) => { this.popupDialog = popupDialog }}
-					width={0.8}
-					height={'auto'}
-					actions={[
-						<DialogButton
-							align={'center'}
-							buttonStyle={{
-								backgroundColor: Colors.GREEN_PANTON_369C,
-								alignSelf: 'stretch',
-								alignItems: 'center',
-								borderBottomLeftRadius: 8,
-								borderBottomRightRadius: 8,
-								...Platform.select({
-									ios: {
-										justifyContent: 'flex-end',
-									},
-									android: {
-										height: verticalScale(50),
-										justifyContent: 'center',
-									},
-								})
-							}}
-							text="ĐÓNG"
-							textStyle={{
-								fontSize: moderateScale(14, 1.5),
-								color: '#fff',
-								textAlign: 'center'
-							}}
-							onPress={() => {
-								this.popupDialog.dismiss();
-							}}
-							key="button-0"
-						/>,
-					]}>
-					<Form>
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Người xin lùi hạn
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{this.state.rescheduleInfo.FullName}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Xin lùi tới ngày
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{convertDateToString(this.state.rescheduleInfo.HANKETHUC)}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Đồng ý lùi tới ngày
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{convertDateToString(this.state.rescheduleInfo.HANKETTHUC_LANHDAODUYET)}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Lý do xin lùi hạn
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{(this.state.rescheduleInfo.NOIDUNG)}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Nội dung phê duyệt
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{(this.state.rescheduleInfo.BUTPHELANHDAO)}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Trạng thái phê duyệt
-							</Label>
-
-							{
-								util.isNull(this.state.rescheduleInfo.IS_APPROVED) ?
-									<Label style={[styles.notConfirmText]}>
-										Chưa phê duyệt
-								</Label> :
-									(
-										this.state.rescheduleInfo.IS_APPROVED ?
-											<Label style={[styles.approveText]}>
-												Đã phê duyệt
-											</Label>
-											: <Label style={[styles.denyText]}>
-												Không phê duyệt
-											</Label>
-									)
-							}
-						</Item>
-					</Form>
-				</PopupDialog>
-
-				<AlertMessage
-					ref="confirm"
-					title="PHẢN HỒI YÊU CẦU LÙI HẠN"
-					bodyText={`Phản hồi yêu cầu lùi hạn của \n ${this.state.rescheduleInfo.FullName}`}
-					exitText="THOÁT"
-				>
-					<RnView style={AlertMessageStyle.leftFooter}>
-						<TouchableOpacity onPress={() => this.onApproveReschedule(true, this.state.rescheduleInfo.ID, this.state.rescheduleInfo.HANKETHUC)} style={AlertMessageStyle.footerButton}>
-							<RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-								ĐỒNG Ý
-							</RnText>
-						</TouchableOpacity>
-					</RnView>
-					<RnView style={AlertMessageStyle.leftFooter}>
-						<TouchableOpacity onPress={() => this.onApproveReschedule(false, this.state.rescheduleInfo.ID, this.state.rescheduleInfo.HANKETHUC)} style={AlertMessageStyle.footerButton}>
-							<RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-								KHÔNG ĐỒNG Ý
-							</RnText>
-						</TouchableOpacity>
-					</RnView>
-				</AlertMessage>
 			</Container>
 		);
 	}
 }
 
-const deviceWidth = Dimensions.get('window').width;
-
 const styles = StyleSheet.create({
-	rowContainer: {
-		width: '100%',
-		paddingLeft: scale(10),
-		flexDirection: (deviceWidth >= 340) ? 'row' : 'column',
-		alignItems: (deviceWidth >= 340) ? 'center' : 'flex-start',
-	},
-	rowDateContainer: {
-		color: '#000',
-	},
-	rowDate: {
-		color: '#000',
-		fontWeight: 'bold',
-		paddingLeft: scale(10),
-		textDecorationLine: 'underline'
-	},
-	rowStatusLabel: {
-		color: '#000',
-		marginLeft: scale(10)
-	},
-	rowStatus: {
-		fontWeight: 'bold',
-		textDecorationLine: 'underline'
-	}, notConfirmText: {
+	notConfirmText: {
 		color: '#FF6600'
 	}, approveText: {
 		color: '#337321'
 	}, denyText: {
 		color: '#FF0033'
-	}, dialogLabel: {
-		fontWeight: 'bold',
-		color: '#000',
-		fontSize: moderateScale(14, 1.3)
-	}, leftFooter: {
-		flex: 1,
-		borderRightWidth: scale(2),
-		borderRightColor: '#ececec'
-	}, rightFooter: {
-		flex: 1,
-	}, footerText: {
-		color: '#000',
-		flexWrap: 'wrap',
-	}, footerButton: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
+	},
 });
 
 const mapStateToProps = (state) => {

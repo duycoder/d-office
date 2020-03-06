@@ -48,7 +48,9 @@ class CreateSubTask extends Component {
 			planValue: '0', //lập kế hoạch 
 
 			executing: false,
-			chosenDate: null
+			chosenDate: null,
+			canFinishTask: props.extendsNavParams.canFinishTask || false,
+      canAssignTask: props.extendsNavParams.canAssignTask || false,
 		}
 	}
 
@@ -127,9 +129,11 @@ class CreateSubTask extends Component {
 					if (resultJson.Status) {
 						this.props.updateExtendsNavParams({
 							check: true,
-							from: "createSubTask"
+							fromScreen: "createSubTask",
+							canFinishTask: this.state.canFinishTask,
+							canAssignTask: this.state.canAssignTask,
 						});
-						this.navigateBackToDetail();
+						this.props.navigation.navigate('GroupSubTaskScreen');
 					}
 				}
 			});
