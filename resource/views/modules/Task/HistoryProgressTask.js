@@ -6,8 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-	ActivityIndicator, FlatList, StyleSheet, View as RnView, Text as RnText,
-	RefreshControl, Platform
+	FlatList, RefreshControl, View, Text
 } from 'react-native';
 //redux
 import { connect } from 'react-redux';
@@ -16,30 +15,24 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
 	Container, Header, Left, Content,
-	Body, Title, Button, Text, SwipeRow,
-	Right, Form, Item, Label,
+	Body, Title, Right,
 } from 'native-base';
 import {
-	Icon as RneIcon
+	ListItem,
 } from 'react-native-elements';
-import renderIf from 'render-if';
-import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 //utilities
 import {
-	API_URL, LOADER_COLOR, HEADER_COLOR, EMPTY_STRING,
+	EMPTY_STRING,
 	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
-import {
-	emptyDataPage, formatLongText, convertDateToString, convertDateTimeToString,
-	backHandlerConfig, appGetDataAndNavigate
-} from '../../../common/Utilities';
+import { emptyDataPage, convertDateTimeToString } from '../../../common/Utilities';
 
 //styles
-import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { MoreButton, GoBackButton } from '../../common';
+import { MoreButton, GoBackButton, ColumnedListItem } from '../../common';
 import { taskApi } from '../../../common/Api';
 
 class HistoryProgressTask extends Component {
@@ -52,7 +45,7 @@ class HistoryProgressTask extends Component {
 
 			data: [],
 			dataItem: {},
-			fitlerValue: EMPTY_STRING,
+			filterValue: EMPTY_STRING,
 			pageIndex: DEFAULT_PAGE_INDEX,
 			pageSize: DEFAULT_PAGE_SIZE,
 			loading: false,
@@ -78,7 +71,7 @@ class HistoryProgressTask extends Component {
 	}
 
 	fetchData = async () => {
-		const { taskId, pageIndex, pageSize, fitlerValue } = this.state;
+		const { taskId, pageIndex, pageSize, filterValue } = this.state;
 		const resultJson = await taskApi().getListProgress([
 			taskId,
 			pageIndex,
@@ -103,34 +96,31 @@ class HistoryProgressTask extends Component {
 
 	renderItem = ({ item }) => {
 		return (
-			<SwipeRow
-				leftOpenValue={75}
-				rightOpenValue={-75}
-				disableLeftSwipe={true}
-				left={
-					<Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowProgressInfo(item)}>
-						<RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
-					</Button>
+			<ListItem
+				containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+				leftIcon={
+					<View>
+						<Text style={{ fontWeight: "bold", fontSize: moderateScale(23, 0.89) }}>{item.TIENDOCONGVIEC + '%'}</Text>
+					</View>
 				}
-				body={
-					<RnView style={styles.rowContainer}>
-						<RnText style={styles.rowInfo}>
-							{item.TIENDOCONGVIEC + '%'}
-						</RnText>
-
-						<RnText style={styles.rowLabel}>
-							<RnText>
-								{' - Thời gian: '}
-							</RnText>
-
-							<RnText>
-								{
-									convertDateTimeToString(item.NGAYCAPNHATTIENDO)
-								}
-							</RnText>
-						</RnText>
-					</RnView>
+				subtitle={
+					<View style={{ marginLeft: moderateScale(18, 1.04) }}>
+						<ColumnedListItem
+							leftText='Thời gian'
+							rightText={convertDateTimeToString(item.NGAYCAPNHATTIENDO)}
+							leftContainerWidth={25}
+							rightContainerWidth={75}
+						/>
+						<ColumnedListItem
+							isRender={!!item.NOIDUNG}
+							leftText='Nội dung'
+							rightText={item.NOIDUNG}
+							leftContainerWidth={25}
+							rightContainerWidth={75}
+						/>
+					</View>
 				}
+				hideChevron
 			/>
 		);
 	}
@@ -194,126 +184,10 @@ class HistoryProgressTask extends Component {
 						bodyContent
 					}
 				</Content>
-
-				<PopupDialog
-					dialogTitle={<DialogTitle
-						title='THÔNG TIN CẬP NHẬT TIẾN ĐỘ'
-						titleStyle={{
-							...Platform.select({
-								android: {
-									height: verticalScale(50),
-									justifyContent: 'center',
-								}
-							}),
-						}} />}
-					ref={(popupDialog) => { this.popupDialog = popupDialog }}
-					width={0.8}
-					height={'auto'}
-					actions={[
-						<DialogButton
-							align={'center'}
-							buttonStyle={{
-								backgroundColor: Colors.GREEN_PANTON_369C,
-								alignSelf: 'stretch',
-								alignItems: 'center',
-								borderBottomLeftRadius: 8,
-								borderBottomRightRadius: 8,
-								...Platform.select({
-									ios: {
-										justifyContent: 'flex-end',
-									},
-									android: {
-										height: verticalScale(50),
-										justifyContent: 'center',
-									},
-								})
-							}}
-							text="ĐÓNG"
-							textStyle={{
-								fontSize: moderateScale(14, 1.12),
-								color: '#fff',
-								textAlign: 'center'
-							}}
-							onPress={() => {
-								this.popupDialog.dismiss();
-							}}
-							key="button-0"
-						/>,
-					]}>
-					<Form>
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Tiến độ
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{this.state.dataItem.TIENDOCONGVIEC + '%'}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Người cập nhật
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{this.state.dataItem.NGUOITAO}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Thời gian
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{(convertDateTimeToString(this.state.dataItem.NGAYCAPNHATTIENDO))}
-							</Label>
-						</Item>
-
-						<Item stackedLabel>
-							<Label style={styles.dialogLabel}>
-								Nội dung
-							</Label>
-
-							<Label style={styles.dialogText}>
-								{(this.state.dataItem.NOIDUNG)}
-							</Label>
-						</Item>
-					</Form>
-				</PopupDialog>
 			</Container>
 		);
 	}
-
 }
-
-const styles = StyleSheet.create({
-	rowContainer: {
-		width: '100%',
-		paddingLeft: scale(10),
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	rowLabel: {
-		color: '#000',
-		fontSize: moderateScale(16, 0.98),
-	},
-	rowInfo: {
-		color: '#000',
-		fontSize: moderateScale(25, 0.8),
-		fontWeight: 'bold',
-		textDecorationLine: 'none'
-	},
-	dialogLabel: {
-		fontWeight: 'bold',
-		color: '#000',
-		fontSize: moderateScale(11, 1.02),
-	},
-	dialogText: {
-		fontSize: moderateScale(12, 1.14),
-	},
-});
 
 const mapStateToProps = (state) => {
 	return {

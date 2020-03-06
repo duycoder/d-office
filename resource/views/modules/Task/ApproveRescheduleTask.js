@@ -13,184 +13,181 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-    Container, Header, Left, Right, Title, Item, Toast,
-    Button, Text, Body, Form, Label, Input, Textarea, Content
+  TouchableOpacity, Text
+} from 'react-native';
+import {
+  Container, Header, Left, Right, Title, Item, Toast,
+  Button, Body, Form, Label, Input, Textarea, Content
 } from 'native-base';
 
 import DatePicker from 'react-native-datepicker';
-import * as util from 'lodash';
+import util from 'lodash';
 
 //utilities
 import { executeLoading } from '../../../common/Effect';
-import { API_URL, Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
-import { asyncDelay, convertDateToString } from '../../../common/Utilities';
+import { convertDateToString } from '../../../common/Utilities';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //firebase
-import {GoBackButton} from '../../common';
+import { GoBackButton } from '../../common';
 import { DatePickerCustomStyle, CustomStylesDatepicker } from '../../../assets/styles';
+import { taskApi } from '../../../common/Api';
+import AccountStyle from '../../../assets/styles/AccountStyle';
 
 class ApproveRescheduleTask extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userId: props.userInfo.ID,
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: props.userInfo.ID,
+      deadlineRequest: props.extendsNavParams.deadline,
+      deadlineApprove: props.extendsNavParams.deadline,
+      extendId: props.extendsNavParams.extendId,
 
-            taskId: props.coreNavParams.taskId,
-            taskType: props.coreNavParams.taskType,
+      executing: false,
+      message: EMPTY_STRING,
 
-            // canApprove: props.extendsNavParams.canApprove,
-            deadlineRequest: props.extendsNavParams.deadline,
-            deadlineApprove: props.extendsNavParams.deadline,
-            extendId: props.extendsNavParams.extendId,
+      isSaveBtnPressed: true,
+    }
+  }
 
-            executing: false,
-            message: EMPTY_STRING
+  onSelectDate = (dateValue) => {
+    if (!util.isNull(dateValue)) {
+      let split = dateValue.split('/');
+      this.setState({
+        deadlineApprove: new Date(split[2], split[1] - 1, split[0])
+      });
+    }
+  }
+
+  onApproveExtendTask = async () => {
+    this.setState({
+      executing: true,
+      isSaveBtnPressed: false,
+    });
+
+    const resultJson = await taskApi().saveConfirmReschedule({
+      id: this.state.extendId,
+      userId: this.state.userId,
+      extendDate: convertDateToString(this.state.deadlineApprove),
+      message: this.state.message,
+      status: 1
+    });
+
+    this.setState({
+      executing: false
+    })
+
+    Toast.show({
+      text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
+      type: resultJson.Status ? 'success' : 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      duration: TOAST_DURATION_TIMEOUT,
+      onClose: () => {
+        if (resultJson.Status) {
+          this.props.updateExtendsNavParams({ check: true });
+          this.navigateBack();
         }
-    }
-
-    onSelectDate = (dateValue) => {
-        if (!util.isNull(dateValue)) {
-            let split = dateValue.split('/');
-            this.setState({
-                deadlineApprove: new Date(split[2], split[1] - 1, split[0])
-            });
+        else {
+          this.setState({
+            isSaveBtnPressed: true,
+          })
         }
-    }
+      }
+    });
+  }
 
+  navigateBack = () => {
+    this.props.navigation.goBack();
+  }
+  render() {
+    const
+      { deadlineApprove, isSaveBtnPressed } = this.state,
+      nothingChangeStatus = !deadlineApprove || !isSaveBtnPressed,
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
 
-    onApproveExtendTask = async () => {
-        this.setState({
-            executing: true
-        });
+    return (
+      <Container>
+        <Header style={NativeBaseStyle.container}>
+          <Left style={NativeBaseStyle.left}>
+            <GoBackButton onPress={() => this.navigateBack()} />
+          </Left>
 
-        const url = `${API_URL}/api/HscvCongViec/ApproveExtendTask`;
-        const headers = new Headers({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=utf-8'
-        });
-
-        const body = JSON.stringify({
-            id: this.state.extendId,
-            userId: this.state.userId,
-            extendDate: convertDateToString(this.state.deadlineApprove),
-            message: this.state.message,
-            status: 1
-        });
-
-        const result = await fetch(url, {
-            method: 'POST',
-            headers,
-            body
-        });
-
-        const resultJson = await result.json();
-
-        await asyncDelay();
-
-        this.setState({
-            executing: false
-        })
-
-        Toast.show({
-            text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
-            type: resultJson.Status ? 'success' : 'danger',
-            buttonText: "OK",
-            buttonStyle: { backgroundColor: Colors.WHITE },
-            buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
-            duration: TOAST_DURATION_TIMEOUT,
-            onClose: () => {
-                if (resultJson.Status) {
-                    this.props.updateExtendsNavParams({ check: true });
-                    this.navigateBack();
-                }
-            }
-        });
-    }
-
-    navigateBack = () => {
-        this.props.navigation.goBack();
-    }
-    render() {
-        return (
-            <Container>
-                <Header style={NativeBaseStyle.container}>
-                    <Left style={NativeBaseStyle.left}>
-                        <GoBackButton onPress={() => this.navigateBack()}/>
-                    </Left>
-
-                    <Body style={NativeBaseStyle.body}>
-                        <Title style={NativeBaseStyle.bodyTitle}>
-                            ĐỒNG Ý GIA HẠN
+          <Body style={NativeBaseStyle.body}>
+            <Title style={NativeBaseStyle.bodyTitle}>
+              ĐỒNG Ý GIA HẠN
                         </Title>
-                    </Body>
-                    <Right style={NativeBaseStyle.right}></Right>
-                </Header>
+          </Body>
+          <Right style={NativeBaseStyle.right}></Right>
+        </Header>
 
-                <Content>
-                    <Form>
-                        <Item stackedLabel>
-                            <Label>Xin lùi tới ngày</Label>
-                            <Input editable={false} value={convertDateToString(this.state.deadlineRequest)} />
-                        </Item>
+        <Content>
+          <Form>
+            <Item stackedLabel>
+              <Label>Xin lùi tới ngày</Label>
+              <Input editable={false} value={convertDateToString(this.state.deadlineRequest)} />
+            </Item>
 
-                        <Item stackedLabel style={{ height: verticalScale(100), alignItems: 'center', justifyContent: 'center' }}>
-                            <Label>Ngày lãnh đạo đồng ý cho lùi hạn</Label>
-                            <DatePicker
-                                style={DatePickerCustomStyle.containerStyle}
-                                date={new Date(this.state.deadlineApprove)}
-                                mode="date"
-                                placeholder='Ngày lãnh đạo đồng ý cho lùi hạn'
-                                format='DD/MM/YYYY'
-                                minDate={new Date()}
-                                confirmBtnText='CHỌN'
-                                cancelBtnText='BỎ'
-                                customStyles={CustomStylesDatepicker}
-                                onDateChange={this.onSelectDate}
-                            />
-                        </Item>
+            <Item stackedLabel style={{ height: verticalScale(100), alignItems: 'center', justifyContent: 'center' }}>
+              <Label>Ngày lãnh đạo đồng ý cho lùi hạn</Label>
+              <DatePicker
+                style={DatePickerCustomStyle.containerStyle}
+                date={new Date(this.state.deadlineApprove)}
+                mode="date"
+                placeholder='Ngày lãnh đạo đồng ý cho lùi hạn'
+                format='DD/MM/YYYY'
+                minDate={new Date()}
+                confirmBtnText='CHỌN'
+                cancelBtnText='BỎ'
+                customStyles={CustomStylesDatepicker}
+                onDateChange={this.onSelectDate}
+              />
+            </Item>
 
-                        <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
-                            <Label>Phản hồi</Label>
+            <Item stackedLabel style={{ height: verticalScale(200), justifyContent: 'center' }}>
+              <Label>Phản hồi</Label>
 
-                            <Textarea rowSpan={5} bordered style={{ width: '100%' }}
-                                value={this.state.message}
-                                onChangeText={message => this.setState({ message })} />
-                        </Item>
-                    </Form>
+              <Textarea rowSpan={5} bordered style={{ width: '100%' }}
+                value={this.state.message}
+                onChangeText={message => this.setState({ message })} />
+            </Item>
+          </Form>
 
-                    <Button block danger
-                        style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
-                        onPress={() => this.onApproveExtendTask()}>
-                        <Text>
-                            PHÊ DUYỆT
-                        </Text>
-                    </Button>
-                </Content>
+          <TouchableOpacity
+            onPress={() => this.onApproveExtendTask()}
+            style={[AccountStyle.submitButton, submitableButtonBackground]}
+            disabled={nothingChangeStatus}
+          >
+            <Text style={[AccountStyle.submitButtonText, submitableButtonTextColor]}>LƯU</Text>
+          </TouchableOpacity>
+        </Content>
 
-                {
-                    executeLoading(this.state.executing)
-                }
-            </Container>
-        );
-    }
+        {
+          executeLoading(this.state.executing)
+        }
+      </Container>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams,
-        extendsNavParams: state.navState.extendsNavParams
-    }
+  return {
+    userInfo: state.userState.userInfo,
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
-    }
+  return {
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ApproveRescheduleTask);

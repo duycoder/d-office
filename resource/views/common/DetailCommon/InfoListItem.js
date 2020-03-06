@@ -30,6 +30,8 @@ class InfoListItem extends React.Component {
             titleStyle={InfoStyle.listItemTitleContainer}
             subtitle={subtitleText}
             subtitleStyle={[InfoStyle.listItemSubTitleContainer, customSubtitleText]}
+            subtitleNumberOfLines={10}
+            titleNumberOfLines={10}
           />
         );
       }
@@ -45,6 +47,8 @@ class InfoListItem extends React.Component {
               stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
             />
           }
+          subtitleNumberOfLines={10}
+          titleNumberOfLines={10}
         />
       }
     }

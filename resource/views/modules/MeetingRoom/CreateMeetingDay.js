@@ -160,8 +160,8 @@ class CreateMeetingDay extends Component {
         userId,
       ]);
 
-      if (resultJson) {
-        const { objBO, canBookingRoom } = resultJson;
+      if (resultJson.Status) {
+        const { objBO, canBookingRoom } = resultJson.Params;
 
         this.setState({
           loading: false,

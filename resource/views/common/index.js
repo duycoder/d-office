@@ -7,7 +7,7 @@ import GoBackButton from "./GoBackButton";
 import HeaderRightButton from "./HeaderRightButton";
 import CustomPickerButton from "./CustomPickerButton";
 import AlertMessage from "./AlertMessage";
-
+import ButtonWithIcon from "./ButtonWithIcon";
 
 export {
   AddButton,
@@ -19,4 +19,5 @@ export {
   HeaderRightButton,
   CustomPickerButton,
   AlertMessage,
+  ButtonWithIcon,
 }

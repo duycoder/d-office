@@ -231,6 +231,13 @@ class DetailTask extends Component {
             listUrgency: this.state.taskInfo.listDoUuTien,
             priorityValue: this.state.taskInfo.listDoKhan[0].Value.toString(), //độ ưu tiên
             urgencyValue: this.state.taskInfo.listDoUuTien[0].Value.toString(), //đô khẩn
+            canFinishTask: (this.state.taskInfo.CongViec.DAGIAOVIEC != true
+                && this.state.taskInfo.IsNguoiGiaoViec
+                && this.state.taskInfo.CongViec.IS_SUBTASK != true) || this.state.taskInfo.IsNguoiThucHienChinh,
+
+            canAssignTask: this.state.taskInfo.HasRoleAssignTask && (((this.state.taskInfo.CongViec.DAGIAOVIEC != true
+                && this.state.taskInfo.IsNguoiGiaoViec
+                && this.state.taskInfo.CongViec.IS_SUBTASK != true) || this.state.taskInfo.IsNguoiThucHienChinh)),
         }
         this.onNavigate("CreateSubTaskScreen", targetScreenParam);
 

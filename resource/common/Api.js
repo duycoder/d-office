@@ -263,7 +263,6 @@ const vanbandiApi = () => {
 }
 
 const taskApi = () => {
-  //active
   const getCreateHelper = (params = []) => api.get("HscvCongViec/GetTaskCreationHelper", params);
   const saveTask = (payloadBody = {}) => api.post("HscvCongViec/CreateTask", payloadBody);
   const saveSubTask = (payloadBody = {}) => api.post("HscvCongViec/CreateSubTask", payloadBody);
@@ -289,6 +288,7 @@ const taskApi = () => {
   const getComment = (params = []) => api.get("HscvCongViec/GetRootCommentsOfTask", params);
   const saveComment = (payloadBody = {}) => api.post("HscvCongViec/SaveComment", payloadBody);
   const getRepliesOfComment = (params = []) => api.get("HscvCongViec/GetRepliesOfComment", params);
+  const saveConfirmReschedule = (payloadBody = {}) => api.post("HscvCongViec/ApproveExtendTask", payloadBody);
 
   return {
     getCreateHelper,
@@ -316,6 +316,7 @@ const taskApi = () => {
     getComment,
     saveComment,
     getRepliesOfComment,
+    saveConfirmReschedule,
   };
 }
 
