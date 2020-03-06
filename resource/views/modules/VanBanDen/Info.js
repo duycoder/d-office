@@ -227,7 +227,7 @@ class MainInfoPublishDoc extends Component {
                             subtitleText={this.state.info.NOIDUNG}
                         />
                         <InfoListItem
-                            isRender={this.state.info.hasOwnProperty("NGAYCONGTAC")}
+                            isRender={this.state.info.hasOwnProperty("NGAYCONGTAC") && this.state.info.NGAYCONGTAC}
                             titleText='Thời gian công tác'
                             subtitleText={`${convertDateToString(this.state.info.NGAYCONGTAC)} lúc ${congtacTime}`}
                         />
