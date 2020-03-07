@@ -18,7 +18,7 @@ import 'moment/locale/vi';
 import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { showWarningToast } from '../../../common/Utilities';
+import { showWarningToast, convertDateToString } from '../../../common/Utilities';
 
 //redux
 import { connect } from 'react-redux';
@@ -167,21 +167,22 @@ class CreateMeetingDay extends Component {
           loading: false,
           mucdich: objBO.MUCDICH || EMPTY_STRING,
           thamgia: objBO.THANHPHAN_THAMDU || EMPTY_STRING,
-          ngayHop: objBO.NGAY_HOP || EMPTY_STRING,
-          gioBatdau: objBO.GIO_BATDAU || EMPTY_STRING,
-          phutBatdau: objBO.PHUT_BATDAU || EMPTY_STRING,
-          gioKetthuc: objBO.GIO_KETTHUC || EMPTY_STRING,
-          phutKetthuc: objBO.PHUT_KETTHUC || EMPTY_STRING,
-          chutriId: objBO.NGUOICHUTRI || EMPTY_STRING,
+          ngayHop: convertDateToString(objBO.NGAY_HOP) || EMPTY_STRING,
+          thoigianBatdau: `${objBO.GIO_BATDAU}:${objBO.PHUT_BATDAU}`,
+          thoigianKetthuc: `${objBO.GIO_KETTHUC}:${objBO.PHUT_KETTHUC}`,
+          chutriId: objBO.NGUOICHUTRI || 0,
+          chutriName: objBO.TEN_NGUOICHUTRI || EMPTY_STRING,
           lichCongtacId: objBO.LICHCONGTAC_ID || 0,
           phonghopId: objBO.PHONGHOP_ID || 0,
-          joinNguoiId: objBO.TD_NGUOI_ID,
-          joinNguoiText: objBO.TD_NGUOI_TEXT,
-          joinVaitroId: objBO.TD_VAITRO_ID,
-          joinVaitroText: objBO.TD_VAITRO_TEXT,
-          joinPhongId: objBO.TD_PHONG_ID,
-          joinPhongText: objBO.TD_PHONG_TEXT,
+          phonghopName: objBO.TEN_PHONG || EMPTY_STRING,
+          joinNguoiId: !!objBO.TD_NGUOI_ID ? objBO.TD_NGUOI_ID.split(',') : [],
+          joinNguoiText: !!objBO.TD_NGUOI_TEXT ? objBO.TD_NGUOI_TEXT.split(',') : [],
+          joinVaitroId: !!objBO.TD_VAITRO_ID ? objBO.TD_VAITRO_ID.split(',') : [],
+          joinVaitroText: !!objBO.TD_VAITRO_TEXT ? objBO.TD_VAITRO_TEXT.split(',') : [],
+          joinPhongId: !!objBO.TD_PHONG_ID ? objBO.TD_PHONG_ID.split(',') : [],
+          joinPhongText: !!objBO.TD_PHONG_TEXT ? objBO.TD_PHONG_TEXT.split(',') : [],
           canCreateMeetingForOthers: canBookingRoom || false,
+          joinPlaceholderText: objBO.THANHPHAN_THAMDU || EMPTY_STRING,
         });
       }
       else {
