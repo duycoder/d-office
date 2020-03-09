@@ -168,6 +168,11 @@ class ListRegistration extends Component {
       timePart = thoigianXP[1],
       datePart = thoigianXP[0];
 
+    let driverText = !!item.TEN_LAIXE ? item.TEN_LAIXE : EMPTY_STRING;
+    if (!!item.DIEN_THOAI_LAI_XE) {
+      driverText += ` - ${item.DIEN_THOAI_LAI_XE}`;
+    }
+
     return (
       <View>
         <ListItem
@@ -189,9 +194,9 @@ class ListRegistration extends Component {
               />
 
               <ColumnedListItem
-                isRender={!!item.TEN_LAIXE && !!item.DIEN_THOAI_LAI_XE}
+                isRender={!!item.TEN_LAIXE}
                 leftText='Lái xe:'
-                rightText={`${item.TEN_LAIXE} - ${item.DIEN_THOAI_LAI_XE}`}
+                rightText={driverText}
               />
 
               <ColumnedListItem
