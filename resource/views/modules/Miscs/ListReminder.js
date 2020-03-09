@@ -58,7 +58,7 @@ class ListReminder extends Component {
       currentDay: new Date(),
       refreshAgenda: false,
 
-      listIds: props.extendsNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
       confirmTilte: EMPTY_STRING,
       confirmReminderId: 0,
     }
