@@ -49,7 +49,7 @@ class ListPersonalLichtruc extends Component {
       currentDay: new Date(),
       refreshAgenda: false,
 
-      listIds: props.extendsNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
     }
   }
 

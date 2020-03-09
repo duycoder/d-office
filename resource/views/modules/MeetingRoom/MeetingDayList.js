@@ -16,14 +16,16 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Body, Content, Left, Right, Title} from 'native-base'
+  Container, Header, Body, Content, Left, Right, Title
+} from 'native-base'
 import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import { Agenda } from 'react-native-calendars';
 
 //utilities
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
 import {
-  Colors} from '../../../common/SystemConstant';
+  Colors
+} from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -45,7 +47,7 @@ class MeetingDayList extends Component {
       currentDay: new Date(),
       refreshAgenda: false,
 
-      listIds: props.extendsNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
     }
   }
 
