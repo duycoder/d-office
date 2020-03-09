@@ -110,6 +110,25 @@ class ListNotification extends Component {
                     break;
             }
         }
+        else if (item.TARGET_SCREEN_NAME) {
+            screenName = item.TARGET_SCREEN_NAME;
+            screenParam = item.TARGET_SCREEN_PARAMS;
+            if (screenParam) {
+                if (screenParam.indexOf(',') > -1) {
+                    screenParam = {
+                        listIds: screenParam.split(','),
+                    };
+                }
+                else {
+                    screenParam = {
+                        listIds: [+screenParam]
+                    };
+                }
+            }
+            else {
+                outOfSwitch = true;
+            }
+        }
         else {
             outOfSwitch = true;
         }
@@ -117,8 +136,10 @@ class ListNotification extends Component {
         if (outOfSwitch) {
             showWarningToast('Bạn không có quyền truy cập vào thông tin này!');
         }
-        this.props.updateCoreNavParams(screenParam);
-        this.props.navigation.navigate(screenName);
+        else {
+            this.props.updateCoreNavParams(screenParam);
+            this.props.navigation.navigate(screenName);
+        }
     }
 
     componentDidMount = async () => {
