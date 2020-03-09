@@ -103,8 +103,6 @@ class DetailRegistration extends Component {
       userId
     ]);
 
-    await asyncDelay();
-
     this.setState({
       loading: false,
       registrationInfo: resultJson.Status ? resultJson.Params : null,
@@ -385,12 +383,11 @@ class DetailRegistration extends Component {
               break;
           }
         }
-
         bodyContent = (
           <DetailContent registrationInfo={this.state.registrationInfo} tripInfo={this.state.tripInfo} buttons={workflowButtons} navigateToEvent={this.navigateToEvent} />
         );
       }
-      if (this.state.registrationInfo) {
+      else if (this.state.registrationInfo) {
         const {
           canSendRegistration, canRecieveRegistratiion, canCheckRegistration, canCancelRegistration
         } = this.state.registrationInfo;
@@ -534,7 +531,7 @@ class DetailContent extends Component {
   }
 
   render() {
-    // console.tron.log(this.state)
+    // console.tron.log(this.props)
     return (
       <View style={{ flex: 1 }}>
         {
