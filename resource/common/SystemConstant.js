@@ -3,7 +3,7 @@ import { moderateScale } from '../assets/styles/ScaleIndicator';
 export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
 // export const WEB_URL = 'http://192.168.1.10:8022/'; //local web test
 // export const WEB_URL = 'http://222.252.27.60:8022';//remote web test
-export const API_URL = 'http://101.96.76.204:8999'; //api vnio
+export const API_URL = 'http://vanban.vnio.vn:8999'; //api vnio
 // export const API_URL = 'http://192.168.1.10:8111'; //local api test
 // export const API_URL = 'http://222.252.27.60:8111'; //remote api test
 
@@ -479,7 +479,7 @@ export const HTML_STRIP_PATTERN = /<[^>]*>?/gm;
 
 export function generateBadgeIconNoti(itemType) {
 	let badgeBackgroundColor = Colors.GRAY,
-		leftTitle = "CV";
+		leftTitle = "NN";
 
 	switch (itemType) {
 		case "HSVanBanDi":
