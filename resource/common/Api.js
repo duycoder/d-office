@@ -152,7 +152,7 @@ const carApi = () => {
 }
 
 const tripApi = () => {
-  const getDetail = (params = []) => api.get("CarRegistration/DetailCarRegistration", params);
+  const getDetail = (params = []) => api.get("CarTrip/DetailTrip", params);
   const getDetailByRegistrationId = (params = []) => api.get("CarTrip/DetailTripByRegistrationId", params);
   const getCreateHelper = (params = []) => api.get("CarTrip/CreateTrip", params);
   const filterDrivers = (params = []) => api.get("CarTrip/SearchGroupOfDrivers", params);
