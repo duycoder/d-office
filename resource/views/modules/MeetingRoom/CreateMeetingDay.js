@@ -72,10 +72,17 @@ class CreateMeetingDay extends Component {
 
       isEdit: props.extendsNavParams.isEdit || false,
       lichhopId: props.extendsNavParams.lichhopId || 0,
+      isThamgiaChange: false,
     }
   }
 
   handleChange = fieldName => fieldValue => this.setState({ [fieldName]: fieldValue })
+  handleChangeThamgia = (value) => {
+    this.setState({
+      thamgia: value,
+      isThamgiaChange: true,
+    });
+  }
 
   componentDidMount = () => {
     const navObj = this.props.navigation || this.props.navigator;
@@ -280,7 +287,7 @@ class CreateMeetingDay extends Component {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
       canCreateMeetingForOthers, isFromCalendar,
       joinNguoiId, joinNguoiText, joinPhongId, joinPhongText, joinVaitroText, joinVaitroId,
-      joinPlaceholderText, lichhopId,
+      joinPlaceholderText, lichhopId, isThamgiaChange
     } = this.state;
 
     if (!mucdich) {
@@ -301,7 +308,7 @@ class CreateMeetingDay extends Component {
       const resultJson = await MeetingRoomApi.saveCalendar({
         lichhopId,
         mucdich,
-        thamgia: thamgia || joinPlaceholderText,
+        thamgia: isThamgiaChange ? thamgia : joinPlaceholderText,
         ngayHop,
         gioBatdau: thoigianBatdau.split(":")[0],
         phutBatdau: thoigianBatdau.split(":")[1],
@@ -466,11 +473,11 @@ class CreateMeetingDay extends Component {
               <Textarea
                 rowSpan={5} bordered
                 placeholder='Nhập thành phần tham dự'
-                onChangeText={this.handleChange('thamgia')}
+                onChangeText={this.handleChangeThamgia}
                 onFocus={() => this.setState({ focusId: "thamgia" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 style={{ width: '100%', marginTop: 20 }}
-                value={!!thamgia ? thamgia : (!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING)}
+                value={!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING}
                 placeholderTextColor={Colors.GRAY}
               />
             </Item>

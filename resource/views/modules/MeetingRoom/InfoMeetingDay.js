@@ -11,7 +11,7 @@ import { List } from 'react-native-elements';
 
 //common
 import { convertDateToString, _readableFormat, extention } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
 import { InfoStyle } from '../../../assets/styles';
 import { InfoListItem, AttachmentItem } from '../../common/DetailCommon';
 
@@ -33,6 +33,15 @@ class RegistrationInfo extends Component {
   render() {
     const { info } = this.state,
       thoigianHop = `${convertDateToString(info.NGAY_HOP)} từ ${_readableFormat(info.GIO_BATDAU)}h${_readableFormat(info.PHUT_BATDAU)} đến ${_readableFormat(info.GIO_KETTHUC)}h${_readableFormat(info.PHUT_KETTHUC)}`;
+    let thanhphanThamduText = !!info.THANHPHAN_THAMDU ? info.THANHPHAN_THAMDU : EMPTY_STRING,
+      numberOfLinesForThamdu = 10;
+    if (!!thanhphanThamduText) {
+      if (thanhphanThamduText.indexOf(',') > -1) {
+        const arrayThamdu = thanhphanThamduText.split(',');
+        numberOfLinesForThamdu = arrayThamdu.length;
+        thanhphanThamduText = arrayThamdu.map(x => `- ${x.trim()}`).join('\n');
+      }
+    }
 
     // render
     return (
@@ -58,8 +67,10 @@ class RegistrationInfo extends Component {
               customSubtitleText={!!info.TEN_PHONG ? {} : { color: Colors.RED_PANTONE_186C, fontWeight: 'bold' }}
             />
             <InfoListItem
+              isRender={!!info.THANHPHAN_THAMDU}
               titleText='Thành phần tham dự'
-              subtitleText={info.THANHPHAN_THAMDU}
+              subtitleText={thanhphanThamduText}
+              customSubtitleNumberOfLines={numberOfLinesForThamdu}
             />
             <AttachmentItem data={!!info.DuongdanFile ? [info.DuongdanFile] : []} />
           </List>

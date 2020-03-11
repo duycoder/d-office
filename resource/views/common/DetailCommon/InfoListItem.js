@@ -12,12 +12,15 @@ class InfoListItem extends React.Component {
     subtitleText: '',
     isRender: true,
     customTitleText: {},
-    customSubtitleText: {}
+    customSubtitleText: {},
+    customSubtitleNumberOfLines: 10,
+    customTitleNumberOfLines: 10,
   }
   render() {
     const {
       isRender, titleText, subtitleText,
-      customTitleText, customSubtitleText,
+      customTitleText, customSubtitleText, 
+      customTitleNumberOfLines, customSubtitleNumberOfLines,
     } = this.props;
     if (isRender && util.isString(titleText) && util.isString(subtitleText)) {
       const isHTML = subtitleText.match(HTML_STRIP_PATTERN);
@@ -30,8 +33,8 @@ class InfoListItem extends React.Component {
             titleStyle={InfoStyle.listItemTitleContainer}
             subtitle={subtitleText}
             subtitleStyle={[InfoStyle.listItemSubTitleContainer, customSubtitleText]}
-            subtitleNumberOfLines={10}
-            titleNumberOfLines={10}
+            subtitleNumberOfLines={customSubtitleNumberOfLines}
+            titleNumberOfLines={customTitleNumberOfLines}
           />
         );
       }
@@ -47,8 +50,8 @@ class InfoListItem extends React.Component {
               stylesheet={{ p: InfoStyle.listItemSubTitleContainer }}
             />
           }
-          subtitleNumberOfLines={10}
-          titleNumberOfLines={10}
+          subtitleNumberOfLines={customSubtitleNumberOfLines}
+          titleNumberOfLines={customTitleNumberOfLines}
         />
       }
     }
