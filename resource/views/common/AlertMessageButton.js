@@ -2,8 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import styles from '../../assets/styles/AlertMessageStyle';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { EMPTY_STRING } from '../../common/SystemConstant';
+import { EMPTY_STRING, Colors } from '../../common/SystemConstant';
 
 class AlertMessageButton extends React.Component {
   static defaultProps = {
