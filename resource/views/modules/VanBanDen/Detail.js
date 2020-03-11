@@ -257,7 +257,7 @@ class Detail extends Component {
                             }
                         }
                         workflowButtons.push({
-                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
+                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, false)} btnText={util.toUpper(item.NAME)} />
                         });
                     }
                 }
