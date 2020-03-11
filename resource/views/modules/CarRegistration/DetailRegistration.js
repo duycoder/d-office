@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
+import { View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 
@@ -20,7 +20,6 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
-import { AlertMessageStyle } from '../../../assets/styles';
 //lib
 import {
   Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right, Toast
@@ -35,7 +34,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //views
 import TripInfo from './TripInfo';
 import RegistrationInfo from './RegistrationInfo';
-import { GoBackButton, AlertMessage } from '../../common';
+import { GoBackButton, AlertMessage, AlertMessageButton } from '../../common';
 import { WorkflowButton } from '../../common/DetailCommon';
 
 //api
@@ -78,7 +77,7 @@ class DetailRegistration extends Component {
           this.setState({ check: true }, () => this.fetchData());
         }
       }
-    })
+    });
   }
 
   componentWillUnmount = () => {
@@ -450,11 +449,7 @@ class DetailRegistration extends Component {
           bodyText="Bạn có chắc chắn muốn gửi yêu cầu đăng ký xe này?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onSendRegistration()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onSendRegistration()} />
         </AlertMessage>
 
         <AlertMessage
@@ -463,11 +458,7 @@ class DetailRegistration extends Component {
           bodyText="Bạn có chắc chắn muốn duyệt yêu cầu đăng ký xe này?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onCheckRegistration()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onCheckRegistration()} />
         </AlertMessage>
 
         <AlertMessage
@@ -476,11 +467,7 @@ class DetailRegistration extends Component {
           bodyText="Bạn có chắc chắn muốn huỷ yêu cầu đăng ký xe này?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onCancleRegistration()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onCancleRegistration()} />
         </AlertMessage>
 
         <AlertMessage
@@ -489,13 +476,8 @@ class DetailRegistration extends Component {
           bodyText="Bạn có chắc chắn muốn bắt đầu chạy xe này không?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onStartTrip()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onStartTrip()} />
         </AlertMessage>
-
       </Container>
     );
   }

@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RNButton } from 'react-native';
+import { View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
@@ -36,8 +36,7 @@ import renderIf from 'render-if';
 import MainInfoSignDoc from './Info';
 import UnitSignDoc from './UnitSignDoc';
 
-import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
-import { GoBackButton, AlertMessage } from '../../common';
+import { GoBackButton, AlertMessage, AlertMessageButton } from '../../common';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandiApi, workflowApi } from '../../../common/Api';
 import { Timeline, WorkflowButton } from '../../common/DetailCommon';
@@ -321,13 +320,7 @@ class Detail extends Component {
             bodyText="Bạn có chắc chắn ký duyệt văn bản"
             exitText="KHÔNG"
           >
-            <View style={AlertMessageStyle.leftFooter}>
-              <RNButton onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
-                <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                  CÓ
-                </RNText>
-              </RNButton>
-            </View>
+            <AlertMessageButton btnText='CÓ' onPress={() => this.onSignDoc()} />
           </AlertMessage>
         </Container>
       </MenuProvider>

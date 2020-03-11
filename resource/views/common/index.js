@@ -8,6 +8,7 @@ import HeaderRightButton from "./HeaderRightButton";
 import CustomPickerButton from "./CustomPickerButton";
 import AlertMessage from "./AlertMessage";
 import ButtonWithIcon from "./ButtonWithIcon";
+import AlertMessageButton from "./AlertMessageButton";
 
 export {
   AddButton,
@@ -20,4 +21,5 @@ export {
   CustomPickerButton,
   AlertMessage,
   ButtonWithIcon,
+  AlertMessageButton,
 }

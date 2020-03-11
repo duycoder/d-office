@@ -33,7 +33,7 @@ import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
-import { AlertMessage, GoBackButton } from '../../common';
+import { AlertMessage, GoBackButton, AlertMessageButton } from '../../common';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { vanbandiApi } from '../../../common/Api';
 
@@ -183,13 +183,7 @@ class WorkflowReplyReview extends Component {
           bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
           exitText="Huỷ bỏ"
         >
-          <RnView style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.saveReplyReview()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                Đồng ý
-                            </RnText>
-            </TouchableOpacity>
-          </RnView>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.saveReplyReview()} />
         </AlertMessage>
       </Container>
     );

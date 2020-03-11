@@ -37,7 +37,7 @@ import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
 import { reminderApi } from '../../../common/Api';
-import { AddButton, ColumnedListItem, GoBackButton } from '../../common';
+import { AddButton, ColumnedListItem, GoBackButton, AlertMessageButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
@@ -408,13 +408,7 @@ class ListReminder extends Component {
           bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc việc này không?\nSau này bạn vẫn có thể thay đổi được.`}
           exitText="HỦY BỎ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.toggleReminder()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-              </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.toggleReminder()} />
         </AlertMessage>
 
         <AlertMessage
@@ -423,13 +417,7 @@ class ListReminder extends Component {
           bodyText={`Bạn có chắc chắn muốn xoá nhắc việc này không?\nViệc này sẽ không thể đảo ngược.`}
           exitText="HỦY BỎ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.deleteReminder()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-              </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.deleteReminder()} />
         </AlertMessage>
 
       </Container>

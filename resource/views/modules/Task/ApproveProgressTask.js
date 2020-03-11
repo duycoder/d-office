@@ -29,7 +29,7 @@ import * as util from 'lodash';
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { AlertMessage, GoBackButton } from '../../common';
+import { AlertMessage, GoBackButton, AlertMessageButton } from '../../common';
 import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
 import { taskApi } from '../../../common/Api';
@@ -170,13 +170,7 @@ class ApproveProgressTask extends Component {
           bodyText="Bạn có chắc chắn muốn thực hiện việc này?"
           exitText="HỦY BỎ"
         >
-          <RnView style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.onApproveCompleteTask()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-                            </RnText>
-            </TouchableOpacity>
-          </RnView>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.onApproveCompleteTask()} />
         </AlertMessage>
 
         {

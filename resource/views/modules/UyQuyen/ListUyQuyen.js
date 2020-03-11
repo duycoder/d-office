@@ -33,7 +33,7 @@ import { indicatorResponsive, moderateScale } from '../../../assets/styles/Scale
 import { executeLoading } from '../../../common/Effect';
 
 import { NativeBaseStyle, AlertMessageStyle } from '../../../assets/styles';
-import { MoreButton, GoBackButton, AlertMessage } from '../../common';
+import { MoreButton, GoBackButton, AlertMessage, AlertMessageButton } from '../../common';
 
 class ListUyQuyen extends Component {
   constructor(props) {
@@ -266,13 +266,7 @@ class ListUyQuyen extends Component {
           bodyText="Bạn có chắc chắn xóa bản ghi này"
           exitText="KHÔNG"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.onDelete(this.state.tmpItemId)} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                CÓ
-                            </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='CÓ' onPress={() => this.onDelete(this.state.tmpItemId)} />
         </AlertMessage>
       </Container>
     );

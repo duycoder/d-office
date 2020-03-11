@@ -26,7 +26,7 @@ import { ButtonGroup } from 'react-native-elements';
 import * as navAction from '../../../redux/modules/Nav/Action';
 import { AlertMessageStyle } from '../../../assets/styles';
 import InfoMeetingDay from './InfoMeetingDay';
-import { AlertMessage, GoBackButton } from '../../common';
+import { AlertMessage, GoBackButton, AlertMessageButton } from '../../common';
 import { meetingRoomApi } from '../../../common/Api';
 import { WorkflowButton } from '../../common/DetailCommon';
 
@@ -231,11 +231,7 @@ class DetailMeetingDay extends Component {
           bodyText="Bạn có chắc chắn muốn hủy lịch họp này?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onCancelRoom()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onCancelRoom()} />
         </AlertMessage>
 
       </Container>

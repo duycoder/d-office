@@ -41,7 +41,7 @@ import { MenuProvider, MenuOption, MenuOptions, MenuTrigger, Menu } from 'react-
 import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
 import AlertMessage from '../../common/AlertMessage';
 import { lichtrucApi } from '../../../common/Api';
-import { MoreButton, GoBackButton, ColumnedListItem } from '../../common';
+import { MoreButton, GoBackButton, ColumnedListItem, AlertMessageButton } from '../../common';
 
 const api = lichtrucApi();
 
@@ -350,13 +350,7 @@ class ListLichtruc extends Component {
             bodyText="Bạn có chắc chắn muốn phê duyệt kế hoạch này không? Sau khi phê duyệt, bạn sẽ không thể chỉnh sửa lại kế hoạch nữa."
             exitText="HỦY BỎ"
           >
-            <View style={AlertMessageStyle.leftFooter}>
-              <TouchableOpacity onPress={() => this.submitConfirm()} style={AlertMessageStyle.footerButton}>
-                <Text style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                  ĐỒNG Ý
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.submitConfirm()} />
           </AlertMessage>
         </Container>
       </MenuProvider>

@@ -37,7 +37,7 @@ import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
 import { HeaderMenuStyle } from '../../../assets/styles/index';
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import { GoBackButton, AlertMessage } from '../../common';
+import { GoBackButton, AlertMessage, AlertMessageButton } from '../../common';
 import { taskApi } from '../../../common/Api';
 import { WorkflowButton } from '../../common/DetailCommon';
 
@@ -604,13 +604,7 @@ class DetailTask extends Component {
             bodyText="Bạn có chắc chắn muốn bắt đầu thực hiện công việc này?"
             exitText="Hủy bỏ"
           >
-            <RnView style={AlertMessageStyle.leftFooter}>
-              <TouchableOpacity onPress={() => this.onStartTask()} style={AlertMessageStyle.footerButton}>
-                <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                  Đồng ý
-                                </RnText>
-              </TouchableOpacity>
-            </RnView>
+            <AlertMessageButton btnText='Đồng ý' onPress={() => this.onStartTask()} />
           </AlertMessage>
 
           <AlertMessage
@@ -619,13 +613,7 @@ class DetailTask extends Component {
             bodyText="Bạn có chắc chắn muốn trình kế hoạch thực hiện công việc này?"
             exitText="Hủy bỏ"
           >
-            <RnView style={AlertMessageStyle.leftFooter}>
-              <TouchableOpacity onPress={() => this.onSubmitPlan()} style={AlertMessageStyle.footerButton}>
-                <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                  Đồng ý
-                            </RnText>
-              </TouchableOpacity>
-            </RnView>
+            <AlertMessageButton btnText='Đồng ý' onPress={() => this.onSubmitPlan()} />
           </AlertMessage>
         </Container>
       </MenuProvider>
