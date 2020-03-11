@@ -6,42 +6,28 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, FlatList
+  FlatList
 } from 'react-native'
 //lib
 import {
-  Container, Content, Segment, Button, Text, Icon, Item, Input,
-  Header, Left, Body, Title, View, Tabs, Tab, TabHeading,
-  Right, Toast, ListItem as NbListItem, Radio, CheckBox
+  Container, Content, Text, Icon, Item, Input,
+  Header, Left, Body, Title, Right, ListItem as NbListItem, CheckBox
 } from 'native-base';
-import {
-  Icon as RneIcon
-} from 'react-native-elements';
-import renderIf from 'render-if';
-import * as util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
-import * as taskAction from '../../../redux/modules/CongViec/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
-import {
-  API_URL, HEADER_COLOR, DEFAULT_PAGE_INDEX,
-  EMPTY_STRING, LOADER_COLOR, LOADMORE_COLOR,
-  TASK_PROCESS_TYPE, Colors, DEFAULT_PAGE_SIZE
-} from '../../../common/SystemConstant';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, formatMessage, showWarningToast } from '../../../common/Utilities';
+import { DEFAULT_PAGE_INDEX, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
-import { verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
+import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
-//styles
-import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 //views
 import { carApi } from '../../../common/Api';
-import { MoreButton, HeaderRightButton,GoBackButton } from '../../common';
+import { MoreButton, HeaderRightButton, GoBackButton } from '../../common';
 
 class PickCanbo extends Component {
   constructor(props) {

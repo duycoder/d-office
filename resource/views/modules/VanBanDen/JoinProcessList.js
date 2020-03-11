@@ -10,8 +10,7 @@ import BaseList from './BaseList';
 export default class JoinProcessList extends Component {
   render() {
     return (
-      <BaseList docType={VANBANDEN_CONSTANT.THAMGIA_XULY} navigator={this.props.navigation}/>
+      <BaseList docType={VANBANDEN_CONSTANT.THAMGIA_XULY} navigator={this.props.navigation} />
     )
   }
 }
-

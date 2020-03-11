@@ -6,40 +6,32 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  AsyncStorage, ActivityIndicator, View,
+  ActivityIndicator, View,
   FlatList, RefreshControl, TouchableOpacity, Text as RnText
 } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
-import * as vanbandenAction from '../../../redux/modules/VanBanDen/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button, Fab
-} from 'native-base'
+  Container, Header, Item, Icon, Input, Content, Left} from 'native-base'
 import renderIf from 'render-if';
-import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle } from '../../../common/Utilities';
+import { emptyDataPage } from '../../../common/Utilities';
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
-  VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
-  VANBANDEN_CONSTANT,
-  VANBANDI_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
-
 //styles
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { tripApi } from '../../../common/Api';
 import { MoreButton } from '../../common';
 
@@ -157,7 +149,7 @@ class ListTrip extends Component {
     })
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     const thoigianXP = item.THOIGIAN_XUATPHAT.split(" "),
       timePart = thoigianXP[1],
       datePart = thoigianXP[0];

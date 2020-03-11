@@ -9,9 +9,9 @@ import BaseList from './BaseList';
 import { VANBANDI_CONSTANT } from '../../../common/SystemConstant';
 
 export default class IsProcessList extends Component {
-    render() {
-        return (
-            <BaseList docType={VANBANDI_CONSTANT.DA_XULY} navigator={this.props.navigation} />
-        )
-    }
+  render() {
+    return (
+      <BaseList docType={VANBANDI_CONSTANT.DA_XULY} navigator={this.props.navigation} />
+    )
+  }
 }

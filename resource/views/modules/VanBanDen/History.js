@@ -6,194 +6,183 @@
 'use strict'
 import React, { Component } from 'react';
 
-import { View, Text, RefreshControl, StyleSheet, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 
 //lib
-import { Container, Content, Icon } from 'native-base';
+import { Container, Content } from 'native-base';
 import * as util from 'lodash';
 import renderIf from 'render-if';
-import { Icon as RNEIcon } from 'react-native-elements'
 
 //utilities
-import { convertDateTimeToString, emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
+import { emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
 import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
-import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { TimeLineStyle } from '../../../assets/styles/HistoryStyle';
 
 const STRIP_HTML_PATTERN = /<[^>]*>?/gm;
 
 export default class TimelinePublishDoc extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            logs: props.info.lstLog
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      logs: props.info.lstLog
+    }
+  }
+
+  keyExtractor = (item) => item.ID.toString()
+
+  renderItem = ({ item, index }) => {
+    let stepName = 'KHỞI TẠO'
+    let message = 'KHỞI TẠO'
+    if (item.step != null) {
+      message = item.MESSAGE;
+      if (item.IS_RETURN) {
+        stepName = 'TRẢ VỀ';
+      } else {
+        stepName = util.toUpper(item.step.NAME);
+      }
+    }
+    else {
+      if (!!item.MESSAGE) {
+        const stripedMessage = item.MESSAGE.replace(STRIP_HTML_PATTERN, EMPTY_STRING);
+        stepName = stripedMessage;
+        message = stripedMessage;
+      }
+      else {
+        stepName = EMPTY_STRING;
+        message = EMPTY_STRING;
+      }
+    }
+    const isStartNode = index === this.state.logs.length - 1,
+      isEndNode = index === 0;
+    let innerIconCircleColor = Colors.GRAY,
+      outerIconCircleColor = "#eaeaea";
+    if (isEndNode) {
+      innerIconCircleColor = Colors.MENU_BLUE;
+      outerIconCircleColor = Colors.OLD_LITE_BLUE;
     }
 
-    keyExtractor = (item, index) => item.ID.toString()
+    let ListJoinStr = (item.LstThamGia && item.LstThamGia.length > 0) ? item.LstThamGia.map(name => `- ${name}`).join(`\n`) : "";
 
-    renderItem = ({ item, index }) => {
-        let identifyBackground = TimeLineStyle.initState;
-        let identifyColor = TimeLineStyle.initStateText;
-        let iconName = 'plus-circle-outline';
-        let stepName = 'KHỞI TẠO'
-        let message = 'KHỞI TẠO'
-        if (item.step != null) {
-            message = item.MESSAGE;
-            if (item.IS_RETURN) {
-                identifyBackground = TimeLineStyle.backState;
-                identifyColor = TimeLineStyle.backStateText;
-                iconName = 'arrow-left-drop-circle-outline';
-                stepName = 'TRẢ VỀ';
-            } else {
-                identifyBackground = TimeLineStyle.fowardState;
-                identifyColor = TimeLineStyle.fowardStateText;
-                iconName = 'arrow-right-drop-circle-outline';
-                stepName = util.toUpper(item.step.NAME);
+    return (
+      <View style={TimeLineStyle.container}>
+        <View style={TimeLineStyle.iconSection}>
+          <View style={[TimeLineStyle.iconCircle, { backgroundColor: outerIconCircleColor }]}>
+            {
+              // <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
             }
-        }
-        else {
-            if (!!item.MESSAGE) {
-                const stripedMessage = item.MESSAGE.replace(STRIP_HTML_PATTERN, EMPTY_STRING);
-                stepName = stripedMessage;
-                message = stripedMessage;
-            }
-            else {
-                stepName = EMPTY_STRING;
-                message = EMPTY_STRING;
-            }
-        }
-        const isStartNode = index === this.state.logs.length - 1,
-            isEndNode = index === 0;
-        let innerIconCircleColor = Colors.GRAY,
-            outerIconCircleColor = "#eaeaea";
-        if (isEndNode) {
-            innerIconCircleColor = Colors.MENU_BLUE;
-            outerIconCircleColor = Colors.OLD_LITE_BLUE;
-        }
+            <View style={[TimeLineStyle.innerIconCircle, { backgroundColor: innerIconCircleColor }]} />
+          </View>
+          {
+            !isStartNode && <View style={[TimeLineStyle.iconLine]} />
+          }
+        </View>
 
-        let ListJoinStr = (item.LstThamGia && item.LstThamGia.length > 0) ? item.LstThamGia.map(name => `- ${name}`).join(`\n`) : "";
-
-        return (
-            <View style={TimeLineStyle.container}>
-                <View style={TimeLineStyle.iconSection}>
-                    <View style={[TimeLineStyle.iconCircle, { backgroundColor: outerIconCircleColor }]}>
-                        {
-                            // <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
-                        }
-                        <View style={[TimeLineStyle.innerIconCircle, { backgroundColor: innerIconCircleColor }]} />
-                    </View>
-                    {
-                        !isStartNode && <View style={[TimeLineStyle.iconLine]} />
-                    }
-                </View>
-
-                <View style={TimeLineStyle.infoSection}>
-                    <View style={TimeLineStyle.infoHeader}>
-                        <Text style={TimeLineStyle.infoText}>
-                            {util.capitalize(stepName)}
-                        </Text>
-                        <Text style={TimeLineStyle.infoTimeline}>
-                            {`${convertDateToString(item.create_at)} ${convertTimeToString(item.create_at)}`}
-                        </Text>
-                    </View>
-                    <View style={TimeLineStyle.infoDetail}>
-                        <View style={TimeLineStyle.infoDetailRow}>
-                            <View style={TimeLineStyle.infoDetailLabel}>
-                                <Text style={TimeLineStyle.infoDetailLabelText}>
-                                    Người xử lý
+        <View style={TimeLineStyle.infoSection}>
+          <View style={TimeLineStyle.infoHeader}>
+            <Text style={TimeLineStyle.infoText}>
+              {util.capitalize(stepName)}
+            </Text>
+            <Text style={TimeLineStyle.infoTimeline}>
+              {`${convertDateToString(item.create_at)} ${convertTimeToString(item.create_at)}`}
+            </Text>
+          </View>
+          <View style={TimeLineStyle.infoDetail}>
+            <View style={TimeLineStyle.infoDetailRow}>
+              <View style={TimeLineStyle.infoDetailLabel}>
+                <Text style={TimeLineStyle.infoDetailLabelText}>
+                  Người xử lý
                                 </Text>
-                            </View>
+              </View>
 
-                            <View style={TimeLineStyle.infoDetailValue}>
-                                <Text style={TimeLineStyle.infoDetailValueText}>
-                                    {item.TenNguoiXuLy}
-                                </Text>
-                            </View>
-                        </View>
-
-                        {
-                            renderIf(item.step != null)(
-                                <View>
-                                    <View style={TimeLineStyle.infoDetailRow}>
-                                        <View style={TimeLineStyle.infoDetailLabel}>
-                                            <Text style={TimeLineStyle.infoDetailLabelText}>
-                                                Người nhận
-                                            </Text>
-                                        </View>
-
-                                        <View style={TimeLineStyle.infoDetailValue}>
-                                            <Text style={TimeLineStyle.infoDetailValueText}>
-                                                {item.TenNguoiNhan}
-                                            </Text>
-                                            {
-                                                item.IsDaXuly
-                                                    ? <View style={TimeLineStyle.infoBtn}>
-                                                        <Text style={TimeLineStyle.infoBtnText}>Đã xử lý</Text>
-                                                    </View>
-                                                    : item.IsDaNhan
-                                                        ? <View style={TimeLineStyle.infoBtn}>
-                                                            <Text style={TimeLineStyle.infoBtnText}>Đã nhận</Text>
-                                                        </View>
-                                                        : null
-                                            }
-                                        </View>
-                                    </View>
-
-                                    <View style={TimeLineStyle.infoDetailRow}>
-                                        <View style={TimeLineStyle.infoDetailLabel}>
-                                            <Text style={TimeLineStyle.infoDetailLabelText}>
-                                                Người tham gia
-                                            </Text>
-                                        </View>
-
-                                        <View style={TimeLineStyle.infoDetailValue}>
-                                            {
-                                                <Text style={TimeLineStyle.infoDetailValueText}>
-                                                    {ListJoinStr}
-                                                </Text>
-                                                // item.LstThamGia.map((name) => (
-                                                //     <Text style={TimeLineStyle.infoDetailValueText}>
-                                                //         - {`${name}\n`}
-                                                //     </Text>
-                                                // ))
-                                            }
-                                        </View>
-                                    </View>
-                                </View>
-                            )
-                        }
-                        <View style={TimeLineStyle.infoDetailRow}>
-                            <View style={TimeLineStyle.infoDetailLabel}>
-                                <Text style={TimeLineStyle.infoDetailLabelText}>
-                                    Nội dung
-                                </Text>
-                            </View>
-
-                            <View style={TimeLineStyle.infoDetailValue}>
-                                <Text style={TimeLineStyle.infoDetailValueText}>
-                                    {message}
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                </View>
+              <View style={TimeLineStyle.infoDetailValue}>
+                <Text style={TimeLineStyle.infoDetailValueText}>
+                  {item.TenNguoiXuLy}
+                </Text>
+              </View>
             </View>
-        );
-    }
 
-    render() {
-        return (
-            <Container>
-                <Content contentContainerStyle={{ paddingVertical: 20 }}>
-                    <FlatList
-                        data={this.state.logs}
-                        renderItem={this.renderItem}
-                        keyExtractor={this.keyExtractor}
-                        ListEmptyComponent={emptyDataPage}
-                    />
-                </Content>
-            </Container>
-        );
-    }
+            {
+              renderIf(item.step != null)(
+                <View>
+                  <View style={TimeLineStyle.infoDetailRow}>
+                    <View style={TimeLineStyle.infoDetailLabel}>
+                      <Text style={TimeLineStyle.infoDetailLabelText}>
+                        Người nhận
+                                            </Text>
+                    </View>
+
+                    <View style={TimeLineStyle.infoDetailValue}>
+                      <Text style={TimeLineStyle.infoDetailValueText}>
+                        {item.TenNguoiNhan}
+                      </Text>
+                      {
+                        item.IsDaXuly
+                          ? <View style={TimeLineStyle.infoBtn}>
+                            <Text style={TimeLineStyle.infoBtnText}>Đã xử lý</Text>
+                          </View>
+                          : item.IsDaNhan
+                            ? <View style={TimeLineStyle.infoBtn}>
+                              <Text style={TimeLineStyle.infoBtnText}>Đã nhận</Text>
+                            </View>
+                            : null
+                      }
+                    </View>
+                  </View>
+
+                  <View style={TimeLineStyle.infoDetailRow}>
+                    <View style={TimeLineStyle.infoDetailLabel}>
+                      <Text style={TimeLineStyle.infoDetailLabelText}>
+                        Người tham gia
+                                            </Text>
+                    </View>
+
+                    <View style={TimeLineStyle.infoDetailValue}>
+                      {
+                        <Text style={TimeLineStyle.infoDetailValueText}>
+                          {ListJoinStr}
+                        </Text>
+                        // item.LstThamGia.map((name) => (
+                        //     <Text style={TimeLineStyle.infoDetailValueText}>
+                        //         - {`${name}\n`}
+                        //     </Text>
+                        // ))
+                      }
+                    </View>
+                  </View>
+                </View>
+              )
+            }
+            <View style={TimeLineStyle.infoDetailRow}>
+              <View style={TimeLineStyle.infoDetailLabel}>
+                <Text style={TimeLineStyle.infoDetailLabelText}>
+                  Nội dung
+                                </Text>
+              </View>
+
+              <View style={TimeLineStyle.infoDetailValue}>
+                <Text style={TimeLineStyle.infoDetailValueText}>
+                  {message}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  render() {
+    return (
+      <Container>
+        <Content contentContainerStyle={{ paddingVertical: 20 }}>
+          <FlatList
+            data={this.state.logs}
+            renderItem={this.renderItem}
+            keyExtractor={this.keyExtractor}
+            ListEmptyComponent={emptyDataPage}
+          />
+        </Content>
+      </Container>
+    );
+  }
 }

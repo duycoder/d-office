@@ -11,9 +11,9 @@ import BaseTaskList from './BaseTaskList';
 import { CONGVIEC_CONSTANT } from '../../../common/SystemConstant';
 
 export default class ListCombinationTask extends Component {
-    render() {
-        return (
-            <BaseTaskList taskType={CONGVIEC_CONSTANT.PHOIHOP_XULY} navigator={this.props.navigation} />
-        )
-    }
+  render() {
+    return (
+      <BaseTaskList taskType={CONGVIEC_CONSTANT.PHOIHOP_XULY} navigator={this.props.navigation} />
+    )
+  }
 }

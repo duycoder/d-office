@@ -54,8 +54,6 @@ class ConfirmTaskPlan extends Component {
     this.props.navigation.goBack();
   }
 
-
-
   saveTask = async () => {
     const { fromScreen } = this.state;
 
