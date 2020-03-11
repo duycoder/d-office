@@ -9,6 +9,7 @@ import CustomPickerButton from "./CustomPickerButton";
 import AlertMessage from "./AlertMessage";
 import ButtonWithIcon from "./ButtonWithIcon";
 import AlertMessageButton from "./AlertMessageButton";
+import BubbleText from "./BubbleText";
 
 export {
   AddButton,
@@ -22,4 +23,5 @@ export {
   AlertMessage,
   ButtonWithIcon,
   AlertMessageButton,
+  BubbleText,
 }

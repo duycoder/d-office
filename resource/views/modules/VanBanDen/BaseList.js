@@ -17,7 +17,8 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Content, Left} from 'native-base'
+  Container, Header, Content, Left
+} from 'native-base'
 import renderIf from 'render-if';
 import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
@@ -38,7 +39,7 @@ import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import GoBackButton from '../../common/GoBackButton';
-import { SearchSection, MoreButton } from '../../common';
+import { SearchSection, MoreButton, BubbleText } from '../../common';
 import { vanbandenApi } from '../../../common/Api';
 
 class BaseList extends Component {
@@ -204,26 +205,8 @@ class BaseList extends Component {
 
           subtitle={
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[readStateStyle, ListPublishDocStyle.abridgmentSub]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Mã hiệu:
-              </RnText>
-                  <RnText>
-                    {' ' + item.SOHIEU}
-                  </RnText>
-                </RnText>
-              </View>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[readStateStyle, ListPublishDocStyle.abridgmentSub]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Số theo sổ:
-            </RnText>
-                  <RnText>
-                    {` ${item.SODITHEOSO || "N/A"} - ${item.TENSOVANBAN ? item.TENSOVANBAN.replace(/^\D+/g, '') : "N/A"}`}
-                  </RnText>
-                </RnText>
-              </View>
+              <BubbleText leftText='Mã hiệu' rightText={item.SOHIEU} />
+              <BubbleText leftText='Số theo sổ' rightText={`${item.SODITHEOSO || "N/A"} - ${item.TENSOVANBAN ? item.TENSOVANBAN.replace(/^\D+/g, '') : "N/A"}`} />
             </View>
           }
           rightIcon={

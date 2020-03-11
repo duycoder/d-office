@@ -6,8 +6,9 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, View,
-  FlatList, RefreshControl, Text as RnText} from 'react-native';
+  View,
+  FlatList, RefreshControl, Text as RnText
+} from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
@@ -15,8 +16,8 @@ import * as vanbandiAction from '../../../redux/modules/VanBanDi/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //lib
 import {
-  Container, Header, Content, Left} from 'native-base'
-import renderIf from 'render-if';
+  Container, Header, Content, Left
+} from 'native-base'
 import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
@@ -28,13 +29,12 @@ import {
   VANBANDI_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
-import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
-
+import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { NativeBaseStyle } from '../../../assets/styles';
-import { SearchSection, MoreButton, GoBackButton } from '../../common';
+import { SearchSection, MoreButton, GoBackButton, BubbleText } from '../../common';
 import { vanbandiApi } from '../../../common/Api';
 
 class BaseList extends Component {
@@ -163,9 +163,9 @@ class BaseList extends Component {
 
   renderItem = ({ item }) => {
     const readStateStyle = item.IS_READ == true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
-    dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-      ? Colors.RED_PANTONE_186C
-      : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+      dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
+        ? Colors.RED_PANTONE_186C
+        : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
     const loaiVanbanArr = item.TEN_LOAIVANBAN.split(" "),
       loaiVanbanStr = loaiVanbanArr.map(x => x.charAt(0).toUpperCase()).join("");
 
@@ -197,26 +197,8 @@ class BaseList extends Component {
 
           subtitle={
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub, readStateStyle]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Loại văn bản:
-                  </RnText>
-                  <RnText>
-                    {` ${item.TEN_LOAIVANBAN}`}
-                  </RnText>
-                </RnText>
-              </View>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub, readStateStyle]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Lĩnh vực:
-                  </RnText>
-                  <RnText>
-                    {` ${item.TEN_LINHVUC}`}
-                  </RnText>
-                </RnText>
-              </View>
+              <BubbleText leftText='Loại văn bản' rightText={item.TEN_LOAIVANBAN} customTextStyle={readStateStyle} />
+              <BubbleText leftText='Lĩnh vực' rightText={item.TEN_LINHVUC} customTextStyle={readStateStyle} />
             </View>
           }
           rightIcon={
@@ -240,6 +222,37 @@ class BaseList extends Component {
   }
 
   render() {
+    let bodyContent = null;
+    if (this.state.loadingData) {
+      bodyContent = dataLoading(this.state.loadingData);
+    }
+    else {
+      bodyContent = (
+        <FlatList
+          data={this.state.data}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={this.renderItem}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshingData}
+              onRefresh={this.handleRefresh}
+              colors={[Colors.BLUE_PANTONE_640C]}
+              tintColor={[Colors.BLUE_PANTONE_640C]}
+              title='Kéo để làm mới'
+              titleColor={Colors.RED}
+            />
+          }
+          ListEmptyComponent={() =>
+            this.state.loadingData ? null : emptyDataPage()
+          }
+          ListFooterComponent={() => (<MoreButton
+            isLoading={this.state.loadingMoreData}
+            isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+            loadmoreFunc={this.loadingMore} />)}
+        />
+      );
+    }
+
     return (
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
@@ -256,40 +269,7 @@ class BaseList extends Component {
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
-          {
-            renderIf(this.state.loadingData)(
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              </View>
-            )
-          }
-
-          {
-            renderIf(!this.state.loadingData)(
-              <FlatList
-                data={this.state.data}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={this.renderItem}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshingData}
-                    onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
-                    title='Kéo để làm mới'
-                    titleColor={Colors.RED}
-                  />
-                }
-                ListEmptyComponent={() =>
-                  this.state.loadingData ? null : emptyDataPage()
-                }
-                ListFooterComponent={() => (<MoreButton
-                  isLoading={this.state.loadingMoreData}
-                  isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
-                  loadmoreFunc={this.loadingMore} />)}
-              />
-            )
-          }
+          {bodyContent}
         </Content>
       </Container>
     );
