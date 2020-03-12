@@ -63,7 +63,7 @@ class ListLichtruc extends Component {
       executing: false,
       tempKehoachId: null,
 
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || []
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || []
     }
   }
 

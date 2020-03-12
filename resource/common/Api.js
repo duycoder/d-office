@@ -103,6 +103,8 @@ const accountApi = () => {
   const getInfo = (params = []) => api.get("Account/GetUserInfo", params);
   const postLogin = (payloadBody = {}) => api.post("Account/Login", payloadBody);
   const postSignup = (payloadBody = {}) => api.post("Account/SignUp", payloadBody);
+  const getUserFunctions = (params = []) => api.get("Account/GetGroupUserFunctions", params);
+  const getCheckAuthorization = (params = []) => api.get("Account/CheckUyQuyen", params);
 
   return {
     deactivateToken,
@@ -121,6 +123,8 @@ const accountApi = () => {
     getInfo,
     postLogin,
     postSignup,
+    getUserFunctions,
+    getCheckAuthorization,
   };
 }
 

@@ -70,7 +70,7 @@ class Dashboard extends Component {
       birthdayData: null,
       dataUyQuyen: [],
       dataHotline: [],
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || [],
       orientation: isPortrait() ? 'portrait' : 'landscape',
     };
 

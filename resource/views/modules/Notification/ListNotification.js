@@ -15,6 +15,7 @@ import {
   Left, Body, Right
 } from 'native-base';
 import renderIf from 'render-if';
+import util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
@@ -40,6 +41,7 @@ class ListNotification extends Component {
 
       dataUyQuyen: [],
       isRefreshNotiList: false,
+      canUyQuyen: false,
     }
   }
 
@@ -73,6 +75,7 @@ class ListNotification extends Component {
     }, () => {
       this.fetchData();
       this.fetchDataUyQuyen();
+      this.fetchCheckUyQuyen();
     });
   }
 
@@ -102,6 +105,18 @@ class ListNotification extends Component {
       loading: false,
       dataUyQuyen: result
     })
+  }
+
+  fetchCheckUyQuyen = async () => {
+    const result = await AccountApi.getCheckAuthorization([
+      this.state.userInfo.ID,
+    ]);
+    this.setState({
+      canUyQuyen: result.Status,
+    });
+    if (result.Message) {
+      showWarningToast(result.Message);
+    }
   }
 
   fetchData = async () => {
@@ -142,6 +157,43 @@ class ListNotification extends Component {
   }
 
   render() {
+    const { loading, dataUyQuyen } = this.state;
+    let bodyContent = null;
+    if (loading) {
+      bodyContent = dataLoading(loading);
+    } else {
+      bodyContent = (
+        <Content contentContainerStyle={{ flex: 1 }}>
+          {
+            (util.isArray(dataUyQuyen) && dataUyQuyen.length > 0) 
+              && dataUyQuyen.map((item, index) => (<AuthorizeNoti key={index.toString()} item={item} index={index} />))
+          }
+          <FlatList
+            data={this.state.data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={this.renderItem}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this.handleRefresh}
+                colors={[Colors.BLUE_PANTONE_640C]}
+                tintColor={[Colors.BLUE_PANTONE_640C]}
+                title='Kéo để làm mới'
+                titleColor={Colors.RED}
+              />
+            }
+            ListEmptyComponent={() =>
+              emptyDataPage()
+            }
+            ListFooterComponent={() => (<MoreButton
+              isLoading={this.state.loadingMore}
+              isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
+              loadmoreFunc={this.onLoadingMore} />)}
+          />
+        </Content>
+      );
+    }
+
     return (
       <Container>
         <StatusBar barStyle="light-content" />
@@ -150,55 +202,14 @@ class ListNotification extends Component {
           <Body style={{ alignItems: 'center', flex: 8 }}>
             <Title style={NativeBaseStyle.bodyTitle}>
               THÔNG BÁO
-                        </Title>
+            </Title>
           </Body>
           <Right style={{ flex: 1 }} />
         </Header>
 
-        <Content contentContainerStyle={{ flex: 1 }}>
-          {
-            renderIf(this.state.loading)(
-              dataLoading()
-            )
-          }
-
-          {
-            renderIf(!this.state.loading)(
-              renderIf(this.state.dataUyQuyen.length > 0)(
-                this.state.dataUyQuyen.map((item, index) => (<AuthorizeNoti key={index.toString()} item={item} index={index} />))
-              )
-            )
-          }
-
-          {
-            renderIf(!this.state.loading)(
-              <FlatList
-                data={this.state.data}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={this.renderItem}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
-                    title='Kéo để làm mới'
-                    titleColor={Colors.RED}
-                  />
-                }
-                ListEmptyComponent={() =>
-                  emptyDataPage()
-                }
-                ListFooterComponent={() => (<MoreButton
-                  isLoading={this.state.loadingMore}
-                  isTrigger={this.state.data.length >= DEFAULT_PAGE_SIZE}
-                  loadmoreFunc={this.onLoadingMore} />)}
-              />
-            )
-          }
-        </Content>
+        {bodyContent}
         <AddButton
-          hasPermission={this.state.userInfo.CanUyQuyen}
+          hasPermission={this.state.canUyQuyen}
           createFunc={this.createNotiUyQuyen}
         />
       </Container>

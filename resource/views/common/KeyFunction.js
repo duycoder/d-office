@@ -6,47 +6,35 @@
  */
 import React, { Component } from 'react';
 import {
-  AsyncStorage, View, Text, ScrollView, Image,
-  ImageBackground, Modal,
-  TouchableOpacity, StatusBar
+  AsyncStorage, View, Text, ScrollView, TouchableOpacity, StatusBar
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../redux/modules/Nav/Action';
 //native-base
 import {
-  Container, Header, Content,
-  Left, Right, Body, Title, Footer, FooterTab, Badge, Button, Icon as NBIcon, Subtitle
-} from 'native-base';
+  Header, Left, Right, Body, Title} from 'native-base';
 
-import { ListItem, Icon } from 'react-native-elements';
-import renderIf from 'render-if';
+import util from 'lodash';
 
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import { NativeBaseStyle } from '../../assets/styles/NativeBaseStyle';
 
-import * as SBIcons from '../../assets/styles/SideBarIcons';
 
-import Panel from './Panel';
 import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL, generateTitle } from '../../common/SystemConstant';
-import Images from '../../common/Images';
+import { DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, generateTitle } from '../../common/SystemConstant';
 // import { genIcon } from '../../common/Icons';
-import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
+import { moderateScale } from '../../assets/styles/ScaleIndicator';
 
-const headerBackground = require('../../assets/images/background.png');
-const userAvatar = require('../../assets/images/avatar.png');
-const subItemIconLink = require('../../assets/images/arrow-white-right.png');
 
 import SideBarIcon from '../../common/Icons';
-import GoBackButton from './GoBackButton';
 import { accountApi } from '../../common/Api';
-const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
-const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
-const { LichCongTacFunction, TienichFunction } = SYSTEM_FUNCTION;
+import { showWarningToast, emptyDataPage } from '../../common/Utilities';
+import { dataLoading } from '../../common/Effect';
+const { VANBANDEN, VANBANDI, CONGVIEC, TIENICH } = DM_FUNCTIONS;
+const { TienichFunction } = SYSTEM_FUNCTION;
 
 class KeyFunction extends Component {
   constructor(props) {
@@ -55,8 +43,8 @@ class KeyFunction extends Component {
       showModal: false,
       userInfo: {},
       onFocusNow: '',
-      notifyCount: 0,
       userFunctions: [],
+      loadingUserFunctions: false,
 
       notifyCount_VBDen_Chuaxuly: 0,
       notifyCount_VBDen_Noibo_Chuaxuly: 0,
@@ -79,6 +67,18 @@ class KeyFunction extends Component {
       notifyCount_Lichtruc: 0,
       notifyCount_Nhacviec: 0,
     }
+  }
+
+  fetchFunctions = async () => {
+    const result = await accountApi().getUserFunctions([
+      this.state.userInfo.ID,
+    ]);
+    this.setState({
+      userFunctions: result.Status ? result.Params : [],
+      loadingUserFunctions: false,
+    }, () => {
+      !result.Status && showWarningToast(result.Message);
+    });
   }
 
   fetchNotifyCount = async () => {
@@ -114,11 +114,11 @@ class KeyFunction extends Component {
     const userInfo = JSON.parse(storageUserInfo);
     this.setState({
       userInfo,
-      // onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
-      notifyCount: userInfo.numberUnReadMessage,
-      userFunctions: userInfo.GroupUserFunctions
+      loadingUserFunctions: true,
+    }, () => {
+      this.fetchFunctions();
+      this.fetchNotifyCount();
     });
-    this.fetchNotifyCount();
   }
 
   componentDidMount() {
@@ -142,10 +142,6 @@ class KeyFunction extends Component {
   }
 
   setCurrentFocus(screenName, ref, actionCode = EMPTY_STRING) {
-    this.setState({
-      // onFocusNow: ref,
-      notifyCount: 0
-    });
     // check authorize
     if (actionCode.includes("UYQUYEN")) {
       this.props.updateAuthorization(1);
@@ -229,27 +225,66 @@ class KeyFunction extends Component {
   }
 
   render() {
-    const { notifyCount, userFunctions, onFocusNow } = this.state;
-    const subItemIcon = <Image source={Images.subItemIconLink} />;
-    const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
-    let notificationIcon = <View></View>;
-    if (notifyCount > 0 && notifyCount < 100) {
-      notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
-        <View style={SideBarStyle.chatNotificationCircle}>
-          <Text style={SideBarStyle.chatNotificationText}>
-            {notifyCount}
-          </Text>
-        </View>
-      </View>
+    const { userFunctions, loadingUserFunctions } = this.state;
+    
+    let bodyContent = null;
+    if (loadingUserFunctions) {
+      bodyContent = dataLoading(loadingUserFunctions);
     }
-    if (notifyCount >= 100) {
-      notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>
-        <View style={[SideBarStyle.chatNotificationCircle, { width: moderateScale(25), height: moderateScale(25), borderRadius: moderateScale(25 / 2) }]}>
-          <Text style={SideBarStyle.chatNotificationText}>
-            99+
-                </Text>
-        </View>
-      </View>
+    else if (util.isArray(userFunctions) && userFunctions.length > 0) {
+      bodyContent = (
+        <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
+          {
+            userFunctions.map((item) => {
+              if (item.MA_CHUCNANG.indexOf("HSCV") < 0) {
+                return null;
+              }
+
+              return <GridPanel
+                title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
+                key={item.DM_CHUCNANG_ID.toString()}
+              >
+                {
+                  item.ListThaoTac.map((sItem) => {
+                    const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
+                    if (renderCondition) {
+                      if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
+                        return <TouchableOpacity
+                          style={SideBarStyle.normalBoxStyle}
+                          key={sItem.DM_THAOTAC_ID.toString()}
+                          onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
+                        >
+                          <SideBarIcon
+                            actionCode={TienichFunction.actionCodes[6]}
+                          />
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
+                        </TouchableOpacity>;
+                      }
+                      return <TouchableOpacity
+                        style={SideBarStyle.normalBoxStyle}
+                        key={sItem.DM_THAOTAC_ID.toString()}
+                        onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
+                      >
+                        <SideBarIcon
+                          actionCode={sItem.MA_THAOTAC}
+                          notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
+                        />
+                        <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
+                      </TouchableOpacity>;
+                    }
+                    else {
+                      return null;
+                    }
+                  })
+                }
+              </GridPanel>
+            })
+          }
+        </ScrollView>
+      );
+    }
+    else {
+      bodyContent = emptyDataPage();
     }
     // console.tron.log(userFunctions)
     return (
@@ -266,56 +301,7 @@ class KeyFunction extends Component {
         </Header>
 
         <View style={[SideBarStyle.body]}>
-          <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
-            {
-              // Lấy chức năng của người dùng
-              userFunctions && userFunctions.map((item, index) => {
-                // let count = 0;
-                if (item.MA_CHUCNANG.indexOf("HSCV") < 0) {
-                  return null;
-                }
-
-                return <GridPanel
-                  title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
-                  key={item.DM_CHUCNANG_ID.toString()}
-                >
-                  {
-                    item.ListThaoTac.map((sItem, sIndex) => {
-                      const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
-                      if (renderCondition) {
-                        if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
-                          return <TouchableOpacity
-                            style={SideBarStyle.normalBoxStyle}
-                            key={sItem.DM_THAOTAC_ID.toString()}
-                            onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
-                          >
-                            <SideBarIcon
-                              actionCode={TienichFunction.actionCodes[6]}
-                            />
-                            <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
-                          </TouchableOpacity>;
-                        }
-                        return <TouchableOpacity
-                          style={SideBarStyle.normalBoxStyle}
-                          key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
-                        >
-                          <SideBarIcon
-                            actionCode={sItem.MA_THAOTAC}
-                            notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
-                          />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
-                        </TouchableOpacity>;
-                      }
-                      else {
-                        return null;
-                      }
-                    })
-                  }
-                </GridPanel>
-              })
-            }
-          </ScrollView>
+          {bodyContent}
         </View>
 
         <Confirm ref='confirm' title={'XÁC NHẬN THOÁT'} navigation={this.props.navigation} userInfo={this.state.userInfo} />
