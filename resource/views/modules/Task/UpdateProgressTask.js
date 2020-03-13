@@ -17,6 +17,7 @@ import {
 } from 'native-base';
 import Slider from 'react-native-slider';
 import * as util from 'lodash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 //utilities
 import {
@@ -25,7 +26,6 @@ import {
 import { showWarningToast } from '../../../common/Utilities';
 import { executeLoading } from '../../../common/Effect';
 import { verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
-
 
 //styles
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
@@ -143,8 +143,7 @@ class UpdateProgressTask extends Component {
 
           <Right style={NativeBaseStyle.right} />
         </Header>
-
-        <Content contentContainerStyle={AccountStyle.mainContainer}>
+        <KeyboardAwareScrollView contentContainerStyle={AccountStyle.mainContainer}>
           <Slider
             step={1}
             minimumValue={0}
@@ -190,7 +189,13 @@ class UpdateProgressTask extends Component {
 
             <Item stackedLabel>
               <Label>Nội dung <Text style={{ color: '#f00' }}>*</Text></Label>
-              <Input value={this.state.comment} onChangeText={(comment) => this.setState({ comment })} />
+              <Input
+                value={this.state.comment}
+                onChangeText={(comment) => this.setState({ comment })}
+                returnKeyLabel='Cập nhật'
+                returnKeyType='done'
+                onSubmitEditing={() => this.onUpdateProgressTask()}
+              />
             </Item>
 
             <Button block danger
@@ -201,7 +206,7 @@ class UpdateProgressTask extends Component {
                             </Text>
             </Button>
           </Form>
-        </Content>
+        </KeyboardAwareScrollView>
 
         {
           executeLoading(this.state.executing)
