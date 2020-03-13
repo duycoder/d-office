@@ -36,6 +36,7 @@ import { ListNotificationStyle } from '../../../assets/styles/ListNotificationSt
 import { NativeBaseStyle } from '../../../assets/styles';
 import { SearchSection, MoreButton, GoBackButton, BubbleText } from '../../common';
 import { vanbandiApi } from '../../../common/Api';
+import { dataLoading } from '../../../common/Effect';
 
 class BaseList extends Component {
   constructor(props) {

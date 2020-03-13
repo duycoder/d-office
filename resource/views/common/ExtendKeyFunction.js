@@ -4,31 +4,25 @@
  * @author: duynn
  * @since: 02/05/2018
  */
+//native-base
+import { Body, Header, Left, Right, Title } from 'native-base';
 import React, { Component } from 'react';
-import {
-  AsyncStorage, View, Text, ScrollView, TouchableOpacity, StatusBar
-} from 'react-native';
-
+import { AsyncStorage, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import * as navAction from '../../redux/modules/Nav/Action';
-//native-base
-import { Header, Left, Right, Body, Title } from 'native-base';
-
-import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import { NativeBaseStyle } from '../../assets/styles/NativeBaseStyle';
-
-
-import GridPanel from './GridPanel';
-import { DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, generateTitle } from '../../common/SystemConstant';
 // import { genIcon } from '../../common/Icons';
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
-
-
-import SideBarIcon from '../../common/Icons';
-import GoBackButton from './GoBackButton';
+import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import { accountApi } from '../../common/Api';
-import { showWarningToast, isArray, emptyDataPage } from '../../common/Utilities';
+import SideBarIcon from '../../common/Icons';
+import { DM_FUNCTIONS, EMPTY_STRING, generateTitle, SYSTEM_FUNCTION } from '../../common/SystemConstant';
+import { emptyDataPage, isArray, showWarningToast } from '../../common/Utilities';
+import * as navAction from '../../redux/modules/Nav/Action';
+import GoBackButton from './GoBackButton';
+import GridPanel from './GridPanel';
+import { dataLoading } from '../../common/Effect';
+
 const { TIENICH } = DM_FUNCTIONS;
 const { TienichFunction } = SYSTEM_FUNCTION;
 
