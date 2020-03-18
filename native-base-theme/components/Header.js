@@ -11,7 +11,7 @@ export default (variables /*: * */ = variable) => {
 
   const headerTheme = {
     ".span": {
-      height: moderateScale(126, 1.15),
+      height: moderateScale(115, 0.9),
       "NativeBase.Left": {
         alignSelf: "flex-start"
       },

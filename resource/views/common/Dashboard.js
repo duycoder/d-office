@@ -336,12 +336,11 @@ class Dashboard extends Component {
     } = this.state;
 
     let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec]);
-
     return (
       <MenuProvider backHandler>
         <View style={SideBarStyle.container}>
           <StatusBar barStyle="light-content" />
-          <Header style={SideBarStyle.dashboardHeader}>
+          <Header style={SideBarStyle.dashboardHeader} span>
             <Left style={SideBarStyle.dashboardHeaderLeft}>
               <Text style={{ color: Colors.WHITE, fontSize: moderateScale(12, 1.2) }}>
                 <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
