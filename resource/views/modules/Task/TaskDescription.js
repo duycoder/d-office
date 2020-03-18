@@ -188,12 +188,14 @@ export default class TaskDescription extends Component {
               isRender={this.props.info.LstNguoiThamGia && this.props.info.LstNguoiThamGia.length > 0}
               titleText='Người tham gia'
               subtitleText={ListThamgiaStr}
+              customSubtitleNumberOfLines={0}
             />
 
             <InfoListItem
               isRender={!!this.props.info.CongViec.NOIDUNGCONGVIEC}
               titleText='Nội dung công việc'
               subtitleText={this.props.info.CongViec.NOIDUNGCONGVIEC}
+              customSubtitleNumberOfLines={0}
             />
 
             <InfoListItem

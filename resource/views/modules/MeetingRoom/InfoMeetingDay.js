@@ -33,8 +33,8 @@ class RegistrationInfo extends Component {
   render() {
     const { info } = this.state,
       thoigianHop = `${convertDateToString(info.NGAY_HOP)} từ ${_readableFormat(info.GIO_BATDAU)}h${_readableFormat(info.PHUT_BATDAU)} đến ${_readableFormat(info.GIO_KETTHUC)}h${_readableFormat(info.PHUT_KETTHUC)}`;
-    let thanhphanThamduText = !!info.THANHPHAN_THAMDU ? info.THANHPHAN_THAMDU : EMPTY_STRING,
-      numberOfLinesForThamdu = 10;
+    let thanhphanThamduText = !!info.THANHPHAN_THAMDU ? info.THANHPHAN_THAMDU : EMPTY_STRING;
+    let numberOfLinesForThamdu = 10;
     if (!!thanhphanThamduText) {
       if (thanhphanThamduText.indexOf(',') > -1) {
         const arrayThamdu = thanhphanThamduText.split(',');
@@ -70,7 +70,7 @@ class RegistrationInfo extends Component {
               isRender={!!info.THANHPHAN_THAMDU}
               titleText='Thành phần tham dự'
               subtitleText={thanhphanThamduText}
-              customSubtitleNumberOfLines={numberOfLinesForThamdu}
+              customSubtitleNumberOfLines={0}
             />
             <AttachmentItem data={!!info.DuongdanFile ? [info.DuongdanFile] : []} />
           </List>

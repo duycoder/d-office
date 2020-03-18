@@ -99,6 +99,66 @@ export default class MainInfoSignDoc extends Component {
 
             <AttachmentItem data={this.state.ListTaiLieu} />
 
+                        <InfoListItem
+                            titleText='Trích yếu'
+                            subtitleText={this.state.info.TRICHYEU}
+                        />
+                        <InfoListItem
+                            titleText='Loại văn bản'
+                            subtitleText={this.props.info.STR_LOAIVANBAN}
+                        />
+                        <InfoListItem
+                            titleText='Lĩnh vực'
+                            subtitleText={this.props.info.STR_LINHVUCVANBAN}
+                        />
+                        <InfoListItem
+                            titleText='Mức độ quan trọng'
+                            subtitleText={this.props.info.STR_DOKHAN}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYVANBAN}
+                            titleText='Ngày văn bản'
+                            subtitleText={convertDateToString(this.state.info.NGAYVANBAN)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYBANHANH}
+                            titleText='Ngày ban hành'
+                            subtitleText={convertDateToString(this.state.info.NGAYBANHANH)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYCOHIEULUC}
+                            titleText='Ngày hiệu lực'
+                            subtitleText={convertDateToString(this.state.info.NGAYCOHIEULUC)}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NGAYHETHIEULUC}
+                            titleText='Ngày hết hiệu lực'
+                            subtitleText={convertDateToString(this.state.info.NGAYHETHIEULUC)}
+                        />
+                        <InfoListItem
+                            titleText='Số bản'
+                            subtitleText={this.state.info.SOBANSAO || 'N/A'}
+                        />
+                        <InfoListItem
+                            isRender={!!this.props.info.STR_NGUOIKY}
+                            titleText='Người ký'
+                            subtitleText={`${this.state.info.CHUCVU || ""} ${this.props.info.STR_NGUOIKY}`}
+                        />
+                        <InfoListItem
+                            isRender={!!this.state.info.NOIDUNG}
+                            titleText='Nội dung văn bản'
+                            subtitleText={this.state.info.NOIDUNG}
+                            customSubtitleNumberOfLines={0}
+                        />
+                        <InfoListItem
+                            titleText='Ngày tạo'
+                            subtitleText={convertDateToString(this.state.info.CREATED_AT)}
+                        />
+                    </List>
+                </ScrollView>
+            </View>
+        );
+    }
             <InfoListItem
               titleText='Trích yếu'
               subtitleText={this.state.info.TRICHYEU}
@@ -148,7 +208,8 @@ export default class MainInfoSignDoc extends Component {
               isRender={!!this.state.info.NOIDUNG}
               titleText='Nội dung văn bản'
               subtitleText={this.state.info.NOIDUNG}
-            />
+           customSubtitleNumberOfLines={0}
+/>
             <InfoListItem
               titleText='Ngày tạo'
               subtitleText={convertDateToString(this.state.info.CREATED_AT)}
