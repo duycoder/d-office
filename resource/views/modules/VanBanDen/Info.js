@@ -110,7 +110,7 @@ class MainInfoPublishDoc extends Component {
       sohieu = (
         <Text style={[InfoStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
           Không rõ
-                </Text>
+        </Text>
       );
     }
 
@@ -137,12 +137,6 @@ class MainInfoPublishDoc extends Component {
                 <Text style={{ color: Colors.WHITE, fontWeight: 'bold' }}>
                   CHI TIẾT
                 </Text>
-              </TouchableOpacity>
-            </View>
-          }
-                </View>
-            )
-        }
               </TouchableOpacity>
             </View>
           }
@@ -227,7 +221,7 @@ class MainInfoPublishDoc extends Component {
               isRender={!!this.state.info.NOIDUNG}
               titleText='Nội dung văn bản'
               subtitleText={this.state.info.NOIDUNG}
-customSubtitleNumberOfLines={0}
+              customSubtitleNumberOfLines={0}
             />
             <InfoListItem
               isRender={this.state.info.hasOwnProperty("NGAYCONGTAC") && this.state.info.NGAYCONGTAC}
