@@ -5,7 +5,7 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RNButton } from 'react-native';
+import { View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
@@ -24,11 +24,11 @@ import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
 //lib
 import {
-    Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right, Toast
+  Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right, Toast
 } from 'native-base';
 import { MenuProvider, MenuTrigger, Menu, MenuOption, MenuOptions } from 'react-native-popup-menu'
 import {
-    Icon as RneIcon, ButtonGroup
+  Icon as RneIcon, ButtonGroup
 } from 'react-native-elements';
 import renderIf from 'render-if';
 
@@ -36,400 +36,393 @@ import renderIf from 'render-if';
 import MainInfoSignDoc from './Info';
 import UnitSignDoc from './UnitSignDoc';
 
-import AlertMessageStyle from '../../../assets/styles/AlertMessageStyle';
-import { GoBackButton, AlertMessage } from '../../common';
+import { GoBackButton, AlertMessage, AlertMessageButton } from '../../common';
 import { HeaderMenuStyle } from '../../../assets/styles';
 import { vanbandiApi, workflowApi } from '../../../common/Api';
 import { Timeline, WorkflowButton } from '../../common/DetailCommon';
 
 class Detail extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userId: this.props.userInfo.ID,
-            loading: false,
-            isUnAuthorize: false,
-            docInfo: {},
-            docId: this.props.coreNavParams.docId,
-            docType: this.props.coreNavParams.docType,
+  constructor(props) {
+    super(props);
+    this.state = {
+      userId: this.props.userInfo.ID,
+      loading: false,
+      isUnAuthorize: false,
+      docInfo: {},
+      docId: this.props.coreNavParams.docId,
+      docType: this.props.coreNavParams.docType,
 
-            screenParam: {
-                userId: this.props.userInfo.ID,
-                docId: this.props.coreNavParams.docId,
-                docType: this.props.coreNavParams.docType,
-            },
-            executing: false,
-            hasAuthorization: props.hasAuthorization || 0,
-            fromBrief: props.coreNavParams.fromBrief || false,
-            check: false,
-            from: props.from || "list"
-        };
-        this.onNavigate = this.onNavigate.bind(this);
-    }
+      screenParam: {
+        userId: this.props.userInfo.ID,
+        docId: this.props.coreNavParams.docId,
+        docType: this.props.coreNavParams.docType,
+      },
+      executing: false,
+      hasAuthorization: props.hasAuthorization || 0,
+      fromBrief: props.coreNavParams.fromBrief || false,
+      check: false,
+      from: props.from || "list"
+    };
+    this.onNavigate = this.onNavigate.bind(this);
+  }
 
-    componentWillMount() {
-        this.fetchData();
-    }
+  componentWillMount() {
+    this.fetchData();
+  }
 
-    async fetchData() {
-        this.setState({
-            loading: true
-        });
+  async fetchData() {
+    this.setState({
+      loading: true
+    });
 
-        const { docId, userId, hasAuthorization } = this.state;
+    const { docId, userId, hasAuthorization } = this.state;
 
-        const resultJson = await vanbandiApi().getDetail([
-            docId,
-            userId,
-            hasAuthorization
-        ]);
+    const resultJson = await vanbandiApi().getDetail([
+      docId,
+      userId,
+      hasAuthorization
+    ]);
 
-        this.setState({
-            loading: false,
-            docInfo: resultJson === null ? {} : resultJson,
-            isUnAuthorize: util.isNull(resultJson)
-        });
-    }
+    this.setState({
+      loading: false,
+      docInfo: resultJson === null ? {} : resultJson,
+      isUnAuthorize: util.isNull(resultJson)
+    });
+  }
 
-    componentDidMount = () => {
-        this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
-            if (this.props.extendsNavParams.hasOwnProperty("from")) {
-                if (this.props.extendsNavParams.from === "detail") {
-                    this.props.updateCoreNavParams({
-                        docId: this.state.docId,
-                        docType: this.state.docType
-                    });
-                }
-            }
-            if (this.props.extendsNavParams.hasOwnProperty("check")) {
-                if (this.props.extendsNavParams.check === true) {
-                    this.setState({ check: true }, () => this.fetchData());
-                    this.props.updateExtendsNavParams({ check: false });
-                }
-            }
-        })
-    }
-
-    componentWillUnmount = () => {
-        this.willFocusListener.remove();
-    }
-
-    navigateBack = () => {
-        if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
-            if (this.state.from === "list") {
-                this.props.updateExtendsNavParams({ check: this.state.check });
-            }
-            else {
-                this.props.updateExtendsNavParams({ from: true });
-            }
-        }
-        this.props.navigation.goBack();
-    }
-
-    navigateToDetailDoc = (screenName, targetScreenParams) => {
-        this.props.updateCoreNavParams(targetScreenParams)
-        this.props.navigation.navigate(screenName);
-    }
-
-    onReplyReview() {
-        const targetScreenParam = {
-            itemType: this.state.docInfo.Process.ITEM_TYPE
-        }
-
-        this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam);
-    }
-
-    onProcessDoc = (item, isStepBack) => {
-        if (!isStepBack &&
-            this.state.docInfo.WorkFlow.Function &&
-            this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
-            showWarningToast('Vui lòng ký duyệt văn bản');
-        } else {
-            const targetScreenParam = {
-                processId: this.state.docInfo.WorkFlow.Process.ID,
-                stepId: item.ID,
-                stepName: item.NAME,
-                isStepBack,
-                logId: (isStepBack == true) ? item.Log.ID : 0
-            }
-
-            this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
-        }
-    }
-
-    onReviewDoc = (item) => {
-        const targetScreenParam = {
-            processId: this.state.docInfo.Process.ID,
-            stepId: item.ID,
-            isStepBack: false,
-            stepName: 'GỬI REVIEW',
-            logId: 0
-        }
-
-        this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
-    }
-
-    onSelectWorkFlowStep(item, isStepBack) {
-        if (item.REQUIRED_REVIEW != true || this.state.docInfo.WorkFlow.Process.IS_PENDING == false) {
-            this.onProcessDoc(item, isStepBack);
-
-        } else {
-            this.onReviewDoc(item);
-        }
-    }
-
-    onConfirmSignDoc = () => {
-        this.refs.confirm.showModal();
-    }
-
-    onSignDoc = async () => {
-        this.refs.confirm.closeModal();
-
-        this.setState({
-            executing: true
-        })
-
-        const result = workflowApi().saveSignDoc({
-            UserID: this.state.userId,
-            ItemID: this.state.docId,
-            IsUyQuyen: false
-        });
-
-        this.setState({
-            executing: false
-        })
-
-        Toast.show({
-            text: result ? 'Ký duyệt văn bản thành công' : 'Ký duyệt văn bản không thành công',
-            type: result ? 'success' : 'danger',
-            buttonText: "OK",
-            buttonStyle: { backgroundColor: Colors.WHITE },
-            buttonTextStyle: { color: Colors.LITE_BLUE },
-            onClose: () => {
-                if (result) {
-                    this.fetchData();
-                }
-            }
-        });
-    }
-
-
-    onOpenComment = () => {
-        const targetScreenParam = {
-            isTaskComment: false,
-            vanbandiData: this.state.docInfo.LstRootComment
-        }
-        this.onNavigate("ListCommentScreen", targetScreenParam);
-    }
-
-    onCreateTask = () => {
-        const targetScreenParam = {
+  componentDidMount = () => {
+    this.willFocusListener = this.props.navigation.addListener('willFocus', () => {
+      if (this.props.extendsNavParams.hasOwnProperty("from")) {
+        if (this.props.extendsNavParams.from === "detail") {
+          this.props.updateCoreNavParams({
             docId: this.state.docId,
-            docType: 2
+            docType: this.state.docType
+          });
         }
-        this.onNavigate("CreateTaskScreen", targetScreenParam);
+      }
+      if (this.props.extendsNavParams.hasOwnProperty("check")) {
+        if (this.props.extendsNavParams.check === true) {
+          this.setState({ check: true }, () => this.fetchData());
+          this.props.updateExtendsNavParams({ check: false });
+        }
+      }
+    })
+  }
+
+  componentWillUnmount = () => {
+    this.willFocusListener.remove();
+  }
+
+  navigateBack = () => {
+    if (this.state.docInfo.hasOwnProperty("VanBanTrinhKy")) {
+      if (this.state.from === "list") {
+        this.props.updateExtendsNavParams({ check: this.state.check });
+      }
+      else {
+        this.props.updateExtendsNavParams({ from: true });
+      }
+    }
+    this.props.navigation.goBack();
+  }
+
+  navigateToDetailDoc = (screenName, targetScreenParams) => {
+    this.props.updateCoreNavParams(targetScreenParams)
+    this.props.navigation.navigate(screenName);
+  }
+
+  onReplyReview() {
+    const targetScreenParam = {
+      itemType: this.state.docInfo.Process.ITEM_TYPE
     }
 
-    onNavigate(targetScreenName, targetScreenParam) {
-        if (!util.isNull(targetScreenParam)) {
-            this.props.updateExtendsNavParams(targetScreenParam);
-        }
-        this.props.navigation.navigate(targetScreenName);
+    this.onNavigate("WorkflowReplyReviewScreen", targetScreenParam);
+  }
+
+  onProcessDoc = (item, isStepBack) => {
+    if (!isStepBack &&
+      this.state.docInfo.WorkFlow.Function &&
+      this.state.docInfo.WorkFlow.Function.FUNTION_NAME === "KYDUYETVANBAN") {
+      showWarningToast('Vui lòng ký duyệt văn bản');
+    } else {
+      const targetScreenParam = {
+        processId: this.state.docInfo.WorkFlow.Process.ID,
+        stepId: item.ID,
+        stepName: item.NAME,
+        isStepBack,
+        logId: (isStepBack == true) ? item.Log.ID : 0
+      }
+
+      this.onNavigate("WorkflowStreamProcessScreen", targetScreenParam);
+    }
+  }
+
+  onReviewDoc = (item) => {
+    const targetScreenParam = {
+      processId: this.state.docInfo.Process.ID,
+      stepId: item.ID,
+      isStepBack: false,
+      stepName: 'GỬI REVIEW',
+      logId: 0
     }
 
-    render() {
-        let bodyContent = null;
-        let workflowButtons = [];
-        if (this.state.loading) {
-            bodyContent = dataLoading(true);
+    this.onNavigate("WorkflowRequestReviewScreen", targetScreenParam);
+  }
+
+  onSelectWorkFlowStep(item, isStepBack) {
+    if (item.REQUIRED_REVIEW != true || this.state.docInfo.WorkFlow.Process.IS_PENDING == false) {
+      this.onProcessDoc(item, isStepBack);
+
+    } else {
+      this.onReviewDoc(item);
+    }
+  }
+
+  onConfirmSignDoc = () => {
+    this.refs.confirm.showModal();
+  }
+
+  onSignDoc = async () => {
+    this.refs.confirm.closeModal();
+
+    this.setState({
+      executing: true
+    })
+
+    const result = workflowApi().saveSignDoc({
+      UserID: this.state.userId,
+      ItemID: this.state.docId,
+      IsUyQuyen: false
+    });
+
+    this.setState({
+      executing: false
+    })
+
+    Toast.show({
+      text: result ? 'Ký duyệt văn bản thành công' : 'Ký duyệt văn bản không thành công',
+      type: result ? 'success' : 'danger',
+      buttonText: "OK",
+      buttonStyle: { backgroundColor: Colors.WHITE },
+      buttonTextStyle: { color: Colors.LITE_BLUE },
+      onClose: () => {
+        if (result) {
+          this.fetchData();
         }
-        else if (this.state.isUnAuthorize) {
-            bodyContent = unAuthorizePage(this.props.navigation);
-        } else {
-            if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
-                workflowButtons.push({
-                    element: () => <WorkflowButton onPress={() => this.onReplyReview()} btnText="PHẢN HỒI" />
-                });
-            } else {
-                if (!util.isNull(this.state.docInfo.WorkFlow.LstStepBack) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStepBack)) {
-                    this.state.docInfo.WorkFlow.LstStepBack.forEach(item => {
-                        workflowButtons.push({
-                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
-                        });
-                    });
-                }
+      }
+    });
+  }
 
-                if (!util.isNull(this.state.docInfo.WorkFlow.LstStep) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStep)) {
-                    this.state.docInfo.WorkFlow.LstStep.forEach(item => {
-                        if (item.REQUIRED_REVIEW == true) {
-                            if (this.state.docInfo.WorkFlow.ReviewObj == null || this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH != true || this.state.docInfo.ReviewObj.IS_REJECT == true) {
-                                item.NAME = 'GỬI REVIEW'
-                            }
-                        }
-                        workflowButtons.push({
-                            element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, false)} btnText={util.toUpper(item.NAME)} />
-                        });
-                    });
-                }
-            }
 
-            const docFunction = this.state.docInfo.WorkFlow.Function;
+  onOpenComment = () => {
+    const targetScreenParam = {
+      isTaskComment: false,
+      vanbandiData: this.state.docInfo.LstRootComment
+    }
+    this.onNavigate("ListCommentScreen", targetScreenParam);
+  }
 
-            if (docFunction && docFunction.FUNTION_NAME === "KYDUYETVANBAN") {
-                workflowButtons.push({
-                    element: () => <WorkflowButton onPress={() => this.onConfirmSignDoc()} btnText={util.toUpper(docFunction.FUNTION_TITLE)} />
-                });
-            }
+  onCreateTask = () => {
+    const targetScreenParam = {
+      docId: this.state.docId,
+      docType: 2
+    }
+    this.onNavigate("CreateTaskScreen", targetScreenParam);
+  }
 
-            bodyContent = (<DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />);
+  onNavigate(targetScreenName, targetScreenParam) {
+    if (!util.isNull(targetScreenParam)) {
+      this.props.updateExtendsNavParams(targetScreenParam);
+    }
+    this.props.navigation.navigate(targetScreenName);
+  }
+
+  render() {
+    let bodyContent = null;
+    let workflowButtons = [];
+    if (this.state.loading) {
+      bodyContent = dataLoading(true);
+    }
+    else if (this.state.isUnAuthorize) {
+      bodyContent = unAuthorizePage(this.props.navigation);
+    } else {
+      if (this.state.docInfo.WorkFlow.REQUIRED_REVIEW) {
+        workflowButtons.push({
+          element: () => <WorkflowButton onPress={() => this.onReplyReview()} btnText="PHẢN HỒI" />
+        });
+      } else {
+        if (!util.isNull(this.state.docInfo.WorkFlow.LstStepBack) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStepBack)) {
+          this.state.docInfo.WorkFlow.LstStepBack.forEach(item => {
+            workflowButtons.push({
+              element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, true)} btnText={util.toUpper(item.NAME)} />
+            });
+          });
         }
-        return (
-            <MenuProvider backHandler>
-                <Container>
-                    <Header hasTabs style={NativeBaseStyle.container}>
-                        <Left style={NativeBaseStyle.left}>
-                            <GoBackButton onPress={() => this.navigateBack()} />
-                        </Left>
 
-                        <Body style={NativeBaseStyle.body}>
-                            <Title style={NativeBaseStyle.bodyTitle} >
-                                THÔNG TIN VĂN BẢN
+        if (!util.isNull(this.state.docInfo.WorkFlow.LstStep) && !util.isEmpty(this.state.docInfo.WorkFlow.LstStep)) {
+          this.state.docInfo.WorkFlow.LstStep.forEach(item => {
+            if (item.REQUIRED_REVIEW == true) {
+              if (this.state.docInfo.WorkFlow.ReviewObj == null || this.state.docInfo.WorkFlow.ReviewObj.IS_FINISH != true || this.state.docInfo.ReviewObj.IS_REJECT == true) {
+                item.NAME = 'GỬI REVIEW'
+              }
+            }
+            workflowButtons.push({
+              element: () => <WorkflowButton onPress={() => this.onSelectWorkFlowStep(item, false)} btnText={util.toUpper(item.NAME)} />
+            });
+          });
+        }
+      }
+
+      const docFunction = this.state.docInfo.WorkFlow.Function;
+
+      if (docFunction && docFunction.FUNTION_NAME === "KYDUYETVANBAN") {
+        workflowButtons.push({
+          element: () => <WorkflowButton onPress={() => this.onConfirmSignDoc()} btnText={util.toUpper(docFunction.FUNTION_TITLE)} />
+        });
+      }
+
+      bodyContent = (<DetailContent docInfo={this.state.docInfo} docId={this.state.docId} buttons={workflowButtons} userId={this.state.userId} navigateToDetailDoc={this.navigateToDetailDoc} fromBrief={this.state.fromBrief} />);
+    }
+    return (
+      <MenuProvider backHandler>
+        <Container>
+          <Header hasTabs style={NativeBaseStyle.container}>
+            <Left style={NativeBaseStyle.left}>
+              <GoBackButton onPress={() => this.navigateBack()} />
+            </Left>
+
+            <Body style={NativeBaseStyle.body}>
+              <Title style={NativeBaseStyle.bodyTitle} >
+                THÔNG TIN VĂN BẢN
                             </Title>
-                        </Body>
+            </Body>
 
-                        <Right style={NativeBaseStyle.right}>
-                            <Menu>
-                                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
-                                <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
-                                    <MenuOption onSelect={() => this.onOpenComment()} text="Bình luận" customStyles={HeaderMenuStyle.optionStyles} />
-                                    <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
-                                </MenuOptions>
-                            </Menu>
-                        </Right>
-                    </Header>
-                    {
-                        bodyContent
-                    }
+            <Right style={NativeBaseStyle.right}>
+              <Menu>
+                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
+                  <MenuOption onSelect={() => this.onOpenComment()} text="Bình luận" customStyles={HeaderMenuStyle.optionStyles} />
+                  <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
+                </MenuOptions>
+              </Menu>
+            </Right>
+          </Header>
+          {
+            bodyContent
+          }
 
-                    {
-                        executeLoading(this.state.executing)
-                    }
+          {
+            executeLoading(this.state.executing)
+          }
 
-                    <AlertMessage
-                        ref="confirm"
-                        title="XÁC NHẬN KÝ DUYỆT"
-                        bodyText="Bạn có chắc chắn ký duyệt văn bản"
-                        exitText="KHÔNG"
-                    >
-                        <View style={AlertMessageStyle.leftFooter}>
-                            <RNButton onPress={() => this.onSignDoc()} style={AlertMessageStyle.footerButton}>
-                                <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                                    CÓ
-                                </RNText>
-                            </RNButton>
-                        </View>
-                    </AlertMessage>
-                </Container>
-            </MenuProvider>
-        );
-    }
+          <AlertMessage
+            ref="confirm"
+            title="XÁC NHẬN KÝ DUYỆT"
+            bodyText="Bạn có chắc chắn ký duyệt văn bản"
+            exitText="KHÔNG"
+          >
+            <AlertMessageButton btnText='CÓ' onPress={() => this.onSignDoc()} />
+          </AlertMessage>
+        </Container>
+      </MenuProvider>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
-    return {
-        userInfo: state.userState.userInfo,
-        coreNavParams: state.navState.coreNavParams,
-        extendsNavParams: state.navState.extendsNavParams,
-        hasAuthorization: state.navState.hasAuthorization
-    }
+  return {
+    userInfo: state.userState.userInfo,
+    coreNavParams: state.navState.coreNavParams,
+    extendsNavParams: state.navState.extendsNavParams,
+    hasAuthorization: state.navState.hasAuthorization
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
-        updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
-    }
+  return {
+    updateCoreNavParams: (coreNavParams) => dispatch(navAction.updateCoreNavParams(coreNavParams)),
+    updateExtendsNavParams: (extendsNavParams) => dispatch(navAction.updateExtendsNavParams(extendsNavParams))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Detail);
 
 //THÔNG TIN VĂN BẢN
 class DetailContent extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentTabIndex: 0,
-            docInfo: props.docInfo,
-            docId: props.docId,
-            userId: props.userId,
-            fromBrief: props.fromBrief
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTabIndex: 0,
+      docInfo: props.docInfo,
+      docId: props.docId,
+      userId: props.userId,
+      fromBrief: props.fromBrief
     }
+  }
 
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-                <Tabs
-                    // renderTabBar={() => <ScrollableTab  />}
-                    tabContainerStyle={{ height: moderateScale(47, 0.97) }}
-                    initialPage={this.state.currentTabIndex}
-                    tabBarUnderlineStyle={TabStyle.underLineStyle}
-                    onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-information-circle-outline' style={TabStyle.activeText} />
-                            <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                THÔNG TIN
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <Tabs
+          // renderTabBar={() => <ScrollableTab  />}
+          tabContainerStyle={{ height: moderateScale(47, 0.97) }}
+          initialPage={this.state.currentTabIndex}
+          tabBarUnderlineStyle={TabStyle.underLineStyle}
+          onChangeTab={({ index }) => this.setState({ currentTabIndex: index })}>
+          <Tab heading={
+            <TabHeading style={(this.state.currentTabIndex == 0 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+              <Icon name='ios-information-circle-outline' style={TabStyle.activeText} />
+              <Text style={(this.state.currentTabIndex == 0 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                THÔNG TIN
                                 </Text>
-                        </TabHeading>
-                    }>
-                        <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
-                    </Tab>
+            </TabHeading>
+          }>
+            <MainInfoSignDoc info={this.state.docInfo} userId={this.state.userId} navigateToDetailDoc={this.props.navigateToDetailDoc} fromBrief={this.state.fromBrief} />
+          </Tab>
 
-                    {
-                        // <Tab heading={
-                        //     <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                        //         <Icon name='ios-attach' style={TabStyle.activeText} />
-                        //         <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                        //             ĐÍNH KÈM
-                        //     </Text>
-                        //     </TabHeading>
-                        // }>
-                        //     <AttachSignDoc info={this.state.docInfo.ListTaiLieu} docId={this.state.docId} />
-                        // </Tab>
-                    }
+          {
+            // <Tab heading={
+            //     <TabHeading style={(this.state.currentTabIndex == 1 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+            //         <Icon name='ios-attach' style={TabStyle.activeText} />
+            //         <Text style={(this.state.currentTabIndex == 1 ? TabStyle.activeText : TabStyle.inActiveText)}>
+            //             ĐÍNH KÈM
+            //     </Text>
+            //     </TabHeading>
+            // }>
+            //     <AttachSignDoc info={this.state.docInfo.ListTaiLieu} docId={this.state.docId} />
+            // </Tab>
+          }
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 2 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <Icon name='ios-git-network' style={TabStyle.activeText} />
-                            <Text style={(this.state.currentTabIndex == 2 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                ĐƠN VỊ NHẬN
+          <Tab heading={
+            <TabHeading style={(this.state.currentTabIndex == 2 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+              <Icon name='ios-git-network' style={TabStyle.activeText} />
+              <Text style={(this.state.currentTabIndex == 2 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                ĐƠN VỊ NHẬN
                             </Text>
-                        </TabHeading>
-                    }>
-                        <UnitSignDoc info={this.state.docInfo} />
-                    </Tab>
+            </TabHeading>
+          }>
+            <UnitSignDoc info={this.state.docInfo} />
+          </Tab>
 
-                    <Tab heading={
-                        <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-                            <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
-                            <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
-                                LỊCH SỬ XỬ LÝ
+          <Tab heading={
+            <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
+              <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
+              <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
+                LỊCH SỬ XỬ LÝ
                             </Text>
-                        </TabHeading>
-                    }>
-                        <Timeline info={this.state.docInfo} />
-                    </Tab>
-                </Tabs>
-                {
-                    renderIf(!util.isEmpty(this.props.buttons))(
-                        <ButtonGroup
-                            containerStyle={ButtonGroupStyle.container}
-                            buttons={this.props.buttons}
-                        />
-                    )
-                }
-            </View>
-        );
-    }
+            </TabHeading>
+          }>
+            <Timeline info={this.state.docInfo} />
+          </Tab>
+        </Tabs>
+        {
+          renderIf(!util.isEmpty(this.props.buttons))(
+            <ButtonGroup
+              containerStyle={ButtonGroupStyle.container}
+              buttons={this.props.buttons}
+            />
+          )
+        }
+      </View>
+    );
+  }
 }

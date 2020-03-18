@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
 import { Header } from 'react-native-elements';
-import { Colors } from '../../common/SystemConstant';
-import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
 import styles from '../../assets/styles/AlertMessageStyle';
 

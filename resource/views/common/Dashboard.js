@@ -5,13 +5,8 @@
  */
 import React, { Component } from 'react';
 import {
-  AsyncStorage, View, Text, ScrollView, Image,
-  ImageBackground, Modal,
-  TouchableOpacity, StatusBar, FlatList, RefreshControl, ActivityIndicator,
-  Linking, Platform, Dimensions,
+  AsyncStorage, View, Text, ScrollView, StatusBar, Linking, Dimensions,
 } from 'react-native';
-import { NavigationActions } from 'react-navigation';
-import { Agenda } from 'react-native-calendars';
 import CalendarStrip from 'react-native-calendar-strip';
 import 'moment/locale/vi';
 
@@ -19,44 +14,22 @@ import 'moment/locale/vi';
 import { connect } from 'react-redux';
 import * as navAction from '../../redux/modules/Nav/Action';
 //native-base
-import {
-  Container, Header, Content,
-  Left, Right, Body, Title, Footer, FooterTab, Badge, Button, Icon as NBIcon, Subtitle, Toast
-} from 'native-base';
-
-import { ListItem, Icon, normalize } from 'react-native-elements';
-import renderIf from 'render-if';
-
+import { Header, Left, Right, Body } from 'native-base';
+import { Icon } from 'react-native-elements';
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
-import { NativeBaseStyle } from '../../assets/styles/NativeBaseStyle';
 
-import * as SBIcons from '../../assets/styles/SideBarIcons';
-
-import Panel from './Panel';
-import GridPanel from './GridPanel';
 import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL, generateBadgeIconNoti } from '../../common/SystemConstant';
-import Images from '../../common/Images';
+import { Colors, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 // import { genIcon } from '../../common/Icons';
-import { verticalScale, moderateScale, indicatorResponsive, scale } from '../../assets/styles/ScaleIndicator';
+import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
-const headerBackground = require('../../assets/images/background.png');
-const userAvatar = require('../../assets/images/avatar.png');
-const subItemIconLink = require('../../assets/images/arrow-white-right.png');
-
-import SideBarIcon from '../../common/Icons';
-import { GridPanelStyle } from '../../assets/styles/GridPanelStyle';
-import { convertDateTimeToTitle, emptyDataPage, convertDateToString, _readableFormat, isArray, showWarningToast } from '../../common/Utilities';
-import { ListNotificationStyle } from '../../assets/styles/ListNotificationStyle';
-import { DashboardStyle } from '../../assets/styles/DashboardStyle';
+import { emptyDataPage, convertDateToString, _readableFormat, isArray, showWarningToast } from '../../common/Utilities';
 import { MenuProvider, Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
 import { HeaderMenuStyle } from '../../assets/styles';
 import { accountApi } from '../../common/Api';
 import { HotPickButton, BirthdayNoti, AuthorizeNoti, CalendarItem, RecentNoti } from './DashboardCommon/index';
 import { dataLoading } from '../../common/Effect';
-const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
-const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN } = DM_FUNCTIONS;
-const { LichCongTacFunction } = SYSTEM_FUNCTION;
+const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO } = DM_FUNCTIONS;
 
 const api = accountApi();
 
@@ -79,6 +52,8 @@ class Dashboard extends Component {
       calendarData: [],
       calendarDate: "",
       calendarLoading: false,
+      notiLoading: false,
+      isRefreshNotiList: false,
 
       //notifyCount
       notifyCount_VBDen_Chuaxuly: 0,
@@ -95,7 +70,7 @@ class Dashboard extends Component {
       birthdayData: null,
       dataUyQuyen: [],
       dataHotline: [],
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || [],
       orientation: isPortrait() ? 'portrait' : 'landscape',
     };
 
@@ -199,103 +174,40 @@ class Dashboard extends Component {
   }
 
   fetchRecentNoti = async () => {
+    this.setState({
+      notiLoading: true,
+    });
+
     const result = await api.getRecentNoti([
       this.state.userInfo.ID,
       "3/1/true?query="
     ]);
 
     this.setState({
-      notiData: result
+      notiLoading: false,
+      notiData: result,
     });
   }
-  onPressNotificationItem = async (item) => {
-    //update read state for unread noti
-    if (!item.IS_READ) {
-      const result = await api.updateReadStateOfMessage(item);
-    }
 
-    //navigate to detail
-    let screenName = EMPTY_STRING;
-    let screenParam = {};
-
-    let outOfSwitch = false;
-    if (item.URL) {
-      let urlArr = item.URL.split("/");
-      const itemType = urlArr[2] || item.NOTIFY_ITEM_TYPE;
-      const itemId = +urlArr[3].split("&").shift().match(/\d+/gm) || item.NOTIFY_ITEM_ID;
-      switch (itemType) {
-        case "HSVanBanDi":
-          screenName = "VanBanDiDetailScreen";
-          screenParam = {
-            docId: itemId,
-            docType: "1"
-          };
-          break;
-        case "QuanLyCongViec":
-          screenName = "DetailTaskScreen";
-          screenParam = {
-            taskId: urlArr[4],
-            taskType: "1"
-          };
-          break;
-        case "HSCV_VANBANDEN":
-          screenName = "VanBanDenDetailScreen";
-          screenParam = {
-            docId: itemId,
-            docType: "1"
-          };
-          break;
-        case "QL_LICHHOP":
-          screenName = "DetailMeetingDayScreen";
-          screenParam = {
-            lichhopId: itemId,
-          };
-          break;
-        case "QL_DANGKY_XE":
-          screenName = "DetailCarRegistrationScreen";
-          screenParam = {
-            registrationId: itemId,
-          };
-          break;
-        case "QL_CHUYEN":
-          screenName = "DetailTripScreen";
-          screenParam = {
-            tripId: itemId,
-          };
-          break;
-        case "KeHoachKhoa":
-          screenName = "ListLichtrucScreen";
-          screenParam = {
-            listIds: [itemId],
-          };
-          break;
-        default:
-          outOfSwitch = true;
-          break;
-      }
-    }
-    else {
-      outOfSwitch = true;
-    }
-
-    if (outOfSwitch) {
-      Toast.show({
-        text: 'Bạn không có quyền truy cập vào thông tin này!',
-        type: 'danger',
-        buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
-      });
-    }
+  onNavigateToScreen = (screenName = '', screenParam = {}) => {
     this.props.updateCoreNavParams(screenParam);
     this.props.navigation.navigate(screenName);
+  }
+  checkRefreshNotiList = () => {
+    this.setState({
+      isRefreshNotiList: true,
+    });
   }
 
   componentDidMount() {
     this._navListener = this.props.navigation.addListener('didFocus', () => {
       StatusBar.setBarStyle('light-content');
       this.fetchNotifyCount();
-      this.fetchRecentNoti();
+      if (this.state.isRefreshNotiList) {
+        this.setState({
+          isRefreshNotiList: false,
+        }, () => this.fetchRecentNoti());
+      }
       this.fetchDataUyQuyen();
       this.fetchBirthdayData();
     });
@@ -329,19 +241,17 @@ class Dashboard extends Component {
 
   render() {
     const {
-      notifyCount, userFunctions, onFocusNow,
       notifyCount_VBDen_Chuaxuly, notifyCount_VBDi_Chuaxuly, notifyCount_CV_Canhan,
       notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec,
       dataHotline
     } = this.state;
 
     let maxExtendKeyFunctionNotiCount = Math.max.apply(Math, [notifyCount_Chuyenxe, notifyCount_Datxe, notifyCount_Lichhop, notifyCount_Lichtruc, notifyCount_Uyquyen, notifyCount_Nhacviec]);
-
     return (
       <MenuProvider backHandler>
         <View style={SideBarStyle.container}>
           <StatusBar barStyle="light-content" />
-          <Header style={SideBarStyle.dashboardHeader}>
+          <Header style={SideBarStyle.dashboardHeader} span>
             <Left style={SideBarStyle.dashboardHeaderLeft}>
               <Text style={{ color: Colors.WHITE, fontSize: moderateScale(12, 1.2) }}>
                 <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
@@ -383,7 +293,7 @@ class Dashboard extends Component {
           </Header>
 
           <View
-            style={[SideBarStyle.hotPickBoxContainer, {flex: this.state.orientation === 'portrait' ? 1 : 2}]}
+            style={[SideBarStyle.hotPickBoxContainer, { flex: this.state.orientation === 'portrait' ? 1 : 2 }]}
           >
             <View style={SideBarStyle.shortcutBoxContainer}>
               <HotPickButton
@@ -429,9 +339,15 @@ class Dashboard extends Component {
                     : null
                 }
                 {
-                  this.state.notiData.length > 0
-                    ? this.state.notiData.map((item, index) => (<RecentNoti item={item} index={index} key={index.toString()} onPressNotificationItem={this.onPressNotificationItem} />))
-                    : emptyDataPage()
+                  this.state.notiLoading
+                    ? dataLoading(this.state.notiLoading)
+                    : this.state.notiData.length > 0
+                      ? this.state.notiData.map((item, index) => (<RecentNoti
+                        item={item} index={index} key={index.toString()}
+                        successFunc={this.onNavigateToScreen}
+                        readFunc={this.checkRefreshNotiList}
+                      />))
+                      : emptyDataPage()
                 }
                 <BirthdayNoti birthdayData={this.state.birthdayData} />
               </View>

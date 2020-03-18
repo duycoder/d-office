@@ -45,6 +45,8 @@ const images = {
     tien_ich: require('../assets/images/Dashboard_icon/hot_pick/tien_ich.png'),
   },
   icon_phe_duyet: require('../assets/images/icon_phe_duyet.png'),
+  icon_empty_data: require('../assets/images/empty_data.png'),
+  icon_sad_face: require('../assets/images/error.png'),
 }
 
 export default images;

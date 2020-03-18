@@ -25,7 +25,7 @@ class BirthdayNoti extends React.Component {
           subtitle={body}
           subtitleStyle={BirthdayNotiStyles.subTitleStyle}
           subtitleContainerStyle={BirthdayNotiStyles.subTitleContainerStyle}
-          titleNumberOfLines={3}
+          subtitleNumberOfLines={3}
         />
       );
     }

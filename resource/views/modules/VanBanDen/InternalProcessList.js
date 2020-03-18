@@ -8,9 +8,9 @@ import { VANBANDEN_CONSTANT } from '../../../common/SystemConstant';
 import BaseList from './BaseList';
 
 export default class InternalProcessList extends Component {
-    render() {
-        return (
-            <BaseList docType={VANBANDEN_CONSTANT.NOIBO_DAXULY} navigator={this.props.navigation} />
-        )
-    }
+  render() {
+    return (
+      <BaseList docType={VANBANDEN_CONSTANT.NOIBO_DAXULY} navigator={this.props.navigation} />
+    )
+  }
 }

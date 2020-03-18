@@ -6,9 +6,8 @@
 
 import React, { Component } from 'react';
 import {
-  ActivityIndicator, StyleSheet, RefreshControl,
-  View, Text as RnText, FlatList, Platform,
-  TouchableOpacity
+  ActivityIndicator, RefreshControl,
+  View, Text as RnText, FlatList
 } from 'react-native';
 
 //redux
@@ -16,12 +15,11 @@ import { connect } from 'react-redux';
 
 //lib
 import {
-  Container, Header, Item, Input, Icon, Title, Form,
-  Content, Button, SwipeRow, Left, Body, Toast, Label, Right
+  Container, Header, Item, Input, Icon, Title,
+  Content, Left, Body, Toast, Right
 } from 'native-base';
 import { Icon as RneIcon, ListItem } from 'react-native-elements';
 import renderIf from 'render-if';
-import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 
 //utilities
 import {
@@ -34,14 +32,13 @@ import {
 } from '../../../common/SystemConstant';
 
 //styles
-import { scale, verticalScale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
+import { scale, indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 
 import AlertMessage from "../../common/AlertMessage";
-import { AlertMessageStyle } from "../../../assets/styles/index";
 
 import * as navAction from '../../../redux/modules/Nav/Action';
-import { MoreButton, GoBackButton, ColumnedListItem, ButtonWithIcon } from '../../common';
+import { MoreButton, GoBackButton, ColumnedListItem, AlertMessageButton, BubbleText } from '../../common';
 import { taskApi } from '../../../common/Api';
 import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
@@ -169,7 +166,6 @@ class GroupSubTask extends Component {
         }
       }
     });
-
   }
 
   renderItem = ({ item }) => {
@@ -213,26 +209,8 @@ class GroupSubTask extends Component {
               rightText={convertDateToString(item.NGAYHOANTHANH)}
             />
             <View style={{ flexDirection: 'row', marginTop: 10 }}>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Độ khẩn:
-              </RnText>
-                  <RnText>
-                    {' ' + item.DOKHAN_TEXT}
-                  </RnText>
-                </RnText>
-              </View>
-              <View style={{ backgroundColor: '#eaeaea', borderRadius: 8, padding: 8, marginRight: 5 }}>
-                <RnText style={[ListPublishDocStyle.abridgmentSub]}>
-                  <RnText style={{ fontWeight: 'bold' }}>
-                    Độ ưu tiên:
-            </RnText>
-                  <RnText>
-                    {` ${item.DOUUTIEN_TEXT}`}
-                  </RnText>
-                </RnText>
-              </View>
+              <BubbleText leftText='Độ khẩn' rightText={item.DOKHAN_TEXT} />
+              <BubbleText leftText='Độ ưu tiên' rightText={item.DOUUTIEN_TEXT} />
             </View>
           </View>
         }
@@ -290,7 +268,7 @@ class GroupSubTask extends Component {
               CÔNG VIỆC CON
                         </Title>
           </Body>
-          <Right style={NativeBaseStyle.right}></Right>
+          <Right style={NativeBaseStyle.right} />
         </Header>
 
         <Content contentContainerStyle={{ flex: 1 }}>
@@ -349,40 +327,12 @@ class GroupSubTask extends Component {
           bodyText="Bạn có chắc chắn đã hoàn thành công việc này?"
           exitText="HUỶ BỎ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.onCompleteSubTask(this.state.alertIdHolder)} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-                            </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.onCompleteSubTask(this.state.alertIdHolder)} />
         </AlertMessage>
       </Container>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  rowItem: {
-    paddingLeft: scale(10)
-  },
-  rowItemLabel: {
-    marginHorizontal: scale(10),
-    fontWeight: 'bold',
-    color: '#000'
-  }, complete: {
-    fontWeight: 'bold',
-    color: '#337321'
-  }, inComplete: {
-    fontWeight: 'bold',
-    color: '#ff0033'
-  }, dialogLabel: {
-    fontWeight: 'bold',
-    color: '#000',
-    fontSize: moderateScale(14, 1.4)
-  }
-})
-
 
 const mapStateToProps = (state) => {
   return {

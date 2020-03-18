@@ -5,48 +5,34 @@
  */
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native';
+import { View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 //utilities
 import { API_URL, Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate } from '../../../common/Utilities';
+import { asyncDelay } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
-import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
-//styles
-import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 //lib
 import {
-  Container, Header, Left, Button,
-  Body, Icon, Title, Content, Form,
-  Tabs, Tab, TabHeading, ScrollableTab,
-  Text, Right, Toast
+  Container, Header, Left, Body, Title, Right, Toast
 } from 'native-base';
 import {
-  Icon as RneIcon, ButtonGroup
+  ButtonGroup
 } from 'react-native-elements';
 
-import renderIf from 'render-if';
-
 //views
-
 import * as navAction from '../../../redux/modules/Nav/Action';
 import GoBackButton from '../../common/GoBackButton';
-import { MenuProvider, Menu, MenuTrigger, MenuOptions, MenuOption } from 'react-native-popup-menu';
-import { HeaderMenuStyle, AlertMessageStyle } from '../../../assets/styles';
-import RegistrationInfo from './RegistrationInfo';
 import AlertMessage from '../../common/AlertMessage';
 import TripInfo from './TripInfo';
 import { tripApi } from '../../../common/Api';
 import { WorkflowButton } from '../../common/DetailCommon';
-
-const TripApi = tripApi();
+import { AlertMessageButton } from '../../common';
 
 class DetailTrip extends Component {
   constructor(props) {
@@ -79,7 +65,7 @@ class DetailTrip extends Component {
           this.props.updateExtendsNavParams({ check: false });
         }
       }
-    })
+    });
   }
 
   componentWillUnmount = () => {
@@ -90,12 +76,9 @@ class DetailTrip extends Component {
     this.setState({
       loading: true
     });
-
-    const url = `${API_URL}/api/CarTrip/DetailTrip/${this.state.tripId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
-
-    await asyncDelay();
+    const resultJson = await tripApi().getDetail([
+      this.state.tripId
+    ]);
 
     this.setState({
       loading: false,
@@ -239,11 +222,7 @@ class DetailTrip extends Component {
           bodyText="Bạn có chắc chắn muốn bắt đầu chạy xe này không?"
           exitText="Hủy bỏ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <RnButton onPress={() => this.onStartTrip()} style={AlertMessageStyle.footerButton}>
-              <RNText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>Đồng ý</RNText>
-            </RnButton>
-          </View>
+          <AlertMessageButton btnText='Đồng ý' onPress={() => this.onStartTrip()} />
         </AlertMessage>
 
       </Container>

@@ -3,28 +3,24 @@ import { View, ActivityIndicator, FlatList } from 'react-native';
 //lib
 import {
     Container, Header, Item, Icon, Input, Body, Text,
-    Content, Badge, Left, Right, Button, SwipeRow, Tabs, ScrollableTab,
-    TabHeading, Title, Tab, Form, Label, Toast
+    Content, Left, Right, Tabs, TabHeading, Title, Tab, Form, Label, Toast
 } from 'native-base'
 import { connect } from 'react-redux';
-import { Icon as RneIcon } from 'react-native-elements'
 import renderIf from 'render-if';
 import DatePicker from 'react-native-datepicker';
 
 //local util
 import {
-    API_URL, HEADER_COLOR, LOADER_COLOR, LOADMORE_COLOR, EMPTY_STRING,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, WORKFLOW_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
+    API_URL, EMPTY_STRING,
+    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
-import { moderateScale, indicatorResponsive, verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
-import { asyncDelay, emptyDataPage, backHandlerConfig, appGetDataAndNavigate, convertDateToString, _readableFormat, showWarningToast } from '../../../common/Utilities';
+import { moderateScale, indicatorResponsive, verticalScale } from '../../../assets/styles/ScaleIndicator';
+import { emptyDataPage, _readableFormat, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
-import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 
 //views
 import DeptUyQuyen from './DeptUyQuyen';
@@ -427,7 +423,7 @@ class EditUyQuyen extends Component {
                                 }>
                                     <Content contentContainerStyle={{ flex: 1 }}>
                                         <FlatList
-                                            keyExtractor={(item, index) => item.Code.toString()}
+                                            keyExtractor={(item) => item.Code.toString()}
                                             data={this.state.categoryVanBanDen}
                                             renderItem={this.renderVanBanDenItem}
                                             ListEmptyComponent={

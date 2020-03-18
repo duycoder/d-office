@@ -66,7 +66,7 @@ export default (variables /*: * */ = variable) => {
         flex: 1,
         width: Platform.OS === "ios" ? null : variables.deviceWidth - moderateScale(23.91, 0.67),
         fontSize: variables.inputFontSize,
-        lineHeight: variables.inputLineHeight - moderateScale(5.22, 0.68),
+        lineHeight: variables.inputLineHeight,
         ".secureTextEntry": {
           fontSize: variables.inputFontSize - moderateScale(3.99, 0.63)
         },

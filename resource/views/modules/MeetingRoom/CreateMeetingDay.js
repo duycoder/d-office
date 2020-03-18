@@ -18,7 +18,7 @@ import 'moment/locale/vi';
 import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
-import { showWarningToast } from '../../../common/Utilities';
+import { showWarningToast, convertDateToString } from '../../../common/Utilities';
 
 //redux
 import { connect } from 'react-redux';
@@ -72,10 +72,17 @@ class CreateMeetingDay extends Component {
 
       isEdit: props.extendsNavParams.isEdit || false,
       lichhopId: props.extendsNavParams.lichhopId || 0,
+      isThamgiaChange: false,
     }
   }
 
   handleChange = fieldName => fieldValue => this.setState({ [fieldName]: fieldValue })
+  handleChangeThamgia = (value) => {
+    this.setState({
+      thamgia: value,
+      isThamgiaChange: true,
+    });
+  }
 
   componentDidMount = () => {
     const navObj = this.props.navigation || this.props.navigator;
@@ -167,21 +174,22 @@ class CreateMeetingDay extends Component {
           loading: false,
           mucdich: objBO.MUCDICH || EMPTY_STRING,
           thamgia: objBO.THANHPHAN_THAMDU || EMPTY_STRING,
-          ngayHop: objBO.NGAY_HOP || EMPTY_STRING,
-          gioBatdau: objBO.GIO_BATDAU || EMPTY_STRING,
-          phutBatdau: objBO.PHUT_BATDAU || EMPTY_STRING,
-          gioKetthuc: objBO.GIO_KETTHUC || EMPTY_STRING,
-          phutKetthuc: objBO.PHUT_KETTHUC || EMPTY_STRING,
-          chutriId: objBO.NGUOICHUTRI || EMPTY_STRING,
+          ngayHop: convertDateToString(objBO.NGAY_HOP) || EMPTY_STRING,
+          thoigianBatdau: `${objBO.GIO_BATDAU}:${objBO.PHUT_BATDAU}`,
+          thoigianKetthuc: `${objBO.GIO_KETTHUC}:${objBO.PHUT_KETTHUC}`,
+          chutriId: objBO.NGUOICHUTRI || 0,
+          chutriName: objBO.TEN_NGUOICHUTRI || EMPTY_STRING,
           lichCongtacId: objBO.LICHCONGTAC_ID || 0,
           phonghopId: objBO.PHONGHOP_ID || 0,
-          joinNguoiId: objBO.TD_NGUOI_ID,
-          joinNguoiText: objBO.TD_NGUOI_TEXT,
-          joinVaitroId: objBO.TD_VAITRO_ID,
-          joinVaitroText: objBO.TD_VAITRO_TEXT,
-          joinPhongId: objBO.TD_PHONG_ID,
-          joinPhongText: objBO.TD_PHONG_TEXT,
+          phonghopName: objBO.TEN_PHONG || EMPTY_STRING,
+          joinNguoiId: !!objBO.TD_NGUOI_ID ? objBO.TD_NGUOI_ID.split(',') : [],
+          joinNguoiText: !!objBO.TD_NGUOI_TEXT ? objBO.TD_NGUOI_TEXT.split(',') : [],
+          joinVaitroId: !!objBO.TD_VAITRO_ID ? objBO.TD_VAITRO_ID.split(',') : [],
+          joinVaitroText: !!objBO.TD_VAITRO_TEXT ? objBO.TD_VAITRO_TEXT.split(',') : [],
+          joinPhongId: !!objBO.TD_PHONG_ID ? objBO.TD_PHONG_ID.split(',') : [],
+          joinPhongText: !!objBO.TD_PHONG_TEXT ? objBO.TD_PHONG_TEXT.split(',') : [],
           canCreateMeetingForOthers: canBookingRoom || false,
+          joinPlaceholderText: objBO.THANHPHAN_THAMDU || EMPTY_STRING,
         });
       }
       else {
@@ -279,7 +287,7 @@ class CreateMeetingDay extends Component {
       mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop, userId, lichCongtacId, phonghopId,
       canCreateMeetingForOthers, isFromCalendar,
       joinNguoiId, joinNguoiText, joinPhongId, joinPhongText, joinVaitroText, joinVaitroId,
-      joinPlaceholderText, lichhopId,
+      joinPlaceholderText, lichhopId, isThamgiaChange
     } = this.state;
 
     if (!mucdich) {
@@ -300,7 +308,7 @@ class CreateMeetingDay extends Component {
       const resultJson = await MeetingRoomApi.saveCalendar({
         lichhopId,
         mucdich,
-        thamgia: thamgia || joinPlaceholderText,
+        thamgia: isThamgiaChange ? thamgia : joinPlaceholderText,
         ngayHop,
         gioBatdau: thoigianBatdau.split(":")[0],
         phutBatdau: thoigianBatdau.split(":")[1],
@@ -465,11 +473,11 @@ class CreateMeetingDay extends Component {
               <Textarea
                 rowSpan={5} bordered
                 placeholder='Nhập thành phần tham dự'
-                onChangeText={this.handleChange('thamgia')}
+                onChangeText={this.handleChangeThamgia}
                 onFocus={() => this.setState({ focusId: "thamgia" })}
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 style={{ width: '100%', marginTop: 20 }}
-                value={!!thamgia ? thamgia : (!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING)}
+                value={!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING}
                 placeholderTextColor={Colors.GRAY}
               />
             </Item>

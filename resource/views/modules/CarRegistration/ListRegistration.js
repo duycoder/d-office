@@ -6,40 +6,29 @@
 'use strict'
 import React, { Component } from 'react';
 import {
-  AsyncStorage, ActivityIndicator, View,
-  FlatList, RefreshControl, TouchableOpacity, Text as RnText
+  View,
+  FlatList, RefreshControl, Text as RnText
 } from 'react-native';
 
 //redux
 import { connect } from 'react-redux';
-import * as vanbandenAction from '../../../redux/modules/VanBanDen/Action';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //lib
 import {
-  Container, Header, Item, Icon, Input, Body, Text,
-  Content, Badge, Left, Right, Button, Fab
-} from 'native-base'
-import renderIf from 'render-if';
-import { List, ListItem, Icon as RNEIcon } from 'react-native-elements';
+  Container, Header, Content, Left} from 'native-base'
+import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 
 //utilities
-import { formatLongText, openSideBar, emptyDataPage, appNavigate, appStoreDataAndNavigate, convertDateTimeToTitle, convertDateToString } from '../../../common/Utilities';
+import { formatLongText, emptyDataPage, convertDateToString } from '../../../common/Utilities';
 import {
-  API_URL, HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
-  VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
   Colors,
-  VANBANDEN_CONSTANT,
-  VANBANDI_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
-import { indicatorResponsive, moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
+import { moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
 
-//styles
-import { ListPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
-import { ItemProportion } from '../../../assets/styles/ListLayoutStyles';
 import { carApi } from '../../../common/Api';
 import { SearchSection, AddButton, MoreButton, ColumnedListItem, GoBackButton } from '../../common';
 import { dataLoading } from '../../../common/Effect';
@@ -163,7 +152,7 @@ class ListRegistration extends Component {
     })
   }
 
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     const thoigianXP = item.THOIGIAN_XUATPHAT.split(" "),
       timePart = thoigianXP[1],
       datePart = thoigianXP[0];

@@ -28,8 +28,8 @@ class CustomPickerButton extends React.Component {
             <Button transparent style={{ width: isValueNameValid ? '100%' : '90%', flexShrink: 1 }} onPress={pickFunc}>
               {
                 isValueNameValid
-                  ? <Text style={CustomPickerStyle.valueName}>{valueName}</Text>
-                  : <Text style={CustomPickerStyle.placeholder}>{placeholderText}</Text>
+                  ? <Text numberOfLines={1} style={CustomPickerStyle.valueName}>{valueName}</Text>
+                  : <Text numberOfLines={1} style={CustomPickerStyle.placeholder}>{placeholderText}</Text>
               }
             </Button>
             {

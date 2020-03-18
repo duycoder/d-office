@@ -66,6 +66,8 @@ const vanbandenApi = () => {
   const getFlow = (params = []) => api.get("WorkFlow/GetFlow", params);
   const saveFlow = (payloadBody = {}) => api.post("WorkFlow/SaveFlow", payloadBody);
   const getUserInFlow = (params = []) => api.get("WorkFlow/SearchUserInFlow", params);
+  const getBrief = (oarams = []) => api.get("VanBanDen/HoSoVanBan", params);
+  const getAttachment = (params = "") => api.post(`VanBanDen/SearchAttachment${params}`);
 
   return {
     getDetail,
@@ -77,6 +79,8 @@ const vanbandenApi = () => {
     saveFlow,
     getUserInFlow,
     getList,
+    getBrief,
+    getAttachment,
   };
 }
 
@@ -99,6 +103,8 @@ const accountApi = () => {
   const getInfo = (params = []) => api.get("Account/GetUserInfo", params);
   const postLogin = (payloadBody = {}) => api.post("Account/Login", payloadBody);
   const postSignup = (payloadBody = {}) => api.post("Account/SignUp", payloadBody);
+  const getUserFunctions = (params = []) => api.get("Account/GetGroupUserFunctions", params);
+  const getCheckAuthorization = (params = []) => api.get("Account/CheckUyQuyen", params);
 
   return {
     deactivateToken,
@@ -117,6 +123,8 @@ const accountApi = () => {
     getInfo,
     postLogin,
     postSignup,
+    getUserFunctions,
+    getCheckAuthorization,
   };
 }
 
@@ -148,7 +156,7 @@ const carApi = () => {
 }
 
 const tripApi = () => {
-  const getDetail = (params = []) => api.get("CarRegistration/DetailCarRegistration", params);
+  const getDetail = (params = []) => api.get("CarTrip/DetailTrip", params);
   const getDetailByRegistrationId = (params = []) => api.get("CarTrip/DetailTripByRegistrationId", params);
   const getCreateHelper = (params = []) => api.get("CarTrip/CreateTrip", params);
   const filterDrivers = (params = []) => api.get("CarTrip/SearchGroupOfDrivers", params);
@@ -289,6 +297,8 @@ const taskApi = () => {
   const saveComment = (payloadBody = {}) => api.post("HscvCongViec/SaveComment", payloadBody);
   const getRepliesOfComment = (params = []) => api.get("HscvCongViec/GetRepliesOfComment", params);
   const saveConfirmReschedule = (payloadBody = {}) => api.post("HscvCongViec/ApproveExtendTask", payloadBody);
+  const saveApproveProgress = (payloadBody = {}) => api.post("HscvCongViec/SaveApproveCompleteTask", payloadBody);
+  const saveApproveEvaluation = (payloadBody = {}) => api.post("HscvCongViec/ApproveEvaluationTask", payloadBody);
 
   return {
     getCreateHelper,
@@ -317,6 +327,8 @@ const taskApi = () => {
     saveComment,
     getRepliesOfComment,
     saveConfirmReschedule,
+    saveApproveProgress,
+    saveApproveEvaluation,
   };
 }
 

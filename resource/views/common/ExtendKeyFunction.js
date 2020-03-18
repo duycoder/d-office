@@ -4,49 +4,27 @@
  * @author: duynn
  * @since: 02/05/2018
  */
+//native-base
+import { Body, Header, Left, Right, Title } from 'native-base';
 import React, { Component } from 'react';
-import {
-  AsyncStorage, View, Text, ScrollView, Image,
-  ImageBackground, Modal,
-  TouchableOpacity, StatusBar
-} from 'react-native';
-import { NavigationActions } from 'react-navigation';
-
+import { AsyncStorage, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import * as navAction from '../../redux/modules/Nav/Action';
-//native-base
-import {
-  Container, Header, Content,
-  Left, Right, Body, Title, Footer, FooterTab, Badge, Button, Icon as NBIcon, Subtitle
-} from 'native-base';
-
-import { ListItem, Icon } from 'react-native-elements';
-import renderIf from 'render-if';
-
-import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import { NativeBaseStyle } from '../../assets/styles/NativeBaseStyle';
-
-import * as SBIcons from '../../assets/styles/SideBarIcons';
-
-import Panel from './Panel';
-import GridPanel from './GridPanel';
-import Confirm from './Confirm';
-import { width, Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING, SYSTEM_FUNCTION, API_URL, generateTitle } from '../../common/SystemConstant';
-import Images from '../../common/Images';
 // import { genIcon } from '../../common/Icons';
-import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
-
-const headerBackground = require('../../assets/images/background.png');
-const userAvatar = require('../../assets/images/avatar.png');
-const subItemIconLink = require('../../assets/images/arrow-white-right.png');
-
-import SideBarIcon from '../../common/Icons';
-import GoBackButton from './GoBackButton';
+import { moderateScale } from '../../assets/styles/ScaleIndicator';
+import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 import { accountApi } from '../../common/Api';
-const { TAIKHOAN, THONGBAO, DANGXUAT } = SIDEBAR_CODES;
-const { VANBANDEN, VANBANDI, CONGVIEC, LICHCONGTAC_LANHDAO, QUANLY_UYQUYEN, TIENICH } = DM_FUNCTIONS;
-const { LichCongTacFunction, TienichFunction } = SYSTEM_FUNCTION;
+import SideBarIcon from '../../common/Icons';
+import { DM_FUNCTIONS, EMPTY_STRING, generateTitle, SYSTEM_FUNCTION } from '../../common/SystemConstant';
+import { emptyDataPage, isArray, showWarningToast } from '../../common/Utilities';
+import * as navAction from '../../redux/modules/Nav/Action';
+import GoBackButton from './GoBackButton';
+import GridPanel from './GridPanel';
+import { dataLoading } from '../../common/Effect';
+
+const { TIENICH } = DM_FUNCTIONS;
+const { TienichFunction } = SYSTEM_FUNCTION;
 
 const api = accountApi();
 
@@ -59,6 +37,7 @@ class ExtendKeyFunction extends Component {
       onFocusNow: '',
       notifyCount: 0,
       userFunctions: [],
+      loadingUserFunctions: false,
 
       notifyCount_Lichhop: 0,
       notifyCount_Datxe: 0,
@@ -67,6 +46,18 @@ class ExtendKeyFunction extends Component {
       notifyCount_Lichtruc: 0,
       notifyCount_Nhacviec: 0,
     }
+  }
+
+  fetchFunctions = async () => {
+    const result = await accountApi().getUserFunctions([
+      this.state.userInfo.ID,
+    ]);
+    this.setState({
+      userFunctions: result.Status ? result.Params : [],
+      loadingUserFunctions: false,
+    }, () => {
+      !result.Status && showWarningToast(result.Message);
+    });
   }
 
   fetchNotifyCount = async () => {
@@ -88,11 +79,11 @@ class ExtendKeyFunction extends Component {
     const userInfo = JSON.parse(storageUserInfo);
     this.setState({
       userInfo,
-      onFocusNow: userInfo.hasRoleAssignUnit ? VANBANDI._CHUAXULY : VANBANDEN._CHUAXULY,
-      notifyCount: userInfo.numberUnReadMessage,
-      userFunctions: userInfo.GroupUserFunctions
+      loadingUserFunctions: true,
+    }, () => {
+      this.fetchFunctions();
+      this.fetchNotifyCount();
     });
-    this.fetchNotifyCount();
   }
 
   componentDidMount() {
@@ -171,8 +162,65 @@ class ExtendKeyFunction extends Component {
   }
 
   render() {
-    const { notifyCount, userFunctions, onFocusNow } = this.state;
-    // console.tron.log(userFunctions)
+    const { userFunctions, loadingUserFunctions } = this.state;
+    let bodyContent = null;
+    if (loadingUserFunctions) {
+      bodyContent = dataLoading(loadingUserFunctions);
+    } else if (isArray(userFunctions) && userFunctions.length > 0) {
+      bodyContent = (
+        <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
+          {
+            userFunctions.map((item) => {
+              if (item.MA_CHUCNANG.indexOf("HSCV_TIENICH") < 0) {
+                return null;
+              }
+              return <GridPanel
+                title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
+                key={item.DM_CHUCNANG_ID.toString()}
+              >
+                {
+                  item.ListThaoTac.map((sItem) => {
+                    const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
+                    if (renderCondition) {
+                      if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
+                        return <TouchableOpacity
+                          style={SideBarStyle.normalBoxStyle}
+                          key={sItem.DM_THAOTAC_ID.toString()}
+                          onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
+                        >
+                          <SideBarIcon
+                            actionCode={TienichFunction.actionCodes[6]}
+                          />
+                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
+                        </TouchableOpacity>;
+                      }
+
+                      return <TouchableOpacity
+                        style={SideBarStyle.normalBoxStyle}
+                        key={sItem.DM_THAOTAC_ID.toString()}
+                        onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
+                      >
+                        <SideBarIcon
+                          actionCode={sItem.MA_THAOTAC}
+                          notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
+                        />
+                        <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
+                      </TouchableOpacity>;
+                    }
+                    else {
+                      return null;
+                    }
+                  })
+                }
+              </GridPanel>
+            })
+          }
+        </ScrollView>
+      );
+    } else {
+      bodyContent = emptyDataPage();
+    }
+
     return (
       <View style={SideBarStyle.container}>
         <StatusBar barStyle="light-content" />
@@ -189,54 +237,7 @@ class ExtendKeyFunction extends Component {
         </Header>
 
         <View style={[SideBarStyle.body]}>
-          <ScrollView contentContainerStyle={{ paddingVertical: moderateScale(6, 1.2) }}>
-            {
-              userFunctions && userFunctions.map((item, index) => {
-                if (item.MA_CHUCNANG.indexOf("HSCV_TIENICH") < 0) {
-                  return null;
-                }
-                return <GridPanel
-                  title={item.TEN_CHUCNANG.replace("Quản lý ", "")}
-                  key={item.DM_CHUCNANG_ID.toString()}
-                >
-                  {
-                    item.ListThaoTac.map((sItem, sIndex) => {
-                      const renderCondition = sItem.IS_HIENTHI && sItem.IS_ACCESS_ON_MOBILE;
-                      if (renderCondition) {
-                        if (sItem.MA_THAOTAC.match(/^KHAC_/)) {
-                          return <TouchableOpacity
-                            style={SideBarStyle.normalBoxStyle}
-                            key={sItem.DM_THAOTAC_ID.toString()}
-                            onPress={() => this.moveToSpecialScreen(sItem.MENU_LINK, sItem.TEN_THAOTAC)}
-                          >
-                            <SideBarIcon
-                              actionCode={TienichFunction.actionCodes[6]}
-                            />
-                            <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC}</Text>
-                          </TouchableOpacity>;
-                        }
-
-                        return <TouchableOpacity
-                          style={SideBarStyle.normalBoxStyle}
-                          key={sItem.DM_THAOTAC_ID.toString()}
-                          onPress={() => this.setCurrentFocus(sItem.MOBILE_SCREEN, sItem.MENU_LINK, item.MA_CHUCNANG)}
-                        >
-                          <SideBarIcon
-                            actionCode={sItem.MA_THAOTAC}
-                            notifyCount={this.generateNotifyCount(sItem.MA_THAOTAC)}
-                          />
-                          <Text style={SideBarStyle.normalBoxTextStyle}>{sItem.TEN_THAOTAC_MOBILE || generateTitle(sItem.MA_THAOTAC)}</Text>
-                        </TouchableOpacity>;
-                      }
-                      else {
-                        return null;
-                      }
-                    })
-                  }
-                </GridPanel>
-              })
-            }
-          </ScrollView>
+          {bodyContent}
         </View>
       </View>
     );

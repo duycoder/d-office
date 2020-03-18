@@ -47,7 +47,7 @@ class MeetingDayList extends Component {
       currentDay: new Date(),
       refreshAgenda: false,
 
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || [],
     }
   }
 

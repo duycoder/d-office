@@ -37,7 +37,7 @@ import AlertMessage from '../../common/AlertMessage';
 import { AlertMessageStyle } from '../../../assets/styles';
 import { executeLoading } from '../../../common/Effect';
 import { reminderApi } from '../../../common/Api';
-import { AddButton, ColumnedListItem, GoBackButton } from '../../common';
+import { AddButton, ColumnedListItem, GoBackButton, AlertMessageButton } from '../../common';
 
 const TOTAL_TIME_OF_DAY = 86400000,
   SEARCH_TIME_SCOPE = 15 * TOTAL_TIME_OF_DAY;
@@ -58,7 +58,7 @@ class ListReminder extends Component {
       currentDay: new Date(),
       refreshAgenda: false,
 
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || [],
       confirmTilte: EMPTY_STRING,
       confirmReminderId: 0,
     }
@@ -181,8 +181,7 @@ class ListReminder extends Component {
               startDate = curr.getTime() - SEARCH_TIME_SCOPE,
               endDate = curr.getTime() + SEARCH_TIME_SCOPE;
             this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
-          })
-
+          });
         }
       }
     });
@@ -234,8 +233,7 @@ class ListReminder extends Component {
               startDate = curr.getTime() - SEARCH_TIME_SCOPE,
               endDate = curr.getTime() + SEARCH_TIME_SCOPE;
             this.fetchData(convertDateToString(startDate), convertDateToString(endDate), curr.getTime());
-          })
-
+          });
         }
       }
     });
@@ -249,25 +247,6 @@ class ListReminder extends Component {
     this.props.updateExtendsNavParams(targetScreenParam);
     navObj.navigate("CreateReminderScreen");
   }
-
-  // navigateToDetail = (lichhopId) => {
-  //   const navObj = this.props.navigation || this.props.navigator;
-  //   if (lichhopId > 0) {
-  //     let targetScreenParam = {
-  //       lichhopId
-  //     }
-
-  //     this.props.updateCoreNavParams(targetScreenParam);
-  //     navObj.navigate("DetailMeetingDayScreen");
-  //   }
-  //   else {
-  //     let targetScreenParam = {
-  //       fromScreen: "ListReminderScreen",
-  //     }
-  //     this.props.updateExtendsNavParams(targetScreenParam);
-  //     navObj.navigate("CreateReminderScreen");
-  //   }
-  // }
 
   loadItems(day) {
     const startDate = convertDateToString(day.timestamp - SEARCH_TIME_SCOPE),
@@ -310,8 +289,8 @@ class ListReminder extends Component {
             <ColumnedListItem
               leftText='Thời điểm:'
               rightText={item.thoidiem}
-              customLeftContainer={{ width: "35%" }}
-              customRightContainer={{ width: "65%" }}
+              customLeftContainer={{ width: "38%" }}
+              customRightContainer={{ width: "62%" }}
               customLeftText={{ color: Colors.DANK_GRAY }}
             />
 
@@ -319,8 +298,8 @@ class ListReminder extends Component {
               isRender={!!item.reminderAfter}
               leftText='Nhắc việc trước:'
               rightText={item.reminderAfter}
-              customLeftContainer={{ width: "35%" }}
-              customRightContainer={{ width: "65%" }}
+              customLeftContainer={{ width: "38%" }}
+              customRightContainer={{ width: "62%" }}
               customLeftText={{ color: Colors.DANK_GRAY }}
             />
           </View>
@@ -408,13 +387,7 @@ class ListReminder extends Component {
           bodyText={`Bạn có chắc chắn muốn ${this.state.confirmTilte} của nhắc việc này không?\nSau này bạn vẫn có thể thay đổi được.`}
           exitText="HỦY BỎ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.toggleReminder()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-              </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.toggleReminder()} />
         </AlertMessage>
 
         <AlertMessage
@@ -423,13 +396,7 @@ class ListReminder extends Component {
           bodyText={`Bạn có chắc chắn muốn xoá nhắc việc này không?\nViệc này sẽ không thể đảo ngược.`}
           exitText="HỦY BỎ"
         >
-          <View style={AlertMessageStyle.leftFooter}>
-            <TouchableOpacity onPress={() => this.deleteReminder()} style={AlertMessageStyle.footerButton}>
-              <RnText style={[AlertMessageStyle.footerText, { color: Colors.RED_PANTONE_186C }]}>
-                ĐỒNG Ý
-              </RnText>
-            </TouchableOpacity>
-          </View>
+          <AlertMessageButton btnText='ĐỒNG Ý' onPress={() => this.deleteReminder()} />
         </AlertMessage>
 
       </Container>

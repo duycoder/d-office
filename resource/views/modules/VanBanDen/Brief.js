@@ -1,13 +1,12 @@
 'use strict'
 import React, { Component } from 'react';
-import { View, Text as RnText, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text as RnText, FlatList } from 'react-native';
 //redux
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 //utilities
-import { API_URL, Colors, BRIEF_CONSTANT, DOKHAN_CONSTANT } from '../../../common/SystemConstant';
-import { asyncDelay, unAuthorizePage, backHandlerConfig, appGetDataAndNavigate, appStoreDataAndNavigate, emptyDataPage, getColorCodeByProgressValue, convertDateToString, formatLongText } from '../../../common/Utilities';
+import { Colors, DOKHAN_CONSTANT } from '../../../common/SystemConstant';
+import { unAuthorizePage, emptyDataPage, getColorCodeByProgressValue, convertDateToString, formatLongText } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -15,30 +14,23 @@ import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 //styles
 import { TabStyle } from '../../../assets/styles/TabStyle';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
-import { ButtonGroupStyle } from '../../../assets/styles/ButtonGroupStyle';
 //lib
 import {
-  Container, Header, Left, Button,
-  Body, Icon, Title, Content, Form,
-  Tabs, Tab, TabHeading, ScrollableTab,
-  Text, Right, Toast
+  Container, Header, Left, Body, Icon, Title, Tabs, Tab, TabHeading, Text, Right
 } from 'native-base';
 import {
-  Icon as RneIcon, ButtonGroup, ListItem
+  Icon as RneIcon, ListItem
 } from 'react-native-elements';
 
 import renderIf from 'render-if';
 
-//views
-import MainInfoPublishDoc from './Info';
-import TimelinePublishDoc from './History';
-import AttachPublishDoc from './Attachment';
 import { ListSignDocStyle } from '../../../assets/styles/SignDocStyle';
 import { ListTaskStyle } from '../../../assets/styles/TaskStyle';
 
 //redux
 import * as navAction from '../../../redux/modules/Nav/Action';
-import GoBackButton from '../../common/GoBackButton';
+import { GoBackButton } from '../../common';
+import { vanbandenApi } from '../../../common/Api';
 
 class Brief extends Component {
   constructor(props) {
@@ -119,11 +111,9 @@ class Brief extends Component {
       loading: true
     });
 
-    const url = `${API_URL}/api/VanBanDen/HoSoVanBan/${this.state.docId}`;
-    const result = await fetch(url);
-    const resultJson = await result.json();
-
-    await asyncDelay();
+    const resultJson = await vanbandenApi().getBrief([
+      this.state.docId
+    ]);
 
     this.setState({
       loading: false,
@@ -134,7 +124,6 @@ class Brief extends Component {
 
   render() {
     let bodyContent = null;
-    let workflowButtons = [];
     if (this.state.loading) {
       bodyContent = dataLoading(true);
     }
@@ -244,65 +233,7 @@ class BriefTaskList extends Component {
     }
   }
 
-  /* async getListSubTasks(index, isExpand, taskId, parentIds) {
-    if (isExpand == false) {
-      this.setState({
-        executing: true
-      });
-
-      const taskObj = {
-        rootParentId: taskId,
-        userId: this.state.userId,
-        parentIds
-      }
-
-      const url = `${API_URL}/api/HscvCongViec/GetListSubTasks`;
-      const headers = new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json;charset=utf-8'
-      });
-      const body = JSON.stringify(taskObj);
-
-      const result = await fetch(url, {
-        method: 'post',
-        headers,
-        body
-      });
-
-      const resultJson = await result.json();
-
-      //thêm đối tượng vào mảng
-      this.state.data.splice((index + 1), 0, ...resultJson);
-
-      //sửa hiển thị icon của công việc cha
-      this.state.data = this.state.data.map((item) => {
-        if (item.ID == taskId) {
-          return { ...item, isExpand: true };
-        }
-        return item;
-      })
-
-      this.setState({
-        executing: false,
-        data: this.state.data
-      })
-    } else {
-      this.state.data = this.state.data.filter(item => (item.parentIds == null || item.parentIds.indexOf(taskId) < 0));
-      //sửa hiển thị icon của công việc con
-      this.state.data = this.state.data.map((item) => {
-        if (item.ID == taskId) {
-          return { ...item, isExpand: false }
-        }
-        return item;
-      })
-
-      this.setState({
-        data: this.state.data
-      })
-    }
-  } */
-
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     return (
       <View>
         <ListItem
@@ -362,7 +293,7 @@ class BriefTaskList extends Component {
       <View style={{ flex: 1 }}>
         <FlatList
           data={this.state.data}
-          keyExtractor={(item, index) => item.ID.toString()}
+          keyExtractor={(item) => item.ID.toString()}
           renderItem={this.renderItem}
           ListEmptyComponent={() => emptyDataPage()}
         />
@@ -379,11 +310,7 @@ class BriefResponseList extends Component {
     }
   }
 
-  /* getListSubTasks(index, childData) {
-    this.state.data.splice((index + 1), 0, childData);
-  } */
-
-  renderItem = ({ item, index }) => {
+  renderItem = ({ item }) => {
     let mahieu = (
       <RnText>
         {' ' + item.SOHIEU}
@@ -451,7 +378,7 @@ class BriefResponseList extends Component {
       <View style={{ flex: 1 }}>
         <FlatList
           data={this.state.data}
-          keyExtractor={(item, index) => item.ID.toString()}
+          keyExtractor={(item) => item.ID.toString()}
           renderItem={this.renderItem}
 
           ListEmptyComponent={() => emptyDataPage()}

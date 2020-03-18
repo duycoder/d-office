@@ -39,17 +39,12 @@ const TOTAL_TIME_OF_DAY = 86400000,
 class ListPersonalLichtruc extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       userId: props.userInfo.ID,
-      loadingData: false,
       data: [],
-
       items: {},
       currentDay: new Date(),
-      refreshAgenda: false,
-
-      listIds: props.extendsNavParams.listIds || props.coreNavParams.listIds || [],
+      listIds: props.extendsNavParams.listIds || (props.coreNavParams ? props.coreNavParams.listIds : []) || [],
     }
   }
 
@@ -109,7 +104,6 @@ class ListPersonalLichtruc extends Component {
       Object.keys(tmpItems).forEach(key => { newItems[key] = tmpItems[key]; });
       this.setState({
         items: newItems,
-        loadingData: false
       });
     }, 1000);
   }
@@ -191,13 +185,6 @@ class ListPersonalLichtruc extends Component {
               renderEmptyDate={this.renderEmptyDate.bind(this)}
               rowHasChanged={this.rowHasChanged.bind(this)}
             />
-          }
-          {
-            renderIf(this.state.loadingData)(
-              <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
-              </View>
-            )
           }
         </Content>
       </Container>
