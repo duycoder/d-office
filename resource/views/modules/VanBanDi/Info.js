@@ -148,6 +148,7 @@ export default class MainInfoSignDoc extends Component {
                             isRender={!!this.state.info.NOIDUNG}
                             titleText='Nội dung văn bản'
                             subtitleText={this.state.info.NOIDUNG}
+                            customSubtitleNumberOfLines={0}
                         />
                         <InfoListItem
                             titleText='Ngày tạo'

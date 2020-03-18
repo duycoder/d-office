@@ -153,7 +153,6 @@ export default class TaskDescription extends Component {
                 ListThamgiaStr = lstJoin.split(',').map(name => `- ${name}`).join('\n');
             }
         }
-
         return (
             <View style={InfoStyle.container}>
                 <ScrollView>
@@ -161,7 +160,6 @@ export default class TaskDescription extends Component {
                         {
                             this.state.docInfo && relateDoc
                         }
-
                         <AttachmentItem data={this.state.attachments} />
 
                         <InfoListItem
@@ -194,6 +192,7 @@ export default class TaskDescription extends Component {
                             isRender={!!this.props.info.CongViec.NOIDUNGCONGVIEC}
                             titleText='Nội dung công việc'
                             subtitleText={this.props.info.CongViec.NOIDUNGCONGVIEC}
+                            customSubtitleNumberOfLines={0}
                         />
 
                         <InfoListItem
