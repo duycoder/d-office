@@ -25,7 +25,7 @@ import util from 'lodash';
 
 //utilities
 import { executeLoading } from '../../../common/Effect';
-import { Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { convertDateToString } from '../../../common/Utilities';
 
@@ -85,8 +85,8 @@ class ApproveRescheduleTask extends Component {
       text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -109,8 +109,8 @@ class ApproveRescheduleTask extends Component {
     const
       { deadlineApprove, isSaveBtnPressed } = this.state,
       nothingChangeStatus = !deadlineApprove || !isSaveBtnPressed,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY };
 
     return (
       <Container>

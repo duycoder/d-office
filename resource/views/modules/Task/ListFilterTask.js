@@ -13,8 +13,7 @@ import {
 import {
   DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, EMTPY_DATA_MESSAGE,
-  LOADER_COLOR,
-  Colors
+  COMMON_COLOR
 } from '../../../common/SystemConstant';
 
 //native-base
@@ -211,7 +210,7 @@ class ListFilterTask extends Component {
     return (
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
             <Input placeholder="Tên công việc"
               value={this.state.filterValue}
@@ -227,7 +226,7 @@ class ListFilterTask extends Component {
             data={this.state.data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={this.renderItem}
-            ListFooterComponent={() => this.state.loading ? <ActivityIndicator size={indicatorResponsive} animating color={LOADER_COLOR} /> : null}
+            ListFooterComponent={() => this.state.loading ? <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.LOADER_COLOR} /> : null}
             ListEmptyComponent={() =>
               this.state.loading ? null : (
                 <View style={ListTaskStyle.emtpyContainer}>
@@ -243,7 +242,7 @@ class ListFilterTask extends Component {
               <RefreshControl
                 onRefresh={this.handleRefresh}
                 refreshing={this.state.refreshing}
-                colors={[LOADER_COLOR]}
+                COMMON_COLOR={[COMMON_COLOR.LOADER_COLOR]}
                 title={'Kéo để làm mới'}
               />
             }

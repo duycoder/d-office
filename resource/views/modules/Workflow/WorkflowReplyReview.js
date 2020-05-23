@@ -11,7 +11,7 @@ import {
 
 //constant
 import {
-  EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT
+  EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //native-base
@@ -115,8 +115,8 @@ class WorkflowReplyReview extends Component {
       text: resultJson.Status ? 'Phản hồi yêu cầu review thành công' : 'Phản hồi yêu cầu review không thành công',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         this.props.resetProcessUsers();
@@ -165,7 +165,7 @@ class WorkflowReplyReview extends Component {
               </Picker>
             </Item>
 
-            <Button block style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }} onPress={() => this.onConfirmReplyReview()}>
+            <Button block style={{ backgroundColor: COMMON_COLOR.LITE_BLUE, marginTop: verticalScale(20) }} onPress={() => this.onConfirmReplyReview()}>
               <NBText>
                 PHẢN HỒI YÊU CẦU
                             </NBText>

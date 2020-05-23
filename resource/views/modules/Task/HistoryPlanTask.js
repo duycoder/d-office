@@ -28,7 +28,7 @@ import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialo
 //utilities
 import {
 	API_URL, EMPTY_STRING,
-	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
+	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
 import { emptyDataPage, convertDateTimeToString } from '../../../common/Utilities';
@@ -106,7 +106,7 @@ class HistoryProgressTask extends Component {
 				disableLeftSwipe={true}
 				left={
 					<Button style={{ backgroundColor: '#d1d2d3' }} onPress={() => this.onShowProgressInfo(item)}>
-						<RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
+						<RneIcon name='info' type='foundation' size={moderateScale(27, 0.79)} color={COMMON_COLOR.WHITE} />
 					</Button>
 				}
 				body={
@@ -186,8 +186,8 @@ class HistoryProgressTask extends Component {
 										refreshing={this.state.refreshing}
 										onRefresh={this.handleRefresh}
 										title='Kéo để làm mới'
-										colors={[Colors.BLUE_PANTONE_640C]}
-										tintColor={[Colors.BLUE_PANTONE_640C]}
+										COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+										tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
 										titleColor='red'
 									/>
 								}
@@ -214,7 +214,7 @@ class HistoryProgressTask extends Component {
 						<DialogButton
 							align={'center'}
 							buttonStyle={{
-								backgroundColor: Colors.GREEN_PANTON_369C,
+								backgroundColor: COMMON_COLOR.GREEN_PANTON_369C,
 								alignSelf: 'stretch',
 								alignItems: 'center',
 								borderBottomLeftRadius: 8,

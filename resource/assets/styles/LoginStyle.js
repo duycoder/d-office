@@ -11,7 +11,7 @@ import {
   verticalScale,
   moderateScale
 } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 export const LoginStyle = StyleSheet.create({
   container: {
@@ -33,7 +33,7 @@ export const LoginStyle = StyleSheet.create({
     color: '#007cc2',
     fontSize: moderateScale(13, 1.05),
   }, formHeaderSoftwareName: {
-    color: Colors.LITE_BLUE,
+    color: COMMON_COLOR.LITE_BLUE,
     fontWeight: 'bold',
     fontSize: moderateScale(25, 1.5)
   }, formHeaderNothing: {
@@ -42,7 +42,7 @@ export const LoginStyle = StyleSheet.create({
   formFooter: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: Colors.LITE_BLUE,
+    backgroundColor: COMMON_COLOR.LITE_BLUE,
   }, formContainer: {
     backgroundColor: '#fff',
     marginTop: verticalScale(35),

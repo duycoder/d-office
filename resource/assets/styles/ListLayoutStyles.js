@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors, customWorkflowListHeight } from '../../common/SystemConstant';
+import { COMMON_COLOR, customWorkflowListHeight } from '../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 const ItemProportion = StyleSheet.create({
@@ -18,7 +18,7 @@ const ColumnedItemStyle = StyleSheet.create({
   leftContainer: {
     width: '30%',
   }, leftText: {
-    color: Colors.DANK_GRAY,
+    color: COMMON_COLOR.DANK_GRAY,
     fontSize: moderateScale(11, 1.1)
   },
   rightContainer: {
@@ -40,7 +40,7 @@ const GroupListStyle = StyleSheet.create({
   },
   listItemContainer: {
     height: customWorkflowListHeight,
-    backgroundColor: Colors.LITE_BLUE,
+    backgroundColor: COMMON_COLOR.LITE_BLUE,
     justifyContent: 'center'
   },
   listItemTitle: {

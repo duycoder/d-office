@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { unAuthorizePage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -202,8 +202,8 @@ class Detail extends Component {
       text: result ? 'Ký duyệt văn bản thành công' : 'Ký duyệt văn bản không thành công',
       type: result ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
       onClose: () => {
         if (result) {
           this.fetchData();
@@ -298,7 +298,7 @@ class Detail extends Component {
 
             <Right style={NativeBaseStyle.right}>
               <Menu>
-                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={COMMON_COLOR.WHITE} type='ionicon' />} />
                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                   <MenuOption onSelect={() => this.onOpenComment()} text="Bình luận" customStyles={HeaderMenuStyle.optionStyles} />
                   <MenuOption onSelect={() => this.onCreateTask()} text="Tạo công việc" customStyles={HeaderMenuStyle.optionStyles} />
@@ -405,7 +405,7 @@ class DetailContent extends Component {
 
           <Tab heading={
             <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-              <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
+              <RneIcon name='clock' color={COMMON_COLOR.DANK_BLUE} type='feather' />
               <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
                 LỊCH SỬ XỬ LÝ
                             </Text>

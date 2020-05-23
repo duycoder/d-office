@@ -10,7 +10,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 
 //utilities
-import { Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { asyncDelay, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -193,8 +193,8 @@ class DetailRegistration extends Component {
       text: resultJson.Status ? 'Gửi yêu cầu đăng ký xe thành công' : 'Gửi yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -228,8 +228,8 @@ class DetailRegistration extends Component {
       text: resultJson.Status ? 'Duyệt yêu cầu đăng ký xe thành công' : 'Duyệt yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -263,8 +263,8 @@ class DetailRegistration extends Component {
       text: resultJson.Status ? 'Huỷ yêu cầu đăng ký xe thành công' : 'Huỷ yêu cầu đăng ký xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -328,8 +328,8 @@ class DetailRegistration extends Component {
       text: resultJson.Status ? 'Bắt đầu chạy xe thành công' : 'Bắt đầu chạy xe thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {

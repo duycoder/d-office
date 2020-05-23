@@ -12,7 +12,7 @@ import DatePicker from 'react-native-datepicker';
 //local util
 import {
     API_URL, EMPTY_STRING,
-    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
+    DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, COMMON_COLOR, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { moderateScale, indicatorResponsive, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { emptyDataPage, _readableFormat, showWarningToast } from '../../../common/Utilities';
@@ -272,8 +272,8 @@ class EditUyQuyen extends Component {
                 text: resultJson.Status ? 'Ủy quyền thành công' : 'Ủy quyền thất bại',
                 type: resultJson.Status ? 'success' : 'danger',
                 buttonText: "OK",
-                buttonStyle: { backgroundColor: Colors.WHITE },
-                buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+                buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+                buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
                 duration: TOAST_DURATION_TIMEOUT,
                 onClose: () => {
                     if (resultJson.Status) {
@@ -342,7 +342,7 @@ class EditUyQuyen extends Component {
                                         {
                                             renderIf(this.state.searchingUser)(
                                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                                    <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                                                    <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                                                 </View>
                                             )
                                         }

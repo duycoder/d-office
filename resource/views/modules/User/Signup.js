@@ -16,7 +16,7 @@ import {
   Header, Right, Body, Left, Title
 } from 'native-base';
 //constants
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION, EMAIL_VALIDATION } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT, COMMON_REGEX } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -166,14 +166,14 @@ class Signup extends Component {
         showWarningToast('Tên đăng nhập phải có 6 - 16 kí tự');
       });
     }
-    else if (!email.match(EMAIL_VALIDATION)) {
+    else if (!email.match(COMMON_REGEX.EMAIL_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
         showWarningToast('Hãy nhập đúng định dạng email');
       });
     }
-    else if (!password.match(PASSWD_VALIDATION)) {
+    else if (!password.match(COMMON_REGEX.PASSWD_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
@@ -196,10 +196,10 @@ class Signup extends Component {
         Toast.show({
           text: 'Đăng ký tài khoản thành công',
           type: 'success',
-          textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+          textStyle: { fontSize: moderateScale(12, 1.5), color: COMMON_COLOR.WHITE },
           buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
+          buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+          buttonTextStyle: { color: COMMON_COLOR.GREEN_PANTONE_364C },
           duration: TOAST_DURATION_TIMEOUT,
           onClose: () => {
             this.props.navigation.goBack();

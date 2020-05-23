@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from 'react-native-elements';
 import { TouchableOpacity } from 'react-native';
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 class HeaderRightButton extends React.Component {
   static defaultProps = {
@@ -21,7 +21,7 @@ class HeaderRightButton extends React.Component {
         <Icon
           name={iconName} type={iconType}
           size={moderateScale(27, 0.79)}
-          color={Colors.WHITE}
+          color={COMMON_COLOR.WHITE}
         />
       </TouchableOpacity>
     );

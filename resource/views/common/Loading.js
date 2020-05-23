@@ -33,7 +33,7 @@ import * as navAction from '../../redux/modules/Nav/Action';
 
 //style
 import { verticalScale } from '../../assets/styles/ScaleIndicator';
-import { EMPTY_STRING, Colors, SEPERATOR_STRING, SEPERATOR_UNDERSCORE } from '../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, SEPERATOR_STRING, SEPERATOR_UNDERSCORE } from '../../common/SystemConstant';
 import firebase, { Notification } from 'react-native-firebase';
 
 // registerKilledListener();
@@ -390,7 +390,7 @@ class Loading extends Component {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: Colors.LITE_BLUE
+        backgroundColor: COMMON_COLOR.LITE_BLUE
       }}>
         <StatusBar barStyle={"light-content"} />
         <Image source={uriLogo} style={{
@@ -398,7 +398,7 @@ class Loading extends Component {
           height: 150,
           marginBottom: verticalScale(20)
         }} />
-        <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={Colors.WHITE} />
+        <ProgressBar progress={this.state.progress} duration={this.state.timing} barColor={COMMON_COLOR.WHITE} />
       </View>
     );
   }

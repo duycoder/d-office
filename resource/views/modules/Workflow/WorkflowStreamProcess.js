@@ -10,7 +10,7 @@ import { ActivityIndicator, View, FlatList, TouchableOpacity } from 'react-nativ
 //utilites
 import {
   EMPTY_STRING,
-  DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, Colors,
+  DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, COMMON_COLOR,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
@@ -162,8 +162,8 @@ class WorkflowStreamProcess extends Component {
         text: this.state.stepName + (resultJson.Status ? ' thành công' : ' không thành công'),
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
@@ -334,7 +334,7 @@ class WorkflowStreamProcess extends Component {
                   {
                     renderIf(this.state.searchingInMain)(
                       <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                        <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                       </View>
                     )
                   }
@@ -379,7 +379,7 @@ class WorkflowStreamProcess extends Component {
                   {
                     renderIf(this.state.searchingInJoin)(
                       <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                        <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                       </View>
                     )
                   }
@@ -451,7 +451,7 @@ class WorkflowStreamProcess extends Component {
                   {
                     renderIf(this.state.searchingInMain)(
                       <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                        <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                       </View>
                     )
                   }
@@ -520,7 +520,7 @@ class WorkflowStreamProcess extends Component {
                   {
                     renderIf(this.state.searchingInJoin)(
                       <View style={{ flex: 1, justifyContent: 'center' }}>
-                        <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                        <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                       </View>
                     )
                   }
@@ -602,7 +602,7 @@ class WorkflowStreamProcess extends Component {
 
           <Right style={NativeBaseStyle.right}>
             <TouchableOpacity onPress={() => this.saveFlow()}>
-              <RneIcon name='md-send' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
+              <RneIcon name='md-send' size={moderateScale(27, 0.79)} color={COMMON_COLOR.WHITE} type='ionicon' />
             </TouchableOpacity>
           </Right>
         </Header>

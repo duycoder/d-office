@@ -11,7 +11,7 @@ import { List, ListItem } from 'react-native-elements'
 import _ from 'lodash';
 //common
 import { convertDateToString, formatLongText } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { InfoStyle } from '../../../assets/styles';
 import AttachmentItem from '../../common/DetailCommon/AttachmentItem';
 import { InfoListItem } from '../../common/DetailCommon';
@@ -85,7 +85,7 @@ export default class MainInfoSignDoc extends Component {
           onPress={
             () => this.getDetailDoc("VanBanDenDetailScreen", { docId: ID, docType: 1, from: 'detail' })
           }
-          containerStyle={{ backgroundColor: !this.state.fromBrief ? 'rgba(189,198,207, 0.6)' : Colors.WHITE }}
+          containerStyle={{ backgroundColor: !this.state.fromBrief ? 'rgba(189,198,207, 0.6)' : COMMON_COLOR.WHITE }}
         />
       );
     }

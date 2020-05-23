@@ -5,7 +5,7 @@ import {
 import { ListItem, Icon } from 'react-native-elements';
 import { isArray, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
 import { InfoStyle } from '../../../assets/styles';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { getFileSize, getFileExtensionLogo } from '../../../common/Effect';
 
@@ -42,7 +42,7 @@ export default class AttachmentItem extends Component {
                     }
                     subtitleStyle={styles.subTitleStyle}
                     rightIcon={
-                      <Icon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+                      <Icon name='download' color={COMMON_COLOR.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
                     }
                     containerStyle={styles.containerStyle}
                     onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}

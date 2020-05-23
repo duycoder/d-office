@@ -20,7 +20,7 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { pickerFormat } from '../../../common/Utilities'
 import { scale, verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
@@ -133,8 +133,8 @@ class EvaluationTask extends Component {
       text: resultJson.Status ? 'Tự đánh giá công việc thành công' : 'Tự đánh giá công việc không thành công',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -381,7 +381,7 @@ class EvaluationTask extends Component {
 
 
                 <Button block danger
-                  style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
+                  style={{ backgroundColor: COMMON_COLOR.LITE_BLUE, marginTop: verticalScale(20) }}
                   onPress={() => this.onEvaluateTask()}>
                   <Text>
                     GỬI ĐÁNH GIÁ CÔNG VIỆC

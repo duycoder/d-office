@@ -20,7 +20,7 @@ import { Icon, ListItem } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, API_URL, Colors, EMTPY_DATA_MESSAGE } from '../../../common/SystemConstant';
+import { EMPTY_STRING, API_URL, COMMON_COLOR, EMTPY_DATA_MESSAGE } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';

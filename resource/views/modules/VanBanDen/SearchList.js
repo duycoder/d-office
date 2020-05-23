@@ -13,8 +13,8 @@ import {
 import {
   API_URL, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, EMTPY_DATA_MESSAGE,
-  LOADER_COLOR, DOKHAN_CONSTANT,
-  Colors
+  DOKHAN_CONSTANT,
+  COMMON_COLOR
 } from '../../../common/SystemConstant';
 
 //native-base
@@ -206,7 +206,7 @@ class ListFilterPublishDoc extends Component {
     return (
       <Container>
         <Header searchBar rounded style={NativeBaseStyle.container}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name="ios-arrow-round-back" onPress={() => this.navigateToList()} />
             <Input placeholder="Mã hiệu hoặc trích yếu"
               value={this.state.filterValue}
@@ -222,7 +222,7 @@ class ListFilterPublishDoc extends Component {
             data={this.state.data}
             keyExtractor={(item, index) => index.toString()}
             renderItem={this.renderItem}
-            ListFooterComponent={() => this.state.loading ? <ActivityIndicator size={indicatorResponsive} animating color={LOADER_COLOR} /> : null}
+            ListFooterComponent={() => this.state.loading ? <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.LOADER_COLOR} /> : null}
             ListEmptyComponent={() =>
               this.state.loading ? null : (
                 <View style={ListPublishDocStyle.emtpyContainer}>
@@ -239,7 +239,7 @@ class ListFilterPublishDoc extends Component {
                 refreshing={this.state.refreshing}
                 onRefresh={this.handleRefresh}
                 title='Kéo để làm mới'
-                colors={[LOADER_COLOR]}
+                COMMON_COLOR={[COMMON_COLOR.LOADER_COLOR]}
               />
             }
           />

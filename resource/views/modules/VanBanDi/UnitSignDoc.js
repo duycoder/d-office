@@ -15,7 +15,7 @@ import renderIf from 'render-if';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 
 //utilities
-import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR } from '../../../common/SystemConstant';
 import { emptyDataPage } from '../../../common/Utilities';
 import { verticalScale, indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 import { vanbandiApi } from '../../../common/Api';
@@ -31,11 +31,11 @@ export default class UnitSignDoc extends Component {
 	}
 
 	renderItem = ({ item }) => {
-		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={Colors.MENU_BLUE} />
+		let rightIcon = <RneIcon name="eye-with-line" type="entypo" size={verticalScale(25)} color={COMMON_COLOR.MENU_BLUE} />
 		if (item.IsDoc) {
-			rightIcon = <RneIcon name="eye" type="entypo" size={verticalScale(25)} color={Colors.DANK_GRAY} />
+			rightIcon = <RneIcon name="eye" type="entypo" size={verticalScale(25)} color={COMMON_COLOR.DANK_GRAY} />
 		}
-		return <ListItem titleStyle={{color: Colors.BLACK}} title={item.TenDonVi} rightIcon={rightIcon}/>
+		return <ListItem titleStyle={{color: COMMON_COLOR.BLACK}} title={item.TenDonVi} rightIcon={rightIcon}/>
 	}
 
 	onUnitFilter = async () => {
@@ -54,8 +54,8 @@ export default class UnitSignDoc extends Component {
 	render() {
 		return (
 			<Container>
-				<Header searchBar style={{ backgroundColor: Colors.WHITE }}>
-					<Item style={{ backgroundColor: Colors.WHITE }}>
+				<Header searchBar style={{ backgroundColor: COMMON_COLOR.WHITE }}>
+					<Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
 						<Icon name='ios-search' />
 						<Input placeholder='Tên phòng ban, đơn vị'
 							onChangeText={(filterValue) => this.setState({ filterValue })}
@@ -66,7 +66,7 @@ export default class UnitSignDoc extends Component {
 				<Content contentContainerStyle={{ flex: 1, justifyContent: (this.state.searching ? 'center' : 'flex-start') }}>
 					{
 						renderIf(this.state.searching)(
-							<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+							<ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
 						)
 					}
 

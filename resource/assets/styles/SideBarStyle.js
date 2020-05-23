@@ -8,12 +8,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 export const SideBarStyle = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.LIGHT_GRAY_PASTEL
+        backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL
     },
     header: {
         flex: 1,
@@ -38,17 +38,17 @@ export const SideBarStyle = StyleSheet.create({
         height: moderateScale(30),
         // borderRadius: moderateScale(25), // to create cirlce, width == height && borderRadius == width/2
         resizeMode: 'stretch',
-        // backgroundColor: Colors.WHITE, // make sure your avatar not seen through
+        // backgroundColor: COMMON_COLOR.WHITE, // make sure your avatar not seen through
     }, headerUserName: {
         justifyContent: 'center',
         textAlign: 'left', // Change from 'center' to 'left'
         fontWeight: 'bold',
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontSize: moderateScale(14, 1.2)
     }, headerUserJob: {
         fontSize: moderateScale(11, 1.3),
         fontStyle: 'italic',
-        color: Colors.WHITE
+        color: COMMON_COLOR.WHITE
     }, headerSignoutIcon: {
         flex: 1,
         justifyContent: 'center',
@@ -65,7 +65,7 @@ export const SideBarStyle = StyleSheet.create({
     },
     body: {
         flex: 5,
-        backgroundColor: "#f1f1f1", //Colors.LIGHT_GRAY_PASTEL
+        backgroundColor: "#f1f1f1", //COMMON_COLOR.LIGHT_GRAY_PASTEL
     }, listItemTitle: {
         fontWeight: 'bold',
         color: 'black',
@@ -74,7 +74,7 @@ export const SideBarStyle = StyleSheet.create({
         height: verticalScale(60),
         justifyContent: 'center',
         borderBottomColor: '#cccccc',
-        backgroundColor: Colors.LIGHT_GRAY_PASTEL
+        backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL
     }, subItemContainer: {
         height: verticalScale(60),
         justifyContent: 'center',
@@ -100,13 +100,13 @@ export const SideBarStyle = StyleSheet.create({
         width: moderateScale(20),
         height: moderateScale(20),
         marginLeft: moderateScale(-15),
-        backgroundColor: Colors.LITE_BLUE,
+        backgroundColor: COMMON_COLOR.LITE_BLUE,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: moderateScale(10)
     }, chatNotificationText: {
         fontSize: moderateScale(10, 1.05),
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontWeight: 'bold'
     },
     shortcutBoxContainer: {
@@ -117,10 +117,10 @@ export const SideBarStyle = StyleSheet.create({
         // flexWrap: 'wrap',
         // marginHorizontal: '0.5%',
     }, shortcutBoxStyle: {
-        // backgroundColor: Colors.LITE_BLUE,
+        // backgroundColor: COMMON_COLOR.LITE_BLUE,
         // borderWidth: 1,
-        borderColor: Colors.DANK_BLUE,
-        // shadowColor: Colors.DANK_BLUE,
+        borderColor: COMMON_COLOR.DANK_BLUE,
+        // shadowColor: COMMON_COLOR.DANK_BLUE,
         // shadowOffset: {
         //     width: 0,
         //     height: 2,
@@ -139,7 +139,7 @@ export const SideBarStyle = StyleSheet.create({
         // flexBasis: '30%',
         // width: ''
     }, shortcutBoxTextStyle: {
-        color: Colors.BLACK,
+        color: COMMON_COLOR.BLACK,
         textAlign: 'center',
         // fontWeight: 'bold',
         fontSize: moderateScale(10, 0.8),
@@ -164,11 +164,11 @@ export const SideBarStyle = StyleSheet.create({
         marginTop: '0.5%',
         // marginVertical: verticalScale(4),
     }, normalBoxStyle: {
-        backgroundColor: Colors.WHITE,
+        backgroundColor: COMMON_COLOR.WHITE,
         // borderWidth: 1,
         // borderRadius: 5,
-        // borderColor: Colors.BLACK,
-        // shadowColor: Colors.BLACK,
+        // borderColor: COMMON_COLOR.BLACK,
+        // shadowColor: COMMON_COLOR.BLACK,
         // shadowOffset: {
         //     width: 0,
         //     height: 2,
@@ -185,7 +185,7 @@ export const SideBarStyle = StyleSheet.create({
         // flexBasis: '30%',
         // marginVertical: '2.5%'
     }, normalBoxTextStyle: {
-        color: Colors.BLACK,
+        color: COMMON_COLOR.BLACK,
         textAlign: 'center',
         // fontWeight: 'bold',
         fontSize: moderateScale(12, 0.8),
@@ -193,7 +193,7 @@ export const SideBarStyle = StyleSheet.create({
     },
 
     dashboardHeader: {
-        backgroundColor: Colors.LITE_BLUE,
+        backgroundColor: COMMON_COLOR.LITE_BLUE,
         borderBottomWidth: 0,
         height: moderateScale(110, 0.9),
         paddingTop: verticalScale(35)
@@ -209,7 +209,7 @@ export const SideBarStyle = StyleSheet.create({
     },
     hotPickBoxContainer: {
         flex: 1,
-        backgroundColor: Colors.WHITE,
+        backgroundColor: COMMON_COLOR.WHITE,
         borderRadius: 10,
         marginHorizontal: moderateScale(8, 1.2),
         marginTop: moderateScale(-52, 0.89),

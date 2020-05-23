@@ -17,7 +17,7 @@ import {
 } from 'native-base';
 import DatePicker from 'react-native-datepicker';
 //constants
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT, EMAIL_VALIDATION } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT, COMMON_REGEX } from '../../../common/SystemConstant';
 
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import AccountStyle from '../../../assets/styles/AccountStyle';
@@ -144,7 +144,7 @@ class AccountEditor extends Component {
       return;
     }
 
-    if (this.state.email != EMPTY_STRING && !this.state.email.match(EMAIL_VALIDATION)) {
+    if (this.state.email != EMPTY_STRING && !this.state.email.match(COMMON_REGEX.EMAIL_VALIDATION)) {
       this.setState({
         loading: false
       }, () => {
@@ -171,10 +171,10 @@ class AccountEditor extends Component {
       Toast.show({
         text: 'Đã lưu thông tin tài khoản!',
         type: 'success',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+        textStyle: { fontSize: moderateScale(12, 1.5), color: COMMON_COLOR.WHITE },
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: COMMON_COLOR.GREEN_PANTONE_364C },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           this.navigateBackToAccountInfo()
@@ -187,15 +187,15 @@ class AccountEditor extends Component {
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         fullName, email, dateOfBirth, mobilePhone, address,
         TMPfullName, TMPemail, TMPdateOfBirth, TMPmobilePhone, TMPaddress,
       } = this.state,
       nothingChangeStatus = !fullName && !email && !dateOfBirth && !mobilePhone && !address,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.GRAY },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.GRAY },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY };
 
     return (
       <Container>
@@ -212,9 +212,9 @@ class AccountEditor extends Component {
           <Right style={NativeBaseStyle.right}>
           </Right>
         </Header>
-        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+        <Container style={{ backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL }}>
           <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
-            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
+            <Form style={{ backgroundColor: COMMON_COLOR.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               <Item stackedLabel style={this.state.focusId === 'fullName' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
                 <Label style={AccountStyle.labelTitle}>Tên đầy đủ</Label>
                 <Input
@@ -259,7 +259,7 @@ class AccountEditor extends Component {
                     },
                     placeholderText: {
                       fontSize: moderateScale(15.45, 1.01),
-                      color: Colors.BLACK
+                      color: COMMON_COLOR.BLACK
                     },
                   }}
                   onDateChange={this._handleFieldNameChange('dateOfBirth')}

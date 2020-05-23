@@ -19,7 +19,7 @@ import {
 
 //utilities
 import { executeLoading } from '../../../common/Effect';
-import { Colors, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 
 //styles
@@ -60,8 +60,8 @@ class DenyRescheduleTask extends Component {
       text: resultJson.Status ? 'Phê duyệt thành công yêu cầu lùi hạn' : resultJson.Message,
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -104,7 +104,7 @@ class DenyRescheduleTask extends Component {
           </Form>
 
           <Button block danger
-            style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
+            style={{ backgroundColor: COMMON_COLOR.LITE_BLUE, marginTop: verticalScale(20) }}
             onPress={() => this.onDenyExtendTask()}>
             <Text>
               TỪ CHỐI

@@ -20,7 +20,7 @@ import { Icon } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import * as util from 'lodash';
 //constants
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT, PASSWD_VALIDATION } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT, COMMON_REGEX } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -103,7 +103,7 @@ class AccountChangePassword extends Component {
       loading: true
     });
 
-    // if (!this.state.password.match(PASSWD_VALIDATION)) {
+    // if (!this.state.password.match(COMMON_REGEX.PASSWD_VALIDATION)) {
     //   this.setState({
     //     loading: false
     //   }, () => {
@@ -135,10 +135,10 @@ class AccountChangePassword extends Component {
       Toast.show({
         text: 'Đổi mật khẩu thành công',
         type: 'success',
-        textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+        textStyle: { fontSize: moderateScale(12, 1.5), color: COMMON_COLOR.WHITE },
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: COMMON_COLOR.GREEN_PANTONE_364C },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => this.signOut()
       })
@@ -163,31 +163,31 @@ class AccountChangePassword extends Component {
   }
 
   onCheckPassword = () => {
-    // if (!this.state.password.match(PASSWD_VALIDATION)) {
+    // if (!this.state.password.match(COMMON_REGEX.PASSWD_VALIDATION)) {
     //   showWarningToast('Mật khẩu phải có ít nhất 8 kí tự, 1 kí tự số,\n1 kí tự viết hoa và 1 kí tự đặc biệt');
     //   return;
     // }
     Toast.show({
       text: 'Mật khẩu hợp lệ',
       type: 'success',
-      textStyle: { fontSize: moderateScale(12, 1.5), color: Colors.WHITE },
+      textStyle: { fontSize: moderateScale(12, 1.5), color: COMMON_COLOR.WHITE },
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.GREEN_PANTONE_364C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: COMMON_COLOR.GREEN_PANTONE_364C },
       duration: TOAST_DURATION_TIMEOUT,
     });
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         password, TMPpassword,
         focusId
       } = this.state,
       nothingChangeStatus = !password && !TMPpassword,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.GRAY },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.GRAY },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY };
 
 
     return (
@@ -205,9 +205,9 @@ class AccountChangePassword extends Component {
           <Right style={NativeBaseStyle.right}>
           </Right>
         </Header>
-        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+        <Container style={{ backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL }}>
           <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
-            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
+            <Form style={{ backgroundColor: COMMON_COLOR.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               <Item stackedLabel style={focusId === 'newPassword' ? focusTextboxBorderStyle : blurTextboxBorderStyle}>
                 <Label style={AccountStyle.labelTitle}>Điền mật khẩu mới</Label>
                 <Input

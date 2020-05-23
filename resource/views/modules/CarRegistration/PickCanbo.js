@@ -18,7 +18,7 @@ import {
 import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
-import { DEFAULT_PAGE_INDEX, EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { DEFAULT_PAGE_INDEX, EMPTY_STRING, COMMON_COLOR } from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
@@ -124,7 +124,7 @@ class PickCanbo extends Component {
 
         <Right>
           <CheckBox
-            color={Colors.LITE_BLUE}
+            color={COMMON_COLOR.LITE_BLUE}
             checked={this.state.canboId == item.Value}
             onPress={() => this.selectUser(nameTmp, item.Value)}
           />

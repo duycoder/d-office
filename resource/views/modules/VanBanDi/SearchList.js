@@ -21,9 +21,9 @@ import renderIf from 'render-if';
 //utilities
 import { formatLongText } from '../../../common/Utilities';
 import {
-  HEADER_COLOR, LOADER_COLOR, DOKHAN_CONSTANT,
+  DOKHAN_CONSTANT,
   VANBAN_CONSTANT, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors
+  COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { indicatorResponsive } from '../../../assets/styles/ScaleIndicator';
 
@@ -158,8 +158,8 @@ class SearchList extends Component {
   render() {
     return (
       <Container>
-        <Header searchBar rounded style={{ backgroundColor: HEADER_COLOR }}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+        <Header searchBar rounded style={{ backgroundColor: COMMON_COLOR.HEADER_COLOR }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name='ios-arrow-round-back' onPress={() => this.navigateBackToList()} />
             <Input placeholder='Mã hiệu, trích yếu'
               value={this.state.filterValue}
@@ -182,8 +182,8 @@ class SearchList extends Component {
                       refreshing={this.state.refreshingData}
                       onRefresh={this.handleRefresh}
                       title='Kéo để làm mới'
-                      colors={[LOADER_COLOR]}
-                      tintColor={[LOADER_COLOR]}
+                      COMMON_COLOR={[COMMON_COLOR.LOADER_COLOR]}
+                      tintColor={[COMMON_COLOR.LOADER_COLOR]}
                       titleColor='red'
                     />
                   }
@@ -199,7 +199,7 @@ class SearchList extends Component {
 
           {
             renderIf(this.state.loadingData)(
-              <ActivityIndicator size={indicatorResponsive} animating color={LOADER_COLOR} />
+              <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.LOADER_COLOR} />
             )
           }
         </Content>

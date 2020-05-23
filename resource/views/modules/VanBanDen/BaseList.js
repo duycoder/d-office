@@ -27,7 +27,7 @@ import { formatLongText, emptyDataPage, convertDateTimeToTitle } from '../../../
 import {
   DOKHAN_CONSTANT,
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   VANBANDEN_CONSTANT,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
@@ -171,8 +171,8 @@ class BaseList extends Component {
   renderItem = ({ item }) => {
     const readStateStyle = item.IS_READ == true ? ListPublishDocStyle.textRead : ListPublishDocStyle.textNormal,
       dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-        ? Colors.RED_PANTONE_186C
-        : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+        ? COMMON_COLOR.RED_PANTONE_186C
+        : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? COMMON_COLOR.RED_PANTONE_021C : COMMON_COLOR.GREEN_PANTONE_364C);
 
     const loaiVanbanArr = item.TEN_HINHTHUC.split(" "),
       loaiVanbanStr = loaiVanbanArr.map(x => x.charAt(0).toUpperCase()).join("");
@@ -180,7 +180,7 @@ class BaseList extends Component {
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .5 }}
+          containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: .5 }}
           leftIcon={
             <View style={{ alignSelf: 'flex-start', justifyContent: 'center', flexDirection: 'column' }}>
               <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: dokhanBgColor, width: moderateScale(36, 0.86), height: moderateScale(36, 0.86), borderRadius: moderateScale(18, 0.86) }]}>
@@ -248,7 +248,7 @@ class BaseList extends Component {
           {
             renderIf(this.state.loadingData)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
@@ -263,10 +263,10 @@ class BaseList extends Component {
                   <RefreshControl
                     refreshing={this.state.refreshingData}
                     onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
+                    COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                     title='Kéo để làm mới'
-                    titleColor={Colors.RED}
+                    titleColor={COMMON_COLOR.RED}
                   />
                 }
                 ListEmptyComponent={() =>

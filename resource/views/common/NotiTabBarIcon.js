@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { _readableFormat } from '../../common/Utilities';
 import { moderateScale, scale } from '../../assets/styles/ScaleIndicator';
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
@@ -46,14 +46,14 @@ const styles = StyleSheet.create({
     top: -2,
     right: -5,
     padding: 1,
-    backgroundColor: Colors.RED,
+    backgroundColor: COMMON_COLOR.RED,
     borderRadius: 5,
     minWidth: moderateScale(18),
     borderColor: '#fff',
     borderWidth: 1.75
   }, badgeTitle: {
     fontSize: moderateScale(10, 1.05),
-    color: Colors.WHITE,
+    color: COMMON_COLOR.WHITE,
     fontWeight: 'bold'
   }
 });

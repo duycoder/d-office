@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  WEB_URL, COMMON_COLOR, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
@@ -376,8 +376,8 @@ class ListComment extends Component {
         avatarStyle={{ width: 40, height: 40, borderRadius: 20 }}
         title={
           <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
-            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: Colors.OLD_LITE_BLUE }}>{item.FullName}</Text>
-            <Text style={{ fontSize: moderateScale(11, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
+            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: COMMON_COLOR.OLD_LITE_BLUE }}>{item.FullName}</Text>
+            <Text style={{ fontSize: moderateScale(11, 1.1), color: COMMON_COLOR.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
           </View>
         }
         subtitle={
@@ -394,7 +394,7 @@ class ListComment extends Component {
                   </TouchableOpacity>
                   : <TouchableOpacity style={ListCommentStyle.replyButtonContainer} onPress={() => this.onReplyComment(item)}>
                     {
-                      // <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={Colors.BLUE_PANTONE_640C} />
+                      // <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={COMMON_COLOR.BLUE_PANTONE_640C} />
                     }
                     <Text style={ListCommentStyle.replyButtonText}>Trả lời</Text>
                   </TouchableOpacity>
@@ -413,7 +413,7 @@ class ListComment extends Component {
       //   <View style={{ flexDirection: 'row' }}>
       //     <View style={ListCommentStyle.commentAvatarContainer}>
       //       <View style={ListCommentStyle.commentAvatar}>
-      //         <RneIcon size={moderateScale(30)} type='ionicon' name='ios-people' color={Colors.WHITE} />
+      //         <RneIcon size={moderateScale(30)} type='ionicon' name='ios-people' color={COMMON_COLOR.WHITE} />
       //       </View>
       //     </View>
       //     <View style={ListCommentStyle.commentContentContainer}>
@@ -430,7 +430,7 @@ class ListComment extends Component {
 
       //       <View style={ListCommentStyle.subInfoContainer}>
       //         <TouchableOpacity style={ListCommentStyle.replyButtonContainer} onPress={() => this.onReplyComment(item)}>
-      //           <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={Colors.BLUE_PANTONE_640C} />
+      //           <RneIcon type='entypo' name='reply' size={moderateScale(30)} color={COMMON_COLOR.BLUE_PANTONE_640C} />
       //           <Text style={ListCommentStyle.replyButtonText}>
       //             Trả lời
       //         </Text>
@@ -457,7 +457,7 @@ class ListComment extends Component {
   }
 
   render() {
-    const commentSendableIcon = (this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
+    const commentSendableIcon = (this.state.commentContent !== EMPTY_STRING) ? COMMON_COLOR.BLUE_PANTONE_640C : COMMON_COLOR.GRAY;
     return (
       <Container>
         <Header style={NativeBaseStyle.container}>
@@ -491,10 +491,10 @@ class ListComment extends Component {
                   <RefreshControl
                     refreshing={this.state.refreshingData}
                     onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
+                    COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                     title='Kéo để làm mới'
-                    titleColor={Colors.RED}
+                    titleColor={COMMON_COLOR.RED}
                   />
                 }
                 ListEmptyComponent={() =>
@@ -510,7 +510,7 @@ class ListComment extends Component {
           }
         </Content>
 
-        <View style={{ height: verticalScale(50), flex: this.state.footerFlex, backgroundColor: Colors.WHITE }}>
+        <View style={{ height: verticalScale(50), flex: this.state.footerFlex, backgroundColor: COMMON_COLOR.WHITE }}>
           <View style={[FooterCommentStyle.footerComment]}>
             <Input
               // style={FooterCommentStyle.footerCommentContent}

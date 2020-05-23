@@ -15,7 +15,7 @@ import {
   Icon as RneIcon
 } from 'react-native-elements';
 import { TabStyle } from '../../../assets/styles/TabStyle';
-import { Colors, API_URL } from '../../../common/SystemConstant';
+import { COMMON_COLOR, API_URL } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import {
@@ -143,7 +143,7 @@ class Schedules extends Component {
             hideChevron={true}
             title={item.TIEUDE}
             titleStyle={{
-              color: Colors.BLACK,
+              color: COMMON_COLOR.BLACK,
               fontWeight: 'bold',
               fontSize: moderateScale(13, 1.2)
             }}
@@ -151,7 +151,7 @@ class Schedules extends Component {
               convertDateToString(item.NGAY_CONGTAC) + " lúc " + _readableFormat(item.GIO_CONGTAC) + ":" + _readableFormat(item.PHUT_CONGTAC)
             }
             subtitleStyle={{
-              color: Colors.GRAY,
+              color: COMMON_COLOR.GRAY,
               fontSize: moderateScale(13, 1.2)
             }}
             onPress={()=>this.props.navigateToDetail("DetailEventScreen", {id: item.ID})}
@@ -171,20 +171,20 @@ class Schedules extends Component {
         //   <RefreshControl
         //     refreshing={this.state.refreshingData}
         //     onRefresh={this.handleRefresh}
-        //     colors={[Colors.BLUE_PANTONE_640C]}
-        //     tintColor={[Colors.BLUE_PANTONE_640C]}
+        //     COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+        //     tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
         //     title='Kéo để làm mới'
-        //     titleColor={Colors.RED}
+        //     titleColor={COMMON_COLOR.RED}
         //   />
         // }
         ListEmptyComponent={() =>
           emptyDataPage()
         }
         // ListFooterComponent={() => this.state.loadingMoreData ?
-        //   <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
+        //   <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} /> :
         //   (
         //     this.state.data && this.state.data.length >= DEFAULT_PAGE_SIZE ?
-        //       <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
+        //       <Button full style={{ backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
         //         <Text>
         //           TẢI THÊM
         //                   </Text>

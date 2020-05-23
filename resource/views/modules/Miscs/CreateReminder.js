@@ -14,7 +14,7 @@ import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { pickerFormat, showWarningToast } from '../../../common/Utilities';
@@ -143,8 +143,8 @@ class CreateReminder extends Component {
         text: resultJson.Status ? "Thêm mới nhắc việc thành công" : "Thêm mới nhắc việc thất bại",
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
@@ -193,7 +193,7 @@ class CreateReminder extends Component {
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         noidung, thoigian, period,
@@ -202,8 +202,8 @@ class CreateReminder extends Component {
         giamdocId, giamdocName, isThuky
       } = this.state,
       nothingChangeStatus = !noidung || !thoigian || !isSaveBtnPressed || !isSaveIcoPressed,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
 

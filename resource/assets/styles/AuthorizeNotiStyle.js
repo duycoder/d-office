@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, moderateScale } from './ScaleIndicator';
 
 const AuthorizeNotiStyle = StyleSheet.create({
@@ -13,7 +13,7 @@ const AuthorizeNotiStyle = StyleSheet.create({
   titleContainerStyle: {
     marginHorizontal: '3%',
   }, titleStyle: {
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     fontSize: moderateScale(12, 1.2),
     fontWeight: "bold",
   },
@@ -21,7 +21,7 @@ const AuthorizeNotiStyle = StyleSheet.create({
     flex: 0,
   }, rightTitleStyle: {
     textAlign: 'center',
-    color: Colors.DARK_GRAY,
+    color: COMMON_COLOR.DARK_GRAY,
     fontSize: moderateScale(12, 0.9),
     fontStyle: 'italic',
   },

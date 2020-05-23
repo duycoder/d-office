@@ -15,7 +15,7 @@ import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { showWarningToast, convertDateToString } from '../../../common/Utilities';
@@ -334,8 +334,8 @@ class CreateMeetingDay extends Component {
         text: resultJson.Message,
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
@@ -362,7 +362,7 @@ class CreateMeetingDay extends Component {
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         mucdich, thamgia, chutriId, thoigianBatdau, thoigianKetthuc, ngayHop,
@@ -371,8 +371,8 @@ class CreateMeetingDay extends Component {
         phonghopId, phonghopName, joinPlaceholderText,
       } = this.state,
       nothingChangeStatus = !mucdich || !thoigianBatdau || !thoigianKetthuc || !ngayHop || !isSaveBtnPressed || !isSaveIcoPressed,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
     let bodyContent = null;
@@ -478,7 +478,7 @@ class CreateMeetingDay extends Component {
                 onBlur={() => this.setState({ focusId: EMPTY_STRING })}
                 style={{ width: '100%', marginTop: 20 }}
                 value={!!joinPlaceholderText ? joinPlaceholderText.split(', ').map(text => `- ${text}`).join('\n') : EMPTY_STRING}
-                placeholderTextColor={Colors.GRAY}
+                placeholderTextColor={COMMON_COLOR.GRAY}
               />
             </Item>
 

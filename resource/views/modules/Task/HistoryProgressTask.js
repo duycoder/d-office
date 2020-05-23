@@ -24,7 +24,7 @@ import {
 //utilities
 import {
 	EMPTY_STRING,
-	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
+	DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
 import { emptyDataPage, convertDateTimeToString } from '../../../common/Utilities';
@@ -97,7 +97,7 @@ class HistoryProgressTask extends Component {
 	renderItem = ({ item }) => {
 		return (
 			<ListItem
-				containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+				containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: .7 }}
 				leftIcon={
 					<View>
 						<Text style={{ fontWeight: "bold", fontSize: moderateScale(23, 0.89) }}>{item.TIENDOCONGVIEC + '%'}</Text>
@@ -157,8 +157,8 @@ class HistoryProgressTask extends Component {
 							refreshing={this.state.refreshing}
 							onRefresh={this.handleRefresh}
 							title='Kéo để làm mới'
-							colors={[Colors.BLUE_PANTONE_640C]}
-							tintColor={[Colors.BLUE_PANTONE_640C]}
+							COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+							tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
 							titleColor='red'
 						/>
 					}

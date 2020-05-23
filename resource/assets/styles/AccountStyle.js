@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { moderateScale, verticalScale } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 export default StyleSheet.create({
   mainContainer: {
@@ -14,10 +14,10 @@ export default StyleSheet.create({
     fontSize: moderateScale(12, 0.9)
   }, labelResult: {
     fontSize: moderateScale(14, 1.1),
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   },
   submitButton: {
-    backgroundColor: Colors.LITE_BLUE,
+    backgroundColor: COMMON_COLOR.LITE_BLUE,
     marginTop: verticalScale(20),
     borderRadius: 4,
     marginHorizontal: verticalScale(18),
@@ -28,7 +28,7 @@ export default StyleSheet.create({
     // borderRadius: moderateScale(5, 1.2),
     padding: moderateScale(10)
   }, submitButtonText: {
-    color: Colors.WHITE,
+    color: COMMON_COLOR.WHITE,
     fontSize: moderateScale(16, 1.2),
     fontWeight: 'bold',
     // fontSize: moderateScale(18, 1.5),

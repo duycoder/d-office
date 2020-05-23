@@ -18,7 +18,7 @@ import {
     Right, Left, Title, Body, Radio, CheckBox, Toast
 } from 'native-base';
 import * as util from 'lodash';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 
 //reducer
 import * as action from '../../../redux/modules/UyQuyen/Action';
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     },
     listItemContainer: {
         height: 60,
-        backgroundColor: Colors.LITE_BLUE,
+        backgroundColor: COMMON_COLOR.LITE_BLUE,
         justifyContent: 'center'
     },
     listItemTitle: {

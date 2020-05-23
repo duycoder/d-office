@@ -23,7 +23,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
 	DEFAULT_PAGE_INDEX,
-	EMPTY_STRING, Colors} from '../../../common/SystemConstant';
+	EMPTY_STRING, COMMON_COLOR} from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -130,7 +130,7 @@ class PickTaskAssigner extends Component {
 
 				<Right>
 					<CheckBox
-						color={Colors.LITE_BLUE}
+						color={COMMON_COLOR.LITE_BLUE}
 						checked={this.state.giaoviecId == item.ID}
 						onPress={() => this.selectUser(item)}
 					/>
@@ -214,7 +214,7 @@ class PickTaskAssigner extends Component {
 
 					<Right style={NativeBaseStyle.right}>
 						<TouchableOpacity onPress={() => this.onPickAssigner()} style={checkButtonStyle} disabled={unsubmitableCondition}>
-							<RneIcon name='md-checkmark' size={moderateScale(27, 0.79)} color={Colors.WHITE} type='ionicon' />
+							<RneIcon name='md-checkmark' size={moderateScale(27, 0.79)} color={COMMON_COLOR.WHITE} type='ionicon' />
 						</TouchableOpacity>
 					</Right>
 				</Header>

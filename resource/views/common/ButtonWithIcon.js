@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { moderateScale } from '../../assets/styles/ScaleIndicator';
 
 export default class ButtonWithIcon extends React.Component {
@@ -10,7 +10,7 @@ export default class ButtonWithIcon extends React.Component {
     btnText: '',
     btnTextStyle: {},
     iconName: '',
-    iconColor: Colors.WHITE,
+    iconColor: COMMON_COLOR.WHITE,
     iconSize: moderateScale(12, 1.2),
   }
   
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: moderateScale(5),
-    backgroundColor: Colors.GREEN_PANTONE_364C,
+    backgroundColor: COMMON_COLOR.GREEN_PANTONE_364C,
   }, buttonText: {
     fontSize: moderateScale(10, 0.8),
-    color: Colors.WHITE
+    color: COMMON_COLOR.WHITE
   }
 });

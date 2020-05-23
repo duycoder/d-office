@@ -7,7 +7,7 @@ import * as networkAction from '../../redux/modules/network/Action';
 import { Header, Icon } from 'react-native-elements';
 
 //constant
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 //styles
 import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
@@ -42,7 +42,7 @@ class NetworkStatus extends Component {
             <Header
               leftComponent={
                 <Icon name='signal-wifi-off' type='MaterialIcons'
-                  size={moderateScale(30)} color={Colors.WHITE} />
+                  size={moderateScale(30)} color={COMMON_COLOR.WHITE} />
               }
               outerContainerStyles={styles.headerOuter}
               centerComponent={
@@ -76,25 +76,25 @@ const styles = StyleSheet.create({
     width: scale(280),
     minHeight: verticalScale(200),
     borderRadius: 3,
-    backgroundColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
   }, headerOuter: {
-    backgroundColor: Colors.DANK_BLUE,
+    backgroundColor: COMMON_COLOR.DANK_BLUE,
     height: verticalScale(60),
     width: '100%',
     // borderRadius: 15
   }, headerTitle: {
-    color: Colors.WHITE,
+    color: COMMON_COLOR.WHITE,
     fontWeight: 'bold',
     fontSize: moderateScale(16)
   }, bodyTitle: {
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     fontSize: moderateScale(15),
     textAlign: 'center'
   }, content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
     paddingHorizontal: scale(5)
   }
 })

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { Colors, generateBadgeIconNoti, generateReadFontStyleAndColor, EMPTY_STRING } from '../../../common/SystemConstant';
+import { COMMON_COLOR, generateBadgeIconNoti, generateReadFontStyleAndColor, EMPTY_STRING } from '../../../common/SystemConstant';
 import { convertDateTimeToTitle, showWarningToast } from '../../../common/Utilities';
 import { ListNotificationStyle } from '../../../assets/styles/ListNotificationStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -11,15 +11,14 @@ class RecentNoti extends React.Component {
   static defaultProps = {
     item: null,
     index: 0,
-    successFunc: EMPTY_STRING,
-    readFunc: EMPTY_STRING,
+    successFunc: () => { },
+    readFunc: () => { },
   }
 
-  onPressNotificationItem = async (item, successFunc, readFunc) => {
+  onPressNotificationItem = async () => {
+    const { item, successFunc, readFunc } = this.props;
     if (!item.IS_READ) {
-      if (typeof readFunc === 'function') {
-        readFunc();
-      }
+      readFunc();
       await accountApi().updateReadStateOfMessage(item);
     }
 
@@ -110,29 +109,23 @@ class RecentNoti extends React.Component {
       showWarningToast('Bạn không có quyền truy cập vào thông tin này!');
     }
     else {
-      if (typeof successFunc === 'function') {
-        successFunc(screenName, screenParam);
-      }
+      successFunc(screenName, screenParam);
     }
   }
 
   render() {
-    const {
-      item, index,
-      successFunc, readFunc,
-    } = this.props;
+    const { item, index } = this.props;
     if (item !== null) {
-      let currentBackgroundColor = Colors.WHITE;
+      let currentBackgroundColor = COMMON_COLOR.WHITE;
       let itemType = item.URL.split('/')[2];
       const { badgeBackgroundColor, leftTitle } = generateBadgeIconNoti(itemType);
       const { checkReadColor, checkReadFont } = generateReadFontStyleAndColor(item.IS_READ);
 
       if (index % 2 !== 0) {
-        currentBackgroundColor = Colors.LIGHT_GRAY_PASTEL;
+        currentBackgroundColor = COMMON_COLOR.LIGHT_GRAY_PASTEL;
       }
       return (
         <ListItem
-          key={index.toString()}
           containerStyle={{ backgroundColor: currentBackgroundColor, borderBottomColor: "#ccc" }}
           leftIcon={
             <View style={[ListNotificationStyle.leftTitleCircle, { backgroundColor: badgeBackgroundColor }]}>
@@ -150,7 +143,7 @@ class RecentNoti extends React.Component {
           rightTitleNumberOfLines={2}
           rightTitleStyle={{
             textAlign: 'center',
-            color: Colors.DARK_GRAY,
+            color: COMMON_COLOR.DARK_GRAY,
             fontSize: moderateScale(12, 0.9),
             fontStyle: 'italic',
             fontWeight: checkReadFont,
@@ -158,7 +151,7 @@ class RecentNoti extends React.Component {
           rightTitleContainerStyle={{
             flex: 0
           }}
-          onPress={() => this.onPressNotificationItem(item, successFunc, readFunc)}
+          onPress={this.onPressNotificationItem}
         />
       );
     }

@@ -10,7 +10,7 @@ import { View, Text as RNText, TouchableOpacity as RnButton } from 'react-native
 import { connect } from 'react-redux';
 
 //utilities
-import { Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import util from 'lodash';
 
@@ -143,8 +143,8 @@ class DetailMeetingDay extends Component {
       text: 'Huỷ lịch họp ' + resultJson.Status ? 'thành công' : 'thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {

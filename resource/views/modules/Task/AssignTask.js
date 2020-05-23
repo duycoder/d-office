@@ -23,7 +23,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
 	DEFAULT_PAGE_INDEX,
-	EMPTY_STRING, TASK_PROCESS_TYPE, Colors, TOAST_DURATION_TIMEOUT
+	EMPTY_STRING, TASK_PROCESS_TYPE, COMMON_COLOR, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
@@ -217,8 +217,8 @@ class AssignTask extends Component {
 				text: resultJson.Status ? 'Giao việc thành công' : 'Giao việc không thành công',
 				type: resultJson.Status ? 'success' : 'danger',
 				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+				buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+				buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
 				duration: TOAST_DURATION_TIMEOUT,
 				onClose: () => {
 					this.props.resetTaskProcessors(TASK_PROCESS_TYPE.ALL_PROCESS);
@@ -248,13 +248,13 @@ class AssignTask extends Component {
 		else {
 			if (this.state.dataAssignTask.AllowAssignDiffDept) {
 				segmentBody = (
-					<Segment style={{ backgroundColor: Colors.LITE_BLUE }}>
+					<Segment style={{ backgroundColor: COMMON_COLOR.LITE_BLUE }}>
 						<Button
 							first
 							active={(this.state.selectedSegmentIndex == 0)}
 							onPress={() => this.onChangeSegment(0)}>
 							<Text style={{
-								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 0) ? '#f2f2f2' : COMMON_COLOR.WHITE
 							}}>
 								{
 									this.state.dataAssignTask.IsCapPhongBan ? 'TRONG PHÒNG' : 'TRONG ĐƠN VỊ'
@@ -266,7 +266,7 @@ class AssignTask extends Component {
 							active={(this.state.selectedSegmentIndex == 1)}
 							onPress={() => this.onChangeSegment(1)}>
 							<Text style={{
-								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : Colors.WHITE
+								color: (this.state.selectedSegmentIndex == 1) ? '#f2f2f2' : COMMON_COLOR.WHITE
 							}}>
 								TOÀN BỆNH VIỆN
 							</Text>
@@ -300,7 +300,7 @@ class AssignTask extends Component {
 							{
 								renderIf(this.state.searchingMainProcess)(
 									<View style={{ flex: 1, justifyContent: 'center' }}>
-										<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+										<ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
 									</View>
 								)
 							}
@@ -342,7 +342,7 @@ class AssignTask extends Component {
 							{
 								renderIf(this.state.searchingJoinProcess)(
 									<View style={{ flex: 1, justifyContent: 'center' }}>
-										<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+										<ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
 									</View>
 								)
 							}

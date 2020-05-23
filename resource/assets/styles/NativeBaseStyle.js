@@ -1,12 +1,12 @@
 import React, { Component } from 'react-native';
 import { StyleSheet, Platform } from 'react-native';
 import { moderateScale, verticalScale, scale } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 const NativeBaseStyle = StyleSheet.create({
     container: {
         // height: moderateScale(62),
-        backgroundColor: Colors.LITE_BLUE,
+        backgroundColor: COMMON_COLOR.LITE_BLUE,
     },
     left: {
         flex: 1,
@@ -15,11 +15,11 @@ const NativeBaseStyle = StyleSheet.create({
         flex: 3,
         alignItems: 'center'
     }, bodyTitle: {
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontWeight: 'bold',
         fontSize: moderateScale(15, 0.82),
     }, minorBodyTitle: {
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontWeight: 'bold',
         fontSize: moderateScale(12, 0.76),
     },
@@ -36,24 +36,24 @@ const AddButtonStyle = StyleSheet.create({
         width: moderateScale(48, 0.76),
         height: moderateScale(48, 0.76),
         borderRadius: moderateScale(24, 0.76),
-        backgroundColor: Colors.MENU_BLUE,
+        backgroundColor: COMMON_COLOR.MENU_BLUE,
     }
 });
 const addBtnIconSize = moderateScale(30, 1.2);
 
 const MoreButtonStyle = StyleSheet.create({
     button: {
-        backgroundColor: Colors.BLUE_PANTONE_640C,
+        backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C,
         height: moderateScale(42, 1.03),
     }, buttonText: {
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontSize: moderateScale(13, 1.11),
     },
 });
 
 const SearchSectionStyle = StyleSheet.create({
     container: {
-        backgroundColor: Colors.WHITE,
+        backgroundColor: COMMON_COLOR.WHITE,
         flex: 10,
         height: moderateScale(28, 0.88),
     },

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, moderateScale } from './ScaleIndicator';
 
 const BirthdayNotiStyles = StyleSheet.create({
@@ -14,14 +14,14 @@ const BirthdayNotiStyles = StyleSheet.create({
   titleContainerStyle: {
     marginHorizontal: '3%',
   }, titleStyle: {
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     fontSize: moderateScale(12, 1.2),
     fontWeight: "bold",
   },
   subTitleContainerStyle: {
     marginHorizontal: '3%'
   }, subTitleStyle: {
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     fontSize: moderateScale(10, 0.95),
   },
 });

@@ -15,7 +15,7 @@ import { DetailPublishDocStyle } from '../../../assets/styles/PublishDocStyle';
 
 //common
 import { convertDateToString, _readableFormat, formatLongText } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING, API_URL } from '../../../common/SystemConstant';
 import { getFileExtensionLogo, getFileSize } from '../../../common/Effect';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';

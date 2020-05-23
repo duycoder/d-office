@@ -28,7 +28,7 @@ import {
 import { executeLoading } from '../../../common/Effect'
 import {
   API_URL, DEFAULT_PAGE_INDEX,
-  EMPTY_STRING, DEFAULT_PAGE_SIZE, Colors, TOAST_DURATION_TIMEOUT
+  EMPTY_STRING, DEFAULT_PAGE_SIZE, COMMON_COLOR, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 
 //styles
@@ -157,8 +157,8 @@ class GroupSubTask extends Component {
       text: 'Hoàn thành công việc ' + (resultJson.Status ? ' thành công' : ' không thành công'),
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -172,7 +172,7 @@ class GroupSubTask extends Component {
     const canAssign = this.state.canAssignTask && item.DAGIAOVIEC != true && !(item.TRANGTHAI_ID > 0);
     const canFinish = this.state.canFinishTask && item.DAGIAOVIEC != true && !(item.TRANGTHAI_ID > 0);
 
-    let workerText = '', workerColor = Colors.BLACK;
+    let workerText = '', workerColor = COMMON_COLOR.BLACK;
     if (item.NGUOITHUCHIEN) {
       workerText = item.NGUOITHUCHIEN;
     } else {
@@ -180,13 +180,13 @@ class GroupSubTask extends Component {
         workerText = 'Tự thực hiện';
       } else {
         workerText = 'Chưa giao việc';
-        workerColor = Colors.RED_PANTONE_186C;
+        workerColor = COMMON_COLOR.RED_PANTONE_186C;
       }
     }
 
     return (
       <ListItem
-        containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+        containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: .7 }}
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
             {item.NOIDUNG}
@@ -217,10 +217,10 @@ class GroupSubTask extends Component {
         rightIcon={
           <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             {
-              canAssign && <RneIcon name='check' onPress={() => this.onConfirmCompleteTask(item.ID)} size={moderateScale(35, 1.04)} color={Colors.GREEN_PANTON_376C} type='material-community' />
+              canAssign && <RneIcon name='check' onPress={() => this.onConfirmCompleteTask(item.ID)} size={moderateScale(35, 1.04)} color={COMMON_COLOR.GREEN_PANTON_376C} type='material-community' />
             }
             {
-              canFinish && <RneIcon name='reply' onPress={() => this.onNavigateToAssignTask(item.ID)} size={moderateScale(35, 1.04)} color={Colors.DANK_BLUE} type='material-community' />
+              canFinish && <RneIcon name='reply' onPress={() => this.onNavigateToAssignTask(item.ID)} size={moderateScale(35, 1.04)} color={COMMON_COLOR.DANK_BLUE} type='material-community' />
             }
           </View>
         }
@@ -285,7 +285,7 @@ class GroupSubTask extends Component {
           {
             renderIf(this.state.searching)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
@@ -301,8 +301,8 @@ class GroupSubTask extends Component {
                     refreshing={this.state.refreshing}
                     onRefresh={this.handleRefresh}
                     title='Kéo để làm mới'
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
+                    COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                     titleColor='red'
                   />
                 }

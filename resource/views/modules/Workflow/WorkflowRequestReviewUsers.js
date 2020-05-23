@@ -17,7 +17,7 @@ import {
 import { ListItem, Icon } from 'react-native-elements';
 
 //constant
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 
 //util
 import util from 'lodash';
@@ -95,7 +95,7 @@ class WorkflowRequestReviewUsers extends Component {
 				</Body>
 
 				<Right>
-					<CheckBox checked={this.state.reviewUsers.length > 0} color={Colors.LITE_BLUE} />
+					<CheckBox checked={this.state.reviewUsers.length > 0} color={COMMON_COLOR.LITE_BLUE} />
 				</Right>
 			</NBListItem>
 		);

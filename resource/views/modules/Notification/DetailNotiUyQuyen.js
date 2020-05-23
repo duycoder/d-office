@@ -8,7 +8,7 @@ import { GoBackButton } from '../../common';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GridPanelStyle } from '../../../assets/styles/GridPanelStyle';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { dataLoading } from '../../../common/Effect';
 import { accountApi } from '../../../common/Api';
 
@@ -69,7 +69,7 @@ class DetailNotiUyQuyen extends Component {
             : <Content contentContainerStyle={{ flex: 1, backgroundColor: '#f1f1f1', paddingVertical: moderateScale(6, 1.2) }} scrollEnabled>
               <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Người tạo</Text>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Người tạo</Text>
                 </View>
                 <View style={{ marginTop: "0.5%" }}>
                   <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.TEN_NGUOIGUI}</Text>
@@ -78,7 +78,7 @@ class DetailNotiUyQuyen extends Component {
 
               <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Tiêu đề</Text>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Tiêu đề</Text>
                 </View>
                 <View style={{ marginTop: "0.5%" }}>
                   <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.TIEUDE}</Text>
@@ -87,7 +87,7 @@ class DetailNotiUyQuyen extends Component {
 
               <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Hạn hiển thị</Text>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Hạn hiển thị</Text>
                 </View>
                 <View style={{ marginTop: "0.5%" }}>
                   <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.SHOW_UNTIL)}`}</Text>
@@ -97,7 +97,7 @@ class DetailNotiUyQuyen extends Component {
               {
                 !!data.NOIDUNG && <View style={GridPanelStyle.container}>
                   <View style={GridPanelStyle.titleContainer}>
-                    <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
+                    <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
                   </View>
                   <View style={{ marginTop: "0.5%" }}>
                     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
@@ -107,7 +107,7 @@ class DetailNotiUyQuyen extends Component {
 
               <View style={GridPanelStyle.container}>
                 <View style={GridPanelStyle.titleContainer}>
-                  <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Ngày tạo</Text>
+                  <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Ngày tạo</Text>
                 </View>
                 <View style={{ marginTop: "0.5%" }}>
                   <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAYTAO)}`}</Text>

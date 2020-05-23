@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { moderateScale, scale, verticalScale } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 
 export const HistoryStyle = StyleSheet.create({
   container: {
-    backgroundColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
     borderRadius: 6,
     padding: scale(3)
   },
@@ -41,7 +41,7 @@ export const TimeLineStyle = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: moderateScale(12, 0.91),
     textAlign: 'left',
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   },
   timeSectionHour: {
     fontSize: moderateScale(10, 0.85),
@@ -58,14 +58,14 @@ export const TimeLineStyle = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: moderateScale(18, 1.18),
-    // backgroundColor: Colors.OLD_LITE_BLUE
+    // backgroundColor: COMMON_COLOR.OLD_LITE_BLUE
   }, innerIconCircle: {
     height: moderateScale(26, 1.14),
     width: moderateScale(26, 1.14),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: moderateScale(13, 1.14),
-    // backgroundColor: Colors.MENU_BLUE
+    // backgroundColor: COMMON_COLOR.MENU_BLUE
   },
   initState: {
     backgroundColor: '#0D7D23'
@@ -104,10 +104,10 @@ export const TimeLineStyle = StyleSheet.create({
   infoText: {
     fontSize: moderateScale(14, 1.1),
     fontWeight: 'bold',
-    color: Colors.MENU_BLUE
+    color: COMMON_COLOR.MENU_BLUE
   }, infoTimeline: {
     fontSize: moderateScale(12, 1.2),
-    color: Colors.DANK_GRAY
+    color: COMMON_COLOR.DANK_GRAY
   },
   infoDetail: {
     // borderWidth: 0.7,
@@ -136,7 +136,7 @@ export const TimeLineStyle = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   infoDetailLabelText: {
-    color: Colors.DANK_GRAY,
+    color: COMMON_COLOR.DANK_GRAY,
     fontSize: moderateScale(11, 0.9),
 
     // fontWeight: 'bold'
@@ -153,7 +153,7 @@ export const TimeLineStyle = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
   }, infoDetailValueText: {
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     fontSize: moderateScale(12, 1.25)
   },
   infoDetailValueNote: {
@@ -161,11 +161,11 @@ export const TimeLineStyle = StyleSheet.create({
     color: '#0D7D23'
   },
   infoBtn: {
-    backgroundColor: Colors.OLD_LITE_BLUE,
+    backgroundColor: COMMON_COLOR.OLD_LITE_BLUE,
     borderRadius: 8,
     padding: moderateScale(8, 0.73),
   }, infoBtnText: {
-    color: Colors.WHITE,
+    color: COMMON_COLOR.WHITE,
     fontSize: moderateScale(10, .8)
   }
 })

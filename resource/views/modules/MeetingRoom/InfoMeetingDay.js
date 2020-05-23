@@ -11,7 +11,7 @@ import { List } from 'react-native-elements';
 
 //common
 import { convertDateToString, _readableFormat, extention } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING } from '../../../common/SystemConstant';
 import { InfoStyle } from '../../../assets/styles';
 import { InfoListItem, AttachmentItem } from '../../common/DetailCommon';
 
@@ -64,7 +64,7 @@ class RegistrationInfo extends Component {
             <InfoListItem
               titleText='Phòng họp'
               subtitleText={info.TEN_PHONG || 'Chưa xếp phòng'}
-              customSubtitleText={!!info.TEN_PHONG ? {} : { color: Colors.RED_PANTONE_186C, fontWeight: 'bold' }}
+              customSubtitleText={!!info.TEN_PHONG ? {} : { color: COMMON_COLOR.RED_PANTONE_186C, fontWeight: 'bold' }}
             />
             <InfoListItem
               isRender={!!info.THANHPHAN_THAMDU}

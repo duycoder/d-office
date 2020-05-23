@@ -24,7 +24,7 @@ import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import { emptyDataPage } from '../../../common/Utilities';
 import {
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -159,13 +159,13 @@ class ListTrip extends Component {
     //     ? 'R.Q.TRỌNG'
     //     : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
     //   dokhanBgColor = item.GIATRI_DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-    //     ? Colors.RED_PANTONE_186C
-    //     : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+    //     ? COMMON_COLOR.RED_PANTONE_186C
+    //     : ((item.GIATRI_DOKHAN == DOKHAN_CONSTANT.KHAN) ? COMMON_COLOR.RED_PANTONE_021C : COMMON_COLOR.GREEN_PANTONE_364C);
 
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: 0 }}
+          containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: 0 }}
 
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap" }]}>
@@ -177,7 +177,7 @@ class ListTrip extends Component {
             <View style={{ marginTop: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                  <RnText style={{ color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Mục đích:
                 </RnText>
                 </View>
@@ -189,7 +189,7 @@ class ListTrip extends Component {
               </View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                  <RnText style={{ color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Thời gian xuất phát:
               </RnText>
                 </View>
@@ -236,11 +236,11 @@ class ListTrip extends Component {
         <Header searchBar rounded style={NativeBaseStyle.container}>
           <Left style={NativeBaseStyle.left}>
             <TouchableOpacity onPress={() => this.navigateBack()} style={{ width: '100%' }}>
-              <RNEIcon name="ios-arrow-back" size={30} color={Colors.WHITE} type="ionicon" />
+              <RNEIcon name="ios-arrow-back" size={30} color={COMMON_COLOR.WHITE} type="ionicon" />
             </TouchableOpacity>
           </Left>
 
-          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên chuyến'
               value={this.state.filterValue}
@@ -258,7 +258,7 @@ class ListTrip extends Component {
           {
             renderIf(this.state.loadingData)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
@@ -273,10 +273,10 @@ class ListTrip extends Component {
                   <RefreshControl
                     refreshing={this.state.refreshingData}
                     onRefresh={this.handleRefresh}
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
+                    COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                     title='Kéo để làm mới'
-                    titleColor={Colors.RED}
+                    titleColor={COMMON_COLOR.RED}
                   />
                 }
                 ListEmptyComponent={() =>

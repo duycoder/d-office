@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 
 //common
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
-import { Colors, API_URL } from '../../../common/SystemConstant';
+import { COMMON_COLOR, API_URL } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { InfoStyle } from '../../../assets/styles';
 import AttachmentItem from '../../common/DetailCommon/AttachmentItem';
@@ -108,7 +108,7 @@ class MainInfoPublishDoc extends Component {
     );
     if (info.SOHIEU === null) {
       sohieu = (
-        <Text style={[InfoStyle.listItemSubTitleContainer, { color: Colors.RED_PANTONE_186C }]}>
+        <Text style={[InfoStyle.listItemSubTitleContainer, { color: COMMON_COLOR.RED_PANTONE_186C }]}>
           Không rõ
         </Text>
       );
@@ -121,20 +121,20 @@ class MainInfoPublishDoc extends Component {
       trungLichHop = (
         <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
           <View style={{ flex: 1 }}>
-            <Text style={{ color: Colors.RED_PANTONE_186C }}>CÓ</Text>
+            <Text style={{ color: COMMON_COLOR.RED_PANTONE_186C }}>CÓ</Text>
           </View>
           {
             this.state.hasAuthorization === 0 &&
             <View style={{ flex: 1 }}>
               <TouchableOpacity style={{
-                backgroundColor: Colors.RED_PANTONE_186C,
+                backgroundColor: COMMON_COLOR.RED_PANTONE_186C,
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: moderateScale(28, 0.82),
                 borderRadius: 5
               }}
                 onPress={() => this.getDetailEvent()}>
-                <Text style={{ color: Colors.WHITE, fontWeight: 'bold' }}>
+                <Text style={{ color: COMMON_COLOR.WHITE, fontWeight: 'bold' }}>
                   CHI TIẾT
                 </Text>
               </TouchableOpacity>

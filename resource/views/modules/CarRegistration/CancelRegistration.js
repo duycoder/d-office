@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 //utilites
 import {
   EMPTY_STRING,
-  Colors,
+  COMMON_COLOR,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { showWarningToast } from '../../../common/Utilities';
@@ -74,8 +74,8 @@ class CancelRegistration extends Component {
         text: resultJson.Status ? 'Huỷ yêu cầu đăng ký sử dụng xe thành công' : 'Huỷ yêu cầu đăng ký sử dụng xe thất bại',
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {

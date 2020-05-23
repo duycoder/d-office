@@ -7,7 +7,7 @@ import {
 import { SERVER_KEY } from '../firebase/FireBaseConstant';
 
 import RNFetchBlob from 'rn-fetch-blob'
-import { Colors } from './SystemConstant';
+import { COMMON_COLOR } from './SystemConstant';
 class TestDownLoad extends Component {
     async download() {
 
@@ -62,7 +62,7 @@ class TestDownLoad extends Component {
                 justifyContent: 'center'
             }}>
                 <TouchableOpacity style={{
-                    backgroundColor: Colors.LITE_BLUE
+                    backgroundColor: COMMON_COLOR.LITE_BLUE
                 }} onPress={() => this.download()}>
                     <Text>
                         Download
@@ -120,7 +120,7 @@ class TestFCM extends Component {
                     height: 100,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: Colors.LITE_BLUE,
+                    backgroundColor: COMMON_COLOR.LITE_BLUE,
                     borderRadius: 5
                 }}>
                     <Text>
@@ -142,7 +142,7 @@ class TestNav extends Component {
                     height: 100,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: Colors.LITE_BLUE,
+                    backgroundColor: COMMON_COLOR.LITE_BLUE,
                     borderRadius: 5
                 }}
                 onPress={() => this.props.navigation.navigate("VanBanDenDetailScreen", {docId: 336, docType: 1})}>

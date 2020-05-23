@@ -1,4 +1,6 @@
 import { moderateScale } from '../assets/styles/ScaleIndicator';
+import { COMMON_REGEX, COMMON_COLOR } from './constants';
+
 export const WEB_URL = 'http://vanban.vnio.vn'; //web vnio
 // export const WEB_URL = 'http://192.168.1.10:8022/'; //local web test
 // export const WEB_URL = 'http://222.252.27.60:8022';//remote web test
@@ -12,10 +14,6 @@ export const DEFAULT_PAGE_INDEX = 1;
 export const EMPTY_STRING = '';
 
 export const EMTPY_DATA_MESSAGE = 'KHÔNG CÓ DỮ LIỆU';
-
-export const HEADER_COLOR = '#FF0033'
-export const LOADER_COLOR = '#0082ba';
-export const LOADMORE_COLOR = '#0082ba';
 
 export const PLANJOB_CONSTANT = {
 	CHUALAPKEHOACH: 0,
@@ -99,49 +97,6 @@ export const LICHTRUC_CONSTANT = {
 		BAN_THAO: 1,
 		DA_PHE_DUYET: 3
 	}
-}
-
-//colors
-export const Colors = {
-	WHITE: '#fff',
-	/**
-	 * Text bình thường
-	 */
-	BLACK: '#000',
-	/**
-	 * Text chưa đọc
-	 */
-	NOT_READ: '#0078d4',
-	/**
-	 * Text đã xử lý
-	 */
-	HAS_DONE: '#888',
-	RED: '#f00',
-	GRAY: '#bdc6cf',
-	DARK_GRAY: '#96a2ad',
-	/**
-	 * Màu icon inactive
-	 */
-	DANK_GRAY: '#858585',
-	VERY_DANK_GRAY: '#2F2F2F',
-	CLOUDS: '#ecf0f1',
-	GREEN_PANTON_376C: '#7DBA00',
-	GREEN_PANTON_369C: '#4FA800',
-	GREEN_PANTONE_364C: '#337321',
-	BLUE_PANTONE_640C: '#0082ba', //00aeef 007cc2
-	RED_PANTONE_186C: '#FF0033',
-	RED_PANTONE_021C: '#FF6600',
-	DANK_BLUE: '#007cc2',
-	/**
-	 * Màu header, icon active, action
-	 */
-	LITE_BLUE: '#1769b3', //00aeef
-	OLD_LITE_BLUE: '#00aeef',
-	LIGHT_GRAY_PASTEL: '#f4f3f3',
-	MENU_BLUE: '#0078d4',
-
-	RANDOM_COLOR_1: '#ad6b16',
-	RANDOM_COLOR_2: '#1ab41a'
 }
 
 export const BASEDOCSEARCH_CONSTANT = {
@@ -466,12 +421,8 @@ export function generateTitle(maThaotac) {
 	return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
 }
 
-export const EMAIL_VALIDATION = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-export const PASSWD_VALIDATION = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*])(?=.*[A-Z])[0-9a-zA-Z!@#$%^&*]{8,}$/;
-export const HTML_STRIP_PATTERN = /<[^>]*>?/gm;
-
 export function generateBadgeIconNoti(itemType) {
-	let badgeBackgroundColor = Colors.GRAY,
+	let badgeBackgroundColor = COMMON_COLOR.GRAY,
 		leftTitle = "NN";
 
 	switch (itemType) {
@@ -488,15 +439,15 @@ export function generateBadgeIconNoti(itemType) {
 			leftTitle = "VBĐ";
 			break;
 		case "QL_LICHHOP":
-			badgeBackgroundColor = Colors.RANDOM_COLOR_1;
+			badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_1;
 			leftTitle = "LH";
 			break;
 		case "QL_DANGKY_XE":
-			badgeBackgroundColor = Colors.RANDOM_COLOR_2;
+			badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_2;
 			leftTitle = "DKX";
 			break;
 		case "QL_CHUYEN":
-			badgeBackgroundColor = Colors.DANK_BLUE;
+			badgeBackgroundColor = COMMON_COLOR.DANK_BLUE;
 			leftTitle = "CX";
 			break;
 	}
@@ -509,11 +460,11 @@ export function generateBadgeIconNoti(itemType) {
 
 export function generateReadFontStyleAndColor(isRead = false) {
 	let checkReadFont = 'bold',
-		checkReadColor = Colors.NOT_READ;
+		checkReadColor = COMMON_COLOR.NOT_READ;
 
 	if (isRead) {
 		checkReadFont = 'normal';
-		checkReadColor = Colors.HAS_DONE;
+		checkReadColor = COMMON_COLOR.HAS_DONE;
 	}
 	return {
 		checkReadFont,
@@ -524,3 +475,8 @@ export function generateReadFontStyleAndColor(isRead = false) {
 export const customWorkflowListHeight = moderateScale(58.25, 1.15);
 export const APPLICATION_SHORT_NAME = 'EofficeVNEH';
 export const APPLICATION_FULL_NAME = 'PHẦN MỀM QUẢN LÝ ĐIỀU HÀNH VĂN BẢN';
+
+export {
+	COMMON_REGEX,
+	COMMON_COLOR,
+};

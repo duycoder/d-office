@@ -2,11 +2,11 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 
 import styles from '../../assets/styles/AlertMessageStyle';
-import { EMPTY_STRING, Colors } from '../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR } from '../../common/SystemConstant';
 
 class AlertMessageButton extends React.Component {
   static defaultProps = {
-    btnColorText: Colors.RED_PANTONE_186C,
+    btnColorText: COMMON_COLOR.RED_PANTONE_186C,
     btnText: EMPTY_STRING,
   }
   render() {

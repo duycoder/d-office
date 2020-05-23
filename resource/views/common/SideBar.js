@@ -20,7 +20,7 @@ import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 
 import Panel from './Panel';
 import Confirm from './Confirm';
-import { Colors, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
+import { COMMON_COLOR, SIDEBAR_CODES, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 import Images from '../../common/Images';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
@@ -142,7 +142,7 @@ class SideBar extends Component {
   render() {
     const { notifyCount, userFunctions, onFocusNow } = this.state;
     const subItemIcon = <Image source={Images.subItemIconLink} />;
-    const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={Colors.GRAY} />
+    const mainItemIcon = <Icon name='chevron-right' type='entypo' size={verticalScale(30)} color={COMMON_COLOR.GRAY} />
     let notificationIcon = <View></View>;
     if (notifyCount > 0 && notifyCount < 100) {
       notificationIcon = <View style={SideBarStyle.chatNotificationContainer}>

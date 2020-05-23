@@ -18,7 +18,7 @@ import { DetailSignDocStyle } from '../../../assets/styles/SignDocStyle';
 
 //utilities
 import renderIf from 'render-if';
-import { EMPTY_STRING, Colors } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR } from '../../../common/SystemConstant';
 import {
   emptyDataPage, convertDateToString,
   convertTimeToString, onDownloadFile, extention
@@ -72,7 +72,7 @@ export default class AttachPublishDoc extends Component {
         marginLeft: 10,
       }}
       rightIcon={
-        <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+        <RneIcon name='download' color={COMMON_COLOR.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
       }
       onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
     />
@@ -82,7 +82,7 @@ export default class AttachPublishDoc extends Component {
     return (
       <Container>
         <Header searchBar style={NativeBaseStyle.container}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên tài liệu'
               value={this.state.filterValue}
@@ -94,7 +94,7 @@ export default class AttachPublishDoc extends Component {
         <Content contentContainerStyle={{ flex: 1, justifyContent: (this.state.searching) ? 'center' : 'flex-start' }}>
           {
             renderIf(this.state.searching)(
-              <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+              <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
             )
           }
 

@@ -14,7 +14,7 @@ import OpenFile from 'react-native-doc-viewer';
 import * as util from 'lodash';
 //lib
 import { Toast } from 'native-base'
-import { EMTPY_DATA_MESSAGE, Colors, WEB_URL, ASYNC_DELAY_TIMEOUT, APPLICATION_SHORT_NAME } from './SystemConstant'
+import { EMTPY_DATA_MESSAGE, COMMON_COLOR, WEB_URL, ASYNC_DELAY_TIMEOUT, APPLICATION_SHORT_NAME } from './SystemConstant'
 
 //style
 import { verticalScale, moderateScale } from '../assets/styles/ScaleIndicator';
@@ -107,10 +107,10 @@ export function unAuthorizePage() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Image source={images.icon_sad_face} style={{ width: '30%', height: '30%', resizeMode: 'contain' }} />
-      <Text style={{ color: Colors.DANK_BLUE, fontWeight: 'bold', fontSize: moderateScale(16, 1.2) }}>
+      <Text style={{ color: COMMON_COLOR.DANK_BLUE, fontWeight: 'bold', fontSize: moderateScale(16, 1.2) }}>
         XIN LỖI!
             </Text>
-      <Text style={{ color: Colors.DANK_BLUE, fontWeight: 'normal', marginBottom: verticalScale(20) }}>
+      <Text style={{ color: COMMON_COLOR.DANK_BLUE, fontWeight: 'normal', marginBottom: verticalScale(20) }}>
         BẠN KHÔNG CÓ QUYỀN TRUY CẬP VĂN BẢN NÀY
             </Text>
     </View>
@@ -427,8 +427,8 @@ export function showWarningToast(title = '', callback) {
     text: title,
     type: 'danger',
     buttonText: "OK",
-    buttonStyle: { backgroundColor: Colors.WHITE },
-    buttonTextStyle: { color: Colors.LITE_BLUE },
+    buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+    buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
   });
   if (typeof callback === 'function') {
     callback();

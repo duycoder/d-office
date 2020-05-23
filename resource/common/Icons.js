@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
 
 import { Icon } from 'react-native-elements';
-import { SYSTEM_FUNCTION, Colors, SIDEBAR_CODES } from './SystemConstant';
+import { SYSTEM_FUNCTION, COMMON_COLOR, SIDEBAR_CODES } from './SystemConstant';
 import { SideBarStyle } from '../assets/styles/SideBarStyle';
 import { moderateScale } from '../assets/styles/ScaleIndicator';
 
@@ -19,7 +19,7 @@ export default class SideBarIcon extends Component {
     status: false,
     isParent: false,
     iconSize: 35,
-    iconColor: Colors.BLACK,
+    iconColor: COMMON_COLOR.BLACK,
     customIconContainerStyle: {},
     customIconImageStyle: {},
     isHotPick: false,
@@ -192,7 +192,7 @@ export default class SideBarIcon extends Component {
     }
 
     if (status) {
-      iconColor = Colors.WHITE;
+      iconColor = COMMON_COLOR.WHITE;
     }
 
     return (

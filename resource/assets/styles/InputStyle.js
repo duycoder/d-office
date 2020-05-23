@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from "./ScaleIndicator";
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { pickerFormat } from '../../common/Utilities';
 
 const DatePickerCustomStyle = StyleSheet.create({
@@ -18,7 +18,7 @@ const InputCreateStyle = StyleSheet.create({
   label: {
     fontSize: moderateScale(15, 0.86),
   }, labelMust: {
-    color: Colors.RED,
+    color: COMMON_COLOR.RED,
   },
   input: {
     fontSize: moderateScale(15, 0.96),

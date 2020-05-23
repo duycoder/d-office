@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, Dimensions } from 'react-native';
 
 //constant
-import { Colors } from '../../common/SystemConstant'
+import { COMMON_COLOR } from '../../common/SystemConstant'
 import { moderateScale, scale } from './ScaleIndicator';
 
 const {width} = Dimensions.get('window');

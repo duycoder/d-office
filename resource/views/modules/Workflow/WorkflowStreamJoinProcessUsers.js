@@ -19,7 +19,7 @@ import {
   Right, Left, Title, Body, CheckBox
 } from 'native-base';
 import * as util from 'lodash';
-import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
+import { COMMON_COLOR, customWorkflowListHeight } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { GroupListStyle } from '../../../assets/styles';
 import { showWarningToast } from '../../../common/Utilities';
@@ -170,7 +170,7 @@ class WorkflowStreamJoinProcessUsers extends Component {
                 <Right>
                   <CheckBox onPress={() => this.onSelectUser(item.ID)}
                     checked={(this.state.joinProcessUsers.indexOf(item.ID) > -1)}
-                    color={Colors.LITE_BLUE} />
+                    color={COMMON_COLOR.LITE_BLUE} />
                 </Right>
               </NbListItem>
             ))

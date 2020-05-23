@@ -5,7 +5,7 @@ import {
 
 //constant
 import {
-  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors
+  DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
@@ -14,8 +14,6 @@ import {
   Container, Header, Title, Content,
   Left, Body, Right
 } from 'native-base';
-import renderIf from 'render-if';
-import util from 'lodash';
 
 //redux
 import { connect } from 'react-redux';
@@ -137,15 +135,12 @@ class ListNotification extends Component {
       data: this.state.loadingMore ? this.state.data.concat(result) : result
     })
   }
-  renderItem = ({ item, index }) => (<RecentNoti
-    item={item} index={index} key={index.toString()}
-    successFunc={this.onNavigateToScreen}
-    readFunc={this.checkRefreshList}
-  />)
+  
   onNavigateToScreen = (screenName = '', screenParam = {}) => {
     this.props.updateCoreNavParams(screenParam);
     this.props.navigation.navigate(screenName);
   }
+
   checkRefreshList = () => {
     this.setState({
       isRefreshNotiList: true,
@@ -157,7 +152,7 @@ class ListNotification extends Component {
   }
 
   render() {
-    const { loading, dataUyQuyen } = this.state;
+    const { loading, dataUyQuyen, canUyQuyen } = this.state;
     let bodyContent = null;
     if (loading) {
       bodyContent = dataLoading(loading);
@@ -165,21 +160,27 @@ class ListNotification extends Component {
       bodyContent = (
         <Content contentContainerStyle={{ flex: 1 }}>
           {
-            (util.isArray(dataUyQuyen) && dataUyQuyen.length > 0) 
-              && dataUyQuyen.map((item, index) => (<AuthorizeNoti key={index.toString()} item={item} index={index} />))
+            (util.isArray(dataUyQuyen) && dataUyQuyen.length > 0) && dataUyQuyen
+              .map((item, index) => (<AuthorizeNoti key={index.toString()} item={item} index={index} />))
           }
           <FlatList
             data={this.state.data}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={this.renderItem}
+            renderItem={({ item, index }) => (
+              <RecentNoti
+                item={item} index={index}
+                successFunc={this.onNavigateToScreen}
+                readFunc={this.checkRefreshList}
+              />
+            )}
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
                 onRefresh={this.handleRefresh}
-                colors={[Colors.BLUE_PANTONE_640C]}
-                tintColor={[Colors.BLUE_PANTONE_640C]}
+                COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                 title='Kéo để làm mới'
-                titleColor={Colors.RED}
+                titleColor={COMMON_COLOR.RED}
               />
             }
             ListEmptyComponent={() =>
@@ -206,10 +207,9 @@ class ListNotification extends Component {
           </Body>
           <Right style={{ flex: 1 }} />
         </Header>
-
         {bodyContent}
         <AddButton
-          hasPermission={this.state.canUyQuyen}
+          hasPermission={canUyQuyen}
           createFunc={this.createNotiUyQuyen}
         />
       </Container>

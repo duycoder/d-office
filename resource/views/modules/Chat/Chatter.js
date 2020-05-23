@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  API_URL, WEB_URL, COMMON_COLOR, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING,
 } from '../../../common/SystemConstant';
 import {
@@ -276,7 +276,7 @@ class Chatter extends Component {
               <Image source={avatarSource} style={ListChatterStyle.chatterAvatar} />
             </View>
             <View style={[ChatterStyle.chatterMessageContainer, {alignItems: 'flex-start'}]}>
-              <View style={[ChatterStyle.chatterMessageContent, {backgroundColor: Colors.GRAY, justifyContent: 'flex-start', marginRight: scale(30)}]}>
+              <View style={[ChatterStyle.chatterMessageContent, {backgroundColor: COMMON_COLOR.GRAY, justifyContent: 'flex-start', marginRight: scale(30)}]}>
                 <Text style={item.IS_READ ? ChatterStyle.chatterReadMessage : ChatterStyle.chatterUnreadMessage}>
                   {item.message}
                 </Text>
@@ -295,8 +295,8 @@ class Chatter extends Component {
         <View>
           <View style={{ flexDirection: 'row', marginTop: verticalScale(10) }}>
             <View style={[ChatterStyle.chatterMessageContainer, {alignItems: 'flex-end'}]}>
-              <View style={[ChatterStyle.chatterMessageContent, {backgroundColor: Colors.BLUE_PANTONE_640C, justifyContent: 'flex-end', marginLeft: scale(30)}]}>
-                <Text style={[ChatterStyle.chatterReadMessage, {color: Colors.WHITE, textAlign:'right'}]}>
+              <View style={[ChatterStyle.chatterMessageContent, {backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C, justifyContent: 'flex-end', marginLeft: scale(30)}]}>
+                <Text style={[ChatterStyle.chatterReadMessage, {color: COMMON_COLOR.WHITE, textAlign:'right'}]}>
                   {item.message}
                 </Text>
               </View>
@@ -351,10 +351,10 @@ class Chatter extends Component {
                     keyExtractor={(item, index) => index.toString()}
                     
                   // ListFooterComponent={() => this.state.loadingMore ?
-                  //   <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
+                  //   <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} /> :
                   //   (
                   //     this.state.data.length >= DEFAULT_PAGE_SIZE ?
-                  //       <Button small full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
+                  //       <Button small full style={{ backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C }} onPress={() => this.loadingMore()}>
                   //         <NbText>
                   //           TẢI THÊM BÌNH LUẬN
                   //       </NbText>
@@ -375,7 +375,7 @@ class Chatter extends Component {
             value={this.state.yMessage}
             onChangeText={(yMessage) => this.setState({ yMessage })} />
           <Button transparent onPress={this.sendMessage}>
-            <RneIcon name='md-send' size={moderateScale(40)} color={Colors.GRAY} type='ionicon' />
+            <RneIcon name='md-send' size={moderateScale(40)} color={COMMON_COLOR.GRAY} type='ionicon' />
           </Button>
         </Footer>
 

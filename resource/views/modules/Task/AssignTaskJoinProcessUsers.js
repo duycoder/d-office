@@ -24,7 +24,7 @@ import {
 import * as util from 'lodash';
 
 //utilities
-import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant'
+import { COMMON_COLOR, customWorkflowListHeight } from '../../../common/SystemConstant'
 
 //style
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -108,8 +108,8 @@ class AssignTaskJoinProcessUsers extends Component {
         text: 'Vui lòng chọn người xử lý chính',
         type: 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
       });
     }
     this.props.updateTaskProcessors(userId, false);
@@ -177,7 +177,7 @@ class AssignTaskJoinProcessUsers extends Component {
 
                 <Right>
                   <CheckBox
-                    color={Colors.LITE_BLUE}
+                    color={COMMON_COLOR.LITE_BLUE}
                     checked={this.state.joinProcessUsers.indexOf(item.ID) > -1}
                     onPress={() => this.onSelectUser(item.ID)}
                   />

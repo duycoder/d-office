@@ -4,7 +4,7 @@
  * @since: 04/05/2018
  */
 import React, { Component } from 'react';
-import { LOADER_COLOR, Colors } from '../common/SystemConstant';
+import { COMMON_COLOR } from '../common/SystemConstant';
 import { Text, View, Modal, ActivityIndicator, StyleSheet, Platform } from 'react-native';
 import { indicatorResponsive, scale, moderateScale, verticalScale } from '../assets/styles/ScaleIndicator';
 // import { isBuffer } from 'util';
@@ -56,7 +56,7 @@ function dataLoading(isVisible) {
   if (isVisible) {
     return (
       <View style={styles.alContainer}>
-        <ActivityIndicator size={indicatorResponsive} color={LOADER_COLOR} />
+        <ActivityIndicator size={indicatorResponsive} color={COMMON_COLOR.LOADER_COLOR} />
       </View>
     );
   }
@@ -83,7 +83,7 @@ function getFileExtensionLogo(extension) {
   const pdfExtension = ['pdf', 'application/pdf'];
   const txtExtesion = ['txt'];
 
-  let backgroundColor = Colors.LITE_BLUE;
+  let backgroundColor = COMMON_COLOR.LITE_BLUE;
   let isIcon = false;
   let iconName = null;
   let extText = null;
@@ -117,8 +117,8 @@ function getFileExtensionLogo(extension) {
     alignItems: 'center'
   }}>
     {
-      isIcon ? <Icon name={iconName} color={Colors.WHITE} size={verticalScale(25)} type='material-community' /> :
-        <Text style={{ color: Colors.WHITE, fontWeight: 'bold', fontSize: moderateScale(14, 0.78) }}>{extText}</Text>
+      isIcon ? <Icon name={iconName} color={COMMON_COLOR.WHITE} size={verticalScale(25)} type='material-community' /> :
+        <Text style={{ color: COMMON_COLOR.WHITE, fontWeight: 'bold', fontSize: moderateScale(14, 0.78) }}>{extText}</Text>
     }
   </View>
 }
@@ -132,7 +132,7 @@ export {
 }
 
 
-const alBorderBlockStyle = (Platform.OS === 'ios') ? { backgroundColor: 'rgba(48, 40, 41, 0.8)', width: moderateScale(150, 1.5), height: moderateScale(150, 1.5), flexDirection: 'column', borderWidth: 0.5, borderColor: 'black' } : { backgroundColor: Colors.LITE_BLUE, width: scale(200), height: verticalScale(100), flexDirection: 'row' };
+const alBorderBlockStyle = (Platform.OS === 'ios') ? { backgroundColor: 'rgba(48, 40, 41, 0.8)', width: moderateScale(150, 1.5), height: moderateScale(150, 1.5), flexDirection: 'column', borderWidth: 0.5, borderColor: 'black' } : { backgroundColor: COMMON_COLOR.LITE_BLUE, width: scale(200), height: verticalScale(100), flexDirection: 'row' };
 
 const styles = StyleSheet.create({
   alContainer: {

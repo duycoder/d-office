@@ -13,7 +13,7 @@ import {
 import DatePicker from 'react-native-datepicker';
 
 //utilities
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { verticalScale } from '../../../assets/styles/ScaleIndicator';
 import { executeLoading } from '../../../common/Effect';
 import { pickerFormat, showWarningToast } from '../../../common/Utilities';
@@ -122,8 +122,8 @@ class CreateSubTask extends Component {
 				text: resultJson.Status ? 'Tạo công việc con thành công' : 'Tạo công việc con không thành công',
 				type: resultJson.Status ? 'success' : 'danger',
 				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+				buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+				buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
 				duration: TOAST_DURATION_TIMEOUT,
 				onClose: () => {
 					if (resultJson.Status) {
@@ -218,7 +218,7 @@ class CreateSubTask extends Component {
 						</Item>
 
 						<Button block danger
-							style={{ backgroundColor: Colors.LITE_BLUE, marginTop: verticalScale(20) }}
+							style={{ backgroundColor: COMMON_COLOR.LITE_BLUE, marginTop: verticalScale(20) }}
 							onPress={() => this.onCreateSubTask()}>
 							<Text>
 								TẠO CÔNG VIỆC CON

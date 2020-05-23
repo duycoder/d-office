@@ -18,7 +18,7 @@ import { Container, Content, Header, Item, Input, Icon } from 'native-base';
 //styles
 import { DetailTaskStyle } from '../../../assets/styles/TaskStyle';
 
-import { Colors, EMPTY_STRING } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING } from '../../../common/SystemConstant';
 
 //utilities
 import { emptyDataPage, convertDateToString, convertTimeToString, onDownloadFile, extention } from '../../../common/Utilities';
@@ -72,7 +72,7 @@ export default class TaskAttachment extends Component {
         marginLeft: 10,
       }}
       rightIcon={
-        <RneIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
+        <RneIcon name='download' color={COMMON_COLOR.GREEN_PANTON_369C} size={verticalScale(25)} type='entypo' />
       }
       onPress={() => onDownloadFile(item.TENTAILIEU, item.DUONGDAN_FILE, item.DINHDANG_FILE)}
     />
@@ -82,7 +82,7 @@ export default class TaskAttachment extends Component {
     return (
       <Container>
         <Header searchBar style={NativeBaseStyle.container}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên tài liệu'
               value={this.state.filterValue}
@@ -95,7 +95,7 @@ export default class TaskAttachment extends Component {
         <Content contentContainerStyle={{ flex: 1, justifyContent: (this.state.searching) ? 'center' : 'flex-start' }}>
           {
             renderIf(this.state.searching)(
-              <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+              <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
             )
           }
 

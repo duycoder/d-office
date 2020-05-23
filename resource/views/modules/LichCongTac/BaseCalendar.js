@@ -12,7 +12,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import PopupDialog, { DialogTitle, DialogButton } from 'react-native-popup-dialog';
 import { Icon as RNEIcon } from 'react-native-elements';
 
-import { Colors, height, API_URL } from '../../../common/SystemConstant';
+import { COMMON_COLOR, height, API_URL } from '../../../common/SystemConstant';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { appStoreDataAndNavigate, convertDateTimeToString, convertDateToString, asyncDelay } from '../../../common/Utilities';
 import { verticalScale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -120,9 +120,9 @@ class BaseCalendar extends Component {
           continue;
         }
         if (util.isEqual(item, currentDateStr)) {
-          markedDates[item] = { marked: true, dotColor: Colors.WHITE }
+          markedDates[item] = { marked: true, dotColor: COMMON_COLOR.WHITE }
         } else {
-          markedDates[item] = { marked: true, dotColor: Colors.BLUE }
+          markedDates[item] = { marked: true, dotColor: COMMON_COLOR.BLUE }
         }
       }
     }
@@ -152,14 +152,14 @@ class BaseCalendar extends Component {
           <Body style={NativeBaseStyle.body}>
             <TouchableOpacity onPress={this.togglePicker}>
               <Title style={NativeBaseStyle.bodyTitle}>
-                {currentDate.split("-").shift()} <Icon name="ios-arrow-down" style={{ fontSize: 17, color: Colors.WHITE }} />
+                {currentDate.split("-").shift()} <Icon name="ios-arrow-down" style={{ fontSize: 17, color: COMMON_COLOR.WHITE }} />
               </Title>
             </TouchableOpacity>
           </Body>
 
           <Right style={NativeBaseStyle.right}>
             <TouchableOpacity onPress={this.backToDefaultDate}>
-              <Icon name="md-calendar" style={{ fontSize: 22, color: Colors.WHITE }} />
+              <Icon name="md-calendar" style={{ fontSize: 22, color: COMMON_COLOR.WHITE }} />
             </TouchableOpacity>
           </Right>
         </Header>
@@ -196,7 +196,7 @@ class BaseCalendar extends Component {
                       fontSize: 18,
                     },
                     today: {
-                      backgroundColor: Colors.LITE_BLUE,
+                      backgroundColor: COMMON_COLOR.LITE_BLUE,
                     },
                     todayText: {
                       color: '#fff',
@@ -250,7 +250,7 @@ class BaseCalendar extends Component {
             //     <DialogButton
             //       align={'center'}
             //       buttonStyle={{
-            //         backgroundColor: Colors.GRAY,
+            //         backgroundColor: COMMON_COLOR.GRAY,
             //         alignSelf: 'stretch',
             //         alignItems: 'center',
             //         borderBottomLeftRadius: 8,
@@ -308,10 +308,10 @@ class BaseCalendar extends Component {
                   <Text style={{ fontWeight: 'bold' }}>Huỷ</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={this.handleYearChange}>
-                  <Text style={{ color: Colors.GREEN_PANTONE_364C, fontWeight: 'bold' }}>Chọn</Text>
+                  <Text style={{ color: COMMON_COLOR.GREEN_PANTONE_364C, fontWeight: 'bold' }}>Chọn</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{ borderBottomColor: Colors.GRAY, borderBottomWidth: 1 }}></View>
+              <View style={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: 1 }}></View>
               <Picker
                 selectedValue={this.state.tempYear}
                 onValueChange={(itemValue, itemIndex) => this.setState({ tempYear: itemValue })}

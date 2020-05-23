@@ -24,7 +24,7 @@ import { Agenda } from 'react-native-calendars';
 
 //utilities
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
 
 
@@ -123,11 +123,11 @@ class ListPersonalLichtruc extends Component {
   }
 
   renderItem(item) {
-    let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+    let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? COMMON_COLOR.OLD_LITE_BLUE : COMMON_COLOR.BLACK;
 
     return (
       <ListItem
-        containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
+        containerStyle={[styles.item, { borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: 0, backgroundColor: COMMON_COLOR.WHITE }]}
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
             {item.title}
@@ -135,7 +135,7 @@ class ListPersonalLichtruc extends Component {
         }
         subtitle={
           <View style={{ marginTop: 8 }}>
-            <RnText style={[{ fontSize: moderateScale(11, 1.1), flexWrap: "wrap", color: Colors.DANK_GRAY }]}>
+            <RnText style={[{ fontSize: moderateScale(11, 1.1), flexWrap: "wrap", color: COMMON_COLOR.DANK_GRAY }]}>
               {item.note}
             </RnText>
           </View>

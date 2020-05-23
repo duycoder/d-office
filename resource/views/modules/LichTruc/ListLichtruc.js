@@ -27,7 +27,7 @@ import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import { emptyDataPage, convertDateToString, onDownloadFile, showWarningToast } from '../../../common/Utilities';
 import {
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   LICHTRUC_CONSTANT,
   EMPTY_STRING,
   TOAST_DURATION_TIMEOUT
@@ -192,8 +192,8 @@ class ListLichtruc extends Component {
         text: resultJson.Status ? "Phê duyệt thành công" : "Phê duyệt thất bại",
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
@@ -213,13 +213,13 @@ class ListLichtruc extends Component {
   }
 
   renderItem = ({ item }) => {
-    const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
-    const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? Colors.GREEN_PANTONE_364C : Colors.BLACK;
+    const colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.ID)) ? COMMON_COLOR.OLD_LITE_BLUE : COMMON_COLOR.BLACK;
+    const statusTextColor = item.STATUS === LICHTRUC_CONSTANT.STATUS.DA_PHE_DUYET ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.BLACK;
     const thoihanText = `${convertDateToString(item.TUNGAY)} - ${convertDateToString(item.DENNGAY)}`;
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY }}
+          containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY }}
           onPress={() => this.navigateToScreen("ListPersonalLichtrucScreen")}
           title={
             <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
@@ -254,7 +254,7 @@ class ListLichtruc extends Component {
               {
                 (item.DuongdanFile && item.DuongdanFile.length > 0)
                   ? <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => onDownloadFile(item.TENTAILIEU, item.DuongdanFile)}>
-                    <RNEIcon name='download' color={Colors.GREEN_PANTON_369C} size={verticalScale(35)} type='entypo' />
+                    <RNEIcon name='download' color={COMMON_COLOR.GREEN_PANTON_369C} size={verticalScale(35)} type='entypo' />
                   </TouchableOpacity>
                   : <View />
               }
@@ -262,7 +262,7 @@ class ListLichtruc extends Component {
                 (item.STATUS && item.STATUS === LICHTRUC_CONSTANT.STATUS.BAN_THAO && !!item.canPheduyet) && <TouchableOpacity style={{ flexDirection: 'column' }} onPress={() => this.onConfirmLichtruc(item.ID)}>
                   <Image source={Images.icon_phe_duyet} style={{ height: verticalScale(35), width: verticalScale(35), resizeMode: 'stretch' }} />
                   {
-                    // <RNEIcon name='check-circle' color={Colors.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
+                    // <RNEIcon name='check-circle' color={COMMON_COLOR.RED_PANTONE_021C} size={verticalScale(35)} type='material' />
                   }
                 </TouchableOpacity>
               }
@@ -295,7 +295,7 @@ class ListLichtruc extends Component {
 
             <Right style={NativeBaseStyle.right}>
               <Menu>
-                <MenuTrigger children={<RNEIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                <MenuTrigger children={<RNEIcon name='ios-more' size={moderateScale(40)} color={COMMON_COLOR.WHITE} type='ionicon' />} />
                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                   {
                     this.state.type === LICHTRUC_CONSTANT.CHUYEN_MON
@@ -311,7 +311,7 @@ class ListLichtruc extends Component {
             {
               renderIf(this.state.loadingData)(
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                  <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                  <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                 </View>
               )
             }
@@ -326,10 +326,10 @@ class ListLichtruc extends Component {
                     <RefreshControl
                       refreshing={this.state.refreshingData}
                       onRefresh={this.handleRefresh}
-                      colors={[Colors.BLUE_PANTONE_640C]}
-                      tintColor={[Colors.BLUE_PANTONE_640C]}
+                      COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                      tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                       title='Kéo để làm mới'
-                      titleColor={Colors.RED}
+                      titleColor={COMMON_COLOR.RED}
                     />
                   }
                   ListEmptyComponent={() =>

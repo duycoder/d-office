@@ -17,7 +17,7 @@ import {
 //utilities
 import {
   DEFAULT_PAGE_INDEX,
-  Colors
+  COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { emptyDataPage } from '../../../common/Utilities';
 import { dataLoading } from '../../../common/Effect';
@@ -137,7 +137,7 @@ class BasePickInvite extends Component {
         </Left>
         <Right>
           <CheckBox
-            color={Colors.LITE_BLUE}
+            color={COMMON_COLOR.LITE_BLUE}
             checked={this.state[this.unitId].indexOf(item.Value) > -1}
             onPress={() => this.selectUnit(item.Text, item.Value)}
           />

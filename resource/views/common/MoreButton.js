@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'native-base';
 import { Text, ActivityIndicator } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { indicatorResponsive } from '../../assets/styles/ScaleIndicator';
 import { MoreButtonStyle } from '../../assets/styles';
 
@@ -19,7 +19,7 @@ class MoreButton extends React.Component {
     } = this.props;
     let bodyContent = null;
     if (isLoading) {
-      bodyContent = <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+      bodyContent = <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
     }
     else if (isTrigger) {
       bodyContent = (

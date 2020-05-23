@@ -15,7 +15,7 @@ import DatePicker from 'react-native-datepicker';
 import 'moment/locale/vi';
 
 //utilities
-import { EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { executeLoading, dataLoading } from '../../../common/Effect';
 import { showWarningToast } from '../../../common/Utilities';
 
@@ -75,8 +75,8 @@ class CreateNotiUyQuyen extends Component {
     //     text: 'Vui lòng nhập nội dung',
     //     type: 'danger',
     //     buttonText: "OK",
-    //     buttonStyle: { backgroundColor: Colors.WHITE },
-    //     buttonTextStyle: { color: Colors.LITE_BLUE },
+    //     buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+    //     buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
     //   });
     // } 
     else if (!showUntil) {
@@ -102,8 +102,8 @@ class CreateNotiUyQuyen extends Component {
         text: resultJson.Status ? 'Đăng thông báo uỷ quyền thành công' : 'Đăng thông báo uỷ quyền thất bại',
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
@@ -128,7 +128,7 @@ class CreateNotiUyQuyen extends Component {
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         tieude, noidung, showUntil,
@@ -136,8 +136,8 @@ class CreateNotiUyQuyen extends Component {
         isSaveBtnPressed, isSaveIcoPressed
       } = this.state,
       nothingChangeStatus = !tieude || !showUntil || !isSaveBtnPressed || !isSaveIcoPressed,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY },
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY },
       headerSubmitButtonStyle = !nothingChangeStatus ? { opacity: 1 } : { opacity: 0.6 };
 
     let bodyContent = null;

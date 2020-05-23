@@ -24,7 +24,7 @@ import { connect } from 'react-redux';
 import * as navAction from '../../../redux/modules/Nav/Action';
 
 //utilities
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, Colors } from '../../../common/SystemConstant';
+import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE, COMMON_COLOR } from '../../../common/SystemConstant';
 import { emptyDataPage, convertDateToString } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { scale, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -142,15 +142,15 @@ class HistoryRescheduleTask extends Component {
 		if (this.state.canApprove && util.isNull(item.IS_APPROVED)) {
 			rightIcon = (
 				<View style={{ flexDirection: 'column' }}>
-					<Icon name='check' onPress={() => this.onApproveReschedule(true, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={Colors.GREEN_PANTON_376C} type='material-community' />
-					<Icon name='close' onPress={() => this.onApproveReschedule(false, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={Colors.RED_PANTONE_186C} type='material-community' />
+					<Icon name='check' onPress={() => this.onApproveReschedule(true, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={COMMON_COLOR.GREEN_PANTON_376C} type='material-community' />
+					<Icon name='close' onPress={() => this.onApproveReschedule(false, item.ID, item.HANKETHUC)} size={moderateScale(35, 1.04)} color={COMMON_COLOR.RED_PANTONE_186C} type='material-community' />
 				</View>
 			);
 		}
 
 		return (
 			<ListItem
-				containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+				containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: .7 }}
 				subtitle={
 					<View style={{ marginLeft: scale(8) }}>
 						<ColumnedListItem
@@ -224,8 +224,8 @@ class HistoryRescheduleTask extends Component {
 							refreshing={refreshing}
 							onRefresh={this.handleRefresh}
 							title='Kéo để làm mới'
-							colors={[Colors.BLUE_PANTONE_640C]}
-							tintColor={[Colors.BLUE_PANTONE_640C]}
+							COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+							tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
 							titleColor='red'
 						/>
 					}

@@ -6,7 +6,7 @@
 'use strict'
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant'
+import { COMMON_COLOR } from '../../common/SystemConstant'
 import { scale, verticalScale, moderateScale } from './ScaleIndicator'
 
 export const DetailTaskStyle = StyleSheet.create({
@@ -47,13 +47,13 @@ export const DetailTaskStyle = StyleSheet.create({
         width: moderateScale(20),
         height: moderateScale(20),
         marginLeft: moderateScale(-15),
-        backgroundColor: Colors.BLUE_PANTONE_640C,
+        backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: moderateScale(10)
     }, commentCountText: {
         fontSize: moderateScale(10),
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontWeight: 'bold'
     }
 });

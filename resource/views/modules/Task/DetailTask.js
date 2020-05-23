@@ -20,7 +20,7 @@ import * as util from 'lodash'
 
 //utilities
 import {
-  API_URL, Colors,
+  API_URL, COMMON_COLOR,
   EMPTY_STRING, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { asyncDelay } from '../../../common/Utilities';
@@ -135,8 +135,8 @@ class DetailTask extends Component {
       text: resultJson.Status ? 'Bắt đầu công việc thành công' : resultJson.Message,
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -354,8 +354,8 @@ class DetailTask extends Component {
       text: resultJson.Status ? 'Trình kế hoạch thành công' : resultJson.Message,
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -552,7 +552,7 @@ class DetailTask extends Component {
 
             <Right style={NativeBaseStyle.right}>
               <Menu>
-                <MenuTrigger children={<Icon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                <MenuTrigger children={<Icon name='ios-more' size={moderateScale(40)} color={COMMON_COLOR.WHITE} type='ionicon' />} />
                 <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                   <MenuOption onSelect={() => this.onOpenComment()} text={`Bình luận ${totalComments}`} customStyles={HeaderMenuStyle.optionStyles} />
                   {
@@ -566,7 +566,7 @@ class DetailTask extends Component {
               </Menu>
               {/*<Button transparent onPress={this.onOpenComment}>
                                 <Form style={DetailTaskStyle.commentButtonContainer}>
-                                    <NbIcon name='ios-chatboxes' style={{ color: Colors.WHITE }} />
+                                    <NbIcon name='ios-chatboxes' style={{ color: COMMON_COLOR.WHITE }} />
                                     {
                                         renderIf(this.state.taskInfo.COMMENT_COUNT > 0)(
                                             <Form style={DetailTaskStyle.commentCircleContainer}>

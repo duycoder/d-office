@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant'
+import { COMMON_COLOR } from '../../common/SystemConstant'
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 const ListPublishDocStyle = StyleSheet.create({
@@ -42,7 +42,7 @@ const ListPublishDocStyle = StyleSheet.create({
         fontSize: moderateScale(10, 0.8)
     },
     textNormal: {
-        color: Colors.BLACK, //'#000'
+        color: COMMON_COLOR.BLACK, //'#000'
         fontWeight: 'bold'
     },
     textRead: {
@@ -89,13 +89,13 @@ const DetailPublishDocStyle = StyleSheet.create({
         width: 20,
         height: 20,
         marginLeft: -15,
-        backgroundColor: Colors.BLUE_PANTONE_640C,
+        backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
     }, commentCountText: {
         fontSize: 10,
-        color: Colors.WHITE,
+        color: COMMON_COLOR.WHITE,
         fontWeight: 'bold'
     }
 });

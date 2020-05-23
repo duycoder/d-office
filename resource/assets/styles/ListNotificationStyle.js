@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const ListNotificationStyle = StyleSheet.create({
   leftTitleCircle: {
-    backgroundColor: Colors.GRAY,
+    backgroundColor: COMMON_COLOR.GRAY,
     width: moderateScale(48, 1.13),
     height: moderateScale(48, 1.13),
     borderRadius: moderateScale(23, 1.13),
@@ -14,16 +14,16 @@ export const ListNotificationStyle = StyleSheet.create({
   },
   leftTitleText: {
     fontWeight: 'bold',
-    color: Colors.WHITE,
+    color: COMMON_COLOR.WHITE,
     fontSize: moderateScale(15, 1.1)
   },
   title: {
-    color: Colors.VERY_DANK_GRAY,
+    color: COMMON_COLOR.VERY_DANK_GRAY,
     fontSize: moderateScale(12, 1.2)
   },
   rightTitleText: {
     textAlign: 'center',
-    color: Colors.DANK_GRAY,
+    color: COMMON_COLOR.DANK_GRAY,
     fontSize: moderateScale(12, 0.9),
     fontStyle: 'italic',
   }

@@ -20,7 +20,7 @@ import * as navAction from '../../../redux/modules/Nav/Action';
 //utilities
 import {
   DEFAULT_PAGE_INDEX,
-  Colors} from '../../../common/SystemConstant';
+  COMMON_COLOR} from '../../../common/SystemConstant';
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import { verticalScale, scale } from '../../../assets/styles/ScaleIndicator';
@@ -119,7 +119,7 @@ class PickWhoseReminder extends Component {
 
         <Right>
           <CheckBox
-            color={Colors.LITE_BLUE}
+            color={COMMON_COLOR.LITE_BLUE}
             checked={this.state.giamdocId == item.Value}
             onPress={() => this.selectUser(item.Text, item.Value)}
           />

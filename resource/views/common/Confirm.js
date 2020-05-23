@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Modal, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-import { API_URL, Colors, APPLICATION_SHORT_NAME } from '../../common/SystemConstant'
+import { API_URL, COMMON_COLOR, APPLICATION_SHORT_NAME } from '../../common/SystemConstant'
 
 //native
 import { Header } from 'react-native-elements';
@@ -99,7 +99,7 @@ export default class Confirm extends Component {
                             <View style={styles.footer}>
                                 <View style={styles.leftFooter}>
                                     <TouchableOpacity onPress={() => this.closeModal()} style={styles.footerButton}>
-                                        <Text style={[styles.footerText, { fontWeight: 'bold', color: Colors.LITE_BLUE }]}>
+                                        <Text style={[styles.footerText, { fontWeight: 'bold', color: COMMON_COLOR.LITE_BLUE }]}>
                                             KHÔNG
                                     </Text>
                                     </TouchableOpacity>
@@ -107,7 +107,7 @@ export default class Confirm extends Component {
 
                                 <View style={styles.rightFooter}>
                                     <TouchableOpacity onPress={() => this.signOut()} style={styles.footerButton}>
-                                        <Text style={[styles.footerText, { color: Colors.RED_PANTONE_186C }]}>
+                                        <Text style={[styles.footerText, { color: COMMON_COLOR.RED_PANTONE_186C }]}>
                                             CÓ
                                     </Text>
                                     </TouchableOpacity>
@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ececec'
     }, headerCenterTitle: {
-        color: Colors.LITE_BLUE,
+        color: COMMON_COLOR.LITE_BLUE,
         fontWeight: 'bold',
         fontSize: moderateScale(15, 1.18),
     }, headerOuter: {
         height: verticalScale(50),
-        borderBottomColor: Colors.LITE_BLUE,
+        borderBottomColor: COMMON_COLOR.LITE_BLUE,
         borderBottomWidth: 3,
         backgroundColor: '#fff',
         paddingHorizontal: scale(10),

@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import * as taskAction from '../../../redux/modules/CongViec/Action';
 
 //utilities
-import { Colors, customWorkflowListHeight } from '../../../common/SystemConstant';
+import { COMMON_COLOR, customWorkflowListHeight } from '../../../common/SystemConstant';
 
 //lib
 import {
@@ -140,7 +140,7 @@ class AssignTaskMainProcessUsrs extends Component {
 
                 <Right>
                   <CheckBox
-                    color={Colors.LITE_BLUE}
+                    color={COMMON_COLOR.LITE_BLUE}
                     checked={this.props.mainProcessUser == item.ID}
                     onPress={() => this.onSelectUser(item.ID)}
                   />

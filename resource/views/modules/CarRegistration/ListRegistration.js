@@ -23,7 +23,7 @@ import { ListItem, Icon as RNEIcon } from 'react-native-elements';
 import { formatLongText, emptyDataPage, convertDateToString } from '../../../common/Utilities';
 import {
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   EMPTY_STRING
 } from '../../../common/SystemConstant';
 import { moderateScale, scale } from '../../../assets/styles/ScaleIndicator';
@@ -165,12 +165,12 @@ class ListRegistration extends Component {
     return (
       <View>
         <ListItem
-          containerStyle={{ borderBottomColor: Colors.GRAY, borderBottomWidth: .7 }}
+          containerStyle={{ borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: .7 }}
 
           leftIcon={
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <RnText style={{ color: Colors.LITE_BLUE, fontWeight: "bold", fontSize: moderateScale(12, 1.05) }}>{timePart}</RnText>
-              <RnText style={{ color: Colors.LITE_BLUE, fontSize: moderateScale(11, 1.02) }}>{datePart}</RnText>
+              <RnText style={{ color: COMMON_COLOR.LITE_BLUE, fontWeight: "bold", fontSize: moderateScale(12, 1.05) }}>{timePart}</RnText>
+              <RnText style={{ color: COMMON_COLOR.LITE_BLUE, fontSize: moderateScale(11, 1.02) }}>{datePart}</RnText>
             </View>
           }
 
@@ -255,10 +255,10 @@ class ListRegistration extends Component {
             <RefreshControl
               refreshing={refreshingData}
               onRefresh={this.handleRefresh}
-              colors={[Colors.BLUE_PANTONE_640C]}
-              tintColor={[Colors.BLUE_PANTONE_640C]}
+              COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+              tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
               title='Kéo để làm mới'
-              titleColor={Colors.RED}
+              titleColor={COMMON_COLOR.RED}
             />
           }
           ListEmptyComponent={() => loadingData ? null : emptyDataPage()}

@@ -27,9 +27,9 @@ import {
   API_URL, EMPTY_STRING,
   CONGVIEC_CONSTANT,
   DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   DOKHAN_CONSTANT,
-  HTML_STRIP_PATTERN
+  COMMON_REGEX
 } from '../../../common/SystemConstant';
 
 //utilities
@@ -261,8 +261,8 @@ class BaseTaskList extends Component {
     }
 
     const dokhanBgColor = item.DOKHAN == DOKHAN_CONSTANT.THUONG_KHAN
-      ? Colors.RED_PANTONE_186C
-      : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C);
+      ? COMMON_COLOR.RED_PANTONE_186C
+      : ((item.DOKHAN == DOKHAN_CONSTANT.KHAN) ? COMMON_COLOR.RED_PANTONE_021C : COMMON_COLOR.GREEN_PANTONE_364C);
 
     return (
       <View>
@@ -278,7 +278,7 @@ class BaseTaskList extends Component {
             <View style={{ marginTop: 8 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                  <RnText style={{ color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Hạn xử lý:
                                     </RnText>
                 </View>
@@ -291,13 +291,13 @@ class BaseTaskList extends Component {
               {
                 (item.NOIDUNGCONGVIEC && item.NOIDUNGCONGVIEC.length > 0) && <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                   <View style={{ width: "35%" }}>
-                    <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                    <RnText style={{ color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                       Nội dung:
                                         </RnText>
                   </View>
                   <View style={{ width: "65%" }}>
                     {
-                      item.NOIDUNGCONGVIEC.match(HTML_STRIP_PATTERN)
+                      item.NOIDUNGCONGVIEC.match(COMMON_REGEX.HTML_STRIP_PATTERN)
                         ? <HTMLView
                           value={item.NOIDUNGCONGVIEC}
                           stylesheet={{ p: [DetailTaskStyle.listItemSubTitleContainer, { fontSize: moderateScale(12, 1.1), marginHorizontal: 3 }] }}
@@ -311,7 +311,7 @@ class BaseTaskList extends Component {
               }
               <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={{ width: "35%" }}>
-                  <RnText style={{ color: Colors.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
+                  <RnText style={{ color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 1.1) }}>
                     Người xử lý chính:
                                     </RnText>
                 </View>
@@ -321,7 +321,7 @@ class BaseTaskList extends Component {
                       ? <RnText style={{ fontSize: moderateScale(12, 1.1) }}>
                         {' ' + item.TEN_NGUOIXULYCHINH}
                       </RnText>
-                      : <RnText style={{ fontSize: moderateScale(12, 1.1), color: Colors.RED_PANTONE_186C }}>
+                      : <RnText style={{ fontSize: moderateScale(12, 1.1), color: COMMON_COLOR.RED_PANTONE_186C }}>
                         {' Chưa giao việc'}
                       </RnText>
                   }
@@ -344,7 +344,7 @@ class BaseTaskList extends Component {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 5 }}>
             {
               renderBars.map((item, index) => {
-                let bgColor = Colors.GRAY;
+                let bgColor = COMMON_COLOR.GRAY;
                 if (!!item) {
                   bgColor = progressColor;
                 }
@@ -386,7 +386,7 @@ class BaseTaskList extends Component {
           {
             renderIf(this.state.loadingData)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
@@ -402,9 +402,9 @@ class BaseTaskList extends Component {
                     refreshing={this.state.refreshingData}
                     onRefresh={this.handleRefresh}
                     title='Kéo để làm mới'
-                    colors={[Colors.BLUE_PANTONE_640C]}
-                    tintColor={[Colors.BLUE_PANTONE_640C]}
-                    titleColor={Colors.RED}
+                    COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                    titleColor={COMMON_COLOR.RED}
                   />
                 }
                 ListFooterComponent={() => (<MoreButton

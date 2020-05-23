@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  API_URL, WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  API_URL, WEB_URL, COMMON_COLOR, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING
 } from '../../../common/SystemConstant';
 import {
@@ -293,12 +293,12 @@ class ListChatter extends Component {
 
   render() {
     // const footerFlexWhenImage = (this.state.avatarSource === EMPTY_STRING) ? this.state.footerFlex : 2;
-    const commentChosenImageIcon = (this.state.isOpen) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
-    const commentSendableIcon = (this.state.avatarSource !== EMPTY_STRING || this.state.commentContent !== EMPTY_STRING) ? Colors.BLUE_PANTONE_640C : Colors.GRAY;
+    const commentChosenImageIcon = (this.state.isOpen) ? COMMON_COLOR.BLUE_PANTONE_640C : COMMON_COLOR.GRAY;
+    const commentSendableIcon = (this.state.avatarSource !== EMPTY_STRING || this.state.commentContent !== EMPTY_STRING) ? COMMON_COLOR.BLUE_PANTONE_640C : COMMON_COLOR.GRAY;
     return (
       <Container>
         <Header hasTabs searchBar rounded style={NativeBaseStyle.container}>
-          <Item style={{ backgroundColor: Colors.WHITE }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên công việc'
               value={this.state.filterValue}
@@ -330,7 +330,7 @@ class ListChatter extends Component {
                   {
                     // renderIf(this.state.searching)(
                     //   <View style={{ flex: 1, justifyContent: 'center' }}>
-                    //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                    //     <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                     //   </View>
                     // )
                   }
@@ -346,10 +346,10 @@ class ListChatter extends Component {
                       // }
                       // ListFooterComponent={
                       //   this.state.loadingMore ?
-                      //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
+                      //     <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} /> :
                       //     (
                       //       this.state.data.length >= 5 ?
-                      //         <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
+                      //         <Button full style={{ backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
                       //           <Text>
                       //             TẢI THÊM
                       // 					</Text>
@@ -375,7 +375,7 @@ class ListChatter extends Component {
                   {
                     // renderIf(this.state.searching)(
                     //   <View style={{ flex: 1, justifyContent: 'center' }}>
-                    //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                    //     <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                     //   </View>
                     // )
                   }
@@ -391,10 +391,10 @@ class ListChatter extends Component {
                       // }
                       // ListFooterComponent={
                       //   this.state.loadingMore ?
-                      //     <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} /> :
+                      //     <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} /> :
                       //     (
                       //       this.state.data.length >= 5 ?
-                      //         <Button full style={{ backgroundColor: Colors.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
+                      //         <Button full style={{ backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C }} onPress={() => this.loadMore()}>
                       //           <Text>
                       //             TẢI THÊM
                       // 					</Text>

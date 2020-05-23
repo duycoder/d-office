@@ -18,7 +18,7 @@ import {
 import { Icon, ListItem } from 'react-native-elements';
 import 'moment/locale/vi';
 //constants
-import { EMPTY_STRING, Colors, WEB_URL } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, WEB_URL } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -152,11 +152,11 @@ class AccountInfo extends Component {
           </Body>
           <Right style={NativeBaseStyle.right}>
             <TouchableOpacity onPress={() => this.onLogOut()} style={{ marginRight: 20 }}>
-              <Icon name="power" size={moderateScale(20, 1.2)} color={Colors.WHITE} type="material-community" />
+              <Icon name="power" size={moderateScale(20, 1.2)} color={COMMON_COLOR.WHITE} type="material-community" />
             </TouchableOpacity>
           </Right>
         </Header>
-        <Container style={{ backgroundColor: Colors.LIGHT_GRAY_PASTEL }}>
+        <Container style={{ backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL }}>
           <ListItem
             roundAvatar
             hideChevron
@@ -165,11 +165,11 @@ class AccountInfo extends Component {
             subtitle={email}
             subtitleStyle={{ fontSize: moderateScale(12, 1.1) }}
             avatar={avatarLink.length > 0 ? { uri: `${WEB_URL}/Uploads/${avatarLink}` } : Images.userAvatar}
-            containerStyle={{ borderBottomWidth: 0, marginTop: moderateScale(14, .9), backgroundColor: Colors.WHITE, paddingHorizontal: 15 }}
+            containerStyle={{ borderBottomWidth: 0, marginTop: moderateScale(14, .9), backgroundColor: COMMON_COLOR.WHITE, paddingHorizontal: 15 }}
           />
           <Content style={[AccountStyle.mainContainer, { paddingHorizontal: 0 }]}>
 
-            <Form style={{ backgroundColor: Colors.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
+            <Form style={{ backgroundColor: COMMON_COLOR.WHITE, paddingHorizontal: moderateScale(12, .9) }}>
               {
                 // <Item stackedLabel style={AccountStyle.labelContainer}>
                 //   <Label>Tên đăng nhập</Label>

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
 import { Animated, View, Text, StyleSheet } from 'react-native';
 
 import { scale, verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 export default class ProgressBar extends Component {
 
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
 ProgressBar.defaultProps = {
   height: verticalScale(20),
   borderRadius: 50,
-  borderColor: Colors.LITE_BLUE,
+  borderColor: COMMON_COLOR.LITE_BLUE,
   borderWidth: 1,
   fillColor: 'transparent',
-  barColor: Colors.LITE_BLUE,
+  barColor: COMMON_COLOR.LITE_BLUE,
   duration: 3000
 }

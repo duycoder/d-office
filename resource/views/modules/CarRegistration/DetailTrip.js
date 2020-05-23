@@ -10,7 +10,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 
 //utilities
-import { API_URL, Colors, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { API_URL, COMMON_COLOR, DATXE_CONSTANT, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { asyncDelay } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -144,8 +144,8 @@ class DetailTrip extends Component {
       text: 'Bắt đầu chạy xe ' + resultJson.Status ? 'thành công' : 'thất bại',
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -291,7 +291,7 @@ class DetailContent extends Component {
 
           //       <Tab heading={
           //         <TabHeading style={(this.state.currentTabIndex == 3 ? TabStyle.activeTab : TabStyle.inActiveTab)}>
-          //           <RneIcon name='clock' color={Colors.DANK_BLUE} type='feather' />
+          //           <RneIcon name='clock' color={COMMON_COLOR.DANK_BLUE} type='feather' />
           //           <Text style={(this.state.currentTabIndex == 3 ? TabStyle.activeText : TabStyle.inActiveText)}>
           //             LỊCH SỬ XỬ LÝ
           //                       </Text>

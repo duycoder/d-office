@@ -13,7 +13,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { Colors, API_URL, EMPTY_STRING } from '../../../common/SystemConstant';
+import { COMMON_COLOR, API_URL, EMPTY_STRING } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { appGetDataAndNavigate, _readableFormat, convertDateToString } from '../../../common/Utilities';
@@ -175,7 +175,7 @@ class DetailEvent extends Component {
           <View style={[GridPanelStyle.container, { flexDirection: 'row', justifyContent: 'space-between' }]}>
             <View style={{ width: "65%" }}>
               <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+                <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
               </View>
               <View style={{ marginTop: "0.5%" }}>
                 <Text style={{ fontSize: moderateScale(12, 1.2) }}>{`${convertDateToString(data.NGAY_CONGTAC)} | ${_readableFormat(data.GIO_CONGTAC)}:${_readableFormat(data.PHUT_CONGTAC)} `}</Text>
@@ -183,7 +183,7 @@ class DetailEvent extends Component {
             </View>
             <View style={{ width: "35%" }}>
               <View style={GridPanelStyle.titleContainer}>
-                <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+                <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
               </View>
               <View style={{ marginTop: "0.5%" }}>
                 <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
@@ -194,7 +194,7 @@ class DetailEvent extends Component {
           {
             // <View style={GridPanelStyle.container}>
             //   <View style={GridPanelStyle.titleContainer}>
-            //     <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
+            //     <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Địa điểm</Text>
             //   </View>
             //   <View style={{ marginTop: "0.5%" }}>
             //     <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.DIADIEM}</Text>
@@ -204,7 +204,7 @@ class DetailEvent extends Component {
 
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chủ trì</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2) }}>{chutriStr}</Text>
@@ -213,7 +213,7 @@ class DetailEvent extends Component {
 
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Nội dung</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.NOIDUNG}</Text>
@@ -222,7 +222,7 @@ class DetailEvent extends Component {
 
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Chuẩn bị</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.CHUANBI}</Text>
@@ -231,7 +231,7 @@ class DetailEvent extends Component {
 
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thành phần tham dự</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2) }}>{data.THANHPHAN_THAMDU}</Text>
@@ -263,7 +263,7 @@ class DetailEvent extends Component {
               {
                 menuElems.length > 0
                   ? <Menu>
-                    <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />} />
+                    <MenuTrigger children={<RneIcon name='ios-more' size={moderateScale(40)} color={COMMON_COLOR.WHITE} type='ionicon' />} />
                     <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
                       {
                         menuElems.map((item, index) => {

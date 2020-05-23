@@ -15,7 +15,7 @@ import * as workflowAction from '../../../redux/modules/Workflow/Action'
 import { emptyDataPage, showWarningToast } from '../../../common/Utilities';
 import { pushFirebaseNotify } from '../../../firebase/FireBaseClient';
 import {
-	EMPTY_STRING, Colors,
+	EMPTY_STRING, COMMON_COLOR,
 	DEFAULT_PAGE_INDEX, WORKFLOW_PROCESS_TYPE, TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
 import { dataLoading, executeLoading } from '../../../common/Effect';
@@ -171,8 +171,8 @@ class WorkflowRequestReview extends Component {
 				text: resultJson.Status ? 'Lưu yêu cầu review thành công' : 'Lưu yêu cầu review không thành công',
 				type: resultJson.Status ? 'success' : 'danger',
 				buttonText: "OK",
-				buttonStyle: { backgroundColor: Colors.WHITE },
-				buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+				buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+				buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
 				duration: TOAST_DURATION_TIMEOUT,
 				onClose: () => {
 					this.props.resetProcessUsers(WORKFLOW_PROCESS_TYPE.ALL_PROCESS);
@@ -238,7 +238,7 @@ class WorkflowRequestReview extends Component {
 									{
 										renderIf(this.state.searching)(
 											<View style={{ flex: 1, justifyContent: 'center' }}>
-												<ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+												<ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
 											</View>
 										)
 									}

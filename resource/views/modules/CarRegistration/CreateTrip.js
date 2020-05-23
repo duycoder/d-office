@@ -10,7 +10,7 @@ import { ActivityIndicator, View, FlatList } from 'react-native';
 //utilites
 import {
   EMPTY_STRING,
-  DEFAULT_PAGE_INDEX, Colors,
+  DEFAULT_PAGE_INDEX, COMMON_COLOR,
   TOAST_DURATION_TIMEOUT,
   customWorkflowListHeight
 } from '../../../common/SystemConstant';
@@ -137,8 +137,8 @@ class CreateTrip extends Component {
           text: resultJson.Status ? 'Tiếp nhận thành công' : 'Tiếp nhận thất bại',
           type: resultJson.Status ? 'success' : 'danger',
           buttonText: "OK",
-          buttonStyle: { backgroundColor: Colors.WHITE },
-          buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.RED_PANTONE_186C },
+          buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+          buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.RED_PANTONE_186C },
           duration: TOAST_DURATION_TIMEOUT,
           onClose: () => {
             if (resultJson.Status) {
@@ -343,7 +343,7 @@ class CreateTrip extends Component {
               {
                 renderIf(this.state.searchingInDriver)(
                   <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                    <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                   </View>
                 )
               }
@@ -389,7 +389,7 @@ class CreateTrip extends Component {
               {
                 renderIf(this.state.searchingInCar)(
                   <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                    <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
                   </View>
                 )
               }

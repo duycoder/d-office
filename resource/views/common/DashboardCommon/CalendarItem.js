@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { _readableFormat } from '../../../common/Utilities';
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { CalendarItemStyle } from '../../../assets/styles/CalendarItemStyle';
 
 class CalendarItem extends React.Component {
@@ -35,7 +35,7 @@ class CalendarItem extends React.Component {
         ChutriString = ChutriArr.join(", ");
       }
 
-      let isNotiAlertTextColor = listIds.some(x => x == item.ID) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+      let isNotiAlertTextColor = listIds.some(x => x == item.ID) ? COMMON_COLOR.OLD_LITE_BLUE : COMMON_COLOR.BLACK;
       const title = `${ThoigianDiadiemString} / Chủ trì: ${ChutriString}`;
 
       return (

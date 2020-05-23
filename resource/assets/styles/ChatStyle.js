@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const ListChatterStyle = StyleSheet.create({
@@ -14,8 +14,8 @@ export const ListChatterStyle = StyleSheet.create({
     height: moderateScale(28),
     borderRadius: moderateScale(14),
     resizeMode: 'stretch',
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
+    borderColor: COMMON_COLOR.WHITE,
     borderWidth: moderateScale(2),
   }, chatterAvatarContainer: {
     justifyContent: 'center',
@@ -25,7 +25,7 @@ export const ListChatterStyle = StyleSheet.create({
     borderRadius: moderateScale(20),
     marginRight: scale(20),
   }, onlineAvatarContainer: {
-    backgroundColor: Colors.GREEN_PANTON_376C,
+    backgroundColor: COMMON_COLOR.GREEN_PANTON_376C,
   }, offlineAvatarContainer: {
 
   }, chatterAvatarOverlay: {

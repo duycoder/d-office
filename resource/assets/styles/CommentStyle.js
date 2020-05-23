@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const ListCommentStyle = StyleSheet.create({
@@ -15,7 +15,7 @@ export const ListCommentStyle = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   commentAvatar: {
-    backgroundColor: Colors.BLUE_PANTONE_640C,
+    backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C,
     borderRadius: 25,
     height: 50,
     width: '100%',
@@ -31,11 +31,11 @@ export const ListCommentStyle = StyleSheet.create({
     fontSize: moderateScale(13, 1.2),
     fontWeight: 'bold',
     flexWrap: 'wrap',
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   },
   commentContent: {
     fontSize: moderateScale(12, 1.2),
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   },
   boldText: {
     fontSize: moderateScale(14, 1.2),
@@ -44,7 +44,7 @@ export const ListCommentStyle = StyleSheet.create({
   commentTime: {
     alignItems: 'center',
     fontSize: moderateScale(10, .9), 
-    color: Colors.DANK_GRAY
+    color: COMMON_COLOR.DANK_GRAY
   },
   separator: {
     borderBottomWidth: 1,
@@ -58,13 +58,13 @@ export const ListCommentStyle = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   }, replyButtonText: {
-    color: Colors.BLUE_PANTONE_640C
+    color: COMMON_COLOR.BLUE_PANTONE_640C
   }, replyCommentContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start'
   }, replyCommentText: {
     fontWeight: 'bold',
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   }
 });
 
@@ -72,7 +72,7 @@ export const ReplyCommentStyle = StyleSheet.create({
   replyCommentContainer: {
     padding: moderateScale(10),
     borderBottomWidth: .7,
-    borderBottomColor: Colors.DANK_GRAY,  
+    borderBottomColor: COMMON_COLOR.DANK_GRAY,  
   },
   replyObjectContainer: {
     marginBottom: moderateScale(10),
@@ -88,7 +88,7 @@ export const ReplyCommentStyle = StyleSheet.create({
     justifyContent: 'flex-start'
   },
   replyObjectAvatar: {
-    backgroundColor: Colors.BLUE_PANTONE_640C,
+    backgroundColor: COMMON_COLOR.BLUE_PANTONE_640C,
     borderRadius: 5,
     height: verticalScale(60),
     width: '100%',
@@ -113,17 +113,17 @@ export const ReplyCommentStyle = StyleSheet.create({
   replyObjectUserText: {
     flexWrap: 'wrap',
     fontWeight: 'bold',
-    color: Colors.BLUE_PANTONE_640C,
+    color: COMMON_COLOR.BLUE_PANTONE_640C,
     fontSize: moderateScale(16, 1.2),
   },
   replyObjectContentText: {
     fontSize: moderateScale(13, 1.2),
-    color: Colors.BLACK
+    color: COMMON_COLOR.BLACK
   },
   replyListContainer: {
     marginHorizontal: moderateScale(5),
     paddingTop: moderateScale(10),
-    // borderTopColor: Colors.GRAY,
+    // borderTopColor: COMMON_COLOR.GRAY,
     // borderTopWidth: 1
   }
 });
@@ -133,7 +133,7 @@ export const FooterCommentStyle = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
-    backgroundColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
     borderTopWidth: 1,
     borderColor: '#e5e5e5',
     // flexWrap: 'wrap',
@@ -162,15 +162,15 @@ export const AttachCommentStyle = StyleSheet.create({
     width: '100%',
     marginTop: moderateScale(10),
     padding: moderateScale(5),
-    // borderColor: Colors.GRAY,
+    // borderColor: COMMON_COLOR.GRAY,
     // borderWidth: 1,
-    backgroundColor: Colors.CLOUDS,
+    backgroundColor: COMMON_COLOR.CLOUDS,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
   commentAttachText: {
-    color: Colors.BLUE_PANTONE_640C,
+    color: COMMON_COLOR.BLUE_PANTONE_640C,
     fontWeight: 'bold',
     flexWrap: 'wrap',
     fontSize: moderateScale(12, 1.1),
@@ -182,7 +182,7 @@ export const AttachCommentStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    borderColor: Colors.GRAY,
+    borderColor: COMMON_COLOR.GRAY,
     borderWidth: 1
   }
 });

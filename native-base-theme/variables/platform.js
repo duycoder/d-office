@@ -4,7 +4,7 @@ import color from "color";
 
 import { Platform, Dimensions, PixelRatio } from "react-native";
 import { moderateScale } from "../../resource/assets/styles/ScaleIndicator";
-import { Colors } from "../../resource/common/SystemConstant";
+import { COMMON_COLOR } from "../../resource/common/SystemConstant";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -102,7 +102,7 @@ export default {
   CheckboxIconSize: platform === "ios" ? moderateScale(20.7, 1.12) : moderateScale(15.5, 1.12),
   CheckboxIconMarginTop: platform === "ios" ? undefined : 1,
   CheckboxFontSize: platform === "ios" ? moderateScale(22.8 / 0.9, 1.12) : moderateScale(15.82, 1.12),
-  checkboxBgColor: Colors.LITE_BLUE, // "#039BE5",
+  checkboxBgColor: COMMON_COLOR.LITE_BLUE, // "#039BE5",
   checkboxSize: moderateScale(18, 1.08),
   checkboxTickColor: "#fff",
 

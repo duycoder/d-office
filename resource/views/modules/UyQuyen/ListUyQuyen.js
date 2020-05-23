@@ -26,7 +26,7 @@ import { Icon as RneIcon } from 'react-native-elements';
 import { emptyDataPage, appStoreDataAndNavigate, convertDateToString, asyncDelay } from '../../../common/Utilities';
 import {
   API_URL, DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE,
-  Colors,
+  COMMON_COLOR,
   TOAST_DURATION_TIMEOUT,
 } from '../../../common/SystemConstant';
 import { indicatorResponsive, moderateScale } from '../../../assets/styles/ScaleIndicator';
@@ -154,8 +154,8 @@ class ListUyQuyen extends Component {
       text: result.Status ? 'Xóa ủy quyền thành công' : 'Xóa ủy quyền thất bại',
       type: result.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: result.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: result.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (result.Status) {
@@ -171,8 +171,8 @@ class ListUyQuyen extends Component {
         leftOpenValue={75}
         rightOpenValue={-75}
         left={
-          <Button style={{ backgroundColor: Colors.LITE_BLUE }} onPress={() => this.navigateToDetail(item.ID)}>
-            <RneIcon name='pencil' type='material-community' size={moderateScale(27, 0.79)} color={Colors.WHITE} />
+          <Button style={{ backgroundColor: COMMON_COLOR.LITE_BLUE }} onPress={() => this.navigateToDetail(item.ID)}>
+            <RneIcon name='pencil' type='material-community' size={moderateScale(27, 0.79)} color={COMMON_COLOR.WHITE} />
           </Button>
         }
         body={
@@ -187,7 +187,7 @@ class ListUyQuyen extends Component {
         }
 
         right={
-          <Button style={{ backgroundColor: Colors.RED }} onPress={() => this.onConfirmDelete(item.ID)}>
+          <Button style={{ backgroundColor: COMMON_COLOR.RED }} onPress={() => this.onConfirmDelete(item.ID)}>
             <RneIcon name='trash-can' type='material-community' size={moderateScale(27, 0.79)} color={'#fff'} />
           </Button>
         }
@@ -202,7 +202,7 @@ class ListUyQuyen extends Component {
           <Left style={{ flex: 1 }}>
             <GoBackButton onPress={() => this.props.navigation.goBack()} buttonStyle='100%' />
           </Left>
-          <Item style={{ backgroundColor: Colors.WHITE, flex: 10 }}>
+          <Item style={{ backgroundColor: COMMON_COLOR.WHITE, flex: 10 }}>
             <Icon name='ios-search' />
             <Input placeholder='Tên người được ủy quyền'
               value={this.state.filterValue}
@@ -216,7 +216,7 @@ class ListUyQuyen extends Component {
           {
             renderIf(this.state.loadingData)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
@@ -232,10 +232,10 @@ class ListUyQuyen extends Component {
                     <RefreshControl
                       refreshing={this.state.refreshingData}
                       onRefresh={this.handleRefresh}
-                      colors={[Colors.BLUE_PANTONE_640C]}
-                      tintColor={[Colors.BLUE_PANTONE_640C]}
+                      COMMON_COLOR={[COMMON_COLOR.BLUE_PANTONE_640C]}
+                      tintColor={[COMMON_COLOR.BLUE_PANTONE_640C]}
                       title='Kéo để làm mới'
-                      titleColor={Colors.RED}
+                      titleColor={COMMON_COLOR.RED}
                     />
                   }
                   ListEmptyComponent={() =>

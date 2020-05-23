@@ -1,4 +1,29 @@
 {
     "git.ignoreLimitWarning": true,
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/ios": true,
+        "**/android": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.hg/store/**": true,
+        "**/ios/**": true,
+        "**/android/**": true
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/ios": true,
+        "**/android": true
+    }
 }

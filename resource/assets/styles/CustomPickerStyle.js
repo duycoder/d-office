@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from "./ScaleIndicator";
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 const CustomPickerStyle = StyleSheet.create({
   inputGroup: {
@@ -14,13 +14,13 @@ const CustomPickerStyle = StyleSheet.create({
   },
   valueName: {
     fontSize: moderateScale(14.3, 0.86),
-    color: Colors.BLACK,
+    color: COMMON_COLOR.BLACK,
     flexShrink: 1,
   },
   clearIcon: {
     marginTop: 0,
     alignSelf: 'center',
-    color: Colors.RED_PANTONE_186C
+    color: COMMON_COLOR.RED_PANTONE_186C
   }
 });
 

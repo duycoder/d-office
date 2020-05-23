@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 //utilities
 import {
-  WEB_URL, Colors, DEFAULT_PAGE_INDEX,
+  WEB_URL, COMMON_COLOR, DEFAULT_PAGE_INDEX,
   DEFAULT_PAGE_SIZE, EMPTY_STRING, APPLICATION_SHORT_NAME
 } from '../../../common/SystemConstant';
 import {
@@ -302,8 +302,8 @@ class ReplyComment extends Component {
         avatarStyle={{ width: 40, height: 40, borderRadius: 20 }}
         title={
           <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
-            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: Colors.OLD_LITE_BLUE }}>{item.FullName}</Text>
-            <Text style={{ fontSize: moderateScale(11, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
+            <Text style={{ fontSize: moderateScale(14, 1.2), fontWeight: "bold", color: COMMON_COLOR.OLD_LITE_BLUE }}>{item.FullName}</Text>
+            <Text style={{ fontSize: moderateScale(11, 1.1), color: COMMON_COLOR.DANK_GRAY }}>{convertDateTimeToString(item.NGAYTAO, true)}</Text>
           </View>
         }
         subtitle={
@@ -324,7 +324,7 @@ class ReplyComment extends Component {
     let attach = this.state.comment.ATTACH;
     if (attach != null) {
     }
-    const buttonSendColor = this.state.commentContent.trim() === EMPTY_STRING ? Colors.GRAY : Colors.LITE_BLUE;
+    const buttonSendColor = this.state.commentContent.trim() === EMPTY_STRING ? COMMON_COLOR.GRAY : COMMON_COLOR.LITE_BLUE;
     return (
       <Container>
         <Header style={NativeBaseStyle.container}>
@@ -350,8 +350,8 @@ class ReplyComment extends Component {
             avatarStyle={{ width: 50, height: 50, borderRadius: 25 }}
             title={
               <View style={{ marginHorizontal: 10, flexDirection: "column" }}>
-                <Text style={{ fontSize: moderateScale(15, 1.2), fontWeight: "bold", color: Colors.LITE_BLUE }}>{this.state.comment.FullName}</Text>
-                <Text style={{ fontSize: moderateScale(12, 1.1), color: Colors.DANK_GRAY }}>{convertDateTimeToString(this.state.comment.NGAYTAO, true)}</Text>
+                <Text style={{ fontSize: moderateScale(15, 1.2), fontWeight: "bold", color: COMMON_COLOR.LITE_BLUE }}>{this.state.comment.FullName}</Text>
+                <Text style={{ fontSize: moderateScale(12, 1.1), color: COMMON_COLOR.DANK_GRAY }}>{convertDateTimeToString(this.state.comment.NGAYTAO, true)}</Text>
               </View>
             }
             containerStyle={{
@@ -364,7 +364,7 @@ class ReplyComment extends Component {
 
             //     <View style={ReplyCommentStyle.replyObjectAvatarContainer}>
             //       <View style={ReplyCommentStyle.replyObjectAvatar}>
-            //         <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={Colors.WHITE} />
+            //         <RneIcon size={moderateScale(50)} type='ionicon' name='ios-people' color={COMMON_COLOR.WHITE} />
             //       </View>
             //     </View>
 
@@ -421,7 +421,7 @@ class ReplyComment extends Component {
           </ScrollView>
         </Content>
 
-        <Footer style={[{ flex: this.state.footerFlex, backgroundColor: Colors.WHITE, height: verticalScale(50) }, FooterCommentStyle.footerComment]}>
+        <Footer style={[{ flex: this.state.footerFlex, backgroundColor: COMMON_COLOR.WHITE, height: verticalScale(50) }, FooterCommentStyle.footerComment]}>
           <Input
             // style={{ paddingLeft: moderateScale(10) }}
             placeholder='Nhập nội dung phản hồi'

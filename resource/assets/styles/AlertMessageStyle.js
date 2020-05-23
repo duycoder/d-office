@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 //constant
-import { Colors } from '../../common/SystemConstant'
+import { COMMON_COLOR } from '../../common/SystemConstant'
 
 export default StyleSheet.create({
   container: {
@@ -18,12 +18,12 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ececec'
   }, headerCenterTitle: {
-    color: Colors.LITE_BLUE,
+    color: COMMON_COLOR.LITE_BLUE,
     fontWeight: 'bold',
     fontSize: moderateScale(14, 1.3)
   }, headerOuter: {
     height: verticalScale(50),
-    borderBottomColor: Colors.LITE_BLUE,
+    borderBottomColor: COMMON_COLOR.LITE_BLUE,
     borderBottomWidth: 3,
     backgroundColor: '#fff',
     paddingHorizontal: scale(10),
@@ -58,7 +58,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   }, customFooterText: {
     fontWeight: 'bold',
-    color: Colors.LITE_BLUE,
+    color: COMMON_COLOR.LITE_BLUE,
     fontSize: moderateScale(14, 1.2),
   }
 })

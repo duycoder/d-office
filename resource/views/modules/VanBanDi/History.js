@@ -15,7 +15,7 @@ import renderIf from 'render-if';
 
 //utilities
 import { emptyDataPage, convertTimeToString, convertDateToString } from '../../../common/Utilities';
-import { Colors, EMPTY_STRING, HTML_STRIP_PATTERN } from '../../../common/SystemConstant';
+import { COMMON_COLOR, EMPTY_STRING, COMMON_REGEX } from '../../../common/SystemConstant';
 import { TimeLineStyle } from '../../../assets/styles/HistoryStyle';
 
 export default class TimelineSignDoc extends Component {
@@ -41,7 +41,7 @@ export default class TimelineSignDoc extends Component {
     }
     else {
       if (!!item.MESSAGE) {
-        const stripedMessage = item.MESSAGE.replace(HTML_STRIP_PATTERN, EMPTY_STRING);
+        const stripedMessage = item.MESSAGE.replace(COMMON_REGEX.HTML_STRIP_PATTERN, EMPTY_STRING);
         stepName = stripedMessage;
         message = stripedMessage;
       }
@@ -52,11 +52,11 @@ export default class TimelineSignDoc extends Component {
     }
     const isStartNode = index === this.state.logs.length - 1,
       isEndNode = index === 0;
-    let innerIconCircleColor = Colors.GRAY,
+    let innerIconCircleColor = COMMON_COLOR.GRAY,
       outerIconCircleColor = "#eaeaea";
     if (isEndNode) {
-      innerIconCircleColor = Colors.MENU_BLUE;
-      outerIconCircleColor = Colors.OLD_LITE_BLUE;
+      innerIconCircleColor = COMMON_COLOR.MENU_BLUE;
+      outerIconCircleColor = COMMON_COLOR.OLD_LITE_BLUE;
     }
 
     let ListJoinStr = (item.LstThamGia && item.LstThamGia.length > 0) ? item.LstThamGia.map(name => `- ${name}`).join(`\n`) : "";
@@ -66,7 +66,7 @@ export default class TimelineSignDoc extends Component {
         <View style={TimeLineStyle.iconSection}>
           <View style={[TimeLineStyle.iconCircle, { backgroundColor: outerIconCircleColor }]}>
             {
-              // <RNEIcon name={iconName} color={Colors.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
+              // <RNEIcon name={iconName} color={COMMON_COLOR.WHITE} type="material-community" size={moderateScale(20, 0.9)} />
             }
             <View style={[TimeLineStyle.innerIconCircle, { backgroundColor: innerIconCircleColor }]} />
           </View>

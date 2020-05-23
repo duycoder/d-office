@@ -24,7 +24,7 @@ import { Agenda } from 'react-native-calendars';
 //utilities
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
 import {
-  Colors
+  COMMON_COLOR
 } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 
@@ -149,11 +149,11 @@ class MeetingDayList extends Component {
   }
 
   renderItem(item) {
-    let isNotiAlertTextColor = this.state.listIds.some(x => x == item.id) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+    let isNotiAlertTextColor = this.state.listIds.some(x => x == item.id) ? COMMON_COLOR.OLD_LITE_BLUE : COMMON_COLOR.BLACK;
 
     return (
       <ListItem
-        containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
+        containerStyle={[styles.item, { borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: 0, backgroundColor: COMMON_COLOR.WHITE }]}
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: isNotiAlertTextColor }]}>
             {item.mucdich}
@@ -172,7 +172,7 @@ class MeetingDayList extends Component {
               rightText={item.tenPhong || 'Chưa xếp phòng'}
               leftContainerWidth={35}
               rightContainerWidth={65}
-              customRightText={!!item.tenPhong ? {} : { fontWeight: 'bold', color: Colors.RED_PANTONE_186C }}
+              customRightText={!!item.tenPhong ? {} : { fontWeight: 'bold', color: COMMON_COLOR.RED_PANTONE_186C }}
             />
             <ColumnedListItem
               isRender={!!item.tenNguoiChutri}
@@ -222,7 +222,7 @@ class MeetingDayList extends Component {
           </Body>
 
           <Right style={NativeBaseStyle.right}>
-            <RNEIcon name='ios-more' size={moderateScale(40)} color={Colors.WHITE} type='ionicon' />
+            <RNEIcon name='ios-more' size={moderateScale(40)} color={COMMON_COLOR.WHITE} type='ionicon' />
           </Right>
         </Header>
 

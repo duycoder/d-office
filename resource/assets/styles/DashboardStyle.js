@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 import { scale, verticalScale, moderateScale } from './ScaleIndicator';
 
 export const DashboardStyle = StyleSheet.create({

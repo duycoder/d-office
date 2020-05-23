@@ -19,7 +19,7 @@ import { Icon } from 'react-native-elements';
 import { SideBarStyle } from '../../assets/styles/SideBarStyle';
 
 import Confirm from './Confirm';
-import { Colors, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
+import { COMMON_COLOR, DM_FUNCTIONS, EMPTY_STRING } from '../../common/SystemConstant';
 // import { genIcon } from '../../common/Icons';
 import { verticalScale, moderateScale } from '../../assets/styles/ScaleIndicator';
 
@@ -253,7 +253,7 @@ class Dashboard extends Component {
           <StatusBar barStyle="light-content" />
           <Header style={SideBarStyle.dashboardHeader} span>
             <Left style={SideBarStyle.dashboardHeaderLeft}>
-              <Text style={{ color: Colors.WHITE, fontSize: moderateScale(12, 1.2) }}>
+              <Text style={{ color: COMMON_COLOR.WHITE, fontSize: moderateScale(12, 1.2) }}>
                 <Text style={{ fontStyle: "italic" }}>Xin chào,</Text> <Text style={{ fontWeight: "bold" }}>{this.state.userInfo.Fullname}</Text>
               </Text>
             </Left>
@@ -263,9 +263,9 @@ class Dashboard extends Component {
                 (isArray(dataHotline) && dataHotline.length > 0) && <Menu>
                   <MenuTrigger children={
                     <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
-                      <Icon name="phone-in-talk" color={Colors.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
-                      <Text style={{ fontWeight: "bold", color: Colors.WHITE, fontSize: moderateScale(12, 1.2) }}> Hotline </Text>
-                      <Icon name="chevron-down" color={Colors.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
+                      <Icon name="phone-in-talk" color={COMMON_COLOR.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
+                      <Text style={{ fontWeight: "bold", color: COMMON_COLOR.WHITE, fontSize: moderateScale(12, 1.2) }}> Hotline </Text>
+                      <Icon name="chevron-down" color={COMMON_COLOR.WHITE} type="material-community" size={moderateScale(16, 1.3)} />
                     </View>
                   } />
                   <MenuOptions customStyles={HeaderMenuStyle.optionsStyles}>
@@ -278,7 +278,7 @@ class Dashboard extends Component {
                             customStyles={HeaderMenuStyle.optionStyles}
                             style={{ flexDirection: "row" }}
                           >
-                            <Icon name="phone-in-talk" color={Colors.BLACK} type="material-community" size={moderateScale(12, 1.2)} />
+                            <Icon name="phone-in-talk" color={COMMON_COLOR.BLACK} type="material-community" size={moderateScale(12, 1.2)} />
                             <Text style={{ fontSize: moderateScale(11, 0.95), flexWrap: 'nowrap' }}>
                               {'  ' + item.TEXT}
                             </Text>
@@ -327,10 +327,10 @@ class Dashboard extends Component {
             <ScrollView
               contentContainerStyle={{ paddingTop: moderateScale(12, 1.2) }}
             >
-              <View style={{ backgroundColor: Colors.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
+              <View style={{ backgroundColor: COMMON_COLOR.WHITE, borderTopWidth: .7, borderTopColor: '#ccc' }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                  <View style={{ backgroundColor: Colors.NOT_READ, padding: moderateScale(10), borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: verticalScale(15) }}>
-                    <Text style={{ textAlign: "center", color: Colors.WHITE, fontWeight: "bold", fontSize: moderateScale(12, 1.16) }}>Thông báo</Text>
+                  <View style={{ backgroundColor: COMMON_COLOR.NOT_READ, padding: moderateScale(10), borderBottomLeftRadius: 10, borderBottomRightRadius: 10, marginBottom: verticalScale(15) }}>
+                    <Text style={{ textAlign: "center", color: COMMON_COLOR.WHITE, fontWeight: "bold", fontSize: moderateScale(12, 1.16) }}>Thông báo</Text>
                   </View>
                 </View>
                 {
@@ -354,7 +354,7 @@ class Dashboard extends Component {
 
               <View style={{
                 marginTop: moderateScale(10, 1.2),
-                backgroundColor: Colors.WHITE,
+                backgroundColor: COMMON_COLOR.WHITE,
                 borderTopWidth: .7,
                 borderTopColor: '#ccc'
               }}>
@@ -368,9 +368,9 @@ class Dashboard extends Component {
                     borderBottomWidth: 0.7
                   }}
                   calendarHeaderStyle={{ color: '#2F2F2F', fontSize: moderateScale(12, 1.01) }}
-                  calendarColor={Colors.WHITE}
-                  dateNumberStyle={{ color: Colors.BLACK, fontSize: moderateScale(14, 1.2) }}
-                  dateNameStyle={{ color: Colors.BLACK, fontSize: moderateScale(13, 1.1) }}
+                  calendarColor={COMMON_COLOR.WHITE}
+                  dateNumberStyle={{ color: COMMON_COLOR.BLACK, fontSize: moderateScale(14, 1.2) }}
+                  dateNameStyle={{ color: COMMON_COLOR.BLACK, fontSize: moderateScale(13, 1.1) }}
                   highlightDateNumberStyle={{ color: '#c21421', fontSize: moderateScale(14, 1.2) }}
                   highlightDateNameStyle={{ color: '#c21421', fontSize: moderateScale(13, 1.1) }}
                   iconContainer={{ flex: 0.1 }}

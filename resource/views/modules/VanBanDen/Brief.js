@@ -5,7 +5,7 @@ import { View, Text as RnText, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 
 //utilities
-import { Colors, DOKHAN_CONSTANT } from '../../../common/SystemConstant';
+import { COMMON_COLOR, DOKHAN_CONSTANT } from '../../../common/SystemConstant';
 import { unAuthorizePage, emptyDataPage, getColorCodeByProgressValue, convertDateToString, formatLongText } from '../../../common/Utilities';
 import { dataLoading, executeLoading } from '../../../common/Effect';
 import * as util from 'lodash';
@@ -241,7 +241,7 @@ class BriefTaskList extends Component {
           badge={{
             value: (item.PHANTRAMHOANTHANH || 0) + '%',
             textStyle: {
-              color: Colors.WHITE,
+              color: COMMON_COLOR.WHITE,
               fontWeight: 'bold'
             },
             containerStyle: {
@@ -318,7 +318,7 @@ class BriefResponseList extends Component {
     )
     if (item.SOHIEU === null || item.SOHIEU === "") {
       mahieu = (
-        <RnText style={{ color: Colors.RED_PANTONE_186C }}> Không rõ</RnText>
+        <RnText style={{ color: COMMON_COLOR.RED_PANTONE_186C }}> Không rõ</RnText>
       );
     }
 
@@ -329,11 +329,11 @@ class BriefResponseList extends Component {
           badge={{
             value: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? 'R.Q.TRỌNG' : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? 'Q.TRỌNG' : 'THƯỜNG'),
             textStyle: {
-              color: Colors.WHITE,
+              color: COMMON_COLOR.WHITE,
               fontWeight: 'bold'
             },
             containerStyle: {
-              backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? Colors.RED_PANTONE_186C : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? Colors.RED_PANTONE_021C : Colors.GREEN_PANTONE_364C),
+              backgroundColor: (item.DOKHAN_ID == DOKHAN_CONSTANT.THUONG_KHAN) ? COMMON_COLOR.RED_PANTONE_186C : ((item.DOKHAN_ID == DOKHAN_CONSTANT.KHAN) ? COMMON_COLOR.RED_PANTONE_021C : COMMON_COLOR.GREEN_PANTONE_364C),
               borderRadius: 3
             }
           }}

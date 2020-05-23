@@ -6,12 +6,12 @@
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { verticalScale, moderateScale } from './ScaleIndicator';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 
 export const GridPanelStyle = StyleSheet.create({
   container: {
-    backgroundColor: Colors.WHITE,
+    backgroundColor: COMMON_COLOR.WHITE,
     overflow: 'scroll',
     marginHorizontal: moderateScale(12, 1.2),
     marginVertical: moderateScale(6, 1.2),
@@ -30,7 +30,7 @@ export const GridPanelStyle = StyleSheet.create({
     height: verticalScale(40),
     justifyContent: 'center',
     borderBottomColor: '#cccccc',
-    backgroundColor: Colors.LIGHT_GRAY_PASTEL
+    backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL
   }, listItemTitle: {
     fontWeight: 'bold',
     fontSize: moderateScale(11, 0.76)

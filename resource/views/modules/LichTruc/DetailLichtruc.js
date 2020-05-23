@@ -11,7 +11,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { Colors } from '../../../common/SystemConstant';
+import { COMMON_COLOR } from '../../../common/SystemConstant';
 import { moderateScale } from '../../../assets/styles/ScaleIndicator';
 import { NativeBaseStyle } from '../../../assets/styles/NativeBaseStyle';
 import { _readableFormat } from '../../../common/Utilities';
@@ -100,7 +100,7 @@ class DetailLichtruc extends Component {
         // bodyContent = (
         //   <View style={GridPanelStyle.container}>
         //     <View style={GridPanelStyle.titleContainer}>
-        //       <Text style={[GridPanelStyle.listItemTitle, { color: Colors.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
+        //       <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.DANK_GRAY, fontSize: moderateScale(11, 0.9) }]}>Thời gian</Text>
         //     </View>
         //     <View style={{ marginTop: "0.5%" }}>
         //       <Text style={{ fontSize: moderateScale(12, 1.2) }}>{listDate}</Text>
@@ -112,7 +112,7 @@ class DetailLichtruc extends Component {
         bodyContent = (
           <View style={GridPanelStyle.container}>
             <View style={GridPanelStyle.titleContainer}>
-              <Text style={[GridPanelStyle.listItemTitle, { color: Colors.RED_PANTONE_186C, fontSize: moderateScale(11, 0.9) }]}>Không tìm thấy!</Text>
+              <Text style={[GridPanelStyle.listItemTitle, { color: COMMON_COLOR.RED_PANTONE_186C, fontSize: moderateScale(11, 0.9) }]}>Không tìm thấy!</Text>
             </View>
             <View style={{ marginTop: "0.5%" }}>
               <Text style={{ fontSize: moderateScale(12, 1.2), fontStyle: "italic" }}>Bạn không có trong danh sách xếp lịch này!</Text>

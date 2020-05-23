@@ -13,7 +13,7 @@ import {
 //lib
 import { Container } from 'native-base';
 //constants
-import { EMPTY_STRING, Colors, APPLICATION_FULL_NAME, APPLICATION_SHORT_NAME } from '../../../common/SystemConstant';
+import { EMPTY_STRING, COMMON_COLOR, APPLICATION_FULL_NAME, APPLICATION_SHORT_NAME } from '../../../common/SystemConstant';
 
 //styles
 import { LoginStyle } from '../../../assets/styles/LoginStyle';
@@ -196,7 +196,7 @@ class Login extends Component {
 
     render() {
         const { userName, password } = this.state;
-        const toggleLoginStyleButton = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: 'lightgrey' };
+        const toggleLoginStyleButton = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: 'lightgrey' };
         const toggleLoginStyleText = (userName !== EMPTY_STRING && password !== EMPTY_STRING) ? { color: 'white' } : { color: 'grey' };
         return (
             <ImageBackground source={images.background} style={{ flex: 1 }}>
@@ -282,7 +282,7 @@ class Login extends Component {
                                 onPress={this.onSignupPress}
                                 style={[LoginStyle.formInputs, LoginStyle.formButton]}
                             >
-                                <Text style={[LoginStyle.formButtonText, { color: Colors.GRAY, fontSize: moderateScale(16, 1.2) }]}>Chưa có tài khoản?</Text>
+                                <Text style={[LoginStyle.formButtonText, { color: COMMON_COLOR.GRAY, fontSize: moderateScale(16, 1.2) }]}>Chưa có tài khoản?</Text>
                             </TouchableOpacity>
                         </ScrollView>
                     </ImageBackground>

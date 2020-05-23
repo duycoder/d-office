@@ -9,7 +9,7 @@ import { SwitchNavigator, TabBarBottom, TabNavigator } from 'react-navigation';
 
 import { Text, View } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { Colors } from '../../common/SystemConstant';
+import { COMMON_COLOR } from '../../common/SystemConstant';
 
 import Loading from '../common/Loading';
 
@@ -83,15 +83,15 @@ const appStack = TabNavigator(
         tabBarComponent: props => <TabBarBottom {...props} style={{height: verticalScale(50)}} />,
         tabBarPosition: 'bottom',
         tabBarOptions: {
-            // activeTintColor: Colors.WHITE,
-            // inactiveTintColor: Colors.DANK_BLUE,
-            // activeBackgroundColor: Colors.DANK_BLUE,
+            // activeTintColor: COMMON_COLOR.WHITE,
+            // inactiveTintColor: COMMON_COLOR.DANK_BLUE,
+            // activeBackgroundColor: COMMON_COLOR.DANK_BLUE,
             allowFontScaling: false,
             showLabel: false,
-            activeTintColor: Colors.MENU_BLUE,
-            inactiveTintColor: Colors.DARK_GRAY,
+            activeTintColor: COMMON_COLOR.MENU_BLUE,
+            inactiveTintColor: COMMON_COLOR.DARK_GRAY,
             style: {
-                backgroundColor: Colors.WHITE
+                backgroundColor: COMMON_COLOR.WHITE
             }
         },
         animationEnabled: false,

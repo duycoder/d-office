@@ -8,7 +8,7 @@ import {
 } from 'native-base'
 
 //utilities
-import { API_URL, EMPTY_STRING, Colors, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
+import { API_URL, EMPTY_STRING, COMMON_COLOR, TOAST_DURATION_TIMEOUT } from '../../../common/SystemConstant';
 import { executeLoading } from '../../../common/Effect';
 import { asyncDelay, pickerFormat, showWarningToast } from '../../../common/Utilities';
 import * as util from 'lodash';
@@ -100,8 +100,8 @@ class ConfirmTaskPlan extends Component {
         text: resultJson.Status ? 'Tạo công việc thành công' : 'Tạo công việc không thành công',
         type: resultJson.Status ? 'success' : 'danger',
         buttonText: "OK",
-        buttonStyle: { backgroundColor: Colors.WHITE },
-        buttonTextStyle: { color: resultJson.Status ? Colors.GREEN_PANTONE_364C : Colors.LITE_BLUE },
+        buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+        buttonTextStyle: { color: resultJson.Status ? COMMON_COLOR.GREEN_PANTONE_364C : COMMON_COLOR.LITE_BLUE },
         duration: TOAST_DURATION_TIMEOUT,
         onClose: () => {
           if (resultJson.Status) {
@@ -120,14 +120,14 @@ class ConfirmTaskPlan extends Component {
   }
 
   render() {
-    const focusTextboxBorderStyle = { borderColor: Colors.LITE_BLUE, borderBottomWidth: 2 },
+    const focusTextboxBorderStyle = { borderColor: COMMON_COLOR.LITE_BLUE, borderBottomWidth: 2 },
       blurTextboxBorderStyle = { borderColor: '#ccc', borderBottomWidth: 2 / 3 },
       {
         planStatus, planSummary, focusId
       } = this.state,
       nothingChangeStatus = !planStatus,
-      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: Colors.LITE_BLUE } : { backgroundColor: Colors.LIGHT_GRAY_PASTEL },
-      submitableButtonTextColor = !nothingChangeStatus ? { color: Colors.WHITE } : { color: Colors.DARK_GRAY };
+      submitableButtonBackground = !nothingChangeStatus ? { backgroundColor: COMMON_COLOR.LITE_BLUE } : { backgroundColor: COMMON_COLOR.LIGHT_GRAY_PASTEL },
+      submitableButtonTextColor = !nothingChangeStatus ? { color: COMMON_COLOR.WHITE } : { color: COMMON_COLOR.DARK_GRAY };
 
     return (
       <Container>
@@ -148,7 +148,7 @@ class ConfirmTaskPlan extends Component {
         <Content contentContainerStyle={AccountStyle.mainContainer} scrollEnabled>
           <Form>
             <Item stackedLabel>
-              <Label>Trạng thái phê duyệt <Text style={{ color: Colors.RED_PANTONE_186C }}>*</Text></Label>
+              <Label>Trạng thái phê duyệt <Text style={{ color: COMMON_COLOR.RED_PANTONE_186C }}>*</Text></Label>
               <Picker
                 iosHeader='Chọn trạng thái phê duyệt'
                 mode='dropdown'

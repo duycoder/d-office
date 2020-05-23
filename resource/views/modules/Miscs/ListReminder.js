@@ -25,7 +25,7 @@ import { Agenda } from 'react-native-calendars';
 //utilities
 import { convertDateToString, _readableFormat } from '../../../common/Utilities';
 import {
-  Colors,
+  COMMON_COLOR,
   EMPTY_STRING,
   TOAST_DURATION_TIMEOUT
 } from '../../../common/SystemConstant';
@@ -169,8 +169,8 @@ class ListReminder extends Component {
       text: resultJson.Status ? "Xoá nhắc việc thành công" : "Xoá nhắc việc thất bại",
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -221,8 +221,8 @@ class ListReminder extends Component {
       text: resultJson.Status ? "Thay đổi trạng thái nhắc việc thành công" : "Thay đổi trạng thái nhắc việc thất bại",
       type: resultJson.Status ? 'success' : 'danger',
       buttonText: "OK",
-      buttonStyle: { backgroundColor: Colors.WHITE },
-      buttonTextStyle: { color: Colors.LITE_BLUE },
+      buttonStyle: { backgroundColor: COMMON_COLOR.WHITE },
+      buttonTextStyle: { color: COMMON_COLOR.LITE_BLUE },
       duration: TOAST_DURATION_TIMEOUT,
       onClose: () => {
         if (resultJson.Status) {
@@ -269,14 +269,14 @@ class ListReminder extends Component {
   }
 
   renderItem(item) {
-    let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? Colors.OLD_LITE_BLUE : Colors.BLACK;
+    let colorFromNoti = (!!this.state.listIds && this.state.listIds.some(x => x == item.id)) ? COMMON_COLOR.OLD_LITE_BLUE : COMMON_COLOR.BLACK;
     let iconActive = item.isActive
-      ? <RNEIcon name='bell-ring' size={moderateScale(35, 1.04)} color={Colors.BLACK} type='material-community' />
-      : <RNEIcon name='bell-off' size={moderateScale(35, 1.04)} color={Colors.DANK_GRAY} type='material-community' />;
+      ? <RNEIcon name='bell-ring' size={moderateScale(35, 1.04)} color={COMMON_COLOR.BLACK} type='material-community' />
+      : <RNEIcon name='bell-off' size={moderateScale(35, 1.04)} color={COMMON_COLOR.DANK_GRAY} type='material-community' />;
 
     return (
       <ListItem
-        containerStyle={[styles.item, { borderBottomColor: Colors.GRAY, borderBottomWidth: 0, backgroundColor: Colors.WHITE }]}
+        containerStyle={[styles.item, { borderBottomColor: COMMON_COLOR.GRAY, borderBottomWidth: 0, backgroundColor: COMMON_COLOR.WHITE }]}
 
         title={
           <RnText style={[{ fontWeight: 'bold', fontSize: moderateScale(12, 1.2), flexWrap: "wrap", color: colorFromNoti }]}>
@@ -291,7 +291,7 @@ class ListReminder extends Component {
               rightText={item.thoidiem}
               customLeftContainer={{ width: "38%" }}
               customRightContainer={{ width: "62%" }}
-              customLeftText={{ color: Colors.DANK_GRAY }}
+              customLeftText={{ color: COMMON_COLOR.DANK_GRAY }}
             />
 
             <ColumnedListItem
@@ -300,7 +300,7 @@ class ListReminder extends Component {
               rightText={item.reminderAfter}
               customLeftContainer={{ width: "38%" }}
               customRightContainer={{ width: "62%" }}
-              customLeftText={{ color: Colors.DANK_GRAY }}
+              customLeftText={{ color: COMMON_COLOR.DANK_GRAY }}
             />
           </View>
         }
@@ -313,7 +313,7 @@ class ListReminder extends Component {
               }
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.onDeleteReminder(item.id)}>
-              <RNEIcon name='delete' size={moderateScale(33, 1.04)} color={Colors.RED_PANTONE_186C} type='material-community' />
+              <RNEIcon name='delete' size={moderateScale(33, 1.04)} color={COMMON_COLOR.RED_PANTONE_186C} type='material-community' />
             </TouchableOpacity>
           </View>
         }
@@ -374,7 +374,7 @@ class ListReminder extends Component {
           {
             renderIf(this.state.loadingData)(
               <View style={{ flex: 1, justifyContent: 'center' }}>
-                <ActivityIndicator size={indicatorResponsive} animating color={Colors.BLUE_PANTONE_640C} />
+                <ActivityIndicator size={indicatorResponsive} animating color={COMMON_COLOR.BLUE_PANTONE_640C} />
               </View>
             )
           }
