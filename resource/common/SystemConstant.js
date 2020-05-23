@@ -12,7 +12,6 @@ export const DEFAULT_PAGE_SIZE = 20;
 export const DEFAULT_PAGE_INDEX = 1;
 
 export const EMPTY_STRING = '';
-
 export const EMTPY_DATA_MESSAGE = 'KHÔNG CÓ DỮ LIỆU';
 
 export const PLANJOB_CONSTANT = {
@@ -421,54 +420,55 @@ export function generateTitle(maThaotac) {
 	return tenThaotac.charAt(0).toUpperCase() + tenThaotac.slice(1).toLowerCase();
 }
 
+const badgeIconEnums = {
+	HSVanBanDi: 'HSVanBanDi',
+	QuanLyCongViec: 'QuanLyCongViec',
+	HSCV_VANBANDEN: 'HSCV_VANBANDEN',
+	QL_LICHHOP: 'QL_LICHHOP',
+	QL_DANGKY_XE: 'QL_DANGKY_XE',
+	QL_CHUYEN: 'QL_CHUYEN',
+};
+
+const badgeIconRenders = {
+	[badgeIconEnums.HSVanBanDi]: {
+		badgeBackgroundColor = '#4FC3F7',
+		leftTitle = "VBTK"
+	},
+	[badgeIconEnums.QuanLyCongViec]: {
+		badgeBackgroundColor = '#4DB6AC',
+		leftTitle = "CV"
+	},
+	[badgeIconEnums.HSCV_VANBANDEN]: {
+		badgeBackgroundColor = '#5C6BC0',
+		leftTitle = "VBĐ"
+	},
+	[badgeIconEnums.QL_LICHHOP]: {
+		badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_1,
+		leftTitle = "LH"
+	},
+	[badgeIconEnums.QL_DANGKY_XE]: {
+		badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_2,
+		leftTitle = "DKX"
+	},
+	[badgeIconEnums.QL_CHUYEN]: {
+		badgeBackgroundColor = COMMON_COLOR.DANK_BLUE,
+		leftTitle = "CX"
+	},
+}
+
 export function generateBadgeIconNoti(itemType) {
-	let badgeBackgroundColor = COMMON_COLOR.GRAY,
-		leftTitle = "NN";
-
-	switch (itemType) {
-		case "HSVanBanDi":
-			badgeBackgroundColor = '#4FC3F7';
-			leftTitle = "VBTK"
-			break;
-		case "QuanLyCongViec":
-			badgeBackgroundColor = '#4DB6AC';
-			leftTitle = "CV";
-			break;
-		case "HSCV_VANBANDEN":
-			badgeBackgroundColor = '#5C6BC0';
-			leftTitle = "VBĐ";
-			break;
-		case "QL_LICHHOP":
-			badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_1;
-			leftTitle = "LH";
-			break;
-		case "QL_DANGKY_XE":
-			badgeBackgroundColor = COMMON_COLOR.RANDOM_COLOR_2;
-			leftTitle = "DKX";
-			break;
-		case "QL_CHUYEN":
-			badgeBackgroundColor = COMMON_COLOR.DANK_BLUE;
-			leftTitle = "CX";
-			break;
-	}
-
-	return {
-		badgeBackgroundColor,
-		leftTitle
+	const defaultRender = {
+		badgeBackgroundColor = COMMON_COLOR.GRAY,
+		leftTitle = "NN"
 	};
+
+	return badgeIconRenders[itemType] || defaultRender;
 }
 
 export function generateReadFontStyleAndColor(isRead = false) {
-	let checkReadFont = 'bold',
-		checkReadColor = COMMON_COLOR.NOT_READ;
-
-	if (isRead) {
-		checkReadFont = 'normal';
-		checkReadColor = COMMON_COLOR.HAS_DONE;
-	}
 	return {
-		checkReadFont,
-		checkReadColor,
+		checkReadFont: isRead ? 'normal' : 'bold',
+		checkReadColor: isRead ? COMMON_COLOR.HAS_DONE : COMMON_COLOR.NOT_READ,
 	}
 }
 
